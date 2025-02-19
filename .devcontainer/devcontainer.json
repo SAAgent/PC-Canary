@@ -1,0 +1,33 @@
+{
+    "name": "benchmark",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "HTTP_PROXY": "$http_proxy",
+            "HTTPS_PROXY": "$http_proxy"
+        }
+    },
+    "workspaceFolder": "/workspace", // 容器中的工作目录
+    "mounts": [ // 绑定当前项目到容器内
+        "source=${localWorkspaceFolder},target=/workspace,type=bind"
+    ],
+    "postCreateCommand": "echo 'Development container ready!'", // 容器初始化完成后执行的命令（可选）
+    "runArgs": [
+        "--gpus",
+        "all",
+        // "--ipc",
+        "--net",
+        "host",
+        "--shm-size",
+        "4g",
+        "--ulimit",
+        "memlock=-1",
+        "--device=/dev/kvm",
+        "-e",
+        "DISPLAY=localhost:13.0",
+        "-v",
+        "/tmp/.X11-unix:/tmp/.X11-unix",
+        "-v",
+        "/home/yyh/.Xauthority:/root/.Xauthority"
+    ]
+}
