@@ -18,10 +18,23 @@ RUN apt update && \
         build-essential
 
 # add user tools
-RUN sudo apt install -yq \
+RUN apt install -yq \
         jq \
         tree \
         tldr
 
+RUN apt update
 
-RUN sudo apt update
+RUN apt install -y tightvncserver xfce4
+RUN apt-get install -y sudo
+
+# 添加用户到 sudo 组 
+RUN useradd -m agent
+RUN usermod -aG sudo agent
+RUN echo 'agent:123' | chpasswd
+USER agent
+ENV USER=agent
+SHELL [ "bash", "-c" ]
+
+RUN echo 'export http_proxy="http://127.0.0.1:7890"' >> ~/.bashrc && \
+    echo 'export https_proxy="http://127.0.0.1:7890"' >> ~/.bashrc

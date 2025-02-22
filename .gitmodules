@@ -1,3 +1,6 @@
 [submodule "tdesktop"]
 	path = tdesktop
 	url = https://github.com/k0zhevnikov/tdesktop
+[submodule "Mailspring"]
+	path = Mailspring
+	url = https://github.com/k0zhevnikov/Mailspring
