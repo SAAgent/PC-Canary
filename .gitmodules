@@ -1,15 +1,15 @@
 [submodule "tdesktop"]
-	path = tdesktop
+	path = apps/tdesktop
 	url = https://github.com/k0zhevnikov/tdesktop
 [submodule "Mailspring"]
-	path = Mailspring
+	path = apps/Mailspring
 	url = https://github.com/k0zhevnikov/Mailspring
 [submodule "mpv"]
-	path = mpv
+	path = apps/mpv
 	url = https://github.com/k0zhevnikov/mpv
 [submodule "YesPlayMusic"]
-	path = YesPlayMusic
+	path = apps/YesPlayMusic
 	url = https://github.com/k0zhevnikov/YesPlayMusic
 [submodule "marktext"]
-	path = marktext
+	path = apps/marktext
 	url = https://github.com/k0zhevnikov/marktext
