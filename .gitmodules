@@ -4,3 +4,12 @@
 [submodule "Mailspring"]
 	path = Mailspring
 	url = https://github.com/k0zhevnikov/Mailspring
+[submodule "mpv"]
+	path = mpv
+	url = https://github.com/k0zhevnikov/mpv
+[submodule "YesPlayMusic"]
+	path = YesPlayMusic
+	url = https://github.com/k0zhevnikov/YesPlayMusic
+[submodule "marktext"]
+	path = marktext
+	url = https://github.com/k0zhevnikov/marktext
