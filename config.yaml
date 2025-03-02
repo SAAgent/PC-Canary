@@ -1,0 +1,38 @@
+# PC 控制 Agent 配置文件
+
+# API 密钥配置
+api_keys:
+  openai: "sk-your-openai-api-key"  # OpenAI API 密钥
+  google: "your-google-api-key"     # Google AI API 密钥
+
+# 模型配置
+models:
+  default: "openai"  # 默认使用的模型类型 (openai 或 gemini)
+  
+  # OpenAI 模型配置
+  openai:
+    model_name: "gpt-4o"     # 模型名称
+    temperature: 0.2         # 温度参数 (0.0-1.0)
+    top_p: 0.95              # Top-p 参数
+    max_tokens: 2048         # 最大输出令牌数
+  
+  # Google Gemini 模型配置
+  gemini:
+    model_name: "gemini-1.5-pro"  # 模型名称
+    temperature: 0.2              # 温度参数 (0.0-1.0)
+    top_p: 0.95                   # Top-p 参数
+    top_k: 40                     # Top-k 参数
+    max_output_tokens: 2048       # 最大输出令牌数
+    system_instruction: "你是一个控制电脑的AI助手，擅长理解屏幕内容并执行指令。"
+
+# 执行配置
+execution:
+  max_steps: 10          # 最大执行步骤数
+  delay: 1.0             # 每步之间的延迟时间(秒)
+  save_screenshots: false  # 是否保存截图
+  screenshots_dir: "screenshots"  # 截图保存目录
+
+# 日志配置
+logging:
+  level: "info"          # 日志级别 (debug, info, warning, error)
+  file: "agent.log"      # 日志文件路径 
