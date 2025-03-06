@@ -1,1 +1,0 @@
-deprecate `--foo`, instead use `--bar=foo` as a replacement

@@ -1,7 +1,0 @@
-{
-    "Format": "github-actions",
-    "Disable": {
-        "IndentSize": true,
-        "MaxLineLength": true
-    }
-}
