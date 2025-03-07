@@ -205,7 +205,7 @@ When determining coordinates for your operations, always consider this metadata 
    - Accurately understand the impact of operations
    - Track the overall progress of the task
 
-My computer's password is 'password', feel free to use it when you need administrator privileges.
+My computer's password is '123', feel free to use it when you need administrator privileges.
 
 First provide a brief reflection on the current screenshot and previous operations, then return appropriate Python code or special instruction.
 Return only code or special instruction, do not include anything else.

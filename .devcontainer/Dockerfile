@@ -79,7 +79,7 @@ RUN apt update && apt install -y \
 # # RUN rm turbovnc_3.1.4_amd64.deb
 
 # 安装 noVNC 用于浏览器访问
-RUN apt install -y novnc websockify
+# RUN apt install -y novnc websockify
 
 # 添加用户并配置权限
 RUN groupadd vglusers
