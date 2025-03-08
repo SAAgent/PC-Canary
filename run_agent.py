@@ -9,7 +9,7 @@ import os
 import sys
 import time
 import argparse
-from PIL import ImageGrab
+from PIL import Image, ImageGrab
 
 # 导入Agent相关模块
 from agent.base_agent import BaseAgent
@@ -18,6 +18,9 @@ from agent.models.gemini_model import GeminiModel
 
 # 导入控制器
 from env.controller.code_execution_controller import CodeExecutionController
+
+# 导入新的日志系统
+from utils.logger import AgentLogger
 
 
 
@@ -35,7 +38,7 @@ def create_model(model_type, api_key):
     if model_type.lower() == 'openai':
         return OpenAIModel(
             api_key=api_key,
-            model_name="qwen-omni-turbo",
+            model_name="gpt-4o-mini",
             temperature=0.2,
             max_tokens=2048
         )
@@ -94,6 +97,10 @@ def test_agent_telegram_search(model_type='openai', api_key=None, max_steps=10):
     # 创建Agent
     agent = BaseAgent(model, observation_type="screenshot", action_space="pyautogui-muti-action")
     
+    # 初始化日志系统
+    logger = AgentLogger(base_log_dir="logs")
+    print(f"日志将保存到: {logger.session_dir}")
+    
     # 定义Telegram搜索任务指令
     instructions = """
     任务：在Telegram应用中执行搜索操作
@@ -113,16 +120,12 @@ def test_agent_telegram_search(model_type='openai', api_key=None, max_steps=10):
     - 你可以通过controller变量访问控制器实例
     """
     
-    # 创建截图保存目录
-    logs_dir = "tests/logs"
-    os.makedirs(logs_dir, exist_ok=True)
+    # 记录任务开始
+    logger.start_step(instructions)
     
     # 执行步骤
     step_index = 0
     start_time = time.time()
-    
-    # 屏幕截图历史记录
-    screenshot_history = []
     
     print(f"\n开始执行Telegram搜索任务，使用{model_type}模型\n")
     print(f"任务指令:\n{instructions}\n")
@@ -131,23 +134,24 @@ def test_agent_telegram_search(model_type='openai', api_key=None, max_steps=10):
     while step_index < max_steps and not controller.task_completed and not controller.task_failed:
         print(f"\n执行步骤 {step_index+1}/{max_steps}")
         
+        # 开始新的步骤记录
+        if step_index > 0:
+            logger.start_step(f"执行步骤 {step_index+1}")
+        
         # 获取观察
         print("获取屏幕截图...")
         observation = controller.get_screenshot()
         
-        # 保存截图，方便调试
-        screenshot_path = os.path.join(logs_dir, f"step_{step_index+1}_screenshot_{int(time.time())}.png")
-        observation.save(screenshot_path)
+        # 保存截图到日志系统
+        screenshot_path = logger.log_screenshot(observation)
         print(f"截图已保存: {screenshot_path}")
-        
-        # 将截图添加到历史记录
-        screenshot_history.append(screenshot_path)
-        if len(screenshot_history) > 3:  # 只保留最近3张截图
-            screenshot_history.pop(0)
         
         # 执行Agent决策
         print("Agent开始决策...")
         action_code, thought = agent.act(instructions, observation, controller)
+        
+        # 记录动作到日志系统
+        logger.log_action(action_code, thought)
         
         # 打印Agent思考和动作
         print(f"\nAgent思考:")
@@ -160,12 +164,25 @@ def test_agent_telegram_search(model_type='openai', api_key=None, max_steps=10):
         print(action_code[:500] + ("..." if len(action_code) > 500 else ""))
         print("-" * 50)
         
+        # 执行代码并获取执行结果
+        execution_result = agent._execute_action(action_code, controller)
+        
+        # 记录执行结果到日志系统
+        logger.log_execution_result(execution_result)
+        
+        # 标记点击位置到截图
+        marked_screenshot = logger.mark_screenshot_with_clicks()
+        if marked_screenshot:
+            print(f"标记的截图已保存: {marked_screenshot}")
+        
         # 检查环境状态
         if controller.task_completed:
             print("任务已完成！")
+            logger.end_session("completed")
             break
         elif controller.task_failed:
             print(f"任务失败！原因: {controller.failure_reason}")
+            logger.end_session("failed")
             break
             
         # 继续执行下一步
@@ -175,6 +192,7 @@ def test_agent_telegram_search(model_type='openai', api_key=None, max_steps=10):
         elapsed_time = time.time() - start_time
         if elapsed_time > 300:  # 5分钟超时
             print("测试超时，终止执行")
+            logger.end_session("timeout")
             break
         
         # 用户可以手动中断
@@ -189,6 +207,7 @@ def test_agent_telegram_search(model_type='openai', api_key=None, max_steps=10):
                         key = sys.stdin.read(1)
                         if key == 'q':
                             print("用户手动终止测试")
+                            logger.end_session("user_terminated")
                             break
                 finally:
                     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
@@ -199,23 +218,14 @@ def test_agent_telegram_search(model_type='openai', api_key=None, max_steps=10):
     print("\n" + "="*50)
     print("Agent测试执行报告")
     print("="*50)
-    print(f"总执行步骤: {step_index}")
+    print(f"执行步骤: {step_index+1}/{max_steps}")
+    print(f"执行时间: {time.time() - start_time:.2f} 秒")
     print(f"执行状态: {'成功' if controller.task_completed else '失败' if controller.task_failed else '未完成'}")
-    if controller.task_failed and controller.failure_reason:
+    if controller.task_failed:
         print(f"失败原因: {controller.failure_reason}")
-    print(f"总执行时间: {time.time() - start_time:.2f} 秒")
     
-    # 保存报告
-    with open(os.path.join(logs_dir, f"telegram_search_agent_report_{int(time.time())}.txt"), "w") as f:
-        f.write(f"Agent测试执行报告\n")
-        f.write(f"任务: Telegram搜索\n")
-        f.write(f"模型: {model_type}\n")
-        f.write(f"总执行步骤: {step_index}\n")
-        f.write(f"执行状态: {'成功' if controller.task_completed else '失败' if controller.task_failed else '未完成'}\n")
-        if controller.task_failed and controller.failure_reason:
-            f.write(f"失败原因: {controller.failure_reason}\n")
-        f.write(f"总执行时间: {time.time() - start_time:.2f} 秒\n")
-        f.write(f"截图历史: {', '.join(screenshot_history)}\n")
+    print(f"\n完整日志已保存到: {logger.session_dir}")
+    print(f"报告文件: {os.path.join(logger.session_dir, 'session_report.md')}")
     
     return controller.task_completed
 
