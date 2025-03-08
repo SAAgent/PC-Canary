@@ -99,3 +99,5 @@ git submodule update --init --recursive
 - 添加更多任务
 - 支持远程桌面的硬件加速
 - 添加更多文档
+- 已知 BUG：Mailsping 软件的桌面密钥软件不兼容，官方文档无效。[详情](https://community.getmailspring.com/t/password-management-error/199/2)
+- 已知 BUG：tightvnc 与 xdotool 冲突
