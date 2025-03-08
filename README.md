@@ -25,12 +25,19 @@
 
 xrdb "$HOME/.Xresources"
 xsetroot -solid grey
-
+#x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VNCDESKTOP Desktop" &
+#x-window-manager &
+# Fix to make GNOME work
 export XKL_XMODMAP_DISABLE=1
-export XDG_SESSION_TYPE=x11
+/etc/X11/Xsession
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+x-session-manager & xfdesktop & xfce4-panel &
+xfce4-menu-plugin &
+xfsettingsd &
+xfconfd &
+xfwm4 &
 
-# 启动Xfce4桌面环境
-startxfce4 &
 ```
 
 ### 可用应用
