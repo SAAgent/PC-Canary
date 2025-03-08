@@ -1,5 +1,5 @@
 # set npm environment
-sudo apt install -y x11-apps curl
+# sudo apt install -y x11-apps curl
 # Download and install nvm:
 # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 

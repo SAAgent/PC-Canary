@@ -101,7 +101,7 @@ SHELL [ "bash", "-c" ]
 
 # # 配置环境变量
 RUN echo 'export http_proxy=http://127.0.0.1:7890' >> ~/.bashrc && \
-    echo 'export https_proxy=http://127.0.0.1:7890' >> ~/.bashrc && \
+    echo 'export https_proxy=http://127.0.0.1:7890' >> ~/.bashrc
     # echo 'export DISPLAY=:1' >> ~/.bashrc && \
     # echo 'export XDG_SESSION_TYPE=x11' >> ~/.bashrc && \
     # echo 'export DISPLAY=:1' >> ~/.bashrc && \

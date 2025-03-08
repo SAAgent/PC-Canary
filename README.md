@@ -19,6 +19,19 @@
 具体来说，目前实现的容器基于 ubuntu 22.04 系统，并安装了 X11 和 Xfce4 桌面环境，支持 GPU 计算，通过 TightVNC 提供远程图形化界面访问。
 
 在进入项目后，配置`DISPLAY`环境变量，启动 VNC 服务器后，即可在 VNC 桌面上启动相关应用。
+本项目目前使用Xfce4桌面环境，为正确转发，需要配置`~/.vnc/xstartup`文件，改为如下内容：
+```bash
+#!/bin/sh
+
+xrdb "$HOME/.Xresources"
+xsetroot -solid grey
+
+export XKL_XMODMAP_DISABLE=1
+export XDG_SESSION_TYPE=x11
+
+# 启动Xfce4桌面环境
+startxfce4 &
+```
 
 ### 可用应用
 
