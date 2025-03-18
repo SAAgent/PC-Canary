@@ -18,7 +18,7 @@ class MockAgent:
     def __init__(self):
         self.commands = [
             "pyautogui.click(322,122)",
-            "pyautogui.write('new')",
+            "pyautogui.write('news')",
             "pyautogui.press('enter')"
         ]
         self.current_step = 0

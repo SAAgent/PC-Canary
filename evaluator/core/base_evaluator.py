@@ -2,6 +2,8 @@ from typing import Dict, Any
 import os
 import time
 import json
+import signal
+import subprocess
 
 from evaluator.core.hook_manager import HookManager
 from evaluator.core.result_collector import ResultCollector
@@ -209,19 +211,28 @@ class BaseEvaluator:
             # 停止应用进程
             if hasattr(self, 'app_process') and self.app_process:
                 try:
-                    self.logger.info(f"正在终止应用进程 (PID: {self.app_process.pid})")
-                    self.app_process.terminate()
-                    # 给进程一些时间来正常终止
-                    self.app_process.wait(timeout=5)
-                    self.logger.info("应用进程已正常终止")
-                except Exception as e:
-                    self.logger.warning(f"终止应用进程时出错: {str(e)}")
+                    self.logger.info(f"尝试优雅地终止应用进程 (PID: {self.app_process.pid})")
+                    
+                    # 发送SIGTERM信号，通知应用准备关闭
+                    self.app_process.send_signal(signal.SIGTERM)
+                    self.logger.info("已发送SIGTERM信号，等待应用响应...")
+                    
+                    # 等待应用自行关闭
                     try:
-                        # 如果正常终止失败，强制终止进程
-                        self.app_process.kill()
-                        self.logger.info("应用进程已强制终止")
-                    except Exception as kill_error:
-                        self.logger.error(f"强制终止应用进程失败: {str(kill_error)}")
+                        self.app_process.wait(timeout=10)  # 等待10秒
+                        self.logger.info("应用进程已自行关闭")
+                    except subprocess.TimeoutExpired:
+                        self.logger.warning("应用未在预期时间内关闭，尝试使用terminate()")
+                        self.app_process.terminate()
+                        try:
+                            self.app_process.wait(timeout=5)
+                            self.logger.info("应用进程已通过terminate()正常终止")
+                        except subprocess.TimeoutExpired:
+                            self.logger.warning("应用未能通过terminate()关闭，尝试使用kill()")
+                            self.app_process.kill()
+                            self.logger.info("应用进程已通过kill()强制终止")
+                except Exception as e:
+                    self.logger.error(f"终止应用进程时出错: {str(e)}")
             
             self.end_time = time.time()
             duration = self.end_time - self.start_time

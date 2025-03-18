@@ -242,6 +242,16 @@ class BaseAgent:
             "content": response.choices[0].message.content
         })
 
+        # 打印Agent思考和动作
+        print(f"\nAgent思考:")
+        print("-" * 50)
+        print(thought[:500] + ("..." if len(thought) > 500 else ""))
+        print("-" * 50)
+        
+        print(f"\nAgent动作:")
+        print("-" * 50)
+        print(action_code[:500] + ("..." if len(action_code) > 500 else ""))
+        print("-" * 50)
         # 如果提供了控制器，则执行动作
         if controller is not None and action_code not in ["WAIT", "FAIL", "DONE"]:
             self._execute_action(action_code, controller)
