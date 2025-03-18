@@ -1,6 +1,6 @@
 # That Monitor Guy: PC Agent基准测试评估器
 
-基于触发器与开源用户软件的PC Agent基准测试评估系统，用于评估Agent执行桌面任务的能力。
+基于触发器监视与开源用户软件的PC Agent基准测试评估系统，用于评估Agent执行桌面任务的能力。
 
 ## 功能特点
 
