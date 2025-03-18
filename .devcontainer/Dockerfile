@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.8.0-base-ubuntu22.04
+FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
 
 # 设置工作目录
 SHELL [ "bash", "-c" ]
@@ -58,8 +58,8 @@ RUN apt install -y \
 # 安装 NVIDIA 驱动和库（使用通配符以适应不同系统）
 RUN apt update && \
     apt install -y \
-    nvidia-driver-570 \
-    libnvidia-gl-570 \
+    nvidia-driver-530 \
+    libnvidia-gl-530 \
     nvidia-cuda-toolkit 
     
 # 安装VirtualGL依赖
@@ -94,7 +94,7 @@ RUN echo 'agent:123' | chpasswd
     # /opt/VirtualGL/bin/vglserver_config -config +s +f -t
 
 # 设置 TurboVNC 配置
-RUN echo "useVGL=true" >> /etc/turbovncserver.conf
+# RUN echo "useVGL=true" >> /etc/turbovncserver.conf
 USER agent
 ENV USER=agent
 SHELL [ "bash", "-c" ]

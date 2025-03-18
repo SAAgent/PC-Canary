@@ -1,123 +1,81 @@
-# Agent benchmark 系统配置文档
+# That Monitor Guy: PC Agent基准测试评估器
 
+基于触发器与开源用户软件的PC Agent基准测试评估系统，用于评估Agent执行桌面任务的能力。
 
-## 项目概述
+## 功能特点
 
-本项目是一个基于AI Agent的自动化Benchmark系统，旨在基于对开源 PC APP 进行准确轻量的自动化测试。
-目前本项目能够实现：
-- 接入基于 Prompt Engineering 的 Agent 框架，兼容 OpenAI 的 API 接口
-- 基于代码的 GUI 环境控制，使用 pyautogui 模拟鼠标键盘操作
-- 基于 docker 的跨平台支持和轻量级部署
+- 基于Frida钩子技术，无侵入式监控应用程序行为
+- 异步评估模式，不干扰Agent正常执行
+- 可扩展的任务注册机制
+- 详细的评估报告生成
+- 易于与任意结构的Agent系统集成
 
+## 当前支持的任务
 
+- **Telegram搜索任务**：评估Agent在Telegram客户端中搜索"news"的能力
 
-## 环境配置
+## 系统要求
 
-### docker 环境搭建
+- Python 3.8+
+- Frida 16.0.0+
+- 相关依赖项（见requirements.txt）
 
-本项目可以使用 vscode 的 devcontainer 功能，快速配置开发环境。可以通过相关文件夹的Dockerfile 和 devcontainer.json 文件配置容器。
-具体来说，目前实现的容器基于 ubuntu 22.04 系统，并安装了 X11 和 Xfce4 桌面环境，支持 GPU 计算，通过 TightVNC 提供远程图形化界面访问。
+## 安装
 
-在进入项目后，配置`DISPLAY`环境变量，启动 VNC 服务器后，即可在 VNC 桌面上启动相关应用。
-本项目目前使用Xfce4桌面环境，为正确转发，需要配置`~/.vnc/xstartup`文件，改为如下内容：
+TODO 给出详细的安装方法
+目前，本项目仅支持在Linux系统上运行，请使用Docker容器环境。
+为运行本项目，目前需要：
+1. 克隆本项目，安装相关依赖和库，配置并进入带 GUI 界面的 Docker 环境
+2. 配置好 tdesktop 可执行文件，我已经自行编译了一个版本放在课题组服务器上，在其他环境中有可能需要重新编译（注意⚠️：编译 telegram 应用需要向官方申请 api key，我有一个已经申请好了的，可以找我要）
+3. 我的 docker 环境内已经有了相关用户数据，如果重新配置可能需要一个测试用的 telegram 账号，可以找我要
+
+## 使用方法
+
+### 直接测试评估器
+
+可以直接运行评估器，然后手动执行Telegram搜索操作：
+
 ```bash
-#!/bin/sh
-
-xrdb "$HOME/.Xresources"
-xsetroot -solid grey
-#x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VNCDESKTOP Desktop" &
-#x-window-manager &
-# Fix to make GNOME work
-export XKL_XMODMAP_DISABLE=1
-/etc/X11/Xsession
-unset SESSION_MANAGER
-unset DBUS_SESSION_BUS_ADDRESS
-x-session-manager & xfdesktop & xfce4-panel &
-xfce4-menu-plugin &
-xfsettingsd &
-xfconfd &
-xfwm4 &
-
+python test_evaluator.py
 ```
 
-### 可用应用
+参数说明：
+- `--process`：目标进程名称（默认：Telegram）
+- `--wait`：等待时间，单位为秒（默认：60）
 
-本项目目前支持的可用应用包括：
-- Telegram
-- Mailspring
-- Markdown
-- YesPlayMusic
-- mpv
+### 与Agent系统集成
 
-在克隆时，使用命令：
+将评估器与Agent系统集成运行：
+
 ```bash
-git submodule update --init --recursive
+python run_agent_with_evaluator.py
 ```
-可克隆应用的源代码。选择需要测试的应用自行编译即可。
-一些应用需要自行安装编译所需的相关依赖（如 nodejs 和 python 环境）。
-有一份`requirements.txt`文件供参考实际安装的依赖。
 
-## 项目结构
+参数说明：
+- `--model`：使用的模型类型（openai、gemini或qwen，默认：openai）
+- `--api_key`：API密钥（如果未提供则从环境变量获取）
+- `--max_steps`：最大执行步骤数（默认：10）
+- `--eval_wait`：评估器启动等待时间（秒，默认：5）
 
-### 主要模块
+## 架构说明
 
-#### agent模块
-负责AI代理的核心逻辑：
-- `base_agent.py`：基础代理类，处理观察和决策
-- `prompt.py`：提示词模板
-- `models/`：不同AI模型的接口实现（OpenAI、Gemini等）
+整个评估系统由以下核心组件组成：
 
-#### env模块
-环境控制器：
-- `controller/code_execution_controller.py`：代码执行控制器
-- `controller/gui_controll_interface.py`：GUI控制接口
+1. **核心评估器（BenchmarkEvaluator）**：负责Frida初始化、脚本加载以及结果收集
+2. **任务评估器（如TelegramSearchEvaluator）**：实现特定任务的评估逻辑
+3. **Frida钩子脚本**：监控目标应用程序，并向评估器发送事件
+4. **集成模块**：与现有Agent系统的集成功能
 
-#### utils模块
-工具函数和辅助类：
-- `logger.py`：日志系统，记录执行过程和结果
-- `__init__.py`：模块导出
+## 自定义任务
 
-#### apps模块
-测试应用程序（作为Git子模块）：
-- `Mailspring`：邮件客户端
-- `tdesktop`：Telegram桌面客户端
-- `marktext`：Markdown编辑器
-- `YesPlayMusic`：音乐播放器
-- `mpv`：视频播放器
+要添加新的评估任务，需要：
 
-### 主文件
+1. 创建新的Frida钩子脚本（如evaluator/scripts/new_task_hooker.js）
+2. 创建对应的任务评估器类（如evaluator/new_task.py）
+3. 在集成模块中使用新任务
 
-- `run_agent.py`：主程序，运行代理测试
-- `README.md`：项目说明
+## 注意事项
 
-
-## 开发指南
-
-### 添加新测试
-
-1. 在`tests/tasks/`目录下创建新的测试任务
-2. 在`tests/`目录下创建对应的测试脚本
-
-### 添加新应用
-
-将应用添加为Git子模块：
-   ```bash
-   git submodule add https://github.com/username/repo apps/app_name
-   ```
-
-### 扩展代理功能
-
-1. 基于`agent/base_agent.py`修改并添加新功能
-2. 在`agent/prompt.py`中更新提示词模板
-3. 如需支持新的AI模型，在`agent/models/`目录下添加对应实现
-
-## TODO
-
-- 支持全新的 evaluator
-- 支持更多应用
-- 支持更多 Agent
-- 添加更多任务
-- 支持远程桌面的硬件加速
-- 添加更多文档
-- 已知 BUG：Mailsping 软件的桌面密钥软件不兼容，官方文档无效。[详情](https://community.getmailspring.com/t/password-management-error/199/2)
-- 已知 BUG：tightvnc 与 xdotool 冲突
+- 需要确保Telegram应用已经启动
+- Frida钩子脚本可能需要根据不同版本的Telegram客户端进行调整
+- 建议使用 Docker 容器环境以复现评估结果
