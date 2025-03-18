@@ -1,0 +1,20 @@
+{
+    "task_id": "telegram_search",
+    "description": "评估Agent在Telegram中执行搜索操作的能力",
+    "expected_query": "news",
+    "timeout": 120,
+    "hook_script": "hooker.js",
+    "metrics": {
+        "success": false,
+        "found_search_function": false,
+        "correct_query": false,
+        "time_to_complete": 0
+    },
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "search_function_found": "找到搜索函数",
+        "search_query_detected": "检测到搜索查询",
+        "target_query_found": "找到目标查询",
+        "error": "错误事件"
+    }
+} 
