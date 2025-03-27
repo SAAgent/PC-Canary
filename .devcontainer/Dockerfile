@@ -111,3 +111,19 @@ RUN echo 'export http_proxy=http://127.0.0.1:7890' >> ~/.bashrc && \
 
 # 设置启动命令
 USER agent
+
+RUN mkdir /home/agent/.vnc/
+RUN echo -e '#!/bin/sh\n\
+xrdb "$HOME/.Xresources"\n\
+xsetroot -solid grey\n\
+export XKL_XMODMAP_DISABLE=1\n\
+/etc/X11/Xsession\n\
+unset SESSION_MANAGER\n\
+unset DBUS_SESSION_BUS_ADDRESS\n\
+x-session-manager & xfdesktop & xfce4-panel &\n\
+xfce4-menu-plugin &\n\
+xfsettingsd &\n\
+xfconfd &\n\
+xfwm4 &' > /home/agent/.vnc/xstartup && \
+    chmod +x /home/agent/.vnc/xstartup
+

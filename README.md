@@ -2,6 +2,36 @@
 
 基于触发器监视与开源用户软件的PC Agent基准测试评估系统，用于评估Agent执行桌面任务的能力。
 
+## 如何在Phoenix上运行
+### 运行基本的VNC远程桌面环境
+在 Phoenix 上已经有一个现成的镜像 monitor_env
+
+(可选)也可以使用本项目的目录下的 Dockerfile 手动构建镜像
+```bash
+docker build \ 
+  --build-arg HTTP_PROXY=YOUR_PROXY \
+  --build-arg HTTPS_PROXY=YOUR_PROXY \
+  -t monitor_env:latest \
+  -f .devcontainer/Dockerfile .
+```
+run 这个镜像并进入容器环境中
+```bash
+docker run --rm -it --privileged   --network host -v /tmp/.X11-unix:/tmp/.X11-unix -v /YOUR_USER_ROOT/.Xauthority:/home/agent/.Xauthority monitor_env:latest                         
+```
+进入环境后，执行命令
+```bash
+vncserver 
+```
+以启动VNC桌面，根据你实际启动的桌面号（如:5）重设 DISPLAY 变量
+```bash
+export DISPLAY=:5
+```
+随后在你的 VNC Viewer 客户端上连接，以验证远程桌面服务是否启动，地址可能形如
+```
+vnc://10.109.246.210:5905
+```
+### 在远程桌面内运行 tdesktop 客户端
+ TODO
 ## 功能特点
 
 - 基于Frida钩子技术，无侵入式监控应用程序行为
@@ -19,15 +49,6 @@
 - Python 3.8+
 - Frida 16.0.0+
 - 相关依赖项（见requirements.txt）
-
-## 安装
-
-TODO 给出详细的安装方法
-目前，本项目仅支持在Linux系统上运行，请使用Docker容器环境。
-为运行本项目，目前需要：
-1. 克隆本项目，安装相关依赖和库，配置并进入带 GUI 界面的 Docker 环境
-2. 配置好 tdesktop 可执行文件，我已经自行编译了一个版本放在课题组服务器上，在其他环境中有可能需要重新编译（注意⚠️：编译 telegram 应用需要向官方申请 api key，我有一个已经申请好了的，可以找我要）
-3. 我的 docker 环境内已经有了相关用户数据，如果重新配置可能需要一个测试用的 telegram 账号，可以找我要
 
 ## 使用方法
 
@@ -79,3 +100,40 @@ python run_agent_with_evaluator.py
 - 需要确保Telegram应用已经启动
 - Frida钩子脚本可能需要根据不同版本的Telegram客户端进行调整
 - 建议使用 Docker 容器环境以复现评估结果
+
+```bash
+project/                         # 项目根目录
+├── agent/                           # 代理系统模块
+│   ├── models/                      
+│   ├── base_agent.py                # 代理基类，基本的 prompt Agent实现
+│   └── prompt.py                    # 提示词生成和管理模块
+│
+├── apps/                            # 目标应用程序仓库
+│   ├── tdesktop/                    # Telegram Desktop应用
+│   ├── ...
+│
+├── env/                             
+│   └── controller/                  # 环境控制器，管理为 Agent 暴露出来的交互接口
+│       └── code_execution_controller.py  # 代码执行接口，为 Agent 提供代码执行能力
+│
+├── evaluator/                       # 评估系统，负责评估代理性能
+│   ├── core/                        # 评估器核心组件
+│   │   ├── base_evaluator.py        # 评估器基类，定义基本评估流程
+│   │   ├── hook_manager.py          # 钩子管理器，负责Frida脚本管理
+│   │   └── result_collector.py      # 结果收集器，负责保存评估数据
+│   │
+│   └── utils/                       # 日志工具
+│
+├── tests/                           
+│   └── tasks/                       # 任务测试目录
+│       └── telegram/                # Telegram APP下的所有任务
+│           └── task01_search/       # Telegram搜索功能测试
+│               ├── handler.py       # 事件处理器，处理钩子脚本事件
+│               ├── hooker.js        # Frida钩子脚本，用于监控Telegram
+│               └── config.json      # 任务配置文件，定义测试参数
+│
+├── utils/                           # 通用工具库
+│   └── logger.py                    # 日志记录模块
+│
+└── telegram_evaluator_test.py       # Telegram评估器测试脚本
+```

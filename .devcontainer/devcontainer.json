@@ -12,12 +12,12 @@
         "source=${localWorkspaceFolder},target=/workspace,type=bind"
     ],
     // "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh", // 容器初始化完成后执行的命令（可选）
-    "image": "benchmark:latest",
+    // "image": "benchmark:latest",
     "containerEnv": {
         // "DISPLAY": "${localEnv:DISPLAY}",
         // "HTTP_PROXY": "${localEnv:http_proxy}",
         // "HTTPS_PROXY": "${localEnv:https_proxy}",
-        "DISPLAY": ":13",
+        // "DISPLAY": ":13",
         "HTTP_PROXY": "http://127.0.0.1:9890",
         "HTTPS_PROXY": "http://127.0.0.1:9890"
     },
@@ -36,6 +36,6 @@
         "-v",
         "/tmp/.X11-unix:/tmp/.X11-unix",
         "-v",
-        "/data/yyh/.Xauthority:/home/agent/.Xauthority"
+        "/PATH/TO/USER/.Xauthority:/home/agent/.Xauthority"
     ]
 }
