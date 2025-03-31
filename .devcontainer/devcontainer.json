@@ -1,5 +1,5 @@
 {
-    "name": "benchmark",
+    "name": "benchmark_env",
     "build": {
         "dockerfile": "Dockerfile",
         "args": {
@@ -7,11 +7,13 @@
             "HTTPS_PROXY": "$http_proxy"
         }
     },
-    "workspaceFolder": "/workspace", // 容器中的工作目录
-    "mounts": [ // 绑定当前项目到容器内
-        "source=${localWorkspaceFolder},target=/workspace,type=bind"
+    "workspaceFolder": "/workspace",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind",
+        "source=telegram-data2,target=/apps/tdesktop/Debug,type=volume",
+        "source=${localWorkspaceFolder}/apps/tdesktop/out/Debug/Telegram,target=/apps/tdesktop/Debug/Telegram,type=bind"
     ],
-    // "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh", // 容器初始化完成后执行的命令（可选）
+    "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
     // "image": "benchmark:latest",
     "containerEnv": {
         // "DISPLAY": "${localEnv:DISPLAY}",
@@ -21,10 +23,10 @@
         "HTTP_PROXY": "http://127.0.0.1:9890",
         "HTTPS_PROXY": "http://127.0.0.1:9890"
     },
-    "runArgs": [ 
+    "runArgs": [
         "--privileged",
-        "--gpus",
-        "all",
+        // "--gpus",
+        // "all",
         // "--ipc",
         "--net",
         "host",
@@ -36,6 +38,6 @@
         "-v",
         "/tmp/.X11-unix:/tmp/.X11-unix",
         "-v",
-        "/PATH/TO/USER/.Xauthority:/home/agent/.Xauthority"
+        "/data/yyh/.Xauthority:/home/agent/.Xauthority"
     ]
 }

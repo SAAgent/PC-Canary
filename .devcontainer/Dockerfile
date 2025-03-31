@@ -1,10 +1,10 @@
-FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+FROM ubuntu:22.04
 
 # 设置工作目录
 SHELL [ "bash", "-c" ]
 ENV DEBIAN_FRONTEND=noninteractive
-ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES all
+# ENV NVIDIA_VISIBLE_DEVICES all
+# ENV NVIDIA_DRIVER_CAPABILITIES alls
 WORKDIR /workspace
 
 # 使用国内镜像源以加速下载
@@ -55,12 +55,12 @@ RUN apt install -y \
     xfce4-goodies \
     elementary-xfce-icon-theme
 
-# 安装 NVIDIA 驱动和库（使用通配符以适应不同系统）
-RUN apt update && \
-    apt install -y \
-    nvidia-driver-530 \
-    libnvidia-gl-530 \
-    nvidia-cuda-toolkit 
+# # 安装 NVIDIA 驱动和库（使用通配符以适应不同系统）
+# RUN apt update && \
+#     apt install -y \
+#     nvidia-driver-530 \
+#     libnvidia-gl-530 \
+#     nvidia-cuda-toolkit 
     
 # 安装VirtualGL依赖
 RUN apt update && apt install -y \
@@ -100,9 +100,9 @@ ENV USER=agent
 SHELL [ "bash", "-c" ]
 
 # # 配置环境变量
-RUN echo 'export http_proxy=http://127.0.0.1:7890' >> ~/.bashrc && \
-    echo 'export https_proxy=http://127.0.0.1:7890' >> ~/.bashrc
-    # echo 'export DISPLAY=:1' >> ~/.bashrc && \
+RUN echo 'export http_proxy=http://127.0.0.1:9890' >> ~/.bashrc && \
+    echo 'export https_proxy=http://127.0.0.1:9890' >> ~/.bashrc && \
+    echo 'export DISPLAY=:1' >> ~/.bashrc
     # echo 'export XDG_SESSION_TYPE=x11' >> ~/.bashrc && \
     # echo 'export DISPLAY=:1' >> ~/.bashrc && \
 #     echo 'export VGL_DISPLAY=:0' >> ~/.bashrc && \
