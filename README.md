@@ -2,21 +2,28 @@
 
 基于触发器监视与开源用户软件的PC Agent基准测试评估系统，用于评估Agent执行桌面任务的能力。
 
-## 如何在Phoenix上运行
+## 运行
 ### 运行基本的VNC远程桌面环境
-在 Phoenix 上已经有一个现成的镜像 monitor_env
-
-(可选)也可以使用本项目的目录下的 Dockerfile 手动构建镜像
+克隆本仓库
+```bash
+git clone https://github.com/k0zhevnikov/image_setup
+```
+并使用本项目目录下的 Dockerfile 手动构建镜像
 ```bash
 docker build \ 
   --build-arg HTTP_PROXY=YOUR_PROXY \
   --build-arg HTTPS_PROXY=YOUR_PROXY \
-  -t monitor_env:latest \
+  -t monitor_env:cpu \
   -f .devcontainer/Dockerfile .
 ```
 run 这个镜像并进入容器环境中
 ```bash
-docker run --rm -it --privileged   --network host -v /tmp/.X11-unix:/tmp/.X11-unix -v /YOUR_USER_ROOT/.Xauthority:/home/agent/.Xauthority monitor_env:latest                         
+docker run --rm -it \
+  --privileged \
+  --network host \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v /YOUR_USER_ROOT/.Xauthority:/home/agent/.Xauthority \
+  monitor_env:cpu                         
 ```
 进入环境后，执行命令
 ```bash
@@ -28,10 +35,62 @@ export DISPLAY=:5
 ```
 随后在你的 VNC Viewer 客户端上连接，以验证远程桌面服务是否启动，地址可能形如
 ```
-vnc://10.109.246.210:5905
+vnc://YOUR_SERVER_IP:5905
 ```
 ### 在远程桌面内运行 tdesktop 客户端
- TODO
+本项目将 tdesktop 的源代码仓库作为自己的一个子模块，首先需要初始化它
+```bash
+git submodule update --init --recursive
+```
+#### （可选）自行编译并配置得到 tdesktop 客户端和用户数据
+对于项目开发者，建议进入 `apps/tdesktop` 目录，参考官方文档自行编译并配置得到 Debug 模式的 tdesktop 客户端。
+
+编译完成后，可执行文件与用户数据会被安装到`apps/tdesktop/out/Debug` 目录下。大体来说包括
+```bash
+Debug/
+├── tdata # 用户数据目录
+│   └── ...
+├── DebugLogs # 所有运行日志的总目录
+│   └── ...
+├── Telegram # Linux 系统下可执行文件
+└── log.txt # 运行日志
+```
+建议在编译完成后，在 GUI 环境下手动配置好用户数据，如进行账户登录等操作。
+#### 配置容器以保存用户数据状态
+新建一个 docker 数据卷，拷贝 `tdata` 目录中的内容到挂载卷中，操作类似于
+```bash
+docker volume create telegram-data2
+docker run --rm -it \
+  monitor_env:cpu
+  -v telegram-data2:/dest
+  -v ${localWorkspaceFolder}/apps/tdesktop/out/Debug:/src
+```
+```bash
+# 在容器中执行
+cp -r /src/tdata /dest/
+exit
+```
+
+随后，将 `tdata` 数据卷以 volume 模式挂载到容器中，并将 `Telegram` 文件以 bind 模式挂载到容器中。同时，出于状态保存与恢复的考虑，对数据卷应该做额外的备份。
+
+最后的`tdata`文件夹应该与可执行文件在同一目录下，并确保容器用户有权限读写。可以参考 `.devcontainer/devcontainer.json` 文件的相关配置。
+```json
+{
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind",
+        "source=telegram-data2,target=/apps/tdesktop/Debug,type=volume",
+        "source=${localWorkspaceFolder}/apps/tdesktop/out/Debug/Telegram,target=/apps/tdesktop/Debug/Telegram,type=bind"
+    ],
+    "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
+}
+```
+```bash
+#  postCreateCommand.sh，请确保指令被运行
+#!/bin/bash
+sudo chown -R agent:agent /apps/tdesktop/Debug/
+```
+配置完成后，重新生成容器并进入环境，运行 `/apps/tdesktop/Debug/Telegram` 客户端，验证是否已经自带用户数据。若已经自带，则基本环境配置完成。
+
 ## 功能特点
 
 - 基于Frida钩子技术，无侵入式监控应用程序行为
