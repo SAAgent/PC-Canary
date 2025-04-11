@@ -22,8 +22,12 @@ RUN apt update && \
         tldr \
         wget \
         curl \
+        git \
         sudo \
-        locales
+        locales \
+        net-tools \
+        netcat \
+        software-properties-common
 
 # 配置语言环境
 RUN locale-gen en_US.UTF-8
@@ -39,21 +43,26 @@ RUN apt install -y \
     dbus-x11 \
     mesa-utils \
     xdg-utils \
-    xterm
+    xterm \
+    xvfb \
+    xdotool \
+    scrot \
+    imagemagick
 
 # 安装 Xfce4 轻量级桌面环境
 RUN apt install -y \
-    xfce4 \
-    xfce4-terminal \
-    thunar \
-    xfce4-panel \
-    xfce4-settings \
-    xfce4-session \
-    xfwm4 \
-    xfdesktop4 \
-    lightdm \
-    xfce4-goodies \
-    elementary-xfce-icon-theme
+    xubuntu-desktop
+#     xfce4 \
+#     xfce4-terminal \
+#     thunar \
+#     xfce4-panel \
+#     xfce4-settings \
+#     xfce4-session \
+#     xfwm4 \
+#     xfdesktop4 \
+#     lightdm \
+#     xfce4-goodies \
+#     elementary-xfce-icon-theme
 
 # # 安装 NVIDIA 驱动和库（使用通配符以适应不同系统）
 # RUN apt update && \
@@ -62,24 +71,45 @@ RUN apt install -y \
 #     libnvidia-gl-530 \
 #     nvidia-cuda-toolkit 
     
-# 安装VirtualGL依赖
+# 安装依赖
 RUN apt update && apt install -y \
     libglu1-mesa \
     libxv1 \
     libxtst6 \
     libxrender1 \
-    tightvncserver
+    libssl-dev  \
+    zlib1g-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libncursesw5-dev \
+    xz-utils \
+    tk-dev \
+    libxml2-dev \
+    libxmlsec1-dev \
+    libffi-dev \
+    liblzma-dev \
+    # USER apps
+    # libreoffice \
+    # firefox-esr \
+    xpdf \
+    gedit \
+    xpaint \
+    unzip \
+    galculator
+    
 
+# Install noVNC 
+RUN git clone --branch v1.5.0 https://github.com/novnc/noVNC.git /opt/noVNC && \
+    git clone --branch v0.12.0 https://github.com/novnc/websockify /opt/noVNC/utils/websockify && \
+    ln -s /opt/noVNC/vnc.html /opt/noVNC/index.html
 # RUN wget https://github.com/VirtualGL/virtualgl/releases/download/3.1.2/virtualgl_3.1.2_amd64.deb
 # RUN dpkg -i virtualgl_3.1.2_amd64.deb
 # # RUN rm virtualgl_3.1.2_amd64.deb
 
-# RUN wget https://github.com/TurboVNC/turbovnc/releases/download/3.1.4/turbovnc_3.1.4_amd64.deb
-# RUN dpkg -i turbovnc_3.1.4_amd64.deb
-# # RUN rm turbovnc_3.1.4_amd64.deb
-
-# 安装 noVNC 用于浏览器访问
-# RUN apt install -y novnc websockify
+RUN wget https://github.com/TurboVNC/turbovnc/releases/download/3.1.4/turbovnc_3.1.4_amd64.deb
+RUN dpkg -i turbovnc_3.1.4_amd64.deb
+# RUN rm turbovnc_3.1.4_amd64.deb
 
 # 添加用户并配置权限
 RUN groupadd vglusers
@@ -99,12 +129,13 @@ USER agent
 ENV USER=agent
 SHELL [ "bash", "-c" ]
 
-# # 配置环境变量
-RUN echo 'export http_proxy=http://127.0.0.1:9890' >> ~/.bashrc && \
-    echo 'export https_proxy=http://127.0.0.1:9890' >> ~/.bashrc && \
-    echo 'export DISPLAY=:1' >> ~/.bashrc
-    # echo 'export XDG_SESSION_TYPE=x11' >> ~/.bashrc && \
-    # echo 'export DISPLAY=:1' >> ~/.bashrc && \
+# 配置环境变量
+RUN echo 'export DISPLAY=:4' >> ~/.bashrc && \
+    echo 'export http_proxy=http://10.29.46.139:7890' >> ~/.bashrc && \
+    echo 'export https_proxy=http://10.29.46.139:7890' >> ~/.bashrc && \
+    echo 'export XDG_SESSION_TYPE=x11' >> ~/.bashrc && \
+    echo 'export PATH=/opt/TurboVNC/bin:$PATH' >> ~/.bashrc
+#     echo 'export DISPLAY=:1' >> ~/.bashrc && \
 #     echo 'export VGL_DISPLAY=:0' >> ~/.bashrc && \
 #     echo 'alias vglrun="/opt/VirtualGL/bin/vglrun"' >> ~/.bashrc
 
@@ -113,17 +144,12 @@ RUN echo 'export http_proxy=http://127.0.0.1:9890' >> ~/.bashrc && \
 USER agent
 
 RUN mkdir /home/agent/.vnc/
-RUN echo -e '#!/bin/sh\n\
-xrdb "$HOME/.Xresources"\n\
-xsetroot -solid grey\n\
-export XKL_XMODMAP_DISABLE=1\n\
-/etc/X11/Xsession\n\
-unset SESSION_MANAGER\n\
-unset DBUS_SESSION_BUS_ADDRESS\n\
-x-session-manager & xfdesktop & xfce4-panel &\n\
-xfce4-menu-plugin &\n\
-xfsettingsd &\n\
-xfconfd &\n\
-xfwm4 &' > /home/agent/.vnc/xstartup && \
-    chmod +x /home/agent/.vnc/xstartup
-
+RUN echo -e '#!/bin/sh\n \
+xrdb "$HOME/.Xresources"\n \
+xsetroot -solid grey\n \
+export XKL_XMODMAP_DISABLE=1\n \
+/etc/X11/Xsession\n \
+unset SESSION_MANAGER\n \
+unset DBUS_SESSION_BUS_ADDRESS\n \
+x-session-manager & xfdesktop & xfce4-panel & xfce4-menu-plugin & xfsettingsd & xfconfd & xfwm4' > /home/agent/.vnc/xstartup && \
+chmod +x /home/agent/.vnc/xstartup
