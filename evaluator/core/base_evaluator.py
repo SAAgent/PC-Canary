@@ -4,8 +4,10 @@ import time
 import json
 import signal
 import subprocess
+import time
 
 from evaluator.core.hook_manager import HookManager
+from evaluator.core.electron_injector import ElectronInjector
 from evaluator.core.result_collector import ResultCollector
 from evaluator.utils.logger import setup_logger
 
@@ -36,7 +38,10 @@ class BaseEvaluator:
         self.logger = setup_logger(f"{self.task_category}_{self.task_id}_evaluator", self.session_dir)
         
         # 初始化组件，传入统一的logger
-        self.hook_manager = HookManager(logger=self.logger)
+        if task.get("electron", False):
+            self.hook_manager = ElectronInjector(logger=self.logger)
+        else:
+            self.hook_manager = HookManager(logger=self.logger)
         self.hook_manager.add_script(os.path.join(self.task_category, self.task_id))
         self.set_message_handler(os.path.join(self.task_category, self.task_id))
             
