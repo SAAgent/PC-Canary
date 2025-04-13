@@ -1,4 +1,4 @@
-# That Monitor Guy: PC Agent基准测试评估器
+# PC-Canary: PC Agent基准测试评估器
 
 基于触发器监视与开源用户软件的PC Agent基准测试评估系统，用于评估Agent执行桌面任务的能力。
 
@@ -93,7 +93,7 @@ sudo chown -R agent:agent /apps/tdesktop/Debug/
 
 ## 功能特点
 
-- 基于Frida钩子技术，无侵入式监控应用程序行为
+- 无侵入式监控应用程序行为，无需无障碍应用权限
 - 异步评估模式，不干扰Agent正常执行
 - 可扩展的任务注册机制
 - 详细的评估报告生成
