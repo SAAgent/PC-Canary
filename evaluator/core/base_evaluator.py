@@ -178,7 +178,7 @@ class BaseEvaluator:
         self.logger.info(f"Event: {event_data.event_type} - {event_data.message}")
         for callback in self.completion_callbacks:
             try:
-                callback(event_data)
+                callback(event_data, self)
             except Exception as e:
                 self.logger.error(f"Error executing callback: {str(e)}")
     
