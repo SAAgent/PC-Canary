@@ -1,6 +1,6 @@
 {
     "task_id": "telegram_search",
-    "description": "评估Agent在Telegram中执行搜索操作的能力",
+    "instruction": "在Telegram应用中搜索关键词 ‘news’，展示搜索结果",
     "expected_query": "news",
     "timeout": 120,
     "hook_script": "hooker.js",

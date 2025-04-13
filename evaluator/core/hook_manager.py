@@ -21,14 +21,15 @@ class HookManager:
         self.message_handler = None  # 消息处理函数
         self.logger = logger
     
-    def add_script(self, task_id: str) -> None:
+    def add_script(self, task_path: str) -> None:
         """
         添加钩子脚本
         
         Args:
             task_id: 脚本路径
         """
-        hooker_path = os.path.join("tests/tasks", task_id, "hooker.js")
+
+        hooker_path = os.path.join(task_path, "hooker.js")
         if os.path.exists(hooker_path):
             self.scripts.append(hooker_path)
             self.logger.info(f"添加钩子脚本: {hooker_path}")
