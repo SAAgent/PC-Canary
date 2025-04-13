@@ -9,7 +9,6 @@ import os
 import sys
 import time
 import argparse
-import threading
 import signal
 from PIL import Image
 
@@ -22,37 +21,44 @@ from agent.base_agent import BaseAgent
 from agent.models.openai_model import OpenAIModel
 
 # 导入评估器
-from evaluator.core.base_evaluator import BaseEvaluator
+from evaluator.core.base_evaluator import BaseEvaluator, EventData, EventType
 
 # 导入环境控制器
 from env.controller.code_execution_controller import CodeExecutionController
 
 
 start_time = None
-running_flag = {'running': False}
+# 全局变量，用于跟踪任务状态
+task_state = {
+    'completed': False,
+    'success': False,
+    'message': '',
+    'metrics': {}
+}
     
-def _monitor_completion(evaluator, timeout):
-    """监控任务完成情况"""
-    while running_flag['running']:
-        # 检查评估器是否正在运行
-        if not evaluator.is_running:
-            print("\n检测到评估器已停止")
-            running_flag['running'] = False
-            break
-            
-        # 检查评估器指标
-        if hasattr(evaluator, 'metrics') and evaluator.metrics.get('success') is True:
-            print("\n检测到评估器指标显示任务成功完成")
-            running_flag['running'] = False
-            break
-            
-        # 检查是否超时
-        if time.time() - start_time > timeout:
-            print(f"\n执行超时 ({timeout}秒)")
-            running_flag['running'] = False
-            break
-            
-        time.sleep(0.5)
+def handle_evaluator_event(event_data: EventData, evaluator: BaseEvaluator = None):
+    """处理评估器事件的回调函数"""
+    print(f"\n收到评估器事件: {event_data.event_type} - {event_data.message}")
+    
+    if event_data.event_type == EventType.TASK_COMPLETED:
+        task_state['completed'] = True
+        task_state['success'] = True
+        task_state['message'] = event_data.message
+        print(f"任务成功完成: {event_data.message}")
+        # 更新指标数据
+        if hasattr(event_data, 'data') and event_data.data:
+            metrics = event_data.data.get('metrics', {})
+            task_state['metrics'] = metrics
+            print(f"评估指标: {metrics}")
+    
+    elif event_data.event_type == EventType.TASK_ERROR:
+        task_state['completed'] = True
+        task_state['success'] = False
+        task_state['message'] = event_data.message
+        print(f"任务出错: {event_data.message}")
+    
+    elif event_data.event_type == EventType.EVALUATOR_STOPPED:
+        print(f"评估器已停止: {event_data.message}")
     
 def _generate_report(evaluator, agent_success):
     """生成报告"""
@@ -63,9 +69,7 @@ def _generate_report(evaluator, agent_success):
     print(f"执行时间: {time.time() - start_time:.2f} 秒")
     
     # 获取评估结果
-    eval_success = False
-    if hasattr(evaluator, 'metrics'):
-        eval_success = evaluator.metrics.get('success', False)
+    eval_success = task_state['success']
     
     # 对比结果
     print("\n结果对比:")
@@ -77,7 +81,11 @@ def _generate_report(evaluator, agent_success):
     print(f"- 结果一致性: {'一致' if is_consistent else '不一致'}")
     
     # 打印评估器详细结果
-    if hasattr(evaluator, 'metrics'):
+    if task_state['metrics']:
+        print("\n评估指标详情:")
+        for key, value in task_state['metrics'].items():
+            print(f"- {key}: {value}")
+    elif hasattr(evaluator, 'metrics'):
         print("\n评估指标详情:")
         for key, value in evaluator.metrics.items():
             print(f"- {key}: {value}")
@@ -90,9 +98,6 @@ def _generate_report(evaluator, agent_success):
     print("="*60 + "\n")
     
     return agent_success, eval_success
-    
-
-
 
 def main():
     """主函数"""
@@ -153,16 +158,17 @@ def main():
         "id": "task01_search",
     }
     evaluator = BaseEvaluator(task, args.log_dir, args.app_path)
-    running_flag = {'running': True}
+    
     # 设置信号处理
     def _signal_handler(sig, frame):
         """信号处理函数"""
         print("\n\n用户中断执行...")
-        running_flag['running'] = False
         if evaluator and evaluator.is_running:
             print("正在停止评估器...")
             evaluator.stop()
+            evaluator.stop_app()
         sys.exit(0)
+    
     signal.signal(signal.SIGINT, _signal_handler)
     os.makedirs(args.log_dir, exist_ok=True)
 
@@ -174,17 +180,18 @@ def main():
     print(f"应用路径: {args.app_path}")
     print("="*60 + "\n")
 
+    # 注册回调函数
+    evaluator.register_completion_callback(handle_evaluator_event)
+    
     print("[*] 启动评估器...")
-    evaluator.start()
+    success = evaluator.start()
+    if not success:
+        print("评估器启动失败")
+        return 1
     
     global start_time
     # 记录开始时间
     start_time = time.time()
-    
-    # 启动监控线程
-    monitor_thread = threading.Thread(target=_monitor_completion, args=(evaluator, args.timeout))
-    monitor_thread.daemon = True
-    monitor_thread.start()
     
     # 定义Telegram搜索任务指令
     instructions = """
@@ -205,8 +212,13 @@ def main():
         # 执行步骤
         step_index = 0
         
-        while step_index < args.max_steps and running_flag['running']:
+        while step_index < args.max_steps and not task_state['completed']:
             print(f"\n执行步骤 {step_index+1}/{args.max_steps}")
+            
+            # 检查是否超时
+            if time.time() - start_time > args.timeout:
+                print(f"\n执行超时 ({args.timeout}秒)")
+                break
             
             # 获取观察
             print("获取屏幕截图...")
@@ -222,6 +234,7 @@ def main():
             # 检查环境状态
             if controller.task_completed:
                 print("Agent报告任务已完成！")
+                agent_success = True
                 break
             elif controller.task_failed:
                 print(f"Agent报告任务失败！原因: {controller.failure_reason}")
@@ -231,10 +244,14 @@ def main():
             step_index += 1
             
             # 检查评估器是否已标记成功
-            if hasattr(evaluator, 'metrics') and evaluator.metrics.get('success') is True:
-                print("\n评估器报告任务已成功完成")
-                agent_success = True
+            if task_state['completed']:
+                print("\n评估器报告任务已完成")
+                if task_state['success']:
+                    agent_success = True
                 break
+            
+            # 短暂等待以允许回调处理
+            time.sleep(0.5)
         
         # 打印Agent执行结果
         print(f"\n[*] Agent执行{'成功' if agent_success else '失败'}")
@@ -254,6 +271,10 @@ def main():
         if evaluator.is_running:
             print("\n[*] 停止评估器...")
             evaluator.stop()
+        
+        # 停止应用
+        if hasattr(evaluator, 'stop_app'):
+            evaluator.stop_app()
     
     agent_success, eval_success = _generate_report(evaluator, agent_success)
     overall_success = agent_success and eval_success
