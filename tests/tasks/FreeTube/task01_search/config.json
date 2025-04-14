@@ -1,6 +1,7 @@
 {
     "task_id": "freetube_search",
     "description": "评估Agent在FreeTube中执行搜索视频操作的能力",
+    "instruction": "在FreeTube中搜索视频, 搜索关键词为porsche",
     "expected_query": "porsche",
     "timeout": 120,
     "hook_script": "hooker.js",
