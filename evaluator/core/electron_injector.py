@@ -102,8 +102,8 @@ class ElectronInjector:
                 self.shared_dict['logger'].error(f"处理消息错误: {str(e)}")
             time.sleep(1)
 
-    def add_script(self, task_id: str) -> None:
-        hooker_path = os.path.join("tests/tasks", task_id, "hooker.js")
+    def add_script(self, task_path: str) -> None:
+        hooker_path = os.path.join(task_path, "hooker.js")
         if os.path.exists(hooker_path):
             self.shared_dict['scripts'].append(hooker_path)
             self.shared_dict['logger'].info(f"添加钩子脚本: {hooker_path}")
