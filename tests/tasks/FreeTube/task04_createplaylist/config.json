@@ -1,0 +1,40 @@
+{
+    "task_id": "04",
+    "task_name": "createplaylist",
+    "description": "在FreeTube中创建指定名称的播放列表",
+
+    "application_info": {
+        "name": "FreeTube",
+        "executable_path": "/usr/bin/freetube"
+    },
+
+    "task_parameters": {
+        "query": "car"
+    },
+
+    "instruction_template": "在FreeTube应用中创建名为 '${query}' 的播放列表",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "freetube_running": true
+    },
+    "events": {
+        "failed_to_find_vue": "无法找到vue组件",
+        "click_button": "点击create按钮",
+        "input_enter": "通过回车创建playlist",
+        "inputdata_change": "输入框内容变化",
+        "hook_click_button": "成功添加button点击事件",
+        "hook_click_button_failed": "添加button点击事件失败",
+        "hook_input_enter": "成功添加搜索框回车事件",
+        "hook_input_enter_failed": "添加搜索框回车事件失败",
+        "hook_input": "添加搜索框输入事件",
+        "hook_input_failed": "添加搜索框输入事件失败",
+        "hook_inputbox_failed": "添加搜索框输入事件失败"
+    }
+}
