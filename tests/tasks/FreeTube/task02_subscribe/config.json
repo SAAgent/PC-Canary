@@ -1,0 +1,33 @@
+{
+    "task_id": "02",
+    "task_name": "subscribing",
+    "description": "在FreeTube中订阅播主",
+
+    "application_info": {
+        "name": "FreeTube",
+        "executable_path": "/usr/bin/freetube"
+    },
+
+    "task_parameters": {
+        "query": "Porsche"
+    },
+
+    "instruction_template": "在FreeTube应用中订阅播主 '${query}'",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "freetube_running": true
+    },
+    "events": {
+        "error": "无法找到关注按钮",
+        "unsubscribing": "取消对频道的关注",
+        "subscribing": "关注频道",
+        "hook_success": "成功hook"
+    }
+}
