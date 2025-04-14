@@ -27,21 +27,11 @@ function modifyHandleClick(vueInstance) {
     vueInstance.handleClick = function(event) {
       // 执行原始逻辑
       originalHandleClick.call(this, event);
-      
-      // 检查 inputData 是否为 'porsche'
-      if (this.inputData === 'porsche') {
-        console.log('handleClick: inputData is porsche');
-        ipcRenderer.send('send', {
-          'event_type': 'success',
-          'message': '以keyDown或者点击条目的方式搜索了porsche, 任务成功',
-        });
-      } else {
-        console.log('handleClick: inputData is not porsche:', this.inputData);
-        ipcRenderer.send('send', {
-          'event_type': 'keyDown_or_hit_option',
-          'message': '以keyDown或者点击条目的方式进行了搜索, 但不是porsche',
-        });
-      }
+      ipcRenderer.send('send', {
+        'event_type': 'search_by_enter',
+        'message': '以回车的方式或者点击条目的方式触发了搜索',
+        'inputData': this.inputData,
+      });
     };
     vueInstance.__handleClickModified = true;
     console.log('handleClick modified');
@@ -64,19 +54,11 @@ function modifyDomListener(actionIcon) {
       // 获取 Vue 实例以访问 inputData
       const vueInstance = document.querySelector('.ft-input-component').__vue__;
       if (vueInstance && vueInstance.inputData) {
-        if (vueInstance.inputData === 'porsche') {
-          console.log('DOM listener: inputData is porsche');
-          ipcRenderer.send('send', {
-            'event_type': 'success',
-            'message': '点击了搜索button, 并且inputData是porsche, 任务成功',
-          });
-        } else {
-          console.log('DOM listener: inputData is not porsche:', vueInstance.inputData);
-          ipcRenderer.send('send', {
-            'event_type': 'click_search_button',
-            'message': '点击了搜索button, 但是inputData不是porsche',
-          });
-        }
+        ipcRenderer.send('send', {
+          'event_type': 'click_search_button',
+          'message': '以点击搜索按钮的方式触发了搜索',
+          'inputData': this.inputData,
+        });
       } else {
         console.warn('Vue instance or inputData not found');
       }

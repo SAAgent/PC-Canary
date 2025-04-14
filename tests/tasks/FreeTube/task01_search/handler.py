@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Telegram搜索任务事件处理器
+FreeTube搜索任务事件处理器
 负责处理钩子脚本产生的事件并更新评估指标
 """
 
@@ -21,24 +21,31 @@ def set_evaluator(evaluator):
     global _EVALUATOR, _CONFIG
     _EVALUATOR = evaluator
     
-    # 加载配置
-    try:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        config_file = os.path.join(current_dir, "config.json")
-        
-        with open(config_file, 'r') as f:
-            _CONFIG = json.load(f)
-    except Exception as e:
-        if _EVALUATOR:
-            _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
-        _CONFIG = {"expected_query": "news"}
+    # 使用评估器的已更新配置，而不是重新读取文件
+    if hasattr(evaluator, 'config') and evaluator.config:
+        _CONFIG = evaluator.config
+        _EVALUATOR.logger.info("使用评估器中的更新配置")
+    else:
+        # 作为备份，如果评估器中没有配置，才从文件读取
+        try:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            config_file = os.path.join(current_dir, "config.json")
+            
+            with open(config_file, 'r') as f:
+                _CONFIG = json.load(f)
+                _EVALUATOR.logger.info("从文件加载配置")
+        except Exception as e:
+            if _EVALUATOR:
+                _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
+            # 提供一个默认配置以避免空引用
+            _CONFIG = {"task_parameters": {"query": "porsche"}}
 
 def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     """
     处理从钩子脚本接收的消息
     
     Args:
-        message: Frida消息对象
+        message: injector消息对象
         data: 附加数据
         
     Returns:
@@ -56,17 +63,20 @@ def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
         return None
     
     event_type = message.get('event_type')
-    if event_type == 'success':
-        _EVALUATOR.logger.info(message.get('message'))
-        _EVALUATOR.update_metric("success", True)
-        return "success"
-    elif event_type == 'keyDown_or_hit_option':
-        _EVALUATOR.logger.info(message.get('message'))
+    if event_type == 'search_by_enter' or event_type == 'click_search_button':
+        input_data = message.get('inputData')
+        _EVALUATOR.logger.info(message.get('message') + ": " + input_data)
+        expected_query = _CONFIG.get("task_parameters", {}).get("query", "porsche")
+        if input_data == expected_query:
+            _EVALUATOR.update_metric("success", True)
+            # update time
+            completion_time = time.time() - _START_TIME
+            _EVALUATOR.update_metric("time_to_complete", completion_time)
+            _EVALUATOR.logger.info(f"任务成功完成! 耗时: {completion_time:.2f} 秒")
+            return "success"
     elif event_type == 'hook_keyDown_and_hit_option':
         _EVALUATOR.logger.info(message.get('message'))
         _EVALUATOR.update_metric("hook_keyDown_and_hit_option", True)
-    elif event_type == 'click_search_button':
-        _EVALUATOR.logger.info(message.get('message'))
     elif event_type == 'hook_search_button':
         _EVALUATOR.logger.info(message.get('message'))
         _EVALUATOR.update_metric("hook_search_button", True)
@@ -75,8 +85,6 @@ def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     
     return None
 
-
-# 提供一个便捷函数来注册事件处理器
 def register_handlers(evaluator):
     """
     注册所有事件处理函数到评估器
@@ -85,24 +93,8 @@ def register_handlers(evaluator):
         evaluator: 评估器实例
         
     Returns:
-        TelegramSearchEventHandler: 事件处理器实例
+        message_handler: 处理函数
     """
     # 设置全局评估器，用于message_handler
     set_evaluator(evaluator)
-    
-    # 回传message_handler函数
-    handler = message_handler
-    
-    # 如果需要，可以启用单独的事件处理器注册（可选）
-    # 获取配置文件中定义的事件列表
-    # events = handler.config.get("events", {})
-    # 
-    # # 为每个事件注册处理函数
-    # for event_type in events.keys():
-    #     # 创建闭包来保留event_type值
-    #     def create_handler(event_type):
-    #         return lambda payload: handler.handle_event(event_type, payload)
-    #     
-    #     evaluator.register_event_handler(event_type, create_handler(event_type))
-    
-    return handler
+    return message_handler
