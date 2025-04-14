@@ -1,0 +1,20 @@
+{
+    "task_id": "freetube_search",
+    "description": "评估Agent在FreeTube中执行搜索视频操作的能力",
+    "expected_query": "porsche",
+    "timeout": 120,
+    "hook_script": "hooker.js",
+    "metrics": {
+        "success": false,
+        "hook_keyDown_and_hit_option": false,
+        "hook_search_button": false,
+        "time_to_complete": 0
+    },
+    "events": {
+        "success": "成功完成任务",
+        "keyDown_or_hit_option": "以keyDown或者点击条目的方式进行了搜索, 但不是porsche",
+        "hook_keyDown_and_hit_option": "成功hook handleClick函数",
+        "click_search_button": "点击了搜索button, 但是inputData不是porsche",
+        "hook_search_button": "成功hook搜索button"
+    }
+}

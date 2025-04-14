@@ -5,8 +5,10 @@ import time
 import json
 import signal
 import subprocess
+import time
 
 from evaluator.core.hook_manager import HookManager
+from evaluator.core.electron_injector import ElectronInjector
 from evaluator.core.result_collector import ResultCollector
 from evaluator.utils.logger import setup_logger
 
@@ -53,7 +55,11 @@ class BaseEvaluator:
         CANARY_ROOT = os.path.dirname(os.path.dirname(FILE_ROOT))
         self.task_path = os.path.join(CANARY_ROOT, "tests/tasks", self.task_category, self.task_id)
         # 初始化组件，传入统一的logger
-        self.hook_manager = HookManager(logger=self.logger)
+        
+        if task.get("electron", False):
+            self.hook_manager = ElectronInjector(logger=self.logger)
+        else:
+            self.hook_manager = HookManager(logger=self.logger)
         self.hook_manager.add_script(self.task_path)
         self.set_message_handler()
             

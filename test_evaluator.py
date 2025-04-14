@@ -96,6 +96,11 @@ def main():
         return 1
     
     # 任务信息
+    # task = {
+    #     "category": "FreeTube",
+    #     "id": "task01_search",
+    #     "electron": True,
+    # }
     task = {
         "category": "telegram",
         "id": "task01_search",
