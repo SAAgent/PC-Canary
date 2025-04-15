@@ -1,0 +1,25 @@
+{
+    "task_id": "telegram_add_user_to_group",
+    "instruction": "把我的好友Erica Ruiz添加到群组agents里",
+    "expected_params": {
+        "target_user": "Erica Ruiz",
+        "target_group": "agents"
+    },
+    "timeout": 120,
+    "hook_script": "hooker.js",
+    "metrics": {
+        "success": false,
+        "found_function": false,
+        "user_found": false,
+        "group_found": false,
+        "time_to_complete": 0
+    },
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function_found": "找到函数",
+        "apply_chat_update_called": "拦截到本地群组状态更新函数调用",
+        "participants_count": "群组成员计数",
+        "updated_chat_info": "更新的群组信息",
+        "error": "错误事件"
+    }
+}
