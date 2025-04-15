@@ -31,7 +31,7 @@ def set_evaluator(evaluator):
     except Exception as e:
         if _EVALUATOR:
             _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
-        _CONFIG = {"expected_query": "news"}
+        # _CONFIG = {"expected_params": {"query": "news"}}
 
 def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     """
@@ -112,7 +112,7 @@ def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     
     return None
 
-# 提供一个便捷函数来注册事件处理器
+
 def register_handlers(evaluator):
     """
     注册所有事件处理函数到评估器
@@ -121,24 +121,11 @@ def register_handlers(evaluator):
         evaluator: 评估器实例
         
     Returns:
-        TelegramSearchEventHandler: 事件处理器实例
+        message_handler: 处理函数
     """
     # 设置全局评估器，用于message_handler
     set_evaluator(evaluator)
-    
     # 回传message_handler函数
     handler = message_handler
-    
-    # 如果需要，可以启用单独的事件处理器注册（可选）
-    # 获取配置文件中定义的事件列表
-    # events = handler.config.get("events", {})
-    # 
-    # # 为每个事件注册处理函数
-    # for event_type in events.keys():
-    #     # 创建闭包来保留event_type值
-    #     def create_handler(event_type):
-    #         return lambda payload: handler.handle_event(event_type, payload)
-    #     
-    #     evaluator.register_event_handler(event_type, create_handler(event_type))
     
     return handler

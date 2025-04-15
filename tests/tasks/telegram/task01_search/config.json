@@ -1,7 +1,9 @@
 {
     "task_id": "telegram_search",
     "instruction": "在Telegram应用中搜索关键词 ‘news’，展示搜索结果",
-    "expected_query": "news",
+    "expected_params": {
+        "query": "news"
+    },
     "timeout": 120,
     "hook_script": "hooker.js",
     "metrics": {
