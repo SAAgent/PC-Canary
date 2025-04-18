@@ -1,22 +1,37 @@
 {
-    "task_id": "telegram_search",
-    "instruction": "在Telegram应用中搜索关键词 ‘news’，展示搜索结果",
-    "expected_params": {
+    "task_id": "01",
+    "task_name": "search_keyword",
+    "description": "在Telegram应用中搜索指定关键词，并查看搜索结果",
+
+    "application_info": {
+        "name": "Telegram Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/tdesktop/out/Debug/Telegram"
+    },
+
+    "task_parameters": {
         "query": "news"
     },
-    "timeout": 120,
-    "hook_script": "hooker.js",
-    "metrics": {
-        "success": false,
-        "found_search_function": false,
-        "correct_query": false,
-        "time_to_complete": 0
+
+    "instruction_template": "在Telegram应用中搜索关键词 '${query}'，展示搜索结果",
+
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
     },
+    "preconditions": {
+      "telegram_running": true,
+      "user_logged_in": true
+    },
+    "success_conditions": [
+      "target_query_found"
+    ],
     "events": {
         "script_initialized": "钩子脚本初始化",
         "search_function_found": "找到搜索函数",
         "search_query_detected": "检测到搜索查询",
-        "target_query_found": "找到目标查询",
         "error": "错误事件"
     }
 } 

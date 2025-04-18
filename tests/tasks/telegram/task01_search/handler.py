@@ -21,17 +21,24 @@ def set_evaluator(evaluator):
     global _EVALUATOR, _CONFIG
     _EVALUATOR = evaluator
     
-    # 加载配置
-    try:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        config_file = os.path.join(current_dir, "config.json")
-        
-        with open(config_file, 'r') as f:
-            _CONFIG = json.load(f)
-    except Exception as e:
-        if _EVALUATOR:
-            _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
-        # _CONFIG = {"expected_params": {"query": "news"}}
+    # 使用评估器的已更新配置，而不是重新读取文件
+    if hasattr(evaluator, 'config') and evaluator.config:
+        _CONFIG = evaluator.config
+        _EVALUATOR.logger.info("使用评估器中的更新配置")
+    else:
+        # 作为备份，如果评估器中没有配置，才从文件读取
+        try:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            config_file = os.path.join(current_dir, "config.json")
+            
+            with open(config_file, 'r') as f:
+                _CONFIG = json.load(f)
+                _EVALUATOR.logger.info("从文件加载配置")
+        except Exception as e:
+            if _EVALUATOR:
+                _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
+            # 提供一个默认配置以避免空引用
+            _CONFIG = {"task_parameters": {"query": "news"}}
 
 def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     """
@@ -80,12 +87,22 @@ def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
                 _EVALUATOR.logger.info(f"检测到搜索查询: {query}")
                 
                 # 检查查询是否匹配预期
-                expected_query = _CONFIG.get("expected_query", "news")
+                expected_query = _CONFIG.get("task_parameters", {}).get("query", "news")
                 is_expected = query.lower() == expected_query.lower()
                 if is_expected:
                     _EVALUATOR.logger.info("查询匹配预期目标!")
                     _EVALUATOR.update_metric("correct_query", True)
                     
+                    # 标记任务成功并计算完成时间
+                    _EVALUATOR.update_metric("success", True)
+                    completion_time = time.time() - _START_TIME
+                    _EVALUATOR.update_metric("time_to_complete", completion_time)
+                    
+                    _EVALUATOR.logger.info(f"任务成功完成! 耗时: {completion_time:.2f} 秒")
+                    
+                    # 返回成功标志
+                    return "success"
+                
             elif event_type == "target_query_found":
                 query = payload.get("query", "")
                 _EVALUATOR.logger.info(f"找到目标查询: {query}")
@@ -125,7 +142,4 @@ def register_handlers(evaluator):
     """
     # 设置全局评估器，用于message_handler
     set_evaluator(evaluator)
-    # 回传message_handler函数
-    handler = message_handler
-    
-    return handler
+    return message_handler

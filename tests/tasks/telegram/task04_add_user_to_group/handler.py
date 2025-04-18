@@ -15,20 +15,30 @@ _EVALUATOR = None
 _CONFIG = None
 _START_TIME = None
 
+
 def set_evaluator(evaluator):
     """设置全局评估器实例"""
     global _EVALUATOR, _CONFIG
     _EVALUATOR = evaluator
-    
-    try:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        config_file = os.path.join(current_dir, "config.json")
-        
-        with open(config_file, 'r') as f:
-            _CONFIG = json.load(f)
-    except Exception as e:
-        if _EVALUATOR:
-            _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
+
+    # 使用评估器的已更新配置，而不是重新读取文件
+    if hasattr(evaluator, "config") and evaluator.config:
+        _CONFIG = evaluator.config
+        _EVALUATOR.logger.info("使用评估器中的更新配置")
+    else:
+        # 作为备份，如果评估器中没有配置，才从文件读取
+        try:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            config_file = os.path.join(current_dir, "config.json")
+
+            with open(config_file, "r") as f:
+                _CONFIG = json.load(f)
+                _EVALUATOR.logger.info("从文件加载配置")
+        except Exception as e:
+            if _EVALUATOR:
+                _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
+            # 提供一个默认配置以避免空引用
+            _CONFIG = {"task_parameters": {"query": "news"}}
 
 def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     global _EVALUATOR, _CONFIG, _START_TIME

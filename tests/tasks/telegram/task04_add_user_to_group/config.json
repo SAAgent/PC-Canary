@@ -1,25 +1,41 @@
 {
-    "task_id": "telegram_add_user_to_group",
-    "instruction": "把我的好友Erica Ruiz添加到群组agents里",
-    "expected_params": {
-        "target_user": "Erica Ruiz",
-        "target_group": "agents"
+    "task_id": "04", 
+	"task_name": "add_user_to_group", 
+    "description": "将指定用户添加到指定的Telegram群组。", 
+
+    "application_info": {
+        "name": "Telegram Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/tdesktop/out/Debug/Telegram" 
     },
-    "timeout": 120,
-    "hook_script": "hooker.js",
-    "metrics": {
-        "success": false,
-        "found_function": false,
-        "user_found": false,
-        "group_found": false,
-        "time_to_complete": 0
+
+    "task_parameters": {
+        "group_name": "agents",
+        "user_to_add": "Erica Ruiz"
     },
+
+    "instruction_template": "请在Telegram中，将用户 ${user_to_add} 添加到群组 '${group_name}'。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "telegram_running": true,
+	  "user_logged_in": true,
+	  "group_exists": true
+	},
+	"success_conditions": [
+	  "updated_chat_info"
+	],
     "events": {
         "script_initialized": "钩子脚本初始化",
-        "function_found": "找到函数",
+        "found_group": "找到了目标群组",
         "apply_chat_update_called": "拦截到本地群组状态更新函数调用",
-        "participants_count": "群组成员计数",
-        "updated_chat_info": "更新的群组信息",
+		"participants_count": "群组成员计数",
+		"updated_chat_info": "更新的群组信息",
         "error": "错误事件"
     }
 }

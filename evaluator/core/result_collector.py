@@ -32,11 +32,18 @@ class ResultCollector:
             session_data: 会话初始数据
         """
         if task_id not in self.results:
-            self.results[task_id] = {
-                "events": [],
-                "metrics": {},
+            self.results[task_id]['metrics'] = {
+                "performance": {},
+                "behavior": {},
+                "correctness": {},
+                "quality": {},
+                "robustness": {}
             }
-        
+        now = time.time()
+        self.results[task_id].update({
+            "start_timestamp": now,
+            **session_data
+        })
         self.results[task_id].update(session_data)
         self.logger.info(f"任务会话开始: {task_id}")
     
@@ -48,6 +55,11 @@ class ResultCollector:
             task_id: 任务ID
             session_data: 会话结束数据
         """
+        now = time.time()
+        entry = self.results[task_id]
+        entry.update(session_data)
+        entry["end_timestamp"] = now
+        entry["duration"] = now - entry.get("start_timestamp", now)
         if task_id in self.results:
             self.results[task_id].update(session_data)
             self.logger.info(f"任务会话结束: {task_id}")

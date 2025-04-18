@@ -1,9 +1,8 @@
 // Telegram搜索监控钩子脚本
-// 用于监听Telegram的搜索操作并检测特定查询
+// 用于监听Telegram的搜索操作并检测任何查询
 
 (function() {
-    // 脚本设置
-    const TARGET_QUERY = "news";  // 任务目标查询
+    // 脚本常量设置
     const MAX_CHARS = 50;         // 最大读取字符数
     
     // 全局变量
@@ -107,7 +106,7 @@
         }
     }
     
-    // 初始化钩子
+    // 初始化钩子并立即执行
     function initHook() {
         sendEvent("script_initialized", {
             message: "Telegram搜索监控脚本已启动"
@@ -142,20 +141,11 @@
                     const query = readQString(queryPtr);
                     
                     if (query) {
-                        // 发送查询检测事件
+                        // 直接发送查询检测事件，不做任何判断
                         sendEvent("search_query_detected", {
                             query: query,
                             message: `检测到搜索查询: ${query}`
                         });
-                        
-                        // 检查是否为目标查询
-                        if (query.toLowerCase() === TARGET_QUERY.toLowerCase()) {
-                            sendEvent("target_query_found", {
-                                query: query,
-                                success: true,
-                                message: "找到目标查询"
-                            });
-                        }
                     }
                 } catch (error) {
                     sendEvent("error", {
@@ -171,6 +161,6 @@
         });
     }
     
-    // 启动脚本
+    // 立即执行钩子初始化
     initHook();
 })();

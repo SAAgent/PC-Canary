@@ -125,7 +125,7 @@ def main():
         signal.signal(signal.SIGINT, handler)
         
         # 创建评估器
-        evaluator = BaseEvaluator(task, log_dir, args.telegram_path)
+        evaluator = BaseEvaluator(task, log_dir, args.telegram_path,custom_params={"task_parameters":{"query":"sports"}})
         
         # 注册回调函数
         evaluator.register_completion_callback(handle_evaluator_event)
