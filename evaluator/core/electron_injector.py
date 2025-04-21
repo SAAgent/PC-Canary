@@ -8,6 +8,8 @@ from multiprocessing import Process, Manager
 from queue import Empty
 import threading
 import time
+import signal
+import subprocess
 
 class ElectronInjector:
     """
@@ -20,7 +22,7 @@ class ElectronInjector:
 
         @sio.event
         def connect(sid, _):
-            for p in shared_dict['loaded_scripts']:
+            for p in shared_dict['scripts']:
                 with open(p, 'r') as f:
                     sio.emit('inject', f.read(), to=sid)
             # 更新共享的session_id列表
@@ -90,15 +92,23 @@ class ElectronInjector:
         self.message_handler = threading.Thread(target=self._handle_messages)
         self.message_handle_running = True
         self.message_handler.start()
+        self.logger = logger
+        self.app_connect = False
+        self.app_process = None
 
     def _handle_messages(self):
         # 处理从子进程发来的消息
         while self.message_handle_running:
             try:
                 for message in self.shared_dict['msg_from_app']:
-                    if message['type'] == 'message' and self.on_message:
+                    if message['type'] == 'message':
                         self.shared_dict['logger'].info(f"handle_messager poll到消息: {message}")
-                        self.on_message(message['content'], None)
+                        if message["content"].get("event_type") == "start_success":
+                            # 应用的渲染进程或者插件启动成功
+                            self.app_connect = True
+                            self.shared_dict['logger'].info("应用成功连接到socket服务")
+                        elif self.on_message:
+                            self.on_message(message['content'], None)
                 self.shared_dict['msg_from_app'] = self.manager.list()
             except BrokenPipeError:
                 break
@@ -114,7 +124,8 @@ class ElectronInjector:
         else:
             self.shared_dict['logger'].error(f"脚本文件不存在: {hooker_path}")
     
-    def load_scripts(self, _: str, eval_handler: Callable[[Dict[str, Any], Any], None]) -> bool:
+    def load_scripts(self, eval_handler: Callable[[Dict[str, Any], Any], None]) -> bool:
+        self.on_message = eval_handler
         if not self.shared_dict['scripts']:
             self.shared_dict['logger'].warning("没有脚本可加载")
             return False
@@ -124,7 +135,6 @@ class ElectronInjector:
             return False
 
         try:
-            self.on_message = eval_handler
             success = False
             
             for script_path in self.shared_dict['scripts']:
@@ -171,3 +181,107 @@ class ElectronInjector:
             
         except Exception as e:
             self.shared_dict['logger'].error(f"卸载脚本失败: {str(e)}")
+
+    def start_app(self) -> bool:
+        #  如果提供了应用路径，则启动应用
+        if self.app_path and os.path.exists(self.app_path):
+            self.app_path = self.app_path
+            if self.args is None:
+                self.args = []
+        
+            # 构建完整的命令行
+            cmd = [self.app_path] + self.args
+        
+            try:
+                # 启动应用进程
+                self.logger.info(f"正在启动应用: {self.app_path}")
+                self.app_process = subprocess.Popen(
+                    cmd,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE
+                )
+
+                self.logger.info(f"应用启动成功，进程ID: {self.app_process.pid}")
+
+                # 等待应用窗口加载完成
+                self.logger.info("等待应用窗口加载完成...")
+
+                # Linux系统：使用xwininfo命令检测窗口变化
+                try:
+                    # 获取启动前窗口列表
+                    windows_before = subprocess.run(["xwininfo", "-root", "-tree"], 
+                                                stdout=subprocess.PIPE, 
+                                                text=True).stdout.count('\n')
+                    self.logger.info(f"启动前窗口行数: {windows_before}")
+
+                    # 等待新窗口出现
+                    max_wait_time = 30  # 最大等待30秒
+                    start_wait = time.time()
+                    window_detected = False
+
+                    while time.time() - start_wait < max_wait_time:
+                        windows_current = subprocess.run(["xwininfo", "-root", "-tree"], 
+                                                    stdout=subprocess.PIPE, 
+                                                    text=True).stdout.count('\n')
+                        if windows_current > windows_before:
+                            window_detected = True
+                            self.logger.info(f"检测到新窗口，当前窗口行数: {windows_current}")
+                            # 额外等待2秒确保窗口内容加载完成
+                            time.sleep(2)
+                            break
+                        time.sleep(0.5)
+
+                    if not window_detected:
+                        self.logger.warning("未检测到新窗口出现，使用默认等待时间")
+                        time.sleep(5)
+                except Exception as window_error:
+                    self.logger.warning(f"窗口检测出错: {str(window_error)}，使用默认等待时间")
+                    time.sleep(5)
+                
+                # 等待渲染进程或者插件启动
+                try:
+                    max_wait_time = 600
+                    start_wait = time.time()
+                    while time.time() - start_wait < max_wait_time:
+                        if self.app_connect:
+                            self.logger.info("检测到应用成功连接到socket服务")
+                            break
+                        time.sleep(0.5)
+                    if not self.app_connect:
+                        self.logger.warning("没有检测到应用连接socket服务")
+                except Exception as e:
+                    self.logger.error(f"应用socket连接失败: {str(e)}")
+            except Exception as e:
+                self.logger.error(f"应用启动失败: {str(e)}")
+        elif self.app_path:
+            self.logger.error(f"应用路径不存在: {self.app_path}")
+
+        self.app_started = True
+        return True
+    
+    def stop_app(self) -> None:
+        # 停止应用进程
+        if hasattr(self, 'app_process') and self.app_process:
+            try:
+                self.logger.info(f"尝试优雅地终止应用进程 (PID: {self.app_process.pid})")
+
+                # 发送SIGTERM信号，通知应用准备关闭
+                self.app_process.send_signal(signal.SIGTERM)
+                self.logger.info("已发送SIGTERM信号，等待应用响应...")
+
+                # 等待应用自行关闭
+                try:
+                    self.app_process.wait(timeout=10)  # 等待10秒
+                    self.logger.info("应用进程已自行关闭")
+                except subprocess.TimeoutExpired:
+                    self.logger.warning("应用未在预期时间内关闭，尝试使用terminate()")
+                    self.app_process.terminate()
+                    try:
+                        self.app_process.wait(timeout=5)
+                        self.logger.info("应用进程已通过terminate()正常终止")
+                    except subprocess.TimeoutExpired:
+                        self.logger.warning("应用未能通过terminate()关闭，尝试使用kill()")
+                        self.app_process.kill()
+                        self.logger.info("应用进程已通过kill()强制终止")
+            except Exception as e:
+                self.logger.error(f"终止应用进程时出错: {str(e)}")
