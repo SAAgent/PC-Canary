@@ -5,7 +5,8 @@
 
     "application_info": {
         "name": "FreeTube",
-        "executable_path": "/usr/bin/freetube"
+        "executable_path": "/usr/bin/freetube",
+        "args": []
     },
 
     "task_parameters": {

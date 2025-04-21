@@ -62,9 +62,11 @@ class ElectronInjector:
             shared_dict['logger'].error(f"服务器运行错误: {str(e)}")
 
 
-    def __init__(self, logger: Optional[logging.Logger] = None):
+    def __init__(self, app_path: str = None, args: List[str] = None, logger: Optional[logging.Logger] = None):
         # 创建进程管理器
         self.manager = Manager()
+        self.app_path = app_path
+        self.args = args
         # 创建共享字典
         self.shared_dict = self.manager.dict({
             'scripts': self.manager.list(),
