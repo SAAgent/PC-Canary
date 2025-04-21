@@ -5,7 +5,8 @@
 
     "application_info": {
         "name": "Telegram Desktop",
-        "executable_path": "/workspace/PC-Canary/apps/tdesktop/out/Debug/Telegram"
+        "executable_path": "/workspace/PC-Canary/apps/tdesktop/out/Debug/Telegram",
+        "args": []
     },
 
     "task_parameters": {
