@@ -32,13 +32,11 @@ run 这个镜像并进入容器环境中
 docker run --rm -it \
   --privileged \
   --network host \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -v /YOUR_USER_ROOT/.Xauthority:/home/agent/.Xauthority \
   monitor_env:cpu                         
 ```
 进入环境后，执行命令
 ```bash
-vncserver 
+vncserver -xstartup /home/agent/.vnc/xstartup  -geometry  1024x768 :=5
 ```
 以启动VNC桌面，根据你实际启动的桌面号（如:5）重设 DISPLAY 变量
 ```bash
@@ -104,7 +102,7 @@ sudo chown -R agent:agent /apps/tdesktop/Debug/
 
 ### 评估器
 
-可以直接运行`test_evaluator.py`，然后手动在 GUI 环境内操作Telegram 客户端，点击搜索栏输入搜索内容，观察是否能在正确输入时触发 evaluator 回调：
+可以直接运行`test_evaluator.py`和`run_evaluator.py`，然后手动在 GUI 环境内操作Telegram 客户端，点击搜索栏输入搜索内容，观察是否能在正确输入时触发 evaluator 回调：
 
 ```bash
 python test_evaluator.py
@@ -156,5 +154,11 @@ project/                         # 项目根目录
 ├── utils/                           # 通用工具库
 │   └── logger.py                    # 日志记录模块
 │
-└── telegram_evaluator_test.py       # Telegram评估器测试脚本
+├── run_agent_with_evaluator.py       # 测试脚本
+│
+├── test_evaluator.py       # 测试脚本
+│
+├── run_evaluator.py       # 运行评估器
+│
+└── README.md       # 说明文档
 ```
