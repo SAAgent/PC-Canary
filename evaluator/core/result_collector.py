@@ -32,6 +32,7 @@ class ResultCollector:
             session_data: 会话初始数据
         """
         if task_id not in self.results:
+            self.results[task_id] = {}
             self.results[task_id]['metrics'] = {
                 "performance": {},
                 "behavior": {},
