@@ -50,7 +50,6 @@ class BaseEvaluator:
         self.session_dir = os.path.join(log_dir, self.session_id)
         # TODO app 状态的相关的信息是否全部移到hook_manager中？
         self.app_started = False
-        self.app_process = None
 
         # 保存自定义参数
         self.custom_params = custom_params or {}
@@ -235,16 +234,16 @@ class BaseEvaluator:
             self.logger.warning("评估器已经在运行")
             return False
 
-        if not self.app_started or not self.app_process:
+        if not self.app_started:
             self.start_app()
 
         try:
             self.is_running = True
-            self.hook_manager.load_scripts(self.app_process.pid, self._on_message)
+            self.hook_manager.load_scripts(self._on_message)
             self.result_collector.start_session(self.task_id, {
                 "config": self.config,
                 "app_path": self.hook_manager.app_path,
-                "app_process_pid": self.app_process.pid
+                "app_process_pid": self.hook_manager.app_process.pid
             })
 
             self.logger.info("评估器启动成功")
