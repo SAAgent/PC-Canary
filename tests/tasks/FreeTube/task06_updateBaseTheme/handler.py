@@ -38,7 +38,7 @@ def set_evaluator(evaluator):
             if _EVALUATOR:
                 _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
             # 提供一个默认配置以避免空引用
-            _CONFIG = {"task_parameters": {"query": "porsche"}}
+            _CONFIG = {"task_parameters": {"theme": "dracula"}}
 
 def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     """
@@ -63,26 +63,19 @@ def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
         return None
     
     event_type = message.get('event_type')
-    if event_type == 'search_by_enter' or event_type == 'click_search_button':
-        input_data = message.get('inputData')
-        _EVALUATOR.logger.info(message.get('message') + ": " + input_data)
-        expected_query = _CONFIG.get("task_parameters", {}).get("query", "porsche")
-        if input_data == expected_query:
+    _EVALUATOR.logger.info(message.get('message'))
+    if event_type == "hook_change":
+        _EVALUATOR.update_metric(event_type, True)
+    elif event_type == "change_theme_to":
+        theme = message.get('data')[0]
+        expected_theme = _CONFIG.get("task_parameters", {}).get("theme", "dracula")
+        if theme == expected_theme:
             _EVALUATOR.update_metric("success", True)
             # update time
             completion_time = time.time() - _START_TIME
             _EVALUATOR.update_metric("time_to_complete", completion_time)
             _EVALUATOR.logger.info(f"任务成功完成! 耗时: {completion_time:.2f} 秒")
             return "success"
-    elif event_type == 'hook_keyDown_and_hit_option':
-        _EVALUATOR.logger.info(message.get('message'))
-        _EVALUATOR.update_metric("hook_keyDown_and_hit_option", True)
-    elif event_type == 'hook_search_button':
-        _EVALUATOR.logger.info(message.get('message'))
-        _EVALUATOR.update_metric("hook_search_button", True)
-    elif event_type == 'error':
-        _EVALUATOR.logger.error(f"钩子脚本错误: {message.get('message')}")
-    
     return None
 
 def register_handlers(evaluator):

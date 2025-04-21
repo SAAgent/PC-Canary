@@ -57,7 +57,7 @@ class ElectronInjector:
         message_thread.start()
 
         try:
-            eventlet.wsgi.server(eventlet.listen(('', 5000)), app, log_output=True)
+            eventlet.wsgi.server(eventlet.listen(('', 5000)), app, log_output=False)
         except Exception as e:
             shared_dict['logger'].error(f"服务器运行错误: {str(e)}")
 
@@ -98,6 +98,8 @@ class ElectronInjector:
                         self.shared_dict['logger'].info(f"handle_messager poll到消息: {message}")
                         self.on_message(message['content'], None)
                 self.shared_dict['msg_from_app'] = self.manager.list()
+            except BrokenPipeError:
+                break
             except Exception as e:
                 self.shared_dict['logger'].error(f"处理消息错误: {str(e)}")
             time.sleep(1)
