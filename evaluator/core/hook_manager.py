@@ -26,6 +26,7 @@ class HookManager:
         self.message_handler = None  # 消息处理函数
         self.logger = logger
         self.args = args
+        self.app_process = None
         
         
     def add_script(self, task_path: str) -> None:
@@ -44,12 +45,12 @@ class HookManager:
             self.logger.error(f"脚本文件不存在: {hooker_path}")
     
     
-    def load_scripts(self, target_process: str, eval_handler: Callable[[Dict[str, Any], Any], None]) -> bool:
+    def load_scripts(self, eval_handler: Callable[[Dict[str, Any], Any], None]) -> bool:
         """
         加载脚本到目标进程
         
         Args:
-            target_process: 目标进程名称或ID
+            eval_handler: 任务的事件处理器
             
         Returns:
             bool: 加载是否成功
@@ -60,8 +61,8 @@ class HookManager:
         
         try:
             # 连接到目标进程
-            self.logger.info(f"连接到进程: {target_process}")
-            self.frida_session = frida.attach(target_process)
+            self.logger.info(f"连接到进程: {self.app_process.pid}")
+            self.frida_session = frida.attach(self.app_process.pid)
             
             # 加载所有脚本
             for script_path in self.scripts:
@@ -81,7 +82,7 @@ class HookManager:
             return len(self.loaded_scripts) > 0
         
         except frida.ProcessNotFoundError:
-            self.logger.error(f"未找到进程: {target_process}")
+            self.logger.error(f"未找到进程: {self.app_process.pid}")
             return False
         except Exception as e:
             self.logger.error(f"连接到进程失败: {str(e)}")
@@ -110,10 +111,10 @@ class HookManager:
         if self.app_path and os.path.exists(self.app_path):
             self.app_path = self.app_path
             if self.args is None:
-                args = []
+                self.args = []
         
             # 构建完整的命令行
-            cmd = [self.app_path] + args
+            cmd = [self.app_path] + self.args
         
             try:
                 # 启动应用进程
