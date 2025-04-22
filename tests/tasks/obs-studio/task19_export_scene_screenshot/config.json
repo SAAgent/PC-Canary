@@ -1,0 +1,39 @@
+{
+    "task_id": "19",
+    "task_name": "export_scene_screenshot",
+    "description": "obs-studio导出场景截图",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": []
+    },
+    "task_parameters": {
+        "scene_name": "Scene",
+        "save_path": "/home/agent",
+        "width": 1024,
+        "height": 768
+    },
+    "instruction_template": "请在obs-studio中导出场景${scene_name}的截图，保存到${save_path}，分辨率为${width}x${height}",
+    "evaluation_setup": {
+        "scripts": [
+            {"role": "hook", "path": "hooker.js"},
+            {"role": "handler", "path": "handler.py"}
+        ],
+        "timeout": 180
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "success_conditions": [
+        "screenshot_saved"
+    ],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到截图函数调用",
+        "function returned": "截图函数返回",
+        "screenshot_getpath": "获取到截图保存路径",
+        "screenshot_saved": "截图保存成功",
+        "screenshot_error": "截图过程发生错误",
+        "error": "错误事件"
+    }
+} 

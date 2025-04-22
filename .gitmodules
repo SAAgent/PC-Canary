@@ -19,3 +19,7 @@
 [submodule "apps/vscode"]
 	path = apps/vscode
 	url = https://github.com/SAAgent/vscode.git
+[submodule "apps/obs-studio"]
+	path = apps/obs-studio
+	url = https://github.com/SAAgent/obs-studio.git
+	branch = obs-agent/30.2.3

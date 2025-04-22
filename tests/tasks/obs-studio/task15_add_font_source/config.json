@@ -1,0 +1,47 @@
+{
+    "task_id": "15", 
+	"task_name": "add_font_source", 
+    "description": "增加一个新的文本源并且修改它的一些设置", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "scene_name": "Scene",
+        "new_source_name": "test",
+        "settings": {
+            "font": {
+              "face": "Ubuntu",
+              "style": "Regular",
+              "size": 256,
+              "flags": 0   
+            },
+            "text": "one two three"
+        }
+    },
+    "instruction_template": "请在obs的场景${scene_name}中增加一个新的文本源，名字叫${new_source_name}，对应的设置是${settings}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success",
+      "settings_set_success",
+      "create_success"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "settings_set_success": "设置配置成功",
+        "create_success": "创建新的文本源成功",
+        "error": "错误事件"
+    }
+}

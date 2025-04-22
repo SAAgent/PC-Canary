@@ -1,0 +1,34 @@
+{
+    "task_id": "06", 
+	"task_name": "add_scene", 
+    "description": "obs-studio增加场景", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "new_scene_name": "tmp_scene"
+    },
+    "instruction_template": "请在obs-studio中添加新的场景 ${new_scene_name}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "scene_json_path": "当前json配置文件的路径",
+        "error": "错误事件"
+    }
+}

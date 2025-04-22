@@ -1,0 +1,35 @@
+{
+    "task_id": "20", 
+    "task_name": "create_scene_collection_with_scenes", 
+    "description": "新建场景集合并在里面新建场景", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "collection_name": "test_collection",
+        "scene_names": ["a", "b"]
+    },
+    "instruction_template": "请在obs-studio中新建一个名为${collection_name}的场景集合，并在里面新建场景${scene_names}", 
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180 
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "success_conditions": [
+        "success"
+    ],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "collection_scenes_json_path": "当前场景集合配置文件的路径",
+        "error": "错误事件"
+    }
+} 

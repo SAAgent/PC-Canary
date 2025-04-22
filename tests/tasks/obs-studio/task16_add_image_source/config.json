@@ -1,0 +1,37 @@
+{
+    "task_id": "16",
+    "task_name": "add_image_source",
+    "description": "添加图像源并调整不透明度",
+
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "/usr/local/bin/obs",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_name": "test-img",
+        "image_path": "/workspace/PC-Canary/tests/tasks/obs-studio/anime-9063542_1280.png",
+        "opacity": 50
+    },
+
+    "instruction_template": "添加一个名为'${source_name}'的图像源，使用图片'${image_path}'，并将其不透明度设置为${opacity}%",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+
+    "success_conditions": [
+        "image_source_added",
+        "opacity_set"
+    ],
+
+    "events": {
+        "image_source_added": "成功添加图像源",
+        "opacity_set": "成功设置不透明度"
+    }
+} 

@@ -1,0 +1,35 @@
+{
+    "task_id": "09", 
+	"task_name": "增加新的显示捕获源", 
+    "description": "obs-studio增加新显示捕获源", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "new_source_name": "test",
+        "new_source_id": "vlc_source"
+    },
+    "instruction_template": "请在obs-studio中增加新的显示捕获源 ${new_source_name}, 类型为 ${vlc_source}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "scene_json_path": "当前json配置文件的路径",
+        "error": "错误事件"
+    }
+}

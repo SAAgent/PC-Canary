@@ -1,0 +1,39 @@
+{
+    "task_id": "13", 
+	"task_name": "导出配置并导入配置", 
+    "description": "obs-studio导出配置并导入配置", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "profile_name": "Untitled",
+        "export_path": "/home/agent/agent-tmp-file",
+        "import_path": "/home/agent/agent-tmp-file/Untitled"
+    },
+    "instruction_template": "请在obs中导出名字为${profile_name}的配置到${export_path}, 之后导入${import_path}的配置文件", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success",
+      "import_success",
+      "export_success"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "import_success": "导入成功",
+        "export_success": "导出成功",
+        "error": "错误事件"
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "task_id": "03", 
+	"task_name": "switch_scene", 
+    "description": "设置obs-studio的场景", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "scene": "Scene"
+    },
+    "instruction_template": "请在obs-studio中切换到场景 ${scene}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "setCurrentScene_called": "拦截到切换当前场景的函数调用",
+        "setCurrentScene_returned": "切换当前场景的函数返回",
+        "current_scene": "当前场景编号",
+        "error": "错误事件"
+    }
+}

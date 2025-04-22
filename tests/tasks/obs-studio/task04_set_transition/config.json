@@ -1,0 +1,34 @@
+{
+    "task_id": "04", 
+	"task_name": "set_transition", 
+    "description": "obs-studio切换转场动画", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "transition": "fade_transition"
+    },
+    "instruction_template": "请在obs-studio中切换到场景 ${transition}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "setTransition_called": "拦截到函数调用",
+        "setTransition_returned": "函数返回",
+        "current_transition": "当前转场动画模式名称",
+        "error": "错误事件"
+    }
+}

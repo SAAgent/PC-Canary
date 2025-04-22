@@ -1,0 +1,41 @@
+{
+    "task_id": "12", 
+	"task_name": "增加新的场景之后在新场景中增加新的纯色源", 
+    "description": "obs-studio增加新的纯色背景源并且设置对应的长宽", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "new_scene_name": "test_scene",
+        "source_name": "test",
+        "source_type": "color_source_v3",
+        "width": 1280,
+        "height": 720
+    },
+    "instruction_template": "请在obs-studio新建一个新的场景${test_scene}, 在这个场景中增加新的源, 名字是${source_name}, 类型是${source_type}.纯色源宽度 ${width}, 高度${height}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success",
+      "create_success",
+      "config_save"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "create_success": "创建源成功",
+        "config_save": "配置文件更新完毕",
+        "error": "错误事件"
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "task_id": "08", 
+	"task_name": "rename_scene", 
+    "description": "obs-studio重命名场景", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "old_scene_name": "tmp_scene",
+        "new_scene_name": "new_scene"
+    },
+    "instruction_template": "请在obs-studio中重命名 ${old_scene_name} 为 ${new_scene_name}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "scene_json_path": "当前json配置文件的路径",
+        "error": "错误事件"
+    }
+}

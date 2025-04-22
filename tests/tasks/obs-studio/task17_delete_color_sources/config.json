@@ -1,0 +1,33 @@
+{
+    "task_id": "17",
+    "task_name": "delete_color_sources",
+    "description": "批量删除三个颜色源",
+
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "apps/obs-studio/bin/64bit/obs64",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_names": ["color1", "color2", "color3"]
+    },
+
+    "instruction_template": "删除名为${source_names}的多个或单个颜色源",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+
+    "success_conditions": [
+        "sources_deleted"
+    ],
+
+    "events": {
+        "sources_deleted": "成功删除所有指定的颜色源"
+    }
+} 

@@ -1,0 +1,33 @@
+{
+    "task_id": "02", 
+	"task_name": "stop_recording", 
+    "description": "结束obs-studio的录制", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "instruction_template": "请在obs-studio中结束录制", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true,
+      "obs_studio_recording": true
+	},
+	"success_conditions": [
+	  "success"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "obs_output_stop_called": "拦截到结束录制函数调用",
+        "obs_output_force_stop_called" : "拦截到强制结束录制函数调用",
+        "obs_output_stop_returned": "成功结束录制",
+        "obs_output_force_stop_returned": "成功强制结束录制",
+        "error": "错误事件"
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "task_id": "11", 
+	"task_name": "增加新的视频源", 
+    "description": "obs-studio增加新的循环视频源", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "new_scene_name": "Scene3",
+        "source_name": "test",
+        "source_type": "ffmpeg_source"
+    },
+    "instruction_template": "请在obs-studio中新建一个场景${new_scene_name}, 在新场景中增加新的循环视频源, 名字是${source_name}, 类型是${source_type}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success",
+      "create_success",
+      "updated_source"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "create_success": "创建源成功",
+        "updated_source": "源的属性更新完成",
+        "error": "错误事件"
+    }
+}

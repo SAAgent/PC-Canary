@@ -1,0 +1,30 @@
+{
+    "task_id": "01", 
+	"task_name": "start_recording", 
+    "description": "开始obs-studio的录制", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "instruction_template": "请在obs-studio中开始录制", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "is_recording_active"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "start_recording_called": "拦截到开始录制函数调用",
+        "is_recording_active": "操作完成后的录制状态",
+        "error": "错误事件"
+    }
+}

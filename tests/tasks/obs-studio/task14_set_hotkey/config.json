@@ -1,0 +1,38 @@
+{
+    "task_id": "14", 
+	"task_name": "set_hotkey", 
+    "description": "设置热键触发录制并测试", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "hotkey": "OBS_KEY_R"
+    },
+    "instruction_template": "请在obs中设置开始录制和结束录制的快捷键为${hotkey}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"success_conditions": [
+	  "success",
+      "set_hotkey_success",
+      "test_success"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "set_hotkey_success": "设置热键成功",
+        "found_success": "在配置文件中找到热键",
+        "hotkey_press": "热键被触发",
+        "error": "错误事件"
+    }
+}
