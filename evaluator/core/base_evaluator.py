@@ -114,13 +114,24 @@ class BaseEvaluator:
         self.preconditions = self.config.get("preconditions", {})
         self.success_conditions = set(self.config.get("success_conditions", []))
         self.timeout = self.config.get("evaluation_setup", {}).get("timeout", 180)
+        evaluate_on_completion = self.config.get("evaluation_setup", {}).get("evaluate_on_completion", False)
         
         launch_args = self.config.get("application_info", {}).get("args", [])
         # 初始化组件，传入统一的logger
         if task.get("electron", False):
-            self.hook_manager = ElectronInjector(app_path=app_path, args=launch_args, logger=self.logger)
+            self.hook_manager = ElectronInjector(
+                app_path=app_path,
+                args=launch_args,
+                logger=self.logger,
+                evaluate_on_completion=evaluate_on_completion
+            )
         else:
-            self.hook_manager = HookManager(app_path=app_path, args=launch_args, logger=self.logger)
+            self.hook_manager = HookManager(
+                app_path=app_path,
+                args=launch_args,
+                logger=self.logger,
+                evaluate_on_completion=evaluate_on_completion
+            )
         self.hook_manager.add_script(self.task_path)
         self.set_message_handler()
         self.result_collector = ResultCollector(self.session_dir, logger=self.logger)
@@ -262,9 +273,10 @@ class BaseEvaluator:
             return
 
         try:
+            # 先设置is_running, 避免死循环
+            self.is_running = False
             # 卸载钩子脚本
             self.hook_manager.unload_scripts()
-            self.is_running = False
 
             self.result_collector.end_session(self.task_id, {
                 "metrics": self.metrics

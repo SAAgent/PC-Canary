@@ -218,6 +218,7 @@ def main():
             # 检查是否超时
             if time.time() - start_time > args.timeout:
                 print(f"\n执行超时 ({args.timeout}秒)")
+                evaluator.stop()
                 break
             
             # 获取观察
@@ -234,22 +235,16 @@ def main():
             # 检查环境状态
             if controller.task_completed:
                 print("Agent报告任务已完成！")
+                evaluator.stop()
                 agent_success = True
                 break
             elif controller.task_failed:
+                evaluator.stop()
                 print(f"Agent报告任务失败！原因: {controller.failure_reason}")
                 break
                 
             # 继续执行下一步
             step_index += 1
-            
-            # 检查评估器是否已标记成功
-            if task_state['completed']:
-                print("\n评估器报告任务已完成")
-                if task_state['success']:
-                    agent_success = True
-                break
-            
             # 短暂等待以允许回调处理
             time.sleep(0.5)
         
