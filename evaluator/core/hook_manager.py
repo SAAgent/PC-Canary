@@ -12,7 +12,7 @@ class HookManager:
     钩子管理器，负责加载和管理Frida脚本
     """
     
-    def __init__(self, app_path: str = None, args: List[str] = None, logger: Optional[logging.Logger] = None):
+    def __init__(self, app_path: str = None, args: List[str] = None, logger: Optional[logging.Logger] = None, evaluate_on_completion: bool = False):
         """
         初始化钩子管理器
         
@@ -195,3 +195,6 @@ class HookManager:
                         self.logger.info("应用进程已通过kill()强制终止")
             except Exception as e:
                 self.logger.error(f"终止应用进程时出错: {str(e)}")
+
+    def trigger_evaluate_on_completion(self):
+        pass

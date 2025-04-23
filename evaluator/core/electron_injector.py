@@ -3,9 +3,7 @@ import os
 import logging
 import eventlet
 import socketio
-import multiprocessing
 from multiprocessing import Process, Manager
-from queue import Empty
 import threading
 import time
 import signal
@@ -33,30 +31,35 @@ class ElectronInjector:
         @sio.event
         def send(sid, message):
             # 将消息放入队列，由主进程处理
-            shared_dict['logger'].info(f"app发送消息: {message}")
+            shared_dict['logger'].info(f"app向评估器发送消息")
             shared_dict['msg_from_app'].append({
                 'type': 'message',
                 'content': message
             })
 
-        # 添加消息处理循环
         def process_message_queue():
-            while True:
-                try:
+            # 单次处理消息队列的函数
+            try:
+                if shared_dict['msg_from_evaluator']:
                     for msg in shared_dict['msg_from_evaluator']:
-                        if msg['type'] == 'inject':
+                        if msg['type'] == 'inject' and 'sid' in msg and 'content' in msg:
                             sio.emit('inject', msg['content'], to=msg['sid'])
-                        elif msg['type'] == 'restore':
-                            sio.emit('restore', to=msg['sid'])
+                        elif msg['type'] == 'evaluate' and 'sid' in msg:
+                            sio.emit('evaluate', to=msg['sid'])
+                        else:
+                            shared_dict['logger'].warning(f"无效的消息格式或缺少sid: {msg}")
                     shared_dict['msg_from_evaluator'][:] = []
-                except Exception as e:
-                    shared_dict['logger'].error(f"处理消息错误: {str(e)}")
-                time.sleep(1)
+            except Exception as e:
+                shared_dict['logger'].error(f"处理消息错误: {str(e)}")
+            # 调度下一次执行
+            eventlet.spawn_after(0.5, process_message_queue)
 
         # 启动消息处理线程
-        message_thread = threading.Thread(target=process_message_queue)
-        message_thread.daemon = True
-        message_thread.start()
+        try:
+            eventlet.spawn_after(1, process_message_queue)
+            shared_dict['logger'].info("服务器启动消息处理成功")
+        except Exception as e:
+            shared_dict['logger'].error(f"服务器启动消息处理报错: {str(e)}")
 
         try:
             eventlet.wsgi.server(eventlet.listen(('', 5000)), app, log_output=False)
@@ -64,7 +67,7 @@ class ElectronInjector:
             shared_dict['logger'].error(f"服务器运行错误: {str(e)}")
 
 
-    def __init__(self, app_path: str = None, args: List[str] = None, logger: Optional[logging.Logger] = None):
+    def __init__(self, app_path: str = None, args: List[str] = None, logger: Optional[logging.Logger] = None, evaluate_on_completion: bool = False):
         # 创建进程管理器
         self.manager = Manager()
         self.app_path = app_path
@@ -76,7 +79,8 @@ class ElectronInjector:
             'target_session_id': self.manager.list(),
             'msg_from_evaluator': self.manager.list(),
             'msg_from_app': self.manager.list(),
-            'logger': logger,
+            "evaluate_on_completion": evaluate_on_completion,
+            'logger': logger
         })
 
         self.on_message = None
@@ -95,6 +99,28 @@ class ElectronInjector:
         self.logger = logger
         self.app_connect = False
         self.app_process = None
+        self.evaluate_on_completion = evaluate_on_completion
+        self.triggered_evaluate = False
+
+    def trigger_evaluate_on_completion(self):
+        """
+        在任务操作完成时触发评估, 预留的接口需要保证是evaluate
+        """
+        # 在任务操作完毕时触发任务完成的评估
+        self.logger.info("在任务操作完毕时触发评估")
+        for sid in self.shared_dict['target_session_id']:
+            self.shared_dict['msg_from_evaluator'].append({
+                'type': 'evaluate',
+                'sid': sid
+            })
+        # 等待评估完毕
+        max_wait_time = 10
+        start_wait = time.time()
+        while time.time() - start_wait < max_wait_time:
+            if self.triggered_evaluate:
+                self.logger.info("任务评估完成")
+                break
+            time.sleep(0.5)
 
     def _handle_messages(self):
         # 处理从子进程发来的消息
@@ -102,19 +128,21 @@ class ElectronInjector:
             try:
                 for message in self.shared_dict['msg_from_app']:
                     if message['type'] == 'message':
-                        self.shared_dict['logger'].info(f"handle_messager poll到消息: {message}")
+                        self.shared_dict['logger'].info(f"handle_messager收到消息")
                         if message["content"].get("event_type") == "start_success":
                             # 应用的渲染进程或者插件启动成功
                             self.app_connect = True
                             self.shared_dict['logger'].info("应用成功连接到socket服务")
                         elif self.on_message:
                             self.on_message(message['content'], None)
+                            if message["content"].get("event_type") == "evaluate_on_completion":
+                                self.triggered_evaluate = True
                 self.shared_dict['msg_from_app'] = self.manager.list()
             except BrokenPipeError:
                 break
             except Exception as e:
                 self.shared_dict['logger'].error(f"处理消息错误: {str(e)}")
-            time.sleep(1)
+            time.sleep(0.5)
 
     def add_script(self, task_path: str) -> None:
         hooker_path = os.path.join(task_path, "hooker.js")
@@ -162,14 +190,11 @@ class ElectronInjector:
         
     def unload_scripts(self) -> None:
         try:
-            for sid in self.shared_dict['target_session_id']:
-                self.shared_dict['msg_from_evaluator'].append({
-                    'type': "restore",
-                    'sid': sid,
-                })
+            if self.evaluate_on_completion:
+                self.trigger_evaluate_on_completion()
+
             self.shared_dict['loaded_scripts'] = self.manager.list()
             self.shared_dict['target_session_id'] = self.manager.list()
-            
             self.message_handle_running = False
             # 终止服务器进程
             if self.server.is_alive():
