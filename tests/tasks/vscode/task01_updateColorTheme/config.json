@@ -1,0 +1,32 @@
+{
+    "task_id": "01",
+    "task_name": "update_color_theme",
+    "description": "在vscode中修改颜色主题",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "apps/VSCode-linux-x64/code-oss",
+        "args": ["--no-sandbox", "--user-data-dir=apps/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "theme": "Default Light+"
+    },
+
+    "instruction_template": "在vscode中修改颜色主题为 ${theme}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluate_on_completion": true
+    },
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "evaluate_on_completion": "在任务结束时判断主题颜色是否符合预期"
+    }
+}
