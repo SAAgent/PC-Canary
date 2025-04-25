@@ -1,0 +1,32 @@
+{
+    "task_id": "02",
+    "task_name": "open_project",
+    "description": "在shotcut应用中打开已有项目",
+
+    "application_info": {
+        "name": "shotcut",
+        "executable_path": "/workspace/PC-Canary/apps/shotcut/build/Desktop_Qt_6_9_0-Debug/src/shotcut",
+        "args": []
+    },
+
+    "task_parameters": {
+        "project_name": "test1"        
+    },
+
+    "instruction_template": "在shotcut应用中打开已有项目,项目名为'${project_name}'",
+
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function_found": "找到打开项目函数",
+        "function_called": "打开项目函数被调用",
+        "funtion_key_word_detected": "检测到打开项目时的关键内容",
+        "error": "错误事件"
+    }
+} 

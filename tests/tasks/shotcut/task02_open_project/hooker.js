@@ -4,7 +4,7 @@
 (function() {
     // 脚本常量设置
     const MAX_CHARS = 50;         // 最大读取字符数
-    const FUNTION_NAME = "_ZN10MainWindow10newProjectERK7QStringb"
+    const FUNTION_NAME = "_ZN10MainWindow4openE7QStringPKN3Mlt10PropertiesEbb"
     
     // 全局变量
     let funcFound = false;
@@ -28,7 +28,7 @@
         if (!FuncAddr) {
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: "无法找到MainWindow::newProject函数"
+                message: "无法找到MainWindow::open函数"
             });
             return null;
         }
@@ -37,7 +37,7 @@
         funcFound = true;
         sendEvent("function_found", {
             address: FuncAddr.toString(),
-            message: "找到MainWindow::newProject函数"
+            message: "找到MainWindow::open函数"
         });
         
         return FuncAddr;
@@ -87,7 +87,7 @@
     // 初始化钩子并立即执行
     function initHook() {
         sendEvent("script_initialized", {
-            message: "shotcut创建新项目监控脚本已启动"
+            message: "shotcut打开项目监控脚本已启动"
         });
         
         // 查找搜索函数
@@ -101,7 +101,7 @@
             onEnter: function(args) {
                 try {
                     sendEvent("function_called", {
-                        message: "拦截到创建项目函数调用"
+                        message: "拦截到打开项目函数调用"
                     });
                     
                     // 获取this指针
@@ -112,7 +112,7 @@
                     if (qstring_name != null) {
                         // 直接发送查询检测事件，不做任何判断
                         sendEvent("funtion_key_word_detected", {
-                            message: `检测到创建新项目`,
+                            message: `检测到打开项目`,
                             filename: qstring_name
                         });
                     }
