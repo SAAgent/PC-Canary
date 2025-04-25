@@ -19,3 +19,6 @@
 [submodule "apps/vscode"]
 	path = apps/vscode
 	url = https://github.com/SAAgent/vscode.git
+[submodule "apps/shotcut"]
+	path = apps/shotcut
+	url = https://github.com/was-saw/shotcut.git
