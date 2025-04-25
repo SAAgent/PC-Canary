@@ -10,7 +10,7 @@ from string import Template
 
 # TODO 能不能只读入一个基类，然后根据不同的任务类型，自动选择不同的hook_manager？
 from evaluator.core.hook_manager import HookManager
-from evaluator.core.electron_injector import ElectronInjector
+from evaluator.core.ipc_injector import IpcInjector
 
 from evaluator.core.result_collector import ResultCollector
 from evaluator.utils.logger import setup_logger
@@ -115,11 +115,11 @@ class BaseEvaluator:
         self.success_conditions = set(self.config.get("success_conditions", []))
         self.timeout = self.config.get("evaluation_setup", {}).get("timeout", 180)
         evaluate_on_completion = self.config.get("evaluation_setup", {}).get("evaluate_on_completion", False)
-        
+        evaluator_type = self.config.get("evaluation_setup", {}).get("evaluator_type", "HookManager")
         launch_args = self.config.get("application_info", {}).get("args", [])
         # 初始化组件，传入统一的logger
-        if task.get("electron", False):
-            self.hook_manager = ElectronInjector(
+        if evaluator_type == "IpcInjector":
+            self.hook_manager = IpcInjector(
                 app_path=app_path,
                 args=launch_args,
                 logger=self.logger,
