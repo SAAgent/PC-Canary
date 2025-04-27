@@ -9,9 +9,9 @@ import time
 import signal
 import subprocess
 
-class ElectronInjector:
+class IpcInjector:
     """
-    基于electron开发的app的钩子管理器, 负责加载和管理注入脚本
+    基于IPC开发的app的代码注入管理器, 负责加载和管理注入脚本
     """
     def start_server(self, shared_dict):
         # 子进程的服务器函数

@@ -27,6 +27,7 @@ class HookManager:
         self.logger = logger
         self.args = args
         self.app_process = None
+        self.evaluate_on_completion = evaluate_on_completion
         
         
     def add_script(self, task_path: str) -> None:
