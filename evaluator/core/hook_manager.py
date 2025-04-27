@@ -113,12 +113,12 @@ class HookManager:
             if self.args is None:
                 self.args = []
         
-            # 构建完整的命令行
-            cmd = [self.app_path] + self.args
+            # 构建完整的命令行，加入硬件加速功能
+            cmd = ["vglrun", self.app_path] + self.args
         
             try:
                 # 启动应用进程
-                self.logger.info(f"正在启动应用: {self.app_path}")
+                self.logger.info(f"正在启动应用: {self.app_path}，使用硬件加速")
                 self.app_process = subprocess.Popen(
                     cmd,
                     stdout=subprocess.PIPE,
