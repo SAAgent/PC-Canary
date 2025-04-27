@@ -99,7 +99,6 @@ def main():
     # task = {
     #     "category": "FreeTube",
     #     "id": "task01_search",
-    #     "electron": True,
     # }
     task = {
         "category": "telegram",
