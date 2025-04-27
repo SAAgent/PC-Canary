@@ -1,21 +1,34 @@
 {
-    "task_id": "freetube_search",
-    "description": "评估Agent在FreeTube中执行搜索视频操作的能力",
-    "instruction": "在FreeTube中搜索视频, 搜索关键词为porsche",
-    "expected_query": "porsche",
-    "timeout": 120,
-    "hook_script": "hooker.js",
-    "metrics": {
-        "success": false,
-        "hook_keyDown_and_hit_option": false,
-        "hook_search_button": false,
-        "time_to_complete": 0
+    "task_id": "01",
+    "task_name": "search_keyword",
+    "description": "在FreeTube中搜素指定关键词, 并且查看搜索结果",
+
+    "application_info": {
+        "name": "FreeTube",
+        "executable_path": "/usr/bin/freetube",
+        "args": []
+    },
+
+    "task_parameters": {
+        "query": "porsche"
+    },
+
+    "instruction_template": "在FreeTube应用中搜索关键词 '${query}', 展示搜索结果",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "freetube_running": true
     },
     "events": {
-        "success": "成功完成任务",
-        "keyDown_or_hit_option": "以keyDown或者点击条目的方式进行了搜索, 但不是porsche",
+        "search_by_enter": "以回车的方式或者点击条目的方式触发了搜索",
         "hook_keyDown_and_hit_option": "成功hook handleClick函数",
-        "click_search_button": "点击了搜索button, 但是inputData不是porsche",
+        "click_search_button": "以点击搜索按钮的方式触发了搜索",
         "hook_search_button": "成功hook搜索button"
     }
 }

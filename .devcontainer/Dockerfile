@@ -82,6 +82,13 @@ USER agent
 ENV USER=agent
 SHELL [ "bash", "-c" ]
 
+# 安装和配置 Miniconda
+RUN mkdir -p ~/miniconda3 && \
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh && \
+    bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3 && \
+    rm ~/miniconda3/miniconda.sh && \
+    ~/miniconda3/bin/conda init --all
+
 # 配置环境变量
 RUN echo 'export http_proxy=http://10.29.46.139:7890' >> /home/agent/.bashrc && \
     echo 'export https_proxy=http://10.29.46.139:7890' >> /home/agent/.bashrc

@@ -1,4 +1,4 @@
-from typing import Dict, Any 
+from typing import Dict, Any, List
 import os
 import sys
 import time
@@ -8,8 +8,10 @@ import subprocess
 import time
 from string import Template
 
+# TODO 能不能只读入一个基类，然后根据不同的任务类型，自动选择不同的hook_manager？
 from evaluator.core.hook_manager import HookManager
 from evaluator.core.electron_injector import ElectronInjector
+
 from evaluator.core.result_collector import ResultCollector
 from evaluator.utils.logger import setup_logger
 
@@ -46,9 +48,8 @@ class BaseEvaluator:
         self.log_dir = log_dir
         self.session_id = time.strftime("%Y%m%d_%H%M%S")
         self.session_dir = os.path.join(log_dir, self.session_id)
-        self.app_path = app_path
+        # TODO app 状态的相关的信息是否全部移到hook_manager中？
         self.app_started = False
-        self.app_process = None
 
         # 保存自定义参数
         self.custom_params = custom_params or {}
@@ -113,12 +114,24 @@ class BaseEvaluator:
         self.preconditions = self.config.get("preconditions", {})
         self.success_conditions = set(self.config.get("success_conditions", []))
         self.timeout = self.config.get("evaluation_setup", {}).get("timeout", 180)
-
+        evaluate_on_completion = self.config.get("evaluation_setup", {}).get("evaluate_on_completion", False)
+        
+        launch_args = self.config.get("application_info", {}).get("args", [])
         # 初始化组件，传入统一的logger
         if task.get("electron", False):
-            self.hook_manager = ElectronInjector(logger=self.logger)
+            self.hook_manager = ElectronInjector(
+                app_path=app_path,
+                args=launch_args,
+                logger=self.logger,
+                evaluate_on_completion=evaluate_on_completion
+            )
         else:
-            self.hook_manager = HookManager(logger=self.logger)
+            self.hook_manager = HookManager(
+                app_path=app_path,
+                args=launch_args,
+                logger=self.logger,
+                evaluate_on_completion=evaluate_on_completion
+            )
         self.hook_manager.add_script(self.task_path)
         self.set_message_handler()
         self.result_collector = ResultCollector(self.session_dir, logger=self.logger)
@@ -232,16 +245,16 @@ class BaseEvaluator:
             self.logger.warning("评估器已经在运行")
             return False
 
-        if not self.app_started or not self.app_process:
-            self.start_app(self.app_path)
+        if not self.app_started:
+            self.start_app()
 
         try:
             self.is_running = True
-            self.hook_manager.load_scripts(self.app_process.pid, self._on_message)
+            self.hook_manager.load_scripts(self._on_message)
             self.result_collector.start_session(self.task_id, {
                 "config": self.config,
-                "app_path": self.app_path,
-                "app_process_pid": self.app_process.pid
+                "app_path": self.hook_manager.app_path,
+                "app_process_pid": self.hook_manager.app_process.pid
             })
 
             self.logger.info("评估器启动成功")
@@ -260,9 +273,10 @@ class BaseEvaluator:
             return
 
         try:
+            # 先设置is_running, 避免死循环
+            self.is_running = False
             # 卸载钩子脚本
             self.hook_manager.unload_scripts()
-            self.is_running = False
 
             self.result_collector.end_session(self.task_id, {
                 "metrics": self.metrics
@@ -276,86 +290,14 @@ class BaseEvaluator:
         except Exception as e:
             self.logger.error(f"评估器停止失败: {str(e)}")
 
-    def start_app(self, app_path, **kwargs) -> bool:
+    def start_app(self) -> bool:
         #  如果提供了应用路径，则启动应用
-        if self.app_path and os.path.exists(self.app_path):
-            try:
-                import subprocess
-                self.logger.info(f"正在启动应用: {self.app_path}")
-                # 使用子进程启动应用
-                self.app_process = subprocess.Popen([self.app_path], 
-                                                    stdout=subprocess.PIPE,
-                                                    stderr=subprocess.PIPE)
-                self.logger.info(f"应用启动成功，进程ID: {self.app_process.pid}")
-
-                # 等待应用窗口加载完成
-                self.logger.info("等待应用窗口加载完成...")
-
-                # Linux系统：使用xwininfo命令检测窗口变化
-                try:
-                    # 获取启动前窗口列表
-                    windows_before = subprocess.run(["xwininfo", "-root", "-tree"], 
-                                                stdout=subprocess.PIPE, 
-                                                text=True).stdout.count('\n')
-                    self.logger.info(f"启动前窗口行数: {windows_before}")
-
-                    # 等待新窗口出现
-                    max_wait_time = 30  # 最大等待30秒
-                    start_wait = time.time()
-                    window_detected = False
-
-                    while time.time() - start_wait < max_wait_time:
-                        windows_current = subprocess.run(["xwininfo", "-root", "-tree"], 
-                                                    stdout=subprocess.PIPE, 
-                                                    text=True).stdout.count('\n')
-                        if windows_current > windows_before:
-                            window_detected = True
-                            self.logger.info(f"检测到新窗口，当前窗口行数: {windows_current}")
-                            # 额外等待2秒确保窗口内容加载完成
-                            time.sleep(2)
-                            break
-                        time.sleep(0.5)
-
-                    if not window_detected:
-                        self.logger.warning("未检测到新窗口出现，使用默认等待时间")
-                        time.sleep(5)
-                except Exception as window_error:
-                    self.logger.warning(f"窗口检测出错: {str(window_error)}，使用默认等待时间")
-                    time.sleep(5)
-            except Exception as e:
-                self.logger.error(f"应用启动失败: {str(e)}")
-        elif self.app_path:
-            self.logger.error(f"应用路径不存在: {self.app_path}")
-
-        self.app_started = True
-        return True
+        return self.hook_manager.start_app()
 
     def stop_app(self) -> None:
         # 停止应用进程
-        if hasattr(self, 'app_process') and self.app_process:
-            try:
-                self.logger.info(f"尝试优雅地终止应用进程 (PID: {self.app_process.pid})")
+        return self.hook_manager.stop_app()
 
-                # 发送SIGTERM信号，通知应用准备关闭
-                self.app_process.send_signal(signal.SIGTERM)
-                self.logger.info("已发送SIGTERM信号，等待应用响应...")
-
-                # 等待应用自行关闭
-                try:
-                    self.app_process.wait(timeout=10)  # 等待10秒
-                    self.logger.info("应用进程已自行关闭")
-                except subprocess.TimeoutExpired:
-                    self.logger.warning("应用未在预期时间内关闭，尝试使用terminate()")
-                    self.app_process.terminate()
-                    try:
-                        self.app_process.wait(timeout=5)
-                        self.logger.info("应用进程已通过terminate()正常终止")
-                    except subprocess.TimeoutExpired:
-                        self.logger.warning("应用未能通过terminate()关闭，尝试使用kill()")
-                        self.app_process.kill()
-                        self.logger.info("应用进程已通过kill()强制终止")
-            except Exception as e:
-                self.logger.error(f"终止应用进程时出错: {str(e)}")
     def save_results(self) -> str:
         """
         保存评估结果
