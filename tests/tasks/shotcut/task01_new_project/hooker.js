@@ -44,44 +44,10 @@
     }
     
     // 读取QString字符串内容
-    function readQString(queryPtr, offset = 8) {
-        try {
-            const addr = queryPtr.add(offset);
-            const possiblePtr = addr.readPointer();
-            
-            if (possiblePtr.isNull()) {
-                return null;
-            }
-            
-            // 尝试读取UTF-16字符串
-            let str = "";
-            let valid = true;
-            
-            for (let i = 0; i < MAX_CHARS; i++) {
-                try {
-                    const c = possiblePtr.add(i * 2).readU16();
-                    if (c >= 32 && c < 0xFFFF) { // 可打印字符
-                        str += String.fromCharCode(c);
-                    } else if (c === 0) { // 字符串结束
-                        break;
-                    } else {
-                        valid = false;
-                        break;
-                    }
-                } catch (e) {
-                    valid = false;
-                    break;
-                }
-            }
-            
-            return valid && str.length > 0 ? str : null;
-        } catch (e) {
-            sendEvent("error", {
-                error_type: "memory_read_error",
-                message: `读取内存错误: ${e.message}`
-            });
-            return null;
-        }
+    function readQString(Ptr, offset = 8) {
+        const q_str_ptr = Ptr.add(offset);
+        const q_str = q_str_ptr.readPointer().readUtf16String(-1);
+        return q_str;
     }
     
     // 初始化钩子并立即执行
@@ -104,7 +70,7 @@
                         message: "拦截到创建项目函数调用"
                     });
                     
-                    // 获取this指针
+                    // 获取文件名称
                     const filename = args[1];
                     
                     let qstring_name = readQString(filename, 8);
