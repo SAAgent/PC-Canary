@@ -236,10 +236,6 @@ def main():
         "id": args.task,
     }
 
-    # 设置Electron标志
-    if config.get("application_info", {}).get("type") == "electron":
-        task["electron"] = True
-
     print(f"初始化评估器...")
     print(f"应用: {args.app}")
     print(f"任务: {args.task}")

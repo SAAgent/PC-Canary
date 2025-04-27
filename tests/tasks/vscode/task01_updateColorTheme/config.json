@@ -5,7 +5,7 @@
 
     "application_info": {
         "name": "vscode",
-        "executable_path": "apps/VSCode-linux-x64/code-oss",
+        "executable_path": "/usr/share/code/code",
         "args": ["--no-sandbox", "--user-data-dir=apps/vscode_user_data_dir/"]
     },
 
@@ -21,11 +21,12 @@
             { "role": "handler", "path": "handler.py" }
         ],
         "timeout": 120,
+        "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
-    "preconditions": {
-        "vscode_running": true
-    },
+    "success_conditions": [
+        "evaluate_on_completion"
+    ],
     "events": {
         "evaluate_on_completion": "在任务结束时判断主题颜色是否符合预期"
     }
