@@ -14,39 +14,80 @@
 
 - **Telegram搜索任务**：评估Agent在Telegram客户端中搜索"news"的能力
 ## 运行
-### 配置 VNC 远程桌面环境
+### 配置支持硬件加速的 VNC 远程桌面环境
 克隆本仓库
 ```bash
-git clone https://github.com/k0zhevnikov/image_setup
+git clone https://github.com/SAAgent/PC-Canary
 ```
 并使用本项目目录下的 Dockerfile 手动构建镜像
 ```bash
 docker build \ 
   --build-arg HTTP_PROXY=YOUR_PROXY \
   --build-arg HTTPS_PROXY=YOUR_PROXY \
-  -t monitor_env:cpu \
+  --build-arg USER_UID=YOUR_UID \
+  --build-arg USER_GID=YOUR_GID \
+  -t monitor_env:gpu \
   -f .devcontainer/Dockerfile .
 ```
-run 这个镜像并进入容器环境中
-```bash
-docker run --rm -it \
-  --privileged \
-  --network host \
-  monitor_env:cpu                         
-```
+run 这个镜像并进入容器环境中，此处请参考 .devcontainer/devcontainer.json 文件中的 runargs 配置，也完全可以直接使用 vscode 的 devcontainer 插件从容器中重新打开
+
+**关键**：需要 build 时传入容器外实际用户的 UID 和 GID，否则将无法正常工作，使用 devcontainer 插件前也要调整 json 文件中的 USER_UID 和 USER_GID 参数
+
 进入环境后，执行命令
 ```bash
-vncserver -xstartup /home/agent/.vnc/xstartup  -geometry  1024x768 :=5
+vncserver -geometry 1024x768 :6
 ```
-以启动VNC桌面，根据你实际启动的桌面号（如:5）重设 DISPLAY 变量
+以启动VNC桌面
+
+硬件加速环境使用新的 KasmVNC，其自带 noVNC 式的 Web 服务。
+第一次启动时需要进行基本配置，两个选项均选择\[1\]
 ```bash
-export DISPLAY=:5
+$ vncserver -geometry 1024x768 :6
+Creating default config /home/agent/.vnc/kasmvnc.yaml
+xauth:  file /home/agent/.Xauthority does not exist
+
+In order to control your desktop, you need a KasmVNC user with write
+permissions. Select what action to take:
+
+[1] Create a new user with write access
+[2] Start KasmVNC without a user with write access
+
+Provide selection number: 1
+
+Let's create a user.
+
+Enter username (default: agent): agent
+Password:
+Verify:
+Created user "agent"
+Please choose Desktop Environment to run:
+[1] Manually edit xstartup
+1
 ```
-随后在你的 VNC Viewer 客户端上连接，以验证远程桌面服务是否启动，地址可能形如
+之后根据实际输出，在浏览器中访问对应的 URL 即可，注意使用 https 协议。可能形如
 ```
-vnc://YOUR_SERVER_IP:5905
+https://YOUR_SERVER_IP:8449
 ```
 ### 在远程桌面内运行 tdesktop 客户端
+
+注意：上述配置的 VNC 桌面实际仍使用 CPU 软件渲染，但容器底层设置好了 VirtualGL 环境，可以正常使用硬件加速。
+
+要使用硬件加速打开某 GUI 应用，
+根据你实际启动的桌面号（如:6）重设 DISPLAY 变量
+```bash
+export DISPLAY=:6
+```
+然后在执行命令前加上 `vglrun` 前缀即可。比如
+```bash
+vglrun /apps/tdesktop/Debug/Telegram
+vglrun firefox
+vglrun glxgears
+```
+在运行 `glxgears` 时，程序会打印实时的帧率情况，可以检查到有无前缀的差异。此时输入`nvidia-smi`，可以看到应用进程使用了 GPU 资源。
+
+其余配置与非硬件加速环境相同，以下为非硬件加速环境部分的说明。
+
+
 本项目将 tdesktop 的源代码仓库作为自己的一个子模块，首先需要初始化它
 ```bash
 git submodule update --init --recursive tdesktop
