@@ -1,7 +1,7 @@
 {
-    "task_id": "03",
-    "task_name": "new_project",
-    "description": "在shotcut应用中添加新文件到项目中",
+    "task_id": "04",
+    "task_name": "open_file",
+    "description": "在shotcut应用中打开一个媒体文件",
 
     "application_info": {
         "name": "shotcut",
@@ -13,7 +13,7 @@
         "file_path": "/home/ubuntu/Downloads/test1.mp4"        
     },
 
-    "instruction_template": "在shotcut的项目中添加新文件,项目名为'${file_path}'",
+    "instruction_template": "在shotcut应用中打开新文件,文件路径为'${file_path}'",
 
     "evaluation_setup": {
         "scripts": [
@@ -24,9 +24,9 @@
     },
     "events": {
         "script_initialized": "钩子脚本初始化",
-        "function_found": "找到添加文件函数",
-        "function_called": "添加文件函数被调用",
-        "function_key_word_detected": "检测到添加文件关键内容",
+        "function_found": "找到打开文件函数",
+        "function_called": "打开文件函数被调用",
+        "function_key_word_detected": "检测到文件打开关键内容",
         "error": "错误事件"
     }
 } 
