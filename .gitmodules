@@ -19,3 +19,7 @@
 [submodule "apps/vscode"]
 	path = apps/vscode
 	url = https://github.com/SAAgent/vscode.git
+[submodule "apps/FreeCAD"]
+	path = apps/FreeCAD
+	url = https://github.com/FreeCAD/FreeCAD.git
+	branch = releases/FreeCAD-1-0
