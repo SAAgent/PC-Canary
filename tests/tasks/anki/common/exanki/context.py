@@ -33,7 +33,18 @@ class Status:
     def __init__(self,metric:List[FridaEvent],status:StatusType = StatusType.NONE):
         self.metric = metric if metric is not None else []
         self.status = status
-     
+        
+    def emit(self,metric:FridaEvent):
+        self.metric.append(metric) 
+    
+    def mark_success(self):
+        self.status = StatusType.SUCCESS
+    
+    def mark_progress(self):
+        self.status = StatusType.PROGRESS
+        
+    def mark_error(self):
+        self.status = StatusType.ERROR 
 class Context:
     def __init__(self,evaluator):
         self.evaluator = evaluator
@@ -59,13 +70,11 @@ class Context:
         AnkiObjMap().clear()
         self._load_snapshot()
 
-        
-        
     def _load_snapshot(self):
-        print(self.tmpdirname)
+        self.log("info",f"tmp path={self.tmpdirname}")
         dst_file = shutil.copy(self.sql_path, self.tmpdirname)
-        # if os.path.exists(self.sql_path + "-wal"):
-        _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
+        if os.path.exists(self.sql_path + "-wal"):
+            _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
         try:
            self.conn = sqlite3.connect(f'file:{dst_file}', uri=True)
         except Exception as e:

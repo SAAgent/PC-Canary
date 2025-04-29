@@ -9,6 +9,7 @@ def parse_json(json_data: str) -> Dict:
 # 为每个事件生成一个类定义模板
 def generate_event_classes(data: Dict) -> str:
     template = """import sys
+import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common')))
 from exanki import *\n"""
     if "events" in data:
@@ -16,7 +17,7 @@ from exanki import *\n"""
             class_name = ''.join(word.capitalize() for word in event_key.split('_'))
             
             template += f"""
-class {class_name}Event(FridaEvent):
+class Event{class_name}(FridaEvent):
     def __init__(self,value=True):
         super().__init__(\"{event_key}\", value)
         
