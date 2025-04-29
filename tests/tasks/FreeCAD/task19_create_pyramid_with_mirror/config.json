@@ -1,0 +1,67 @@
+{
+    "task_id": "19",
+    "task_name": "create_pyramid_with_mirror",
+    "description": "在FreeCAD中创建一个带镜像特征的四棱锥",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task19.FCStd",
+        "base_length": 50.0,
+        "base_width": 50.0,
+        "pyramid_height": 30.0,
+        "mirror_plane": "XZ"
+    },
+
+    "instruction_template": "在FreeCAD中创建一个四棱锥（金字塔），底面是一个矩形，底面长为${base_length}mm，宽为${base_width}mm，高度为${pyramid_height}mm，底面应位于XZ平面，然后对该四棱锥添加一个${mirror_plane}平面的镜像特征。四棱锥的创建方式可以是create a pyramid、通过楔形(wedge)或通过挤出多边形实现，镜像特征的创建方式应为Mirror Feature（镜像特征）。最后将文件保存到${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到保存文档函数",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "保存文档函数被调用",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "保存文档"
+        },
+        "function_key_word_detected": {
+            "description": "检测到保存文档关键内容",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "创建带镜像特征的四棱锥并保存成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

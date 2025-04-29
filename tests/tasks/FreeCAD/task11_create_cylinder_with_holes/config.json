@@ -1,0 +1,66 @@
+{
+    "task_id": "11",
+    "task_name": "create_cylinder_with_holes",
+    "description": "在FreeCAD中创建一个带孔的圆柱体",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task11.FCStd",
+        "cylinder_radius": 10,
+        "cylinder_height": 20,
+        "hole_radius": 2,
+        "hole_count": 2
+    },
+
+    "instruction_template": "创建一个半径为${cylinder_radius}，高度为${cylinder_height}的圆柱体，并在其侧面均匀分布${hole_count}个半径为${hole_radius}的孔。这些孔的中心沿圆柱体的高度方向均匀排列，且每个孔的中心与圆柱体的轴线保持相同的水平距离。圆柱体的创建方式应为create an additive cylinder，孔的创建方式为create subtractive cylinder。最后将文件保存到${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 240
+    },
+    "preconditions": {
+        "FreeCAD_running": true
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到保存文档函数",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "保存文档函数被调用",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "保存文档"
+        },
+        "function_key_word_detected": {
+            "description": "检测到保存文档关键内容",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "创建带孔圆柱体并保存成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

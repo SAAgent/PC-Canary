@@ -1,0 +1,69 @@
+{
+    "task_id": "15",
+    "task_name": "create_cylinder_with_rectangular_groove",
+    "description": "在FreeCAD中创建一个带有绕Y轴倾斜矩形凹槽的圆柱体",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task15.FCStd",
+        "cylinder_radius": 20.0,
+        "cylinder_height": 40.0,
+        "groove_width": 10.0,
+        "groove_depth": 5.0,
+        "groove_height": 30.0,
+        "groove_angle": 30.0
+    },
+
+    "instruction_template": "在FreeCAD中创建一个半径为${cylinder_radius}mm，高度为${cylinder_height}mm的圆柱体，然后在其侧面创建一个倾斜的矩形凹槽。凹槽宽度为${groove_width}mm，深度为${groove_depth}mm，高度为${groove_height}mm，绕Y轴倾斜角度为${groove_angle}度。圆柱体的创建方式应为create an additive cylinder，矩形凹槽的创建方式为create a subtractive box。最后将文件保存到${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到保存文档函数",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "保存文档函数被调用",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "保存文档"
+        },
+        "function_key_word_detected": {
+            "description": "检测到保存文档关键内容",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "创建带倾斜矩形凹槽的圆柱体并保存成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}
