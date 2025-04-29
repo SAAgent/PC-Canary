@@ -1,0 +1,42 @@
+{
+    "task_id": "01",
+    "task_name": "添加简单卡片",
+    "description": "添加一张问答题卡片，正面为Hello，背面为World，添加到系统默认中",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "first_field": "Hello",
+        "second_field": "World"
+    },
+    "instruction_template": "添加一张问答题卡片，正面为${first_field}，背面为${second_field}，添加到系统默认中",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": "数据库中出现卡片",
+        "correct_field": "卡片数据匹配",
+        "wrong_field": "卡片数据不匹配",
+        "correct_deck": "卡片Deck正确",
+        "wrong_deck": "卡片Deck不匹配"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}
