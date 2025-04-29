@@ -1,0 +1,63 @@
+{
+    "task_id": "25",
+    "task_name": "create_square",
+    "description": "在FreeCAD中绘制以原点为中心的2D正方形",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task25.FCStd",
+        "side_length": 10
+    },
+
+    "instruction_template": "在FreeCAD的2D草图中创建一个以原点(0,0)为中心、边长为${side_length}的正方形，并将文件保存到${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "FreeCAD_running": true
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到保存文档函数",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "保存文档函数被调用",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "保存文档"
+        },
+        "function_key_word_detected": {
+            "description": "检测到文档保存关键内容",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "创建正方形并保存成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "task_id": "14",
+    "task_name": "create_cone_with_sphere_cut",
+    "description": "在FreeCAD中创建一个带有半球状凹坑的圆锥体",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task14.FCStd",
+        "cone_radius1": 25.0,
+        "cone_radius2": 10.0,
+        "cone_height": 40.0,
+        "sphere_radius": 8.0,
+        "sphere_position_x": 0.0,
+        "sphere_position_y": 0.0,
+        "sphere_position_z": 40.0
+    },
+
+    "instruction_template": "在FreeCAD中创建一个底部半径为${cone_radius1}mm，顶部半径为${cone_radius2}mm，高度为${cone_height}mm的圆锥体，然后在其顶面中心创建一个半球状凹坑。切口球体的半径为${sphere_radius}mm，球心位置应位于圆锥顶面中心(${sphere_position_x}, ${sphere_position_y}, ${sphere_position_z})mm。圆锥体的创建方式应为create an additive cone，半球凹坑的创建方式为create subtractive sphere。最后将文件保存到${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到保存文档函数",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "保存文档函数被调用",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "保存文档"
+        },
+        "function_key_word_detected": {
+            "description": "检测到保存文档关键内容",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "创建带半球状凹坑的圆锥体并保存成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

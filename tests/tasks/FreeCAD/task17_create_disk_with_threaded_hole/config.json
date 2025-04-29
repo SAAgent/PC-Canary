@@ -1,0 +1,68 @@
+{
+    "task_id": "17",
+    "task_name": "create_disk_with_threaded_hole",
+    "description": "在FreeCAD中创建一个带有螺纹孔的圆盘",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task17.FCStd",
+        "disk_radius": 50.0,
+        "disk_height": 10.0,
+        "thread_size": "M10",
+        "thread_depth": 10.0,
+        "model_thread": true
+    },
+
+    "instruction_template": "在FreeCAD中创建一个半径为${disk_radius}mm，高度为${disk_height}mm的圆盘，然后在其中心添加以下参数的螺纹孔：\n- Profile: ISO metric regular profile\n- Size: ${thread_size}\n- Clearance: Standard\n- Depth: ${thread_depth}mm\n- Threaded: 勾选\n- Model Thread: ${model_thread ? '勾选' : '不勾选'}\n圆盘的创建方式应为create an additive cylinder，螺纹孔的创建方式应为create a threaded hole。最后将文件保存到${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到保存文档函数",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "保存文档函数被调用",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "保存文档"
+        },
+        "function_key_word_detected": {
+            "description": "检测到保存文档关键内容",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "创建带螺纹孔的圆盘并保存成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

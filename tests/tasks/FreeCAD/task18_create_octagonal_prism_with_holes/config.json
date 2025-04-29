@@ -1,0 +1,67 @@
+{
+    "task_id": "18",
+    "task_name": "create_octagonal_prism_with_holes",
+    "description": "在FreeCAD中创建一个带中心圆孔的正八边形棱柱",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task18.FCStd",
+        "prism_radius": 50.0,
+        "prism_height": 20.0,
+        "hole_radius": 15.0,
+        "sides_count": 8
+    },
+
+    "instruction_template": "在FreeCAD中创建一个正八边形棱柱，棱柱的外接圆半径为${prism_radius}mm，高度为${prism_height}mm，然后在棱柱的中心添加一个半径为${hole_radius}mm的圆形通孔。棱柱的创建方式可以是create a polygon prism或通过挤压多边形实现，圆孔的创建方式应为create a subtractive cylinder。最后将文件保存到${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到保存文档函数",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "保存文档函数被调用",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "保存文档"
+        },
+        "function_key_word_detected": {
+            "description": "检测到保存文档关键内容",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "创建带中心圆孔的正八边形棱柱并保存成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

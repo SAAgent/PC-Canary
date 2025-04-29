@@ -1,0 +1,38 @@
+{
+    "task_id": "05",
+    "task_name": "create_cylinder",
+    "description": "在FreeCAD中创建指定尺寸的圆柱体",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task05.FCStd",
+        "radius": 5,
+        "height": 10
+    },
+
+    "instruction_template": "在FreeCAD中创建一个半径为${radius}、高度为${height}的圆柱体,并将文件保存到${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "FreeCAD_running": true
+    },
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function_found": "找到保存文档函数",
+        "function_called": "保存文档函数被调用",
+        "function_key_word_detected": "检测到文档保存关键内容",
+        "error": "错误事件"
+    }
+}

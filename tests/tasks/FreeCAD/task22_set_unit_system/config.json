@@ -1,0 +1,66 @@
+{
+    "task_id": "22",
+    "task_name": "set_unit_system",
+    "description": "在FreeCAD中先将单位系统设置为3，再设置回0",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "first_unit_system": 3,
+        "final_unit_system": 0
+    },
+
+    "instruction_template": "在FreeCAD应用中先将单位系统设置为${first_unit_system}，再设置回${final_unit_system}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "FreeCAD_running": true
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到单位系统设置函数",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "单位系统设置函数被调用",
+            "is_key_step": false
+        },
+        "first_unit_system_set": {
+            "description": "检测到第一次单位系统设置",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功将单位系统设置为3"
+        },
+        "final_unit_system_set": {
+            "description": "检测到最终单位系统设置",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "成功将单位系统设置回0"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}
