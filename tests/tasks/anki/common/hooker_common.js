@@ -57,3 +57,23 @@ function initHook(function_name, config) {
     });
     sendLog("info", `hook ${function_name} at ${config.addr.toString(16)}`);
 }
+
+const TRACE_MAPS = {
+        "storage_add_card": {
+            "addr": 0x00000000007065a0,
+        },
+        "storage_update_card": {
+            "addr": 0x0000000000705e40,
+        },
+        "storage_add_note": {
+            "addr": 0x000000000071ec60,
+        },
+        // "storage_get_note" : 0x000000000071e0b0,
+        "storage_update_note": {
+            "addr": 0x000000000071e660,
+        },
+        "storage_add_deck" : {
+            "addr": 0x0000000000c61ab0,
+            "filter" : "anki::services::<impl anki::backend::Backend>::add_deck$"
+        }
+}

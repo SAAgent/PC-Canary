@@ -1,5 +1,7 @@
+from .context import Context
 from typing import Dict, Any, Optional
 
+HANDLERS = None
 
 def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     CONTEXT = message_handler.context 
@@ -18,4 +20,22 @@ def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
         case 'log':
             CONTEXT.log(message["level"],message["msg"])
     return None
+
+
+def bind_handlers(handlers:Dict):
+    global HANDLERS
+    HANDLERS = handlers
+    
+def register_handlers(evaluator):
+    config = evaluator.config
+    if not "sql_path" in config:
+        raise RuntimeError("Missing database file path")
+    global HANDLERS
+    if HANDLERS is None:
+        raise RuntimeError("Handlers are not initialized")
+    CONTEXT = Context(evaluator)
+    CONTEXT.register_trace_handlers(HANDLERS)
+    message_handler.context = CONTEXT
+    return message_handler
+
 

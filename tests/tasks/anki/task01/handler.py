@@ -23,16 +23,7 @@ def handle_storage_add_card(context: Context,message,data) -> Status:
         status.emit(EventWrongField(note.fields,f"[{tp.first_field} {tp.second_field}]"))
     return status
       
-def register_handlers(evaluator):
-    config = evaluator.config
-    if not "sql_path" in config:
-        raise RuntimeError("Missing database file path")
-    
-    CONTEXT = Context(evaluator)
-    
-    CONTEXT.register_trace_handlers({
-        "storage_add_card": handle_storage_add_card
-    })
-    message_handler.context = CONTEXT
-    return message_handler
-
+TRACE_HANDLERS = {
+    "storage_add_card": handle_storage_add_card
+}   
+bind_handlers(TRACE_HANDLERS)

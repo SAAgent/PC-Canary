@@ -56,6 +56,7 @@ class Context:
         self.start_time = time.time() 
         self.tmpdirname = tempfile.mkdtemp()
         self.trace_handlers = {}
+        self.log("info",f"tmp path={self.tmpdirname}")
         
 
     def query(self,sql:str):
@@ -71,13 +72,8 @@ class Context:
         self._load_snapshot()
 
     def _load_snapshot(self):
-        self.log("info",f"tmp path={self.tmpdirname}")
         dst_file = shutil.copy(self.sql_path, self.tmpdirname)
-        if os.path.exists(self.sql_path + "-wal"):
-            _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
-        else:
-            time.sleep(0.5) # magic number
-            _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
+        _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
 
         try:
            self.conn = sqlite3.connect(f'file:{dst_file}', uri=True)
