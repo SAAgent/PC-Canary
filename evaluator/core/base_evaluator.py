@@ -1,3 +1,4 @@
+import importlib
 from typing import Dict, Any, List
 import os
 import sys
@@ -140,8 +141,30 @@ class BaseEvaluator:
                 logger=self.logger,
                 evaluate_on_completion=evaluate_on_completion
             )
-        self.hook_manager.add_script(self.task_path)
-        self.set_message_handler()
+        if not ("evaluation_setup" in self.config and "scripts" in self.config["evaluation_setup"]):
+            raise RuntimeError("缺少evaluation_setup或script")
+        
+        for script in self.config["evaluation_setup"]["scripts"]:
+            script_path = os.path.realpath(os.path.join(self.task_path,script["path"])) # panic if path is not exist
+            if not os.path.exists(script_path):
+                raise RuntimeError("脚本文件不存在")
+            
+            match script["role"]:
+                case "hook":
+                    if "dependency" in script:
+                        dep_script_list = []
+                        for dep in script["dependency"]:
+                            dep_path = os.path.realpath(os.path.join(self.task_path,dep))
+                            if not os.path.exists(dep_path):
+                                raise RuntimeError("hook dependency文件不存在")
+                            with open(dep_path, 'r') as f:
+                                dep_script_list.append(f.read())
+                        dep_script = "\n".join(dep_script_list)
+                    else:
+                        dep_script = ""
+                    self.hook_manager.add_script(script_path, dep_script)
+                case "handler":    
+                    self.set_message_handler(script_path)
         self.result_collector = ResultCollector(self.session_dir, logger=self.logger)
         self.logger.info(f"评估器初始化完成: {self.task_id}")
 
@@ -161,19 +184,15 @@ class BaseEvaluator:
         self.result_collector.add_event(self.task_id, event_data)
         self.logger.debug(f"记录事件: {event_type} - {data}")
 
-    def set_message_handler(self) -> None:
+    def set_message_handler(self,module_path) -> None:
         # 尝试导入对应的handler模块
         try:
-            handler_path = self.task_path
-            if os.path.exists(handler_path):
-                # 构建模块路径
-                module_path = f"tests.tasks.{self.task_category}.{self.task_id}.handler"
-                self.logger.info(f"尝试导入回调函数模块: {module_path}")
-
-                # 动态导入模块
-                import importlib
-                handler_module = importlib.import_module(module_path)
-
+            if os.path.exists(module_path):
+                spec = importlib.util.spec_from_file_location("handler", module_path)
+                handler_module = importlib.util.module_from_spec(spec)
+                sys.modules["handler"] = handler_module
+                spec.loader.exec_module(handler_module)
+            
                 # 检查模块中是否有message_handler函数
                 if hasattr(handler_module, 'register_handlers'):
                     self.message_handler = handler_module.register_handlers(self)
@@ -181,7 +200,7 @@ class BaseEvaluator:
                 else:
                     self.logger.warning(f"未找到回调函数: {module_path}")
             else:
-                self.logger.warning(f"回调函数文件不存在: {handler_path}")
+                self.logger.warning(f"回调函数文件不存在: {module_path}")
         except Exception as e:
             self.logger.error(f"导入回调函数模块失败: {str(e)}")
 
