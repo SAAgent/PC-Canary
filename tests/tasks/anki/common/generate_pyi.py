@@ -15,14 +15,24 @@ from exanki import *\n"""
     if "events" in data:
         for event_key, event_description in data["events"].items():
             class_name = ''.join(word.capitalize() for word in event_key.split('_'))
-            
             template += f"""
 class Event{class_name}(FridaEvent):
+"""
+            if "wrong" not in event_key:
+                template += f"""
     def __init__(self,value=True):
         super().__init__(\"{event_key}\", value)
-        
+
+"""
+            else:
+               template += f"""
+    def __init__(self,get="",expect=""):
+        super().__init__(\"{event_key}\", f"got {{get}}, expect {{expect}}")
+
+"""
+            template+=f"""
     def describe(self):
-        return f"{event_description}"
+        return "{event_description}"
     """
     template += "\n"
     if "task_parameters" in data:

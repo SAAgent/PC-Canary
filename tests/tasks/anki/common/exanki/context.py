@@ -30,7 +30,7 @@ class StatusType(Enum):
     NONE = None
     
 class Status:
-    def __init__(self,metric:List[FridaEvent],status:StatusType = StatusType.NONE):
+    def __init__(self,metric:List[FridaEvent]=None,status:StatusType = StatusType.NONE):
         self.metric = metric if metric is not None else []
         self.status = status
         
@@ -75,6 +75,10 @@ class Context:
         dst_file = shutil.copy(self.sql_path, self.tmpdirname)
         if os.path.exists(self.sql_path + "-wal"):
             _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
+        else:
+            time.sleep(0.5) # magic number
+            _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
+
         try:
            self.conn = sqlite3.connect(f'file:{dst_file}', uri=True)
         except Exception as e:
