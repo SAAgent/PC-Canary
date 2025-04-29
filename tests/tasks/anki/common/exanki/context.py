@@ -1,16 +1,27 @@
 import os
 import time
-from typing import Dict, Any, Optional, Callable,Tuple,List
+from typing import Dict, Any, Callable,Tuple,List
 import sqlite3
-
-import sqlite3
-
-
 import shutil
 import os
 import tempfile
 from enum import Enum
 from .orm import AnkiObjMap,Deck,Note,Card
+
+class FridaEvent:
+    def __init__(self,key,value):
+        self.key = key
+        self.value = value
+    
+    def __repr__(self):
+        return f"Event(key={self.key}, value={self.value})"
+    
+    def describe(self):
+        pass
+     
+    def into_metric(self) -> Tuple[Any, Any]:
+        return (self.key,self.value)
+        
 
 class StatusType(Enum):
     SUCCESS = "success"
@@ -19,7 +30,7 @@ class StatusType(Enum):
     NONE = None
     
 class Status:
-    def __init__(self,metric:List[Tuple[Any,Any]],status:StatusType = StatusType.NONE):
+    def __init__(self,metric:List[FridaEvent],status:StatusType = StatusType.NONE):
         self.metric = metric if metric is not None else []
         self.status = status
      
@@ -51,9 +62,10 @@ class Context:
         
         
     def _load_snapshot(self):
+        print(self.tmpdirname)
         dst_file = shutil.copy(self.sql_path, self.tmpdirname)
-        if os.path.exists(self.sql_path + "-wal"):
-            _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
+        # if os.path.exists(self.sql_path + "-wal"):
+        _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
         try:
            self.conn = sqlite3.connect(f'file:{dst_file}', uri=True)
         except Exception as e:
@@ -81,7 +93,8 @@ class Context:
     def handle_trace(self,function_name,message,data) -> str:
         if function_name in self.trace_handlers:
             result : Status = self.trace_handlers[function_name](self,message,data)
-            for (key,value) in result.metric: 
+            for v in result.metric: 
+                key,value = v.into_metric()
                 self.evaluator.update_metric(key,value)
             if result.status:
                 return result.status.value
