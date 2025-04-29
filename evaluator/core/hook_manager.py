@@ -12,7 +12,9 @@ class HookManager:
     钩子管理器，负责加载和管理Frida脚本
     """
     
-    def __init__(self, app_path: str = None, args: List[str] = None, logger: Optional[logging.Logger] = None, evaluate_on_completion: bool = False):
+    def __init__(self, app_path: str = None, app_working_cwd: Optional[str] = None,
+                 args: List[str] = None, logger: Optional[logging.Logger] = None,
+                 evaluate_on_completion: bool = False):
         """
         初始化钩子管理器
         
@@ -21,6 +23,7 @@ class HookManager:
         """
         self.scripts = []  # 脚本路径列表
         self.app_path = app_path  # 应用路径
+        self.app_working_cwd = app_working_cwd if app_working_cwd else os.getcwd()
         self.frida_session = None  # Frida会话
         self.loaded_scripts = []  # 已加载的脚本对象
         self.message_handler = None  # 消息处理函数
@@ -120,8 +123,7 @@ class HookManager:
                 self.logger.info(f"正在启动应用: {self.app_path}")
                 self.app_process = subprocess.Popen(
                     cmd,
-                    # TODO:
-                    cwd="/home/agent/anki/",
+                    cwd=self.app_working_cwd,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE
                 )

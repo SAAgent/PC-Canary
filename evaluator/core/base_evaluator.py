@@ -34,7 +34,8 @@ class BaseEvaluator:
     评估器基类，定义通用的评估流程和接口，可被特定任务评估器继承和扩展
     """
 
-    def __init__(self, task: Dict, log_dir: str = "logs", app_path: str = None, custom_params: Dict = None, **kwargs):
+    def __init__(self, task: Dict, log_dir: str = "logs", app_path: str = None,
+                app_working_path = None, custom_params: Dict = None, **kwargs):
         """
         初始化基础评估器
         
@@ -119,6 +120,7 @@ class BaseEvaluator:
         evaluate_on_completion = self.config.get("evaluation_setup", {}).get("evaluate_on_completion", False)
         evaluator_type = self.config.get("evaluation_setup", {}).get("evaluator_type", "HookManager")
         launch_args = self.config.get("application_info", {}).get("args", [])
+        app_working_cwd = self.config.get("application_info", {}).get("cwd", None)
         # 初始化组件，传入统一的logger
         if evaluator_type == "IpcInjector":
             self.hook_manager = IpcInjector(
@@ -137,6 +139,7 @@ class BaseEvaluator:
         else:
             self.hook_manager = HookManager(
                 app_path=app_path,
+                app_working_cwd=app_working_cwd,
                 args=launch_args,
                 logger=self.logger,
                 evaluate_on_completion=evaluate_on_completion
