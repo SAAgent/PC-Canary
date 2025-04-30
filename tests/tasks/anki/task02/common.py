@@ -3,6 +3,10 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common')))
 from exanki import *
 
+deck_added_ : str = "deck_added"  # 数据库中出现卡片
+correct_deck_ : str = "correct_deck"  # 卡片Deck正确
+wrong_deck_ : str = "wrong_deck"  # 卡片Deck不正确
+
 class EventDeckAdded(FridaEvent):
 
     def __init__(self,value=True):

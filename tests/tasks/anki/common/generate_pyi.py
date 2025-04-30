@@ -11,8 +11,10 @@ def generate_event_classes(data: Dict) -> str:
     template = """import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common')))
-from exanki import *\n"""
+from exanki import *\n\n"""
     if "events" in data:
+        for event_key, event_description in data["events"].items():
+            template += f"{event_key}_ : str = \"{event_key}\"  # {event_description}\n"
         for event_key, event_description in data["events"].items():
             class_name = ''.join(word.capitalize() for word in event_key.split('_'))
             template += f"""
@@ -44,6 +46,8 @@ class TaskParameters:
             template += f"    {task_key} : str\n"
         template += f"tp = TaskParameters(**{repr(data['task_parameters'])})\n"
             
+    # generate event name constant
+    
     if "sql_path" not in data:
         raise RuntimeError("sql_path not found in config.json")
     return template

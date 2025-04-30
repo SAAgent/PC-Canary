@@ -79,5 +79,10 @@ const TRACE_MAPS = {
         "storage_remove_deck" : {
             "addr": 0x0000000000714450,
             "filter" : "anki::storage::deck::<impl anki::storage::sqlite::SqliteStorage>::remove_deck$"
+        },
+        "service_undo" : {
+            "addr" : 0x0000000000c5ea30,
+            "filter" : "anki::services::<impl anki::backend::Backend>::undo$"
         }
+
 }

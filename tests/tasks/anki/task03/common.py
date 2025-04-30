@@ -3,6 +3,9 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common')))
 from exanki import *
 
+deck_added_ : str = "deck_added"  # 数据库中添加成功
+deck_removed_ : str = "deck_removed"  # 数据库中删除成功
+
 class EventDeckAdded(FridaEvent):
 
     def __init__(self,value=True):
