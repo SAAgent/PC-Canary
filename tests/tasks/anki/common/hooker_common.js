@@ -84,5 +84,4 @@ const TRACE_MAPS = {
             "addr" : 0x0000000000c5ea30,
             "filter" : "anki::services::<impl anki::backend::Backend>::undo$"
         }
-
-}
+};

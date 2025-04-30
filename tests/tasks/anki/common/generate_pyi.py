@@ -37,7 +37,7 @@ class Event{class_name}(FridaEvent):
         return "{event_description}"
     """
     template += "\n"
-    if "task_parameters" in data:
+    if "task_parameters" in data and data["task_parameters"]:
         template += f"""from dataclasses import dataclass
 @dataclass
 class TaskParameters:
