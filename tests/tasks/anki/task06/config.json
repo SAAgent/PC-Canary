@@ -1,0 +1,40 @@
+{
+    "task_id": "01",
+    "task_name": "添加带有颜色卡片",
+    "description": "添加一张问答题卡片到系统默认，正面为红色的Hello，背面为蓝色的World。",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+    },
+    "instruction_template": "添加一张问答题卡片到系统默认，正面为To be or not to be，其中be和not to be设置为红色，背面为that's a question",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": "数据库中出现卡片",
+        "correct_field": "卡片数据匹配",
+        "wrong_field": "卡片数据不匹配",
+        "correct_format": "卡片格式匹配",
+        "wrong_format": "卡片格式不匹配"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}
