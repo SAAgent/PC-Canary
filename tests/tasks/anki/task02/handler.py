@@ -19,4 +19,11 @@ def handle_storage_add_deck(context: Context,message,data) -> Status:
 TRACE_HANDLERS = {
     "storage_add_deck": handle_storage_add_deck,
 }   
-bind_handlers(TRACE_HANDLERS)
+dependency_graph = {
+    "deck_added" : [],
+    "correct_deck" : ["deck_added"]
+}
+finished_list = [
+    "correct_deck"
+]
+bind_handlers(TRACE_HANDLERS,dependency_graph,finished_list)

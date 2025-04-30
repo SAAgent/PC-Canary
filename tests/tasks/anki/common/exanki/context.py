@@ -22,7 +22,48 @@ class FridaEvent:
     def into_metric(self) -> Tuple[Any, Any]:
         return (self.key,self.value)
         
+class EventMonitor:
+    def __init__(self, dependency_graph: Dict[str, List[str]], finish_events : List[str]):
+        # 依赖关系图：键是事件名，值是该事件依赖的事件列表
+        self.dependency_graph = dependency_graph
+        self.allow_triggered_events: set = set()  # 已触发的事件
+        self.triggered_events: set = set()  # 已触发的事件
+        self.waiting_for: Dict[str, List[str]] = {}  # 记录哪些事件在等待哪些依赖
+        self.finished_events = finish_events
 
+        # 初始化依赖关系
+        for event, dependencies in self.dependency_graph.items():
+            for dep in dependencies:
+                if dep not in self.waiting_for:
+                    self.waiting_for[dep] = []
+                self.waiting_for[dep].append(event)
+            if not dependencies:
+                self.allow_triggered_events.add(event)
+    def trigger_event(self, event: FridaEvent):
+        """触发事件并检查是否可以触发其他依赖该事件的事件"""
+        event = event.key
+        if event not in self.allow_triggered_events:
+            return
+        
+        # 触发当前事件
+        self.triggered_events.add(event)
+        
+        # 检查是否有事件可以被触发
+        if event in self.waiting_for:
+            for dependent_event in self.waiting_for[event]:
+                # 检查所有依赖事件是否已触发
+                if all(dep in self.triggered_events for dep in self.dependency_graph[dependent_event]):
+                    self.allow_triggered_events.add(dependent_event)
+
+    def get_triggered_events(self):
+        return self.triggered_events
+
+    def is_finished(self):
+        return all([condition in self.triggered_events for condition in self.finished_events])
+
+    def is_event_triggered(self,event:FridaEvent):
+        return event.key in self.triggered_events
+    
 class StatusType(Enum):
     SUCCESS = "success"
     PROGRESS = "progress"
@@ -46,7 +87,7 @@ class Status:
     def mark_error(self):
         self.status = StatusType.ERROR 
 class Context:
-    def __init__(self,evaluator):
+    def __init__(self,evaluator,dependency_graph:Dict[str,List[str]],finished_events:List[str]):
         self.evaluator = evaluator
         sql_path = evaluator.config["sql_path"]
         self.config = evaluator.config
@@ -56,6 +97,7 @@ class Context:
         self.start_time = time.time() 
         self.tmpdirname = tempfile.mkdtemp()
         self.trace_handlers = {}
+        self.monitor = EventMonitor(dependency_graph,finished_events)
         self.log("info",f"tmp path={self.tmpdirname}")
         
 
@@ -71,9 +113,15 @@ class Context:
         AnkiObjMap().clear()
         self._load_snapshot()
 
-    def _load_snapshot(self):
+    def _load_snapshot(self,ref_time=None):
+        if os.path.exists(os.path.join(self.tmpdirname,"collection.anki2")):
+            os.unlink(os.path.join(self.tmpdirname,"collection.anki2"))
+        if os.path.exists(os.path.join(self.tmpdirname,"collection.anki2-wal")):
+            os.unlink(os.path.join(self.tmpdirname,"collection.anki2-wal"))
         dst_file = shutil.copy(self.sql_path, self.tmpdirname)
+        time.sleep(0.3)
         _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
+        
 
         try:
            self.conn = sqlite3.connect(f'file:{dst_file}', uri=True)
@@ -103,6 +151,9 @@ class Context:
         if function_name in self.trace_handlers:
             result : Status = self.trace_handlers[function_name](self,message,data)
             for v in result.metric: 
+                self.monitor.trigger_event(v)
+                if self.monitor.is_finished():
+                    result.mark_success()
                 key,value = v.into_metric()
                 self.evaluator.update_metric(key,value)
             if result.status:

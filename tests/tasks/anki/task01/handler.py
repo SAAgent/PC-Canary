@@ -13,17 +13,26 @@ def handle_storage_add_card(context: Context,message,data) -> Status:
     status.emit(EventCardAdded())
     if len(note.fields) == 2 and note.fields[0] == tp.first_field and note.fields[1] == tp.second_field:
         status.emit(EventCorrectField())
-        deck = latest.get_deck()
-        if deck.name == "系统默认":
-            status.emit(EventCorrectDeck())
-            status.mark_success()
-        else:
-            status.emit(EventWrongDeck("系统默认",deck.name))
     else:
         status.emit(EventWrongField(note.fields,f"[{tp.first_field} {tp.second_field}]"))
+    deck = latest.get_deck()
+    if deck and deck.name == "系统默认":
+        status.emit(EventCorrectDeck())
+    else:
+        status.emit(EventWrongDeck("系统默认",deck.name))
+
     return status
       
 TRACE_HANDLERS = {
     "storage_add_card": handle_storage_add_card
 }   
-bind_handlers(TRACE_HANDLERS)
+dependency_graph = {
+    "card_added" : [],
+    "correct_field" : ["card_added"],
+    "correct_deck" : ["card_added"]
+}
+finished_list = [
+    "correct_field","correct_deck"
+]
+
+bind_handlers(TRACE_HANDLERS,dependency_graph,finished_list)
