@@ -1,0 +1,42 @@
+{
+    "task_id": "04",
+    "task_name": "删除某个牌组,然后撤销操作",
+    "description": "添加一个\"ielts\"的牌组，删除，然后撤销删除",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "deck_name": "ielts"
+    },
+    "instruction_template": "添加一个\"${deck_name}\"的牌组，删除，然后撤销删除",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "deck_added": "数据库中添加成功",
+        "deck_removed": "数据库中删除成功",
+        "undo_removed": "撤销删除"
+    },
+    "success_conditions": [
+        "deck_removed"
+    ],
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}
