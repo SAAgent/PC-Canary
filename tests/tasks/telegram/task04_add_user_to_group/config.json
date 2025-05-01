@@ -21,16 +21,20 @@
 		  { "role": "hook",    "path": "hooker.js" },
 		  { "role": "handler", "path": "handler.py" }
 		],
-        "timeout": 180 
+        "timeout": 180
     },
 	"preconditions": {
 	  "telegram_running": true,
 	  "user_logged_in": true,
 	  "group_exists": true
 	},
-	"success_conditions": [
-	  "updated_chat_info"
-	],
+    "key_steps": {
+        "total_steps": 2,
+        "step_names": {
+            "1": "找到目标群组",
+            "2": "确认用户已添加"
+        }
+    },   
     "events": {
         "script_initialized": "钩子脚本初始化",
         "found_group": "找到了目标群组",
