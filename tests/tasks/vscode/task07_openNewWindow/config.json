@@ -1,0 +1,59 @@
+{
+    "task_id": "07",
+    "task_name": "open_new_window",
+    "description": "将指定目录在一个新的vscode应用窗口中打开",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "work_space_dir": "/root/C-Plus-Plus/data_structures"
+    },
+
+    "instruction_template": "在当前vscode窗口上附加新的窗口, 并且在新窗口打开目录 ${work_space_dir}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": false
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "get_work_spaces": {
+            "description": "获取已经打开的工作区的目录",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功打开工作区"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

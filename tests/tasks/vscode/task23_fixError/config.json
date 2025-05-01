@@ -1,0 +1,61 @@
+{
+    "task_id": "23",
+    "task_name": "fix_error",
+    "description": "在vscode中打开文件, 并且修复所有的报错",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "filename": "fix_error.cpp",
+        "expected_file_content": "#include<cmath>#include<complex>#include<iostream>#include<stdexcept>#include<vector>constdoublePI=3.14159265358979323846;classFftCalculator{private:voidbutterflyTransform(std::vector<std::complex<double>>&inputData,boolisInverse){size_tdataSize=inputData.size();if(dataSize<=1)return;if((dataSize&(dataSize-1))!=0){throwstd::invalid_argument(\"Inputsizemustbepowerof2\");}for(size_ti=0,j=0;i<dataSize;++i){if(j>i){std::swap(inputData[i],inputData[j]);}size_tm=dataSize;while(j&(m>>=1)){j&=~m;}j|=m;}for(size_tstage=1;stage<dataSize;stage<<=1){size_thalfSize=stage;size_tstepSize=stage<<1;doubleangleFactor=(isInverse?PI:-PI)/halfSize;for(size_ti=0;i<dataSize;i+=stepSize){for(size_tj=0;j<halfSize;++j){autotwiddleFactor=std::polar(1.0,angleFactor*j);autotemp=inputData[i+j+halfSize]*twiddleFactor;inputData[i+j+halfSize]=inputData[i+j]-temp;inputData[i+j]+=temp;}}}if(isInverse){for(auto&value:inputData){value/=dataSize;}}}public:std::vector<std::complex<double>>computeFft(conststd::vector<double>&inputSignal){size_tsignalSize=inputSignal.size();std::vector<std::complex<double>>complexInput(signalSize);for(size_ti=0;i<signalSize;++i){complexInput[i]=std::complex<double>(inputSignal[i],0.0);}butterflyTransform(complexInput,false);returncomplexInput;}std::vector<std::complex<double>>computeInverseFft(conststd::vector<std::complex<double>>&inputSpectrum){std::vector<std::complex<double>>result=inputSpectrum;butterflyTransform(result,true);returnresult;}};intmain(){try{FftCalculatorfftCalc;std::vector<double>testSignal={1.0,2.0,3.0,4.0,0.0,0.0,0.0,0.0};autofftResult=fftCalc.computeFft(testSignal);autoinverseResult=fftCalc.computeInverseFft(fftResult);for(size_ti=0;i<fftResult.size();++i){std::cout<<\"FFT[\"<<i<<\"]=\"<<fftResult[i]<<\",Inverse[\"<<i<<\"]=\"<<inverseResult[i]<<std::endl;}std::cout<<\"thelengthoftestSignalis\"<<std::endl;std::cout<<testSignal.size()<<std::endl;}catch(conststd::exception&e){std::cerr<<\"Error:\"<<e.what()<<std::endl;return1;}return0;}",
+        "expected_file_path": "/root/C-Plus-Plus/agent_test/fix_error.cpp"
+    },
+
+    "instruction_template": "在vscode中打开名为 ${filename} 的文件, 并且理解文件内容, 修复所有的报错, 包括函数名称错误、拼写错误、命名空间错误等等, 修改直到没有任何vscode报错提示",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务完成时检查任务是否完成",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "任务成功完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

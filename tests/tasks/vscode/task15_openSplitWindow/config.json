@@ -1,0 +1,74 @@
+{
+    "task_id": "15",
+    "task_name": "open_split_window",
+    "description": "在vscode中以拆分窗口的形式打开两个文件",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "first_file": "bubble_sort.cpp",
+        "second_file": "bead_sort.cpp",
+        "expected_first_path": "/root/C-Plus-Plus/sorting/bubble_sort.cpp",
+        "expected_second_path": "/root/C-Plus-Plus/sorting/bead_sort.cpp"
+    },
+
+    "instruction_template": "在vscode窗口中以左右拆分窗口的形式打开 ${first_file} 和 ${second_file} 两个文件",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 3,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "open_file1": {
+            "description": "成功打开目标1文件",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "打开文件1"
+        },
+        "open_file2": {
+            "description": "成功打开目标2文件",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "打开文件2"
+        },
+        "evaluate_on_completion": {
+            "description": "在任务结束时检查任务是否完成",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "任务成功完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

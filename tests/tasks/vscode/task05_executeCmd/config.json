@@ -1,0 +1,66 @@
+{
+    "task_id": "05",
+    "task_name": "execute_command_in_vscode_terminal",
+    "description": "在vscode中打开终端, 并且在终端执行命令",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "dir": "/root/C-Plus-Plus/data_structures",
+        "cmd": "tree"
+    },
+
+    "instruction_template": "在vscode当前工作区中打开终端, 并且在终端中切换到 ${dir} 目录下执行命令 ${cmd}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": false
+    },
+    "total_key_steps": 2,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "command_execute": {
+            "description": "检测到终端执行命令",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "在终端执行命令"
+        },
+        "create_terminal": {
+            "description": "检测到创建新的终端",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "创建终端"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

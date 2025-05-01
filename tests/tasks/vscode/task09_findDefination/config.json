@@ -1,0 +1,69 @@
+{
+    "task_id": "09",
+    "task_name": "findDefination",
+    "description": "在当前工作区中搜索特定类的运算符重载函数定义, 并且函数的return语句处打断点",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "class_name": "uint256_t",
+        "operator": "+=",
+        "expected_file": "/root/C-Plus-Plus/ciphers/uint256_t.hpp",
+        "expected_line_begin": 241,
+        "expected_line_end": 248
+    },
+
+    "instruction_template": "在当前工作区中搜索 class ${class_name} 的 ${operator} 运算符的重载函数定义, 并且在该函数的return位置打断点, 并不需要开启debug会话",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务完成时检查断点设置情况",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "任务成功完成"
+        },
+        "open_file": {
+            "description": "成功打开目标文件",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "打开文件"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

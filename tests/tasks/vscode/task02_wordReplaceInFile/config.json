@@ -1,0 +1,73 @@
+{
+    "task_id": "02",
+    "task_name": "word_replace_in_file",
+    "description": "在vscode工作区文件中打开文件并且进行内容替换",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "file_name": "bubble_sort.cpp",
+        "origin_name": "swap_check",
+        "expected_name": "swap_flag",
+
+        "expected_path": "/root/C-Plus-Plus/sorting/bubble_sort.cpp"
+    },
+
+    "instruction_template": "在vscode当前的工作区中找到并打开名为 ${file_name} 的文件, 将文件中名为 ${origin_name} 的内容替换为 ${expected_name}, 请注意文件的保存",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "open_file": {
+            "description": "打开文件",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "在vscode中打开文件"
+        },
+        "evaluate_on_completion": {
+            "description": "任务结束时读取文件内容",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "任务结束判断文件内容是否正确"
+        },
+        "read_origin_content": {
+            "description": "在任务开始时读取文件内容",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

@@ -1,0 +1,61 @@
+{
+    "task_id": "21",
+    "task_name": "checkout_branch",
+    "description": "在vscode中切换当前工作区的git分支",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "branch_name": "gh-pages",
+        "commit_message": "temp commit for checkout",
+        "origin_branch": "master"
+    },
+
+    "instruction_template": "在vscode当前打开的工作区中切换当前工作区的git分支为 ${branch_name}, 如果当前含有没有提交的修改, 则将所有的修改提交, 提交的message填写 ${commit_message} (你需要确定当前vscode打开的工作目录路径, 调用bash并不会在当前vscode的工作目录执行命令)",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务完成时检查git信息",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "任务成功完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

@@ -1,0 +1,97 @@
+{
+    "task_id": "08",
+    "task_name": "start_cpp_debug",
+    "description": "在当前工作区中打开文件, 在特定位置添加断点, 开启debug会话",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "file_name": "/root/C-Plus-Plus/sorting/bubble_sort.cpp",
+        "breakpoints": {
+            "78": "i==2",
+            "80": "None",
+            "98": "None"
+        },
+        "hit_file": "/root/C-Plus-Plus/sorting/bubble_sort.cpp",
+        "hit_line": 98,
+        "expected_program": "/root/C-Plus-Plus/sorting/bubble_sort"
+    },
+
+    "instruction_template": "在当前已经打开的vscode工作区中打开名为 ${file_name} 的文件, 断点的行号和断点的条件分别为如下对应关系: ${breakpoints}, 并且使用名为'c++ debug'的debug配置开启debug会话",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 6,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "open_file": {
+            "description": "成功打开目标文件",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "打开文件"
+        },
+        "breakpoint_change_78": {
+            "description": "添加或者修改78行断点信息",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "成功添加或者修改78行断点信息"
+        },
+        "breakpoint_change_80": {
+            "description": "添加或者修改80行断点信息",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "成功添加或者修改80行断点信息"
+        },
+        "breakpoint_change_98": {
+            "description": "添加或者修改98行断点信息",
+            "is_key_step": true,
+            "key_step_index": 4,
+            "key_step_name": "成功添加或者修改98行断点信息"
+        },
+        "debug_session_start": {
+            "description": "开启debug会话",
+            "is_key_step": true,
+            "key_step_index": 5,
+            "key_step_name": "成功开启debug会话"
+        },
+        "evaluate_on_completion": {
+            "description": "在任务完成时检查debug会话的状态",
+            "is_key_step": true,
+            "key_step_index": 6,
+            "key_step_name": "任务成功完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

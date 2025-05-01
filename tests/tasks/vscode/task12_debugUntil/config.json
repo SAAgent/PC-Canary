@@ -1,0 +1,108 @@
+{
+    "task_id": "12",
+    "task_name": "debug_until",
+    "description": "在vscode中打开特定目录, 配置调试c++的配置文件, 打开文件, 设置断点, 开始调试直到触发特定条件",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "directory": "/root/C-Plus-Plus/agent_test",
+        "file_name": "debug_until.cpp",
+        "breakpoints": {
+            "17": "i==3",
+            "19": "j==2",
+            "22": ""
+        },
+        "state": "next=5",
+        "expected_hit_file": "/root/C-Plus-Plus/agent_test/debug_until.cpp",
+        "expected_hit_line": 22,
+        "expected_locals": {
+            "next": "5",
+            "place": "1",
+            "i": "5",
+            "n": "10",
+            "k": "2",
+            "seq.[0]": "3",
+            "seq.[1]": "2"
+        },
+        "expected_program": "/root/C-Plus-Plus/agent_test/debug_until"
+    },
+
+    "instruction_template": "在vscode中将工作区切换到 ${directory} 目录, 配置调试 ${file_name} 的配置文件, 然后打开该文件, 设置断点, 断点的行号和条件如下: ${breakpoints}, 最后开始调试, 一直continue到 ${state}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 6,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "open_file": {
+            "description": "成功打开目标文件",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "打开文件"
+        },
+        "breakpoint_change_17": {
+            "description": "添加或者修改17行断点信息",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "成功添加或者修改17行断点信息"
+        },
+        "breakpoint_change_19": {
+            "description": "添加或者修改19行断点信息",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "成功添加或者修改19行断点信息"
+        },
+        "breakpoint_change_22": {
+            "description": "添加或者修改22行断点信息",
+            "is_key_step": true,
+            "key_step_index": 4,
+            "key_step_name": "成功添加或者修改22行断点信息"
+        },
+        "debug_session_start": {
+            "description": "开启debug会话",
+            "is_key_step": true,
+            "key_step_index": 5,
+            "key_step_name": "成功开启debug会话"
+        },
+        "evaluate_on_completion": {
+            "description": "在任务结束时检查插件是否已经安装",
+            "is_key_step": true,
+            "key_step_index": 6,
+            "key_step_name": "任务成功完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}
