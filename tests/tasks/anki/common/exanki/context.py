@@ -1,6 +1,6 @@
 import os
 import time
-from typing import Dict, Any, Callable,Tuple,List
+from typing import Dict, Any, Callable, Optional,Tuple,List
 import sqlite3
 import shutil
 import os
@@ -63,6 +63,9 @@ class EventMonitor:
 
     def is_event_triggered(self,event:FridaEvent):
         return event.key in self.triggered_events
+
+    def should_event_trigger(self,event:FridaEvent):
+        return event.key in self.allow_triggered_events
     
 class StatusType(Enum):
     SUCCESS = "success"
@@ -151,7 +154,9 @@ class Context:
     
     def handle_trace(self,function_name,message,data) -> str:
         if function_name in self.trace_handlers:
-            result : Status = self.trace_handlers[function_name](self,message,data)
+            result : Optional[Status] = self.trace_handlers[function_name](self,message,data)
+            if not (result and isinstance(result,Status)):
+                return None
             for v in result.metric: 
                 self.monitor.trigger_event(v)
                 if self.monitor.is_finished():
@@ -174,3 +179,6 @@ class Context:
 
     def get_current_time_used(self):
         return time.time() - self.start_time
+
+    def should_event_trigger(self,event: FridaEvent):
+        return self.monitor.should_event_trigger(event)
