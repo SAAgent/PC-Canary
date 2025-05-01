@@ -89,4 +89,8 @@ const TRACE_MAPS = {
             "addr" : 0x0000000000c80ca0,
             "filter" : "anki::services::<impl anki::backend::Backend>::search_cards$"
         },
+        "service_clear_unused_tags" : {
+            "addr" : 0x0000000000492a70,
+            "filter" : "anki::tags::service::<impl anki::services::TagsService for anki::collection::Collection>::clear_unused_tags$"
+        }
 };

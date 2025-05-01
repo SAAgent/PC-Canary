@@ -281,3 +281,30 @@ class Collection(AnkiObjMixin):
     @classmethod
     def generate_hash(cls, id: int) -> Tuple[str, str]:
         return ("col", f"{id}")
+
+@dataclass
+class Tag(AnkiObjMixin):
+    tag: str
+    usn: int
+
+    def __post_init__(self):
+        super().__init__()
+
+    @classmethod
+    def from_row(cls, row: tuple) -> "Tag":
+        """row 是 (tag, usn, collapsed, config)"""
+        return cls(
+            tag=row[0],
+            usn=row[1],
+
+        )
+
+    def __repr__(self):
+        return f"<Tag tag={self.tag} usn={self.usn}>"
+
+    def anki_hash(self) -> Tuple[str, str]:
+        return self.generate_hash(self.tag)
+    
+    @classmethod
+    def generate_hash(cls, id: int) -> Tuple[str, str]:
+        return ("tag", f"{id}")
