@@ -6,6 +6,7 @@ import datetime
 from dataclasses import dataclass, field
 from typing import Optional, List, Protocol,Tuple
 import weakref
+import json
 
     
 class AnkiObj(Protocol):
@@ -250,3 +251,33 @@ class Deck(AnkiObjMixin):
     @classmethod
     def generate_hash(cls,id:str) -> str:
         return ("deck",f"{id}")
+
+@dataclass
+class Collection(AnkiObjMixin):
+    id: int
+    crt: datetime.datetime
+    mod: datetime.datetime
+    scm: int
+
+    def __post_init__(self):
+        super().__init__()
+
+    @classmethod
+    def from_row(cls, row: tuple) -> "Collection":
+        """row 是 (id, crt, mod, scm, vers)"""
+        return cls(
+            id=row[0],
+            crt=datetime.datetime.fromtimestamp(int(row[1])),
+            mod=datetime.datetime.fromtimestamp(int(row[2]) / 1000),
+            scm=row[3]
+        )
+
+    def __repr__(self):
+        return (f"<Collection id={self.id} ver={self.ver} mod={self.mod.isoformat()}")
+
+    def anki_hash(self) -> Tuple[str, str]:
+        return self.generate_hash(self.id)
+
+    @classmethod
+    def generate_hash(cls, id: int) -> Tuple[str, str]:
+        return ("col", f"{id}")
