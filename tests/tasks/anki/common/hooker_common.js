@@ -100,5 +100,9 @@ const TRACE_MAPS = {
         "service_find_and_replace" : {
             "addr" : 0x0000000000c80e00,
             "filter" : "anki::services::<impl anki::backend::Backend>::find_and_replace$"
-        }
+       },
+       "storage_set_config" : {
+            "addr" : 0x000000000070e520,
+            "filter" : "anki::storage::config::<impl anki::storage::sqlite::SqliteStorage>::set_config_entry$"
+       }
 };

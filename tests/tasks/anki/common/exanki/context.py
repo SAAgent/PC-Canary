@@ -142,7 +142,7 @@ class Context:
         cur.execute("SELECT * FROM config;")
         self.anki_config = {}
         for t in cur.fetchall():
-            self.anki_config[t[0]] = t[3]
+            self.anki_config[t[0]] = json.loads(t[3].decode('utf-8'))
 
         
     def __del__(self):
