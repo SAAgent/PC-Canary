@@ -1,0 +1,40 @@
+{
+    "task_id": "08",
+    "task_name": "创建一张卡片，正面的内容是\"What is a computer\",查找所有带有Computer的卡片，设置这些卡片到期日为4天",
+    "description": "创建一张卡片，正面的内容是\"What is a computer\",查找所有带有Computer的卡片，设置这些卡片到期日为4天",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "search_keyword" : "computer",
+        "due_days" : "4"
+    },
+    "instruction_template": "创建一张卡片，正面的内容是\"What is a ${search_keyword}\",查找所有带有${search_keyword}的卡片，设置这些卡片到期日为随机选择${due_days}天",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": "数据库中出现卡片",
+        "search_card_called": "调用了查找函数",
+        "update_card_expiration_date" : "更新了卡片过期日期"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}

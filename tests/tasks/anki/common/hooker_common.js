@@ -64,6 +64,7 @@ const TRACE_MAPS = {
         },
         "storage_update_card": {
             "addr": 0x0000000000705e40,
+            "filter" : "anki::storage::card::<impl anki::storage::sqlite::SqliteStorage>::update_card"
         },
         "storage_add_note": {
             "addr": 0x000000000071ec60,
@@ -83,5 +84,9 @@ const TRACE_MAPS = {
         "service_undo" : {
             "addr" : 0x0000000000c5ea30,
             "filter" : "anki::services::<impl anki::backend::Backend>::undo$"
-        }
+        },
+        "service_serach_cards" : {
+            "addr" : 0x0000000000c80ca0,
+            "filter" : "anki::services::<impl anki::backend::Backend>::search_cards$"
+        },
 };
