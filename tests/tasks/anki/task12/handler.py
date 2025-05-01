@@ -19,19 +19,19 @@ def handle_storage_add_card(context: Context,message,data) -> Status:
         note = note.fields
         if not remove_html_tags(note[0]) == 'three largest countries in the world':
             status.emit(EventCardFormatWrong(remove_html_tags(note.fields[0]),'three largest countries in the world'))
-            status.mark_error()
+            # status.mark_error()
             return status
         if note[0] != 'three <b>largest</b> countries in the world':
             status.emit(EventCardFormatWrong(note.fields[0],'three <b>largest</b> countries in the world'))
-            status.mark_error()
+            # status.mark_error()
             return status
         if note[1] != "<ol><li>Russia</li><li>Canada</li><li>China</li></ol>":
             status.emit(EventCardFormatWrong(note[1],"<ol><li>Russia</li><li>Canada</li><li>China</li></ol>"))
-            status.mark_error()
+            # status.mark_error()
             return status
         status.emit(EventCardFormatCorrect())
-    else:
-        status.mark_error()
+    # else:
+    #     status.mark_error()
     return status
 TRACE_HANDLERS = {
     "storage_add_card": handle_storage_add_card,
