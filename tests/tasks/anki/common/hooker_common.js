@@ -92,5 +92,9 @@ const TRACE_MAPS = {
         "service_clear_unused_tags" : {
             "addr" : 0x0000000000492a70,
             "filter" : "anki::tags::service::<impl anki::services::TagsService for anki::collection::Collection>::clear_unused_tags$"
+        },
+        "service_add_media_file" : {
+            "addr" : 0x0000000000c87ef0,
+            "filter" : "anki::services::<impl anki::backend::Backend>::add_media_file$"
         }
 };
