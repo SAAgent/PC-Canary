@@ -1,0 +1,38 @@
+{
+    "task_id": "09",
+    "task_name": "添加一个标签，名字为计算机科学",
+    "description": "创建一张卡片，正面的内容是\"explain quick sort algorithm\",标签为cs",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "tag_name" : "cs"
+    },
+    "instruction_template": "创建一张卡片，正面的内容是\"explain quick sort algorithm\",标签为${tag_name}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": "添加了卡片",
+        "tag_added": "添加了标签"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}
