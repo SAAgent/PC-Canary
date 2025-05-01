@@ -10,8 +10,9 @@ def handle_storage_add_card(context: Context,message,data) -> Status:
     context.update_database()
     latest_card : Card = sorted(AnkiObjMap().array_by_type("card"),key=lambda x: x.mod,reverse=True)[0]
     note = latest_card.get_note()
+    status = Status()
     if len(note.fields) == 2:
-        status = Status(status=StatusType.PROGRESS)
+        status = Status.mark_progress()
         status.emit(EventCardAdded())
     
     if tp.tag_name in note.tags:
