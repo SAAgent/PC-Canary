@@ -1,0 +1,37 @@
+{
+    "task_id": "15",
+    "task_name": "搁置",
+    "description": "设置标签为delay的卡片为搁置",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "tag_name" : "delay"
+    },
+    "instruction_template": "设置标签为${tag_name}的卡片为搁置",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "delay" : "搁置成功"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}

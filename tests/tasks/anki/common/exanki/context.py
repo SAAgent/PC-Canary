@@ -7,6 +7,7 @@ import os
 import tempfile
 from enum import Enum
 from .orm import AnkiObjMap,Deck,Note,Card,Collection
+import json
 
 class FridaEvent:
     def __init__(self,key,value):
@@ -138,8 +139,10 @@ class Context:
         self.notes = [Note.from_row(i) for i in cur.fetchall()]
         cur.execute("SELECT * FROM decks;")
         self.decks = [Deck.from_row(i) for i in cur.fetchall()]
-        cur.execute("SELECT id, crt, mod, scm from col;")
-        self.col = Collection.from_row(cur.fetchall()[0])
+        cur.execute("SELECT * FROM config;")
+        self.anki_config = {}
+        for t in cur.fetchall():
+            self.anki_config[t[0]] = t[3]
 
         
     def __del__(self):
