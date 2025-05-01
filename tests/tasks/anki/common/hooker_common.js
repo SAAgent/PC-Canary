@@ -96,5 +96,9 @@ const TRACE_MAPS = {
         "service_add_media_file" : {
             "addr" : 0x0000000000c87ef0,
             "filter" : "anki::services::<impl anki::backend::Backend>::add_media_file$"
+        },
+        "service_find_and_replace" : {
+            "addr" : 0x0000000000c80e00,
+            "filter" : "anki::services::<impl anki::backend::Backend>::find_and_replace$"
         }
 };
