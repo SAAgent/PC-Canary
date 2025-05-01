@@ -1,0 +1,36 @@
+{
+    "task_id": "11",
+    "task_name": "添加填空卡片",
+    "description": "添加一个填空题卡片到系统默认，内容为The capital of China is Beijing，对Beijing进行挖空",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "instruction_template": "添加一个填空题卡片到系统默认，内容为The capital of China is Beijing，对Beijing进行挖空",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": "添加了卡片",
+        "card_format_correct": "卡片格式匹配",
+        "card_format_wrong": "卡片格式不匹配"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}
