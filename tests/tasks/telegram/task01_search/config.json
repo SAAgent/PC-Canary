@@ -20,7 +20,13 @@
           { "role": "hook",    "path": "hooker.js" },
           { "role": "handler", "path": "handler.py" }
         ],
-        "timeout": 120
+        "timeout": 180
+    },
+    "key_steps": {
+        "total_steps": 1,
+        "step_names": {
+            "1": "搜索结果更新并匹配"
+        }
     },
     "preconditions": {
       "telegram_running": true,
