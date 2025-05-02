@@ -173,7 +173,7 @@ def list_available_tasks():
                 except:
                     pass
 
-            print(f"  - 任务: {task} {task_desc}")
+                print(f"  - 任务: {task} {task_desc}")
 
         print("-" * 60)
 
