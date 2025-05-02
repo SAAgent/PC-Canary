@@ -24,7 +24,6 @@ from env.controller.code_execution_controller import CodeExecutionController
 from utils.logger import AgentLogger
 
 
-
 def create_model(model_type, api_key):
     """
     创建模型实例
@@ -65,9 +64,9 @@ def create_model(model_type, api_key):
             raise ValueError("使用 Claude 模型需要提供 API Key (通过 --api_key 或 ANTHROPIC_API_KEY 环境变量)")
         return ClaudeModel(
             api_key=api_key,
-            model_name="claude-3-sonnet-20240229",
+            model_name="claude-3-7-sonnet-latest",
             temperature=0.2,
-            max_tokens=2048
+            max_tokens=2048,
         )
     else:
         raise ValueError(f"不支持的模型类型: {model_type}")

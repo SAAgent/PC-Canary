@@ -111,9 +111,9 @@ def main():
                         help="日志目录 (默认: logs)")
     parser.add_argument("--timeout", type=int, default=300,
                         help="超时时间，秒 (默认: 300)")
-    
+
     args = parser.parse_args()
-    
+
     # 检查API密钥
     api_key = args.api_key
     if args.model == 'openai':
@@ -142,20 +142,19 @@ def main():
             raise ValueError("使用 Claude 模型需要提供 API Key (通过 --api_key 或 ANTHROPIC_API_KEY 环境变量)")
         model = ClaudeModel(
             api_key=api_key,
-            model_name="claude-3-sonnet-20240229",
+            model_name="claude-3-7-sonnet-latest",
             temperature=0.2,
-            max_tokens=2048
+            max_tokens=2048,
         )
     else:
         raise ValueError(f"不支持的模型类型: {args.model}")
 
-        
     # 检查应用路径
     if not os.path.exists(args.app_path):
         print(f"警告: Telegram应用路径不存在: {args.app_path}")
         if input("是否继续执行? (y/n): ").lower() != 'y':
             return 1
-    
+
     # 创建控制器
     controller = CodeExecutionController()
     # 创建Agent
@@ -166,7 +165,7 @@ def main():
         "id": "task01_search",
     }
     evaluator = BaseEvaluator(task, args.log_dir, args.app_path)
-    
+
     # 设置信号处理
     def _signal_handler(sig, frame):
         """信号处理函数"""
@@ -176,7 +175,7 @@ def main():
             evaluator.stop()
             evaluator.stop_app()
         sys.exit(0)
-    
+
     signal.signal(signal.SIGINT, _signal_handler)
     os.makedirs(args.log_dir, exist_ok=True)
 
@@ -190,17 +189,17 @@ def main():
 
     # 注册回调函数
     evaluator.register_completion_callback(handle_evaluator_event)
-    
+
     print("[*] 启动评估器...")
     success = evaluator.start()
     if not success:
         print("评估器启动失败")
         return 1
-    
+
     global start_time
     # 记录开始时间
     start_time = time.time()
-    
+
     # 定义Telegram搜索任务指令
     instructions = """
     任务：在Telegram应用中执行搜索操作
@@ -211,15 +210,15 @@ def main():
     3. 在搜索框中输入"news"
     4. 等待搜索结果显示
     """
-    
+
     # 运行Agent系统
     agent_success = False
     try:
         print("\n[*] 开始执行Agent系统...")
-        
+
         # 执行步骤
         step_index = 0
-        
+
         while step_index < args.max_steps and not evaluation_finished:
             print(f"\n执行步骤 {step_index+1}/{args.max_steps}")
             current_time = time.time() # For event timestamps
@@ -247,6 +246,7 @@ def main():
             })
             action_code = None
             thought = None
+            usage_info = None # Initialize usage_info before try block
             llm_error = None
             llm_success = False
             try:
@@ -301,15 +301,15 @@ def main():
                 agent_success = False
                 reasoning = returned_args.get('reasoning', 'No reasoning provided') if returned_args else 'No reasoning provided'
                 # Optionally record an event here if needed, though handler might record TASK_END
-                # evaluator.record_event(...) 
+                # evaluator.record_event(...)
                 break # Exit the main loop
 
-            # --- If it's code, proceed with execution --- # 
+            # --- If it's code, proceed with execution --- #
             action_code = returned_action # Now we know it should be code
             if not isinstance(action_code, str):
-                 print(f"错误: agent.act 返回的动作不是预期的代码字符串或特殊指令: {action_code}")
-                 time.sleep(1)
-                 continue
+                print(f"错误: agent.act 返回的动作不是预期的代码字符串或特殊指令: {action_code}")
+                time.sleep(1)
+                continue
 
             # --- Action (Tool) 执行事件 --- #
             print(f"准备执行动作代码: {action_code[:100]}...") # Log snippet
@@ -358,14 +358,14 @@ def main():
             step_index += 1
             # 短暂等待以允许回调处理
             time.sleep(0.5)
-        
+
         # 打印Agent执行结果
         print(f"\n[*] Agent执行{'成功' if agent_success else '失败'}")
-        
+
         # 等待评估器完成处理
         print("[*] 等待评估器完成处理...")
         time.sleep(3)
-        
+
     except KeyboardInterrupt:
         print("\n[!] 用户中断执行")
     except Exception as e:
@@ -377,11 +377,11 @@ def main():
         if evaluator.is_running:
             print("\n[*] 停止评估器...")
             evaluator.stop()
-        
+
         # 停止应用
         if hasattr(evaluator, 'stop_app'):
             evaluator.stop_app()
-    
+
     agent_success, eval_success = _generate_report(evaluator, agent_success)
     overall_success = agent_success and eval_success
     print(f"\n总体执行结果: {'成功' if overall_success else '失败'}")
