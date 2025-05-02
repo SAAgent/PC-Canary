@@ -92,38 +92,44 @@ class ResultCollector:
                 self.logger.error(f"注册标准指标 {metric_cls.__name__} (任务 {task_id}) 失败: {e}", exc_info=True)
 
         # --- 2. 注册任务特定指标 (示例: KeyStepMetric) ---
-        # 查找任务配置中关于关键步骤的信息
-        key_steps_info = task_config.get('key_steps')
-        if key_steps_info and isinstance(key_steps_info, dict):
-            total_steps = key_steps_info.get('total_steps')
-            step_names_config = key_steps_info.get('step_names') # Optional map {index_str: name}
+        # 获取总步骤数
+        total_steps = task_config.get('total_key_steps', 0)
 
-            if isinstance(total_steps, int) and total_steps > 0:
-                # 解析步骤名称映射 (将 key 从 str 转为 int) TODO 这是在干什么
-                parsed_step_names = {}
-                if isinstance(step_names_config, dict):
-                    for k, v in step_names_config.items():
-                        try:
-                            parsed_step_names[int(k)] = v
-                        except (ValueError, TypeError):
-                            self.logger.warning(f"无法将步骤名称键 '{k}' 转换为整数 (任务 {task_id})，已忽略。")
+        if isinstance(total_steps, int) and total_steps > 0:
+            # 构建 step_names 映射
+            parsed_step_names = {}
+            event_configs = task_config.get('events', {})
+            if isinstance(event_configs, dict):
+                for event_name, event_config in event_configs.items():
+                    if isinstance(event_config, dict) and event_config.get('is_key_step'):
+                        idx = event_config.get('key_step_index')
+                        name = event_config.get('key_step_name')
+                        if isinstance(idx, int) and idx > 0 and isinstance(name, str):
+                            if idx not in parsed_step_names: # 防止重复（虽然 BaseEvaluator 也检查了）
+                                parsed_step_names[idx] = name
+                            else:
+                                self.logger.warning(f"任务 {task_id} 配置的 events 中存在重复的关键步骤索引 {idx}，使用第一个名称 '{parsed_step_names[idx]}'")
 
-                try:
-                    instance = KeyStepMetric(
-                        total_steps=total_steps,
-                        step_names=parsed_step_names,
-                        logger=self.logger.getChild(KeyStepMetric.__name__)
-                    )
-                    metrics_to_register.append(instance)
-                    self.logger.debug(f"注册任务特定指标: {instance.get_name()} for task {task_id}")
-                except ValueError as ve:
-                        self.logger.error(f"注册 KeyStepMetric (任务 {task_id}) 失败: {ve}")
-                except Exception as e:
-                     self.logger.error(f"注册 KeyStepMetric (任务 {task_id}) 时发生未知错误: {e}", exc_info=True)
-            else:
-                self.logger.warning(f"配置中找到 key_steps_info，但 total_steps 无效 (任务 {task_id})，无法注册 KeyStepMetric。")
+            if not parsed_step_names:
+                self.logger.warning(f"为任务 {task_id} 注册 KeyStepMetric 时，在 events 配置中未找到有效的 key_step 定义。")
+            # 即使没有 step_names，只要 total_steps 有效，仍然可以注册 KeyStepMetric
+            elif len(parsed_step_names) != total_steps:
+                self.logger.warning(f"为任务 {task_id} 注册 KeyStepMetric 时，配置的 total_key_steps ({total_steps}) 与 events 中定义的 key_step 数量 ({len(parsed_step_names)}) 不匹配。")
+
+            try:
+                instance = KeyStepMetric(
+                    total_steps=total_steps,
+                    step_names=parsed_step_names, # 使用从 events 解析出的映射
+                    logger=self.logger.getChild(KeyStepMetric.__name__)
+                )
+                metrics_to_register.append(instance)
+                self.logger.debug(f"注册任务特定指标: {instance.get_name()} for task {task_id} (Total Steps: {total_steps}, Names: {parsed_step_names})")
+            except ValueError as ve:
+                self.logger.error(f"注册 KeyStepMetric (任务 {task_id}) 失败: {ve}")
+            except Exception as e:
+                self.logger.error(f"注册 KeyStepMetric (任务 {task_id}) 时发生未知错误: {e}", exc_info=True)
         else:
-             self.logger.info(f"任务 {task_id} 配置中未找到有效的 key_steps，跳过注册 KeyStepMetric。")
+            self.logger.info(f"任务 {task_id} 配置中未找到有效的 total_key_steps > 0，跳过注册 KeyStepMetric。")
 
         # --- (可以添加更多基于配置加载新的特定指标的逻辑) ---
         # 例如: if task_config.get('requires_custom_metric_X'): register CustomMetricX(...)
@@ -283,6 +289,40 @@ class ResultCollector:
             return self.results.get(task_id, {})
         # import copy; return copy.deepcopy(dict(self.results)) # 返回所有结果的拷贝
         return dict(self.results) # 返回浅拷贝
+
+    def get_current_metrics(self, task_id: str) -> Dict[str, Any]:
+        """
+        获取指定任务当前所有已注册指标的值（快照）。
+        这不会结束会话，也不会将结果存储在最终的 computed_metrics 中。
+        用于在评估过程中检查中间状态。
+
+        Args:
+            task_id: 任务ID。
+
+        Returns:
+            一个包含当前计算出的指标名称和值的字典。
+            如果任务ID无效或没有注册指标，则返回空字典。
+        """
+        if task_id not in self.registered_metrics or not self.registered_metrics[task_id]:
+            self.logger.warning(f"尝试获取当前指标失败，任务 {task_id} 不存在或没有注册的指标。")
+            return {}
+
+        self.logger.debug(f"开始为任务 {task_id} 计算当前指标快照...")
+        current_metrics: Dict[str, Any] = {}
+
+        for metric in self.registered_metrics[task_id]:
+            metric_name = metric.get_name()
+            try:
+                metric_value = metric.get_value()
+                current_metrics[metric_name] = metric_value
+                # 减少日志冗余，只在 DEBUG 级别记录每个值
+                self.logger.debug(f"当前指标计算 ({task_id}): {metric_name} = {metric_value if self.logger.isEnabledFor(logging.DEBUG) else '...'}")
+            except Exception as e:
+                self.logger.error(f"获取指标 {metric_name} 的当前值 (任务 {task_id}) 时出错: {e}", exc_info=True)
+                current_metrics[metric_name] = f"ERROR_GETTING_VALUE: {e}" # 在结果中记录错误
+        
+        self.logger.debug(f"任务 {task_id} 的当前指标快照计算完成。")
+        return current_metrics
 
     def save_results(self, task_id: Optional[str] = None, filename_prefix: str = "result") -> str:
         """

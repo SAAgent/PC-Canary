@@ -1,4 +1,4 @@
-from typing import Dict, Any, List, Callable, Optional
+from typing import Dict, Any, List, Callable, Optional, Set
 import os
 import sys
 import time
@@ -65,8 +65,9 @@ class BaseEvaluator:
         self.config = {}
 
         # 回调相关
-        self.completion_callbacks = []
+        self.completion_callbacks: List[Callable[[CallbackEventData, 'BaseEvaluator'], None]] = []
         self._final_callback_triggered = False # Internal flag
+        self.message_handler: Optional[Callable[[Dict, Any], Optional[List[Dict[str, Any]]]]] = None # Expect list of dicts
 
         # 读取配置文件并初始化 self.instruction
         config_path = os.path.join(self.task_path, "config.json")
@@ -105,6 +106,10 @@ class BaseEvaluator:
                 self.logger.info(f"加载任务指令: {self.instruction}")
         else:
             self.logger.warning(f"配置文件不存在: {config_path}")
+
+        # 初始化关键步骤信息 (总数即可，名称映射由 ResultCollector 处理)
+        self.total_key_steps = self.config.get('total_key_steps', 0)
+
 
         self.preconditions = self.config.get("preconditions", {})
         self.timeout = self.config.get("evaluation_setup", {}).get("timeout", 180)
@@ -191,30 +196,131 @@ class BaseEvaluator:
     def _on_message(self, message: Dict[str, Any], data: Any) -> None:
         """
         内部消息处理函数，由 HookManager 调用。
-        调用任务特定的 message_handler 并根据其返回值触发回调。
-        
+        调用任务特定的 message_handler 并根据其返回的状态更新列表触发事件记录和回调。
+
         Args:
             message: 消息对象 (通常来自脚本)
             data: 附加数据
         """
-        if self.message_handler:
-            result = self.message_handler(message, data)
-            # Handler 返回字符串来驱动 Evaluator 状态和回调
-            if result == "success":
-                # self.task_completed = True # Mark task as completed - REMOVED
-                # 创建用于回调的事件数据
-                event_data = CallbackEventData("task_completed", "Task completed successfully via handler")
-                self._trigger_completion_callbacks(event_data)
+        if not self.message_handler:
+            return
 
-            elif result == "error":
-                error_msg_from_handler = message.get('error', 'unknown error reported by handler')
-                error_reason = f"Task error: {error_msg_from_handler}"
-                self.logger.error(f"Handler reported error: {error_reason}")
-                event_data = CallbackEventData("task_error", error_reason)
-                self._trigger_completion_callbacks(event_data)
-            # elif result == "progress": ... (logging removed by user, ok)
+        try:
+            # 调用 handler，期望返回 Optional[List[Dict[str, Any]]]
+            handler_updates = self.message_handler(message, data)
+        except Exception as e:
+            self.logger.error(f"执行 message_handler 时出错: {e}", exc_info=True)
+            # 记录错误并触发回调
+            error_reason = f"Handler execution error: {e}"
+            current_time = time.time()
+            self.record_event(AgentEvent.AGENT_ERROR_OCCURRED, {
+                'timestamp': current_time,
+                'error': 'Handler Exception',
+                'message': str(e)
+            })
+            self.record_event(AgentEvent.TASK_END, {
+                'timestamp': current_time,
+                'status': 'failure',
+                'reason': error_reason
+            })
+            # 直接触发回调并设置最终状态标志
+            self._trigger_completion_callbacks(CallbackEventData("task_error", error_reason))
+            self._final_callback_triggered = True # Ensure flag is set even on handler exception
+            return
 
-        # self.save_results() # <- REMOVED from here
+        if handler_updates is None or not isinstance(handler_updates, list):
+            # Handler 返回 None 或无效类型，表示没有重要状态更新
+            return
+
+        current_time = time.time() # Use a consistent timestamp for events derived from this handler call
+
+        for update in handler_updates:
+            if not isinstance(update, dict):
+                self.logger.warning(f"Handler 返回列表中包含无效项: {update}")
+                continue
+
+            status = update.get('status')
+
+            # 根据 handler 返回的 status 处理
+            match status:
+                case 'success':
+                    reason = update.get('reason', 'Handler reported success')
+                    self.logger.info(f"Handler reported success: {reason}")
+                    # 记录 TASK_END 事件
+                    self.record_event(AgentEvent.TASK_END, {
+                        'timestamp': current_time,
+                        'status': 'success',
+                        'reason': reason
+                    })
+                    # 触发成功回调
+                    self._trigger_completion_callbacks(CallbackEventData("task_completed", reason))
+
+                case 'error':
+                    error_type = update.get('type', 'handler_error')
+                    error_message = update.get('message', 'Handler reported error')
+                    stack_trace = update.get('stack_trace')
+                    error_reason = f"{error_type}: {error_message}"
+                    self.logger.error(f"Handler reported error: {error_reason}")
+                    # 记录 AGENT_ERROR_OCCURRED
+                    error_data = {
+                        'timestamp': current_time,
+                        'error': error_type,
+                        'message': error_message,
+                    }
+                    if stack_trace:
+                        error_data['stack_trace'] = stack_trace
+                    self.record_event(AgentEvent.AGENT_ERROR_OCCURRED, error_data)
+                    # 记录 TASK_END 事件
+                    self.record_event(AgentEvent.TASK_END, {
+                        'timestamp': current_time,
+                        'status': 'failure',
+                        'reason': error_reason
+                    })
+                    # 触发错误回调
+                    self._trigger_completion_callbacks(CallbackEventData("task_error", error_reason))
+
+                case 'key_step':
+                    step_index = update.get('index')
+                    name_from_handler = update.get('name') # Handler 可以覆盖默认名称
+
+                    if not isinstance(step_index, int) or step_index <= 0:
+                        self.logger.warning(f"Handler 返回 key_step 状态包含无效索引: {update}")
+                        continue
+
+                    if step_index > self.total_key_steps:
+                         self.logger.warning(f"Handler 返回 key_step 索引 {step_index} 超出配置的总步数 {self.total_key_steps}")
+                         # 选择继续记录或跳过，这里选择记录但警告
+
+                    # 去重检查由 KeyStepMetric 负责，BaseEvaluator 只负责记录
+                    # 获取 Handler 提供的名称 (可能为 None)
+                    name_from_handler = update.get('name')
+                    self.logger.info(f"Handler reported key step completion: Index={step_index}, Name from Handler='{name_from_handler}'")
+
+                    # 记录 KEY_STEP_COMPLETED 事件, 只包含 Handler 提供的 name (如果存在)
+                    event_data = {
+                        'timestamp': current_time,
+                        'step_index': step_index,
+                    }
+                    if name_from_handler is not None:
+                        event_data['step_name'] = name_from_handler # KeyStepMetric 会处理这个
+                    self.record_event(AgentEvent.KEY_STEP_COMPLETED, event_data)
+
+                case 'app_event': # 用于记录非关键、但可能需要追踪的应用内部事件
+                    event_name = update.get('name', 'unknown_app_event')
+                    event_payload = update.get('payload', {})
+                    self.logger.debug(f"Handler reported app event: {event_name}, Data: {event_payload}")
+                    # 记录 APP_SPECIFIC_EVENT
+                    self.record_event(AgentEvent.APP_SPECIFIC_EVENT, {
+                        'timestamp': current_time,
+                        'name': event_name,
+                        'payload': event_payload
+                    })
+
+                case 'continue' | None: # Handler 明确表示继续或无更新
+                    pass
+
+                case _:
+                    self.logger.warning(f"Handler 返回列表中包含无法识别的状态: '{status}' in {update}")
 
     def register_completion_callback(self, callback: Callable[[CallbackEventData, 'BaseEvaluator'], None]) -> None:
         """
@@ -269,6 +375,9 @@ class BaseEvaluator:
             }
             # 2. 启动 ResultCollector 会话并注册指标 (必须在 hook 加载前)
             self.result_collector.start_session(self.task_id, session_data, self.config)
+
+            # Record TASK_START event immediately after session starts
+            self.record_event(AgentEvent.TASK_START, {'timestamp': self.result_collector.results[self.task_id]['metadata']['session_start_unix']})
 
             # 3. 加载钩子脚本，这可能会立即开始发送事件
             self.hook_manager.load_scripts(self._on_message)
