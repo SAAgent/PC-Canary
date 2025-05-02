@@ -15,13 +15,13 @@ from PIL import Image, ImageGrab
 from agent.base_agent import BaseAgent
 from agent.models.openai_model import OpenAIModel
 from agent.models.gemini_model import GeminiModel
+from agent.models.claude_model import ClaudeModel
 
 # 导入控制器
 from env.controller.code_execution_controller import CodeExecutionController
 
 # 导入新的日志系统
 from utils.logger import AgentLogger
-
 
 
 def create_model(model_type, api_key):
@@ -56,6 +56,17 @@ def create_model(model_type, api_key):
             api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
             temperature=0.2,
             max_tokens=2048
+        )
+    elif model_type.lower() == 'claude':
+        if not api_key:
+            api_key = os.environ.get('ANTHROPIC_API_KEY')
+        if not api_key:
+            raise ValueError("使用 Claude 模型需要提供 API Key (通过 --api_key 或 ANTHROPIC_API_KEY 环境变量)")
+        return ClaudeModel(
+            api_key=api_key,
+            model_name="claude-3-7-sonnet-latest",
+            temperature=0.2,
+            max_tokens=2048,
         )
     else:
         raise ValueError(f"不支持的模型类型: {model_type}")
@@ -148,45 +159,56 @@ def test_agent_telegram_search(model_type='openai', api_key=None, max_steps=10):
         
         # 执行Agent决策
         print("Agent开始决策...")
-        action_code, thought = agent.act(instructions, observation, controller)
+        action, args, usage_info = agent.act(instructions, observation, controller)
         
-        # 记录动作到日志系统
-        logger.log_action(action_code, thought)
+        # Log action and potential args (like reasoning or errors)
+        logger.log_action(action, args)
         
-        # 打印Agent思考和动作
-        print(f"\nAgent思考:")
-        print("-" * 50)
-        print(thought[:500] + ("..." if len(thought) > 500 else ""))
-        print("-" * 50)
-        
-        print(f"\nAgent动作:")
-        print("-" * 50)
-        print(action_code[:500] + ("..." if len(action_code) > 500 else ""))
-        print("-" * 50)
-        
-        # 执行代码并获取执行结果
-        execution_result = agent._execute_action(action_code, controller)
-        
-        # 记录执行结果到日志系统
-        logger.log_execution_result(execution_result)
-        
-        # 标记点击位置到截图
-        marked_screenshot = logger.mark_screenshot_with_clicks()
-        if marked_screenshot:
-            print(f"标记的截图已保存: {marked_screenshot}")
-        
-        # 检查环境状态
-        if controller.task_completed:
-            print("任务已完成！")
-            logger.end_session("completed")
+        # --- Handle different action types --- #
+        if action == "finish":
+            print("Agent 报告任务完成 (finish)。")
+            print(f"Reasoning: {args.get('reasoning', 'N/A')}" if args else "")
+            controller.task_completed = True # Mark controller state as well
+            break # Exit loop
+
+        elif action == "wait":
+            print("Agent 请求等待。")
+            # Optionally add a sleep here based on args if provided
+            time.sleep(1) # Simple wait
+            continue # Go to next step without execution
+
+        elif action == "fail":
+            print("Agent 报告任务失败 (fail)。")
+            print(f"Reasoning: {args.get('reasoning', 'N/A')}" if args else "")
+            controller.task_failed = True
+            controller.failure_reason = args.get('reasoning', 'Agent reported FAIL') if args else 'Agent reported FAIL'
+            break # Exit loop
+
+        elif action is None:
+            print(f"Agent 决策或解析时出错: {args.get('error', 'Unknown error')}")
+            controller.task_failed = True
+            controller.failure_reason = args.get('error', 'Agent act returned None') if args else 'Agent act returned None'
+            break # Exit loop
+
+        # --- If action is code, execute it --- #
+        elif isinstance(action, str):
+            action_code = action # It's Python code
+            # 打印Agent思考和动作 (Thought is no longer returned directly)
+            print(f"\nAgent动作 (代码):")
+            print("-" * 50)
+            print(action_code[:500] + ("..." if len(action_code) > 500 else ""))
+            print("-" * 50)
+
+            # 执行代码并获取执行结果
+            execution_result = agent._execute_action(action_code, controller)
+
+            # 记录执行结果到日志系统
+            logger.log_execution_result(execution_result)
+        else:
+            print(f"未知的 Agent 动作类型: {action}")
+            controller.task_failed = True
+            controller.failure_reason = f"Unknown action type: {action}"
             break
-        elif controller.task_failed:
-            print(f"任务失败！原因: {controller.failure_reason}")
-            logger.end_session("failed")
-            break
-            
-        # 继续执行下一步
-        step_index += 1
         
         # 检查是否超时
         elapsed_time = time.time() - start_time
@@ -233,7 +255,7 @@ def test_agent_telegram_search(model_type='openai', api_key=None, max_steps=10):
 def main():
     """主函数"""
     parser = argparse.ArgumentParser(description="测试Agent执行Telegram搜索任务")
-    parser.add_argument("--model", choices=["openai", "gemini", "qwen"], default="qwen",
+    parser.add_argument("--model", choices=["openai", "gemini", "qwen", "claude"], default="claude",
                         help="使用的模型类型 (默认: openai)")
     parser.add_argument("--api_key", type=str, help="API密钥 (如果未提供则从环境变量获取)")
     parser.add_argument("--max_steps", type=int, default=10, help="最大执行步骤数 (默认: 10)")
