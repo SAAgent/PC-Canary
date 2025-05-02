@@ -21,8 +21,10 @@ from typing import Dict, Any, Optional
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(PROJECT_ROOT)
 
-from evaluator.core.base_evaluator import BaseEvaluator, EventData, EventType
+from evaluator.core.base_evaluator import BaseEvaluator, CallbackEventData
 
+# Global flag to signal loop termination from callback
+evaluation_finished = False
 
 # 信号处理函数
 def signal_handler(sig, frame, evaluator=None):
@@ -43,7 +45,7 @@ def signal_handler(sig, frame, evaluator=None):
     sys.exit(0)
 
 
-def handle_evaluator_event(event_data: EventData, evaluator: BaseEvaluator):
+def handle_evaluator_event(event_data: CallbackEventData, evaluator: BaseEvaluator):
     """
     处理评估器事件的回调函数
 
@@ -53,18 +55,22 @@ def handle_evaluator_event(event_data: EventData, evaluator: BaseEvaluator):
     """
     print(f"\n收到评估器事件: {event_data.event_type} - {event_data.message}")
 
-    if event_data.event_type == EventType.TASK_COMPLETED:
-        print(f"任务成功完成: {event_data.message}")
-        if hasattr(event_data, "data") and event_data.data:
-            print(f"评估指标: {event_data.data.get('metrics', {})}")
-        evaluator.stop()
-        print("任务完成，正在停止评估器...")
+    # Use the global flag to signal termination
+    global evaluation_finished
 
-    elif event_data.event_type == EventType.TASK_ERROR:
-        print(f"任务出错: {event_data.message}")
+    if event_data.event_type == "task_completed": # Check string event type from CallbackEventData
+        print(f"任务成功完成")
+        evaluation_finished = True # Signal the main loop to stop
+        # evaluator.stop() # <- Removed: stop() is called after the loop
+        # print("任务完成，正在停止评估器...") # <- Message moved after loop
 
-    elif event_data.event_type == EventType.EVALUATOR_STOPPED:
-        print(f"评估器已停止: {event_data.message}")
+    elif event_data.event_type == "task_error":
+        print(f"任务出错")
+        evaluation_finished = True # Signal the main loop to stop
+
+    elif event_data.event_type == "evaluator_stopped": # This might still be triggered by BaseEvaluator.stop() if needed
+        print(f"评估器已停止")
+        # evaluation_finished = True # Decide if external stop should also terminate the loop immediately
 
 
 def print_app_instructions(app: str, task: str, instruction: str):
@@ -272,14 +278,11 @@ def main():
         timeout_seconds = args.timeout
         start_time = time.time()
 
-        # 主循环，等待任务完成或超时
-        while not evaluator.task_completed:
+        # 主循环，等待任务完成或超时，由回调函数设置 evaluation_finished
+        while not evaluation_finished:
             # 检查超时
             if time.time() - start_time > timeout_seconds:
                 print(f"\n评估超时 ({timeout_seconds}秒)...")
-                break
-
-            time.sleep(0.5)  # 减少CPU使用
 
         # 如果评估器仍在运行，则停止它
         if evaluator.is_running:
@@ -287,18 +290,23 @@ def main():
             evaluator.stop()
             time.sleep(1)  # 给评估器一些时间来结束
 
-        # 打印最终结果
+        # 获取并打印最终计算出的指标（可选，因为结果已保存到文件）
+        final_results = evaluator.result_collector.get_results(evaluator.task_id)
+        computed_metrics = final_results.get('computed_metrics', {})
+        final_status = computed_metrics.get('task_completion_status', {})
+
         print("\n评估任务结束！")
+        print("最终计算指标:")
+        if computed_metrics:
+            for key, value in computed_metrics.items():
+                value_str = json.dumps(value, ensure_ascii=False, indent=2) if isinstance(value, (dict, list)) else value
+                print(f"  {key}: {value_str}")
+        else:
+            print("  未能计算任何指标。")
 
-        if hasattr(evaluator, "metrics") and evaluator.metrics:
-            print("\n评估指标:")
-            for key, value in evaluator.metrics.items():
-                print(f"  {key}: {value}")
-
-            # 特别展示成功状态
-            if "success" in evaluator.metrics:
-                result = "成功" if evaluator.metrics["success"] else "失败"
-                print(f"\n任务结果: {result}")
+        print(f"\n最终任务状态: {final_status.get('status', '未知')}")
+        if final_status.get('reason'):
+            print(f"原因: {final_status.get('reason')}")
 
         # 查找并显示结果文件位置
         result_file = evaluator.save_results()

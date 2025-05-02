@@ -31,7 +31,7 @@ class HookManager:
         self.args = args
         self.app_process = None
         self.evaluate_on_completion = evaluate_on_completion
-        
+        self.app_started = False
         
     def add_script(self, hooker_path: str, dep_script: str) -> None:
         """
