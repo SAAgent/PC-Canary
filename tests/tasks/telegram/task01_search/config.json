@@ -1,7 +1,7 @@
 {
     "task_id": "01",
-    "task_name": "search_keyword",
-    "description": "在Telegram应用中搜索指定关键词，并查看搜索结果",
+    "task_name": "search",
+    "description": "在Telegram中搜索指定内容。",
 
     "application_info": {
         "name": "Telegram Desktop",
@@ -13,7 +13,7 @@
         "query": "news"
     },
 
-    "instruction_template": "在Telegram应用中搜索关键词 '${query}'，展示搜索结果",
+    "instruction_template": "请在Telegram中搜索'${query}'。",
 
     "evaluation_setup": {
         "scripts": [
@@ -22,23 +22,29 @@
         ],
         "timeout": 180
     },
-    "key_steps": {
-        "total_steps": 1,
-        "step_names": {
-            "1": "搜索结果更新并匹配"
-        }
-    },
+    "total_key_steps": 1,
     "preconditions": {
-      "telegram_running": true,
-      "user_logged_in": true
+        "telegram_running": true,
+        "user_logged_in": true
     },
-    "success_conditions": [
-      "target_query_found"
-    ],
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "search_function_found": "找到搜索函数",
-        "search_query_detected": "检测到搜索查询",
-        "error": "错误事件"
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "search_function_found": {
+            "description": "找到搜索函数",
+            "is_key_step": false
+        },
+        "search_query_detected": {
+            "description": "检测到搜索查询 (触发检查)",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "查询结果已显示"
+        },
+        "error": {
+            "description": "来自脚本的错误事件",
+            "is_key_step": false
+        }
     }
 } 
