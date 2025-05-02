@@ -8,7 +8,7 @@ import platform
 import subprocess
 import pyautogui
 import time
-from typing import List, Dict, Any, Tuple, Optional
+from typing import List, Dict, Any, Tuple, Optional, Union
 
 # 导入获取屏幕和窗口信息的库
 # 为不同平台选择合适的窗口管理库
@@ -40,7 +40,9 @@ except ImportError:
 from agent.models.base_model import BaseModel
 from agent.models.openai_model import OpenAIModel # Import specific types for checking
 from agent.models.claude_model import ClaudeModel
-from agent.prompt import PYAUTOGUI_PROMPT_TEMPLATE # Assuming this is used or similar
+from agent.prompt import (
+    SYS_PROMPT_SCREENSHOT_IN_CODE_OUT,
+)  # Assuming this is used or similar
 
 class BaseAgent:
     def __init__(self, model, observation_type, action_space) -> None:
@@ -137,14 +139,14 @@ class BaseAgent:
         metadata["windows"] = window_list
         return metadata
 
-    def act(self, instruction: str, observation: Dict[str, Any], controller) -> Tuple[Optional[str], Optional[Dict], Optional[Dict]]:
+    def act(self, instruction: str, observation: Any, controller) -> Tuple[Optional[str], Optional[Dict], Optional[Dict]]:
         """
         根据指令和观察结果生成动作。
 
         Args:
             instruction: 任务指令。
-            observation: 当前观察结果 (包含截图、元数据等)。
-            controller: 环境控制器 (用于潜在的交互或状态获取)。
+            observation: 当前观察结果 (可以是 PIL Image, str, 或其他类型)。
+            controller: 环境控制器。
 
         Returns:
             Tuple[Optional[str], Optional[Dict], Optional[Dict]]:
@@ -152,24 +154,81 @@ class BaseAgent:
             - args (Dict | None): 如果 action 是 "finish"，则包含 'reasoning'；如果是代码，可能为 None；如果是其他指令，为 None。
             - usage_info (Dict | None): 包含 'prompt_tokens' 和 'completion_tokens' 的字典，如果可用。
         """
-        screenshot = observation.get('screenshot')
-        if not screenshot:
-            print("错误：观察结果中缺少屏幕截图。")
-            return None, {"error": "Missing screenshot"}, None # Return error indication
+        # --- 1. 构建发送给 LLM 的 Messages 列表 --- #
+        messages = []
+        try:
+            # --- 使用原始版本的逻辑构建 messages --- #
+            screen_metadata = self._get_screen_metadata()
+            system_content_text = (
+                getattr(self, 'system_prompt', SYS_PROMPT_SCREENSHOT_IN_CODE_OUT) # Use loaded or default system prompt
+                + "\nYou are asked to complete the following task: {}\n\n"
+                + "Screen Context Metadata:\n{}"
+            ).format(instruction, json.dumps(screen_metadata, indent=2))
 
-        # --- 构建 Prompt ---
-        # (假设你在这里构建 messages 列表，包括系统提示、历史、当前观察等)
-        # 例如:
-        messages = self._build_prompt_messages(instruction, observation, self.history)
+            system_message = {"role": "system", "content": system_content_text}
+            # Note: For multimodal models, system prompt might only support text.
+            # If system prompt needs image, adjust accordingly.
 
-        # --- 调用 LLM ---
+            messages.append(system_message)
+
+            # Add history (if applicable)
+            # for entry in self.history: # Assuming self.history exists
+            #    messages.append(entry)
+
+            # Build user message based on observation type
+            user_message_content = []
+            user_prompt_text = getattr(self, 'user_message_text', "Analyze the observation and perform the next step.") # Get user text or default
+            user_message_content.append({"type": "text", "text": user_prompt_text})
+
+            if self.observation_type == 'screenshot':
+                if observation is None:
+                    raise ValueError("Screenshot observation is None")
+                
+                image_url = None
+                if isinstance(observation, Image.Image):
+                    buffered = io.BytesIO()
+                    observation.save(buffered, format="PNG") # Use PNG for better quality usually
+                    image_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+                    image_url = f"data:image/png;base64,{image_str}"
+                elif isinstance(observation, str) and observation.startswith("data:image"): # If already base64 string
+                    image_url = observation
+                elif isinstance(observation, str): # Treat as file path?
+                     try:
+                         with Image.open(observation) as img:
+                              buffered = io.BytesIO()
+                              img.save(buffered, format="PNG")
+                              image_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+                              image_url = f"data:image/png;base64,{image_str}"
+                     except Exception as img_err:
+                          print(f"无法将字符串观察作为图片路径加载: {img_err}")
+                          # Optionally add text representation if image fails
+                          user_message_content[0]["text"] += f"\n(无法加载图片观察: {observation})"
+                else:
+                     print(f"警告: 不支持的截图观察类型 {type(observation)}，将仅使用文本。")
+                     user_message_content[0]["text"] += f"\n(观察类型不受支持)"
+                
+                if image_url:
+                     user_message_content.append({
+                         "type": "image_url",
+                         "image_url": {"url": image_url, "detail": "high"}
+                     })
+
+            else: # Handle other observation types
+                user_message_content[0]["text"] += f"\nObservation Data:\n{str(observation)}"
+            
+            messages.append({"role": "user", "content": user_message_content})
+            # --- 原始 messages 构建逻辑结束 --- #
+        except Exception as build_err:
+             print(f"构建 Prompt Messages 时出错: {build_err}")
+             return None, {"error": f"Prompt building error: {build_err}"}, None
+
+        # --- 2. 调用 LLM (保留新版本的逻辑) --- #
         response = None
         llm_content_str = None
         usage_info = None
         try:
             response = self.model.generate_content(messages)
-
-            # --- 根据模型类型提取内容和 Usage ---
+            # ... (保留根据模型类型提取 llm_content_str 和 usage_info 的代码) ...
             if isinstance(self.model, OpenAIModel) and response:
                 llm_content_str = response.choices[0].message.content
                 if response.usage:
@@ -178,9 +237,7 @@ class BaseAgent:
                         "completion_tokens": response.usage.completion_tokens
                     }
             elif isinstance(self.model, ClaudeModel) and response:
-                # 使用辅助方法获取内容
                 llm_content_str = self.model.get_content(response)
-                # 使用辅助方法获取 usage
                 raw_usage = self.model.get_usage(response)
                 if raw_usage:
                      usage_info = { # 转换为统一的字段名
@@ -188,107 +245,76 @@ class BaseAgent:
                          "completion_tokens": raw_usage.get("completion_tokens")
                      }
             else:
-                print(f"警告：无法识别的模型类型 {type(self.model)} 或响应为空，无法提取内容/usage。")
-                llm_content_str = str(response) # 尝试转为字符串
-
+                print(f"警告：无法识别的模型类型 {type(self.model)} 或响应为空。")
+                llm_content_str = str(response)
         except Exception as e:
             print(f"调用 LLM 时发生错误: {e}")
-            # 在 run_agent_with_eval 中记录 LLM_QUERY_END(error)
-            return None, {"error": f"LLM API Error: {e}"}, None # Return error indication
+            return None, {"error": f"LLM API Error: {e}"}, None
 
         if not llm_content_str:
              print("错误：LLM 返回了空内容。")
-             return None, {"error": "LLM returned empty content"}, usage_info # Return error, but include usage if available
+             return None, {"error": "LLM returned empty content"}, usage_info
 
-        # --- 解析 LLM 输出 ---
-        # 1. 检查是否是特殊指令 DONE
-        if llm_content_str.strip().upper() == "DONE":
-            print("Agent 报告任务完成 (DONE)。")
-            # 返回特殊标记，让调用者知道
+        # --- 3. 解析 LLM 输出 (保留新版本的逻辑) --- #
+        # 记录原始响应到 history (如果需要)
+        # self.history.append({"role": "user", "content": user_message_content}) # Add user message to history?
+        # self.history.append({"role": "assistant", "content": llm_content_str}) # Add assistant response
+
+        # 解析 'DONE', 'WAIT', 'FAIL' 或代码
+        action = None
+        args = None
+        thought = None # Parse thought if possible/needed from llm_content_str
+
+        stripped_content = llm_content_str.strip().upper()
+        if stripped_content == "DONE":
             action = "finish"
             args = {"reasoning": "Agent reported task DONE"}
-            self.history.append({"role": "assistant", "content": llm_content_str}) # 记录原始输出
-            return action, args, usage_info
-
-        # 2. 检查其他特殊指令 (WAIT, FAIL) - 可选，取决于你的 prompt
-        elif llm_content_str.strip().upper() == "WAIT":
-             print("Agent 请求等待。")
-             action = "wait"
-             args = None
-             self.history.append({"role": "assistant", "content": llm_content_str})
-             return action, args, usage_info
-        elif llm_content_str.strip().upper() == "FAIL":
-             print("Agent 报告任务失败 (FAIL)。")
-             action = "fail"
-             args = {"reasoning": "Agent reported task FAIL"}
-             self.history.append({"role": "assistant", "content": llm_content_str})
-             return action, args, usage_info
-
-        # 3. 尝试提取 Python 代码块
-        code = self._extract_python_code(llm_content_str)
-        if code:
-            print("提取到 Python 代码块。")
-            action = code # 直接返回代码字符串作为 action
-            args = None # 代码没有额外参数
-            # 记录包含代码的原始输出或仅记录代码？取决于历史记录的需求
-            self.history.append({"role": "assistant", "content": llm_content_str}) # 记录完整原始输出
-            # self.history.append({"role": "assistant", "content": f"```python\\n{code}\\n```"}) # 或只记录代码
-            return action, args, usage_info
+            thought = llm_content_str[:llm_content_str.upper().find("DONE")] # Crude thought extraction
+        elif stripped_content == "WAIT":
+            action = "wait"
+            thought = llm_content_str[:llm_content_str.upper().find("WAIT")]
+        elif stripped_content == "FAIL":
+            action = "fail"
+            args = {"reasoning": "Agent reported task FAIL"}
+            thought = llm_content_str[:llm_content_str.upper().find("FAIL")]
         else:
-            print("警告：未能从 LLM 输出中提取到有效的 Python 代码块或 DONE/WAIT/FAIL 指令。")
-            print(f"原始输出: {llm_content_str}")
-            # 返回原始文本，让调用者决定如何处理？或者视为错误？
-            action = None
-            args = {"error": "Could not parse code or known instruction", "raw_output": llm_content_str}
-            self.history.append({"role": "assistant", "content": llm_content_str}) # 记录原始输出
-            return action, args, usage_info
+            # 尝试提取代码
+            code = self._extract_python_code(llm_content_str)
+            if code:
+                action = code
+                # Extract thought if prompt asks for it before code block
+                match = re.search(r"```python\n", llm_content_str, re.IGNORECASE)
+                if match:
+                     thought = llm_content_str[:match.start()].strip()
+                else: # Fallback if only ``` found
+                     match = re.search(r"```\n", llm_content_str, re.IGNORECASE)
+                     if match:
+                         thought = llm_content_str[:match.start()].strip()
+            else:
+                # Assume the whole thing is thought or error
+                print("警告：未能从 LLM 输出中提取到代码或已知指令。")
+                args = {"error": "Could not parse code or known instruction", "raw_output": llm_content_str}
+                thought = llm_content_str # Treat whole output as thought/error message
+        
+        # --- 4. 记录历史 (如果需要) --- #
+        # self.observations.append(user_message) # If tracking history like original
+        # self.responses.append({"role": "assistant", "content": llm_content_str})
+
+        # --- 5. 返回结果 --- #
+        # 打印思考 (如果提取了)
+        if thought:
+             print(f"\nAgent思考:")
+             print("-" * 50)
+             print(thought[:500] + ("..." if len(thought) > 500 else ""))
+             print("-" * 50)
+
+        return action, args, usage_info
 
     def _build_prompt_messages(self, instruction, observation, history) -> List[Dict[str, Any]]:
-        """ Helper function to build the messages list for the LLM. """
-        # --- 这里实现你构建 messages 列表的逻辑 ---
-        # 例如:
-        messages = []
-        # 1. 添加系统 Prompt (假设你的 prompt 文件加载到了 self.system_prompt)
-        # 你可能需要从 self.system_prompt (或类似变量) 获取基础系统提示
-        # SYS_PROMPT_SCREENSHOT_IN_CODE_OUT 应该在这里被使用
-        system_prompt = getattr(self, 'system_prompt', SYS_PROMPT_SCREENSHOT_IN_CODE_OUT) # 获取或使用默认
-        messages.append({"role": "system", "content": system_prompt})
-
-        # 2. 添加历史记录 (如果需要)
-        # for entry in history:
-        #    messages.append(entry)
-
-        # 3. 添加当前指令和观察
-        # 需要将截图和元数据格式化为模型可接受的格式
-        # 对于多模态模型，截图通常作为 content 列表的一部分
-        prompt_text = f"用户指令: {instruction}\\n\\n当前屏幕元数据: {json.dumps(observation.get('metadata', {}))}\\n\\n请分析截图并生成下一步操作。"
-        content = [{"type": "text", "text": prompt_text}]
-        screenshot_base64 = observation.get('screenshot_base64') # 假设观察结果中有 base64 截图
-
-        if screenshot_base64:
-            # (这里的 base64 处理逻辑应该与 ClaudeModel 中的类似，或统一处理)
-            media_type = "image/png" # 假设
-            if screenshot_base64.startswith("data:image/jpeg;base64,"):
-                media_type = "image/jpeg"
-                screenshot_base64 = screenshot_base64.split(",")[1]
-            elif screenshot_base64.startswith("data:image/png;base64,"):
-                media_type = "image/png"
-                screenshot_base64 = screenshot_base64.split(",")[1]
-
-            content.append({
-                "type": "image_url", # OpenAI 格式
-                "image_url": {
-                     # Claude 模型处理时会转换这个
-                    "url": f"data:{media_type};base64,{screenshot_base64}"
-                 }
-            })
-        else:
-             print("警告: 观察结果中缺少 base64 截图，模型将仅基于文本分析。")
-
-
-        messages.append({"role": "user", "content": content})
-
-        return messages
+        # This function is now integrated into act() above. Can be removed or kept for modularity.
+        # If kept, needs signature change to match how act() calls it.
+        # For now, removing the separate definition as logic is in act()
+        pass
 
     def _extract_python_code(self, text: str) -> Optional[str]:
         """ 从文本中提取被 ```python ... ``` 包裹的代码块。"""
