@@ -20,8 +20,10 @@ from typing import Dict, Any
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(PROJECT_ROOT)
 
-from evaluator.core.base_evaluator import BaseEvaluator, EventData, EventType
+from evaluator.core.base_evaluator import BaseEvaluator, CallbackEventData
 
+# Global flag to signal loop termination from callback
+evaluation_finished = False
 
 # 信号处理函数
 def signal_handler(sig, frame, evaluator=None):
@@ -42,7 +44,7 @@ def signal_handler(sig, frame, evaluator=None):
     sys.exit(0)
 
 
-def handle_evaluator_event(event_data: EventData, evaluator: BaseEvaluator):
+def handle_evaluator_event(event_data: CallbackEventData, evaluator: BaseEvaluator):
     """
     处理评估器事件的回调函数
     
@@ -51,18 +53,26 @@ def handle_evaluator_event(event_data: EventData, evaluator: BaseEvaluator):
     """
     print(f"\n收到评估器事件: {event_data.event_type} - {event_data.message}")
     
-    if event_data.event_type == EventType.TASK_COMPLETED:
-        print(f"任务成功完成: {event_data.message}")
-        if hasattr(event_data, 'data') and event_data.data:
-            print(f"评估指标: {event_data.data.get('metrics', {})}")
-        evaluator.stop()
-        print("任务完成，正在停止评估器...")
+    # Use the global flag to signal termination
+    global evaluation_finished
+
+    if event_data.event_type == "task_completed": # Check string event type from CallbackEventData
+        print(f"任务成功完成")
+        # Data associated with the callback itself is in event_data.data (if any)
+        # Metrics are now in the result collector, not passed directly here.
+        # if hasattr(event_data, 'data') and event_data.data:
+        #     print(f"评估指标: {event_data.data.get('metrics', {})}") # Old logic removed
+        evaluation_finished = True # Signal the main loop to stop
+        # evaluator.stop() # Stop is called after the loop
+        # print("任务完成，正在停止评估器...")
         
-    elif event_data.event_type == EventType.TASK_ERROR:
+    elif event_data.event_type == "task_error":
         print(f"任务出错: {event_data.message}")
+        evaluation_finished = True # Signal the main loop to stop
     
-    elif event_data.event_type == EventType.EVALUATOR_STOPPED:
+    elif event_data.event_type == "evaluator_stopped": # If this callback is triggered from stop()
         print(f"评估器已停止: {event_data.message}")
+        # evaluation_finished = True # Decide if external stop should also terminate the loop
 
 
 def print_instructions():
@@ -142,44 +152,68 @@ def main():
         timeout_seconds = args.timeout
         start_time = time.time()
         
-        # 主循环，等待任务完成或超时
-        while not evaluator.task_completed:
+        # 主循环，等待任务完成或超时，由回调函数设置 evaluation_finished
+        while not evaluation_finished:
             # 检查超时
             if time.time() - start_time > timeout_seconds:
                 print(f"\n测试超时 ({timeout_seconds}秒)...")
-                break
+                break # Exit loop on timeout
             
             time.sleep(0.5)  # 减少CPU使用
         
-        # 如果评估器仍在运行，则停止它
+        # 如果评估器仍在运行（例如，超时退出循环），则停止它
         if evaluator.is_running:
             print("正在停止评估器...")
-            evaluator.stop()
-            time.sleep(1)  # 给评估器一些时间来结束
+            evaluator.stop() # Calls end_session, records TASK_END(stopped) if needed, saves results
+            time.sleep(1) # Allow time for cleanup
         
         # 打印最终结果
-        print("\n测试成功完成！")
-        if hasattr(evaluator, 'metrics'):
-            print("评估指标:")
-            print(evaluator.metrics)
+        print("\n测试结束！")
+
+        # 获取并打印最终计算出的指标
+        try:
+            final_results = evaluator.result_collector.get_results(evaluator.task_id)
+            computed_metrics = final_results.get('computed_metrics', {})
+            final_status = computed_metrics.get('task_completion_status', {})
+
+            print("最终计算指标:")
+            if computed_metrics:
+                # Import json if not already imported
+                import json
+                for key, value in computed_metrics.items():
+                    value_str = json.dumps(value, ensure_ascii=False, indent=2) if isinstance(value, (dict, list)) else value
+                    print(f"  {key}: {value_str}")
+            else:
+                print("  未能计算任何指标。")
+
+            print(f"\n最终任务状态: {final_status.get('status', '未知')}")
+            if final_status.get('reason'):
+                print(f"原因: {final_status.get('reason')}")
+        except Exception as report_e:
+            print(f"获取或打印最终指标时出错: {report_e}")
             
-        # 查找并显示结果文件位置
-        result_file = None
-        if hasattr(evaluator, 'result_file') and evaluator.result_file:
-            result_file = evaluator.result_file
+        # 查找并显示结果文件位置 (ResultCollector.save_results now returns path)
+        result_file = final_results.get('metadata', {}).get('result_file_path') # Assuming save_results updates metadata
+        # If not in metadata, try the old way (less reliable)
+        if not result_file:
+            result_file_path_from_stop = evaluator.save_results() # Call save_results again if path not stored
+            if result_file_path_from_stop:
+                 result_file = result_file_path_from_stop
         else:
-            # 尝试在日志目录中查找最新的结果文件
+                # Fallback to searching log dir
             log_files = []
             for root, _, files in os.walk(log_dir):
                 for file in files:
-                    if file.endswith(".json") and task["id"] in file:
+                    if file.endswith(".json") and evaluator.task_id in file:
                         log_files.append(os.path.join(root, file))
-            
             if log_files:
                 result_file = max(log_files, key=os.path.getmtime)
                 
         if result_file:
-            print(f"结果文件保存在: {result_file}")
+            print(f"\n结果文件保存在: {result_file}")
+        else:
+            print("\n未能确定结果文件位置。")
+
         evaluator.stop_app()
         
     except Exception as e:

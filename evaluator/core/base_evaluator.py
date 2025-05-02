@@ -151,7 +151,7 @@ class BaseEvaluator:
     def record_event(self, event_type: AgentEvent, data: Dict[str, Any]) -> None:
         """
         记录一个标准化的 AgentEvent。
-
+        
         Args:
             event_type: 事件类型 (AgentEvent 枚举成员)。
             data: 事件相关数据。
@@ -192,7 +192,7 @@ class BaseEvaluator:
         """
         内部消息处理函数，由 HookManager 调用。
         调用任务特定的 message_handler 并根据其返回值触发回调。
-
+        
         Args:
             message: 消息对象 (通常来自脚本)
             data: 附加数据
