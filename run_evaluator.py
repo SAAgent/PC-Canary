@@ -173,7 +173,7 @@ def list_available_tasks():
                 except:
                     pass
 
-                print(f"  - 任务: {task} {task_desc}")
+            print(f"  - 任务: {task} {task_desc}")
 
         print("-" * 60)
 
@@ -283,6 +283,8 @@ def main():
             # 检查超时
             if time.time() - start_time > timeout_seconds:
                 print(f"\n评估超时 ({timeout_seconds}秒)...")
+                evaluator.stop()
+                time.sleep(10)
 
         # 如果评估器仍在运行，则停止它
         if evaluator.is_running:
