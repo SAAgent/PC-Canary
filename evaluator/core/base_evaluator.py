@@ -196,9 +196,8 @@ class BaseEvaluator:
                 sys.modules["handler"] = handler_module
                 spec.loader.exec_module(handler_module)
             
-                # 检查模块中是否有message_handler函数
-                if hasattr(handler_module, 'register_handlers'):
-                    self.message_handler = handler_module.register_handlers(self)
+                if hasattr(handler_module, 'message_handler'):
+                    self.message_handler = handler_module.message_handler
                     self.logger.info(f"成功设置回调函数: {module_path}.message_handler")
                 else:
                     self.logger.warning(f"未找到回调函数: {module_path}")
@@ -221,7 +220,7 @@ class BaseEvaluator:
 
         try:
             # 调用 handler，期望返回 Optional[List[Dict[str, Any]]]
-            handler_updates = self.message_handler(message, data)
+            handler_updates = self.message_handler(message, self.logger, self.config.get('task_parameters', {}))
         except Exception as e:
             self.logger.error(f"执行 message_handler 时出错: {e}", exc_info=True)
             # 记录错误并触发回调
