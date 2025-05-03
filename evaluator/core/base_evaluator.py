@@ -153,6 +153,11 @@ class BaseEvaluator:
 
         self.logger.info(f"评估器初始化完成: {self.task_id}")
 
+    @property
+    def default_instruction(self) -> str:
+        """返回加载并渲染后的任务指令"""
+        return getattr(self, 'instruction', '') # Use getattr for safety
+
     def record_event(self, event_type: AgentEvent, data: Dict[str, Any]) -> None:
         """
         记录一个标准化的 AgentEvent。
