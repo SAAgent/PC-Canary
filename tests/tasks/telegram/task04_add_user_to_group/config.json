@@ -21,22 +21,42 @@
 		  { "role": "hook",    "path": "hooker.js" },
 		  { "role": "handler", "path": "handler.py" }
 		],
-        "timeout": 180 
+        "timeout": 180
     },
 	"preconditions": {
 	  "telegram_running": true,
 	  "user_logged_in": true,
 	  "group_exists": true
 	},
-	"success_conditions": [
-	  "updated_chat_info"
-	],
+    "total_key_steps": 2,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "found_group": "找到了目标群组",
-        "apply_chat_update_called": "拦截到本地群组状态更新函数调用",
-		"participants_count": "群组成员计数",
-		"updated_chat_info": "更新的群组信息",
-        "error": "错误事件"
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "found_group": {
+            "description": "找到了目标群组 (原始事件，触发检查)",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标群组"
+        },
+        "apply_chat_update_called": {
+            "description": "拦截到本地群组状态更新函数调用",
+            "is_key_step": false
+        },
+		"participants_count": {
+            "description": "群组成员计数",
+            "is_key_step": false
+        },
+		"updated_chat_info": {
+            "description": "更新的群组信息 (原始事件，触发检查)",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "确认用户已添加"
+        },
+        "error": {
+            "description": "来自脚本的错误事件",
+            "is_key_step": false
+        }
     }
 }

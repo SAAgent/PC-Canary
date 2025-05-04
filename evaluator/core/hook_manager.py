@@ -12,7 +12,9 @@ class HookManager:
     钩子管理器，负责加载和管理Frida脚本
     """
     
-    def __init__(self, app_path: str = None, args: List[str] = None, logger: Optional[logging.Logger] = None, evaluate_on_completion: bool = False):
+    def __init__(self, app_path: str = None, app_working_cwd: Optional[str] = None,
+                 args: List[str] = None, logger: Optional[logging.Logger] = None,
+                 evaluate_on_completion: bool = False):
         """
         初始化钩子管理器
         
@@ -21,6 +23,7 @@ class HookManager:
         """
         self.scripts = []  # 脚本路径列表
         self.app_path = app_path  # 应用路径
+        self.app_working_cwd = app_working_cwd if app_working_cwd else os.getcwd()
         self.frida_session = None  # Frida会话
         self.loaded_scripts = []  # 已加载的脚本对象
         self.message_handler = None  # 消息处理函数
@@ -28,19 +31,17 @@ class HookManager:
         self.args = args
         self.app_process = None
         self.evaluate_on_completion = evaluate_on_completion
+        self.app_started = False
         
-        
-    def add_script(self, task_path: str) -> None:
+    def add_script(self, hooker_path: str, dep_script: str) -> None:
         """
         添加钩子脚本
         
         Args:
             task_id: 脚本路径
         """
-
-        hooker_path = os.path.join(task_path, "hooker.js")
         if os.path.exists(hooker_path):
-            self.scripts.append(hooker_path)
+            self.scripts.append((hooker_path,dep_script))
             self.logger.info(f"添加钩子脚本: {hooker_path}")
         else:
             self.logger.error(f"脚本文件不存在: {hooker_path}")
@@ -66,10 +67,10 @@ class HookManager:
             self.frida_session = frida.attach(self.app_process.pid)
             
             # 加载所有脚本
-            for script_path in self.scripts:
+            for (script_path,dep_script) in self.scripts:
                 try:
                     with open(script_path, 'r') as f:
-                        script_content = f.read()
+                        script_content = "".join([dep_script,f.read()])
                     
                     script = self.frida_session.create_script(script_content)
                     script.on('message', eval_handler)
@@ -122,6 +123,7 @@ class HookManager:
                 self.logger.info(f"正在启动应用: {self.app_path}，使用硬件加速")
                 self.app_process = subprocess.Popen(
                     cmd,
+                    cwd=self.app_working_cwd,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE
                 )
@@ -164,7 +166,7 @@ class HookManager:
                     time.sleep(5)
             except Exception as e:
                 self.logger.error(f"应用启动失败: {str(e)}")
-        elif self.app_path:
+        else:
             self.logger.error(f"应用路径不存在: {self.app_path}")
 
         self.app_started = True

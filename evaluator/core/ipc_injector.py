@@ -20,7 +20,7 @@ class IpcInjector:
 
         @sio.event
         def connect(sid, _):
-            for p in shared_dict['scripts']:
+            for (p, _) in shared_dict['scripts']:
                 with open(p, 'r') as f:
                     sio.emit('inject', f.read(), to=sid)
             # 更新共享的session_id列表
@@ -101,6 +101,7 @@ class IpcInjector:
         self.app_process = None
         self.evaluate_on_completion = evaluate_on_completion
         self.triggered_evaluate = False
+        self.app_started = False
 
     def trigger_evaluate_on_completion(self):
         """
@@ -144,10 +145,9 @@ class IpcInjector:
                 self.shared_dict['logger'].error(f"处理消息错误: {str(e)}")
             time.sleep(0.5)
 
-    def add_script(self, task_path: str) -> None:
-        hooker_path = os.path.join(task_path, "hooker.js")
+    def add_script(self, hooker_path: str, dep_script:str) -> None:
         if os.path.exists(hooker_path):
-            self.shared_dict['scripts'].append(hooker_path)
+            self.shared_dict['scripts'].append((hooker_path, dep_script))
             self.shared_dict['logger'].info(f"添加钩子脚本: {hooker_path}")
         else:
             self.shared_dict['logger'].error(f"脚本文件不存在: {hooker_path}")
@@ -165,10 +165,10 @@ class IpcInjector:
         try:
             success = False
             
-            for script_path in self.shared_dict['scripts']:
+            for (script_path, dep_script) in self.shared_dict['scripts']:
                 try:
                     with open(script_path, 'r') as f:
-                        script_content = f.read()
+                        script_content = "".join([dep_script,f.read()])
                     
                     # 向所有已连接的客户端发送注入命令
                     for sid in self.shared_dict['target_session_id']:

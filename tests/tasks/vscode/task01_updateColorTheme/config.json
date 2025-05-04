@@ -24,10 +24,16 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
-    "success_conditions": [
-        "evaluate_on_completion"
-    ],
+    "total_key_steps": 1,
+    "preconditions": {
+        "vscode_running": true
+    },
     "events": {
-        "evaluate_on_completion": "在任务结束时判断主题颜色是否符合预期"
+        "evaluate_on_completion": {
+            "description": "在任务结束时判断主题颜色是否符合预期",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "主题颜色已经设置成功"
+        }
     }
 }
