@@ -1,0 +1,45 @@
+{
+    "task_id": "24",
+    "task_name": "configure_streaming_settings",
+    "description": "增加直播源并且设置Output中的一些设置",
+    
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "apps/obs-studio/bin/64bit/obs",
+        "args": []
+    },
+    
+    "task_parameters": {
+        "video_bitrate": "2000",
+        "audio_bitrate": "320",
+        "encoder_preset": "faster",
+        "replay_buffer_time": "30"
+    },
+    
+    "instruction_template": "设置Streaming的设置中视频比特率为${video_bitrate}Kbps，声音码率为${audio_bitrate}，编码预设设置为${encoder_preset}并且勾选Replay Buffer，设置最大回放时间为${replay_buffer_time}秒",
+    
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180,
+        "evaluator_type": "IpcInjector"
+    },
+    
+    "success_conditions": [
+        "video_bitrate_set",
+        "audio_bitrate_set",
+        "encoder_preset_set",
+        "replay_buffer_enabled",
+        "replay_time_set"
+    ],
+    
+    "events": {
+        "video_bitrate_set": "视频比特率设置为2000Kbps",
+        "audio_bitrate_set": "音频码率设置为320",
+        "encoder_preset_set": "编码预设设置为faster",
+        "replay_buffer_enabled": "回放缓冲区已启用",
+        "replay_time_set": "最大回放时间设为30秒"
+    }
+}

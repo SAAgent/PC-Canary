@@ -1,0 +1,50 @@
+{
+    "task_id": "23", 
+    "task_name": "batch_manage_text_source_filters", 
+    "description": "为文本源批量添加、启用、禁用及移除滤镜", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "text_source_name": "text_src",
+        "filters": [
+            {
+                "name": "f1",
+                "type": "color_key_filter"
+            },
+            {
+                "name": "f2",
+                "type": "scroll_filter"
+            }
+        ]
+    },
+    "instruction_template": "请在obs-studio中为名为'${text_source_name}'的文本源添加${filters}滤镜，然后启用、禁用和移除它们", 
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180 
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "success_conditions": [
+        "filters_added",
+        "filters_enabled_disabled",
+        "filters_removed"
+    ],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "filter_created": "滤镜已创建",
+        "filter_enabled": "滤镜已启用",
+        "filter_disabled": "滤镜已禁用",
+        "filter_removed": "滤镜已移除",
+        "filters_added": "所有滤镜已添加",
+        "filters_enabled_disabled": "所有滤镜已启用禁用",
+        "filters_removed": "所有滤镜已移除",
+        "error": "错误事件"
+    }
+}

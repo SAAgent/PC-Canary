@@ -1,0 +1,47 @@
+{
+    "task_id": "25", 
+    "task_name": "add_stinger_transition", 
+    "description": "添加 Stinger 过渡并演示切换", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "stinger_file": "/workspace/PC-Canary/tests/tasks/obs-studio/stinger_transition.mp4",
+        "transition_point_ms": 300
+    },
+    "instruction_template": "在OBS Studio中添加一个Stinger过渡效果,名字叫${transition_name}，使用${stinger_file}作为视频文件，设置过渡点为${transition_point_ms}毫秒，然后在两个场景之间演示切换", 
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180 
+    },
+    "preconditions": {
+      "obs_studio_running": true
+    },
+    "success_conditions": [
+      "stinger_transition_created",
+      "stinger_transition_configured",
+      "stinger_transition_used"
+    ],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "hook_installed": "钩子安装完成",
+        "function_found": "找到函数",
+        "error": "错误事件",
+        "createStingerTransition_called": "拦截到创建Stinger过渡函数调用",
+        "createStingerTransition_returned": "创建Stinger过渡函数返回",
+        "configureStingerTransition_called": "拦截到配置Stinger过渡函数调用",
+        "configureStingerTransition_returned": "配置Stinger过渡函数返回",
+        "setTransition_called": "拦截到设置过渡函数调用",
+        "setTransition_returned": "设置过渡函数返回",
+        "sceneSwitch_called": "拦截到场景切换函数调用",
+        "sceneSwitch_returned": "场景切换函数返回",
+        "stinger_transition_created": "Stinger过渡已创建",
+        "stinger_transition_configured": "Stinger过渡已配置",
+        "stinger_transition_used": "Stinger过渡已使用"
+    }
+}

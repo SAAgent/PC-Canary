@@ -1,0 +1,39 @@
+{
+    "task_id": "22", 
+    "task_name": "configure_recording_output", 
+    "description": "配置录制输出路径与格式并测试录制", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "output_path": "/tmp/obs-recordings",
+        "output_format": "mp4"
+    },
+    "instruction_template": "请在obs-studio中配置录制输出路径为${output_path}，格式为${output_format}，然后测试录制功能", 
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180 
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "success_conditions": [
+        "output_path_configured",
+        "output_format_configured",
+        "recording_tested"
+    ],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "output_path_configured": "录制输出路径已配置",
+        "output_format_configured": "录制输出格式已配置",
+        "start_recording_called": "开始录制函数被调用",
+        "stop_recording_called": "停止录制函数被调用",
+        "recording_tested": "录制功能已测试",
+        "error": "错误事件"
+    }
+}

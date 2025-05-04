@@ -1,0 +1,37 @@
+{
+    "task_id": "21",
+    "task_name": "batch_manage_color_sources",
+    "description": "批量添加、重排与删除纯色源",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": []
+    },
+    "task_parameters": {
+        "scene_name": "Scene",
+        "add_color_sources": ["c1", "c2", "c3", "c4"],
+        "reorder_to": ["c3", "c1", "c4", "c2"],
+        "delete_sources": ["c2", "c4"]
+    },
+    "instruction_template": "请在obs-studio的${scene_name}中批量添加纯色源${add_color_sources}，然后将它们从下到上重排为${reorder_to}，最后删除${delete_sources}",
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "success_conditions": [
+        "success"
+    ],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function called": "拦截到函数调用",
+        "function returned": "函数返回",
+        "scene_json_path": "当前场景配置文件的路径",
+        "error": "错误事件"
+    }
+} 
