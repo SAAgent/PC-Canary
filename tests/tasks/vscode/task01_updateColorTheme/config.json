@@ -35,5 +35,11 @@
             "key_step_index": 1,
             "key_step_name": "主题颜色已经设置成功"
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ]
 }

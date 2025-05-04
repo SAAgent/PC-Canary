@@ -58,5 +58,16 @@
             "description": "来自脚本的错误事件",
             "is_key_step": false
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "PC-Canary/apps/tdesktop/telegram-mcp",
+                "run",
+                "main.py"
+            ]
+        }
+    ]
 }
