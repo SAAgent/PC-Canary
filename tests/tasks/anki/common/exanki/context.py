@@ -6,7 +6,7 @@ import shutil
 import os
 import tempfile
 from enum import Enum
-from .orm import AnkiObjMap,Deck,Note,Card,Collection
+from .orm import AnkiObjMap,Deck,Note,Card,Collection,Notetype
 import json
 
 class FridaEvent:
@@ -149,6 +149,16 @@ class Context:
         for t in cur.fetchall():
             self.anki_config[t[0]] = json.loads(t[3].decode('utf-8'))
 
+        cur.execute("SELECT id,name FROM notetypes;")
+        self.notetypes = [Notetype.from_row(i) for i in cur.fetchall()]
+        for notetype in self.notetypes:
+            cur.execute("SELECT name FROM fields WHERE ntid = ?",(notetype.id,))
+            notetype.fields = [i[0] for i in cur.fetchall()]
+            cur.execute("SELECT config FROM templates WHERE ntid = ?",(notetype.id,))
+            result = cur.fetchone()
+            pos = result[0].find(b'@')
+            templates = list(map(lambda x:x.decode("utf-8",errors="ignore"),result[0][:pos].split(b"\x12")))
+            notetype.templates = templates
         
     def __del__(self):
         if self.conn:

@@ -308,3 +308,34 @@ class Tag(AnkiObjMixin):
     @classmethod
     def generate_hash(cls, id: int) -> Tuple[str, str]:
         return ("tag", f"{id}")
+
+@dataclass
+class Notetype(AnkiObjMixin):
+    id : int
+    name : str
+    fields : List[str]
+    templates : List[str]
+    
+    
+    def __post_init__(self):
+        super().__init__()
+
+    @classmethod
+    def from_row(cls, row: tuple) -> "Notetype":
+        """row 是 (id,name,config)"""
+        return cls(
+            id=row[0],
+            name=row[1],
+            fields=[],
+            templates=[]
+        )
+
+    def __repr__(self):
+        return f"<Notetype id={self.id} name={self.name}>"
+
+    def anki_hash(self) -> Tuple[str, str]:
+        return self.generate_hash(self.id)
+    
+    @classmethod
+    def generate_hash(cls, id: int) -> Tuple[str, str]:
+        return ("notetype", f"{id}")

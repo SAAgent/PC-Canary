@@ -108,5 +108,9 @@ const TRACE_MAPS = {
        "service_remove_notes" : {
             "addr" : 0x0000000000c78070,
             "filter" : "anki::services::<impl anki::backend::Backend>::remove_notes$"
-       }
+       },
+       "storage_update_notetypes" : {
+            "addr" : 0x00000000007262a0,
+            "filter" : "anki::storage::notetype::<impl anki::storage::sqlite::SqliteStorage>::update_notetype_templates$"
+       } 
 };
