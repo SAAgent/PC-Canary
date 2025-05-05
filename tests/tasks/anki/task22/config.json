@@ -1,0 +1,38 @@
+{
+    "task_id": "23",
+    "task_name": "给所有标签为red的卡片打上红色旗标",
+    "description": "给所有标签为red的卡片打上红色旗标",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "tag_name" : "cs"
+    },
+    "instruction_template": "给所有标签为${tag_name}的卡片打上红色旗标",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "add_red_flag" : "添加一个红色旗标",
+        "add_all_red_flags" : "添加完所有卡片"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}
