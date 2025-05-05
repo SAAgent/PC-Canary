@@ -1,0 +1,39 @@
+{
+    "task_id": "20",
+    "task_name": "创建一个叫cs的deck，将所有tag为cs的卡片移入到里面去",
+    "description": "创建一个叫cs的deck，将所有tag为cs的卡片移入到里面去",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "tag_name" : "cs"
+    },
+    "instruction_template": "创建一个叫${tag_name}的deck，将所有tag为${tag_name}的卡片移入到里面去",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "add_deck" : "添加成功",
+        "move_card" : "移动一个卡片",
+        "move_all_cards" : "移动完所有卡片"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}

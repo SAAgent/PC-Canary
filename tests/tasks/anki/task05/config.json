@@ -1,4 +1,5 @@
 {
+    "task_id" : "05",
     "task_name": "添加一张问答题卡片，然后撤销添加",
     "description": "添加一张问答题卡片，正面为The world is your oyster，背面为Shakespeare，添加到quote牌组中，然后撤销添加",
     "application_info": {
