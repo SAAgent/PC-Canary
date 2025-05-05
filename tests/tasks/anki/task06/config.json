@@ -12,7 +12,7 @@
     },
     "task_parameters": {
     },
-    "instruction_template": "添加一张问答题卡片到系统默认，正面为To be or not to be，其中be和not to be设置为红色，背面为that's a question",
+    "instruction_template": "添加一张问答题卡片到系统默认，正面为To be or not to be，其中be和not to be设置为红色，背面为that's a question，设置标签为quote",
     "evaluation_setup": {
         "scripts": [
             {
@@ -34,7 +34,8 @@
         "correct_field": "卡片数据匹配",
         "wrong_field": "卡片数据不匹配",
         "correct_format": "卡片格式匹配",
-        "wrong_format": "卡片格式不匹配"
+        "wrong_format": "卡片格式不匹配",
+        "wrong_quote": "标签错误"
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
 }
