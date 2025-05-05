@@ -1,0 +1,38 @@
+{
+    "task_id": "19",
+    "task_name": "设置搜索框默认搜索内容为\"cs\"",
+    "description": "设置搜索框默认搜索内容为\"cs\"",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "key_word" : "cs"
+    },
+    "instruction_template": "设置搜索框默认搜索内容为\"cs\"",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "set_sucess" : "设置成功",
+        "set_wrong" : "设置错误"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}
