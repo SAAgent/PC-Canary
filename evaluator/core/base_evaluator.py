@@ -17,6 +17,7 @@ from evaluator.core.state_inspector import StateInspector
 from evaluator.core.result_collector import ResultCollector
 from evaluator.core.events import AgentEvent
 from evaluator.utils.logger import setup_logger
+from evaluator.utils.restore_context_data import restore_context_data
 
 # Data structure for completion callbacks
 class CallbackEventData:
@@ -57,8 +58,8 @@ class BaseEvaluator:
         # 设置日志记录器
         self.logger = setup_logger(f"{self.task_category}_{self.task_id}_evaluator", self.session_dir,level=logging.DEBUG)
         FILE_ROOT = os.path.dirname(os.path.abspath(__file__))
-        CANARY_ROOT = os.path.dirname(os.path.dirname(FILE_ROOT))
-        self.task_path = os.path.join(CANARY_ROOT, "tests/tasks", self.task_category, self.task_id)
+        self.canary_root = os.path.dirname(os.path.dirname(FILE_ROOT))
+        self.task_path = os.path.join(self.canary_root, "tests/tasks", self.task_category, self.task_id)
 
         # 评估状态
         self.is_running = False
@@ -380,6 +381,18 @@ class BaseEvaluator:
             return False
 
         if not self.hook_manager.app_started:
+            # 恢复用户数据
+            try:
+                data_restore_config = self.config.get("context_data", [])
+                for config in data_restore_config:
+                    from_relative_path = config.get("from")
+                    from_path = os.path.join(self.canary_root, from_relative_path)
+                    to_path = config.get("to")
+                    restore_context_data(from_path, to_path)
+            except Exception as e:
+                self.logger.error(f"无法从{str(e)}恢复用户数据")
+                return False
+            self.logger.info("用户数据成功恢复")
             self.start_app()
 
         try:
