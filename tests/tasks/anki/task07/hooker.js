@@ -1,5 +1,7 @@
 const TRACE_FUNCTION = [
-    "storage_add_card"
+    "storage_add_card",
+    "service_serach_cards",
+    "storage_update_card",
 ]
 function initHooks() {
     // iterate function name and addr, init it.

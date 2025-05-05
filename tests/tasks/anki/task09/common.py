@@ -3,29 +3,14 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common')))
 from exanki import *
 
-card_added_ : str = "card_added"  # 添加了卡片
-tag_added_ : str = "tag_added"  # 添加了标签
+clear_unused_tags_ : str = "clear_unused_tags"  # 删除所有未使用的标签
 
-class EventCardAdded(FridaEvent):
+class EventClearUnusedTags(FridaEvent):
 
     def __init__(self,value=True):
-        super().__init__("card_added", value)
+        super().__init__("clear_unused_tags", value)
 
 
     def describe(self):
-        return "添加了卡片"
+        return "删除所有未使用的标签"
     
-class EventTagAdded(FridaEvent):
-
-    def __init__(self,value=True):
-        super().__init__("tag_added", value)
-
-
-    def describe(self):
-        return "添加了标签"
-    
-from dataclasses import dataclass
-@dataclass
-class TaskParameters:
-    tag_name : str
-tp = TaskParameters(**{'tag_name': 'cs'})

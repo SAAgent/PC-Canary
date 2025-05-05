@@ -1,6 +1,7 @@
 const TRACE_FUNCTION = [
-    "service_add_media_file",
     "storage_add_card",
+    "service_serach_cards",
+    "service_find_and_replace",
 ]
 function initHooks() {
     // iterate function name and addr, init it.

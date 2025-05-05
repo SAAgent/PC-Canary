@@ -8,6 +8,7 @@ correct_field_ : str = "correct_field"  # 卡片数据匹配
 wrong_field_ : str = "wrong_field"  # 卡片数据不匹配
 correct_format_ : str = "correct_format"  # 卡片格式匹配
 wrong_format_ : str = "wrong_format"  # 卡片格式不匹配
+wrong_quote_ : str = "wrong_quote"  # 标签错误
 
 class EventCardAdded(FridaEvent):
 
@@ -53,4 +54,13 @@ class EventWrongFormat(FridaEvent):
 
     def describe(self):
         return "卡片格式不匹配"
+    
+class EventWrongQuote(FridaEvent):
+
+    def __init__(self,get="",expect=""):
+        super().__init__("wrong_quote", f"got {get}, expect {expect}")
+
+
+    def describe(self):
+        return "标签错误"
     

@@ -1,7 +1,7 @@
 {
     "task_id": "13",
-    "task_name": "添加一张卡片，正面为what is this? 附带一张狗的照片，背面为dog",
-    "description": "添加一张卡片，正面为what is this? 附带一张狗的照片，背面为dog",
+    "task_name": "查找替换",
+    "description": "添加一张卡片，正面为What is this?。然后查找所有带有What的卡片，将其替换为Where",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -10,10 +10,7 @@
         ],
         "cwd": "/home/agent/anki"
     },
-    "task_parameters": {
-        "path" : "/home/agent/PC-Canary/tests/tasks/anki/task13/dog.jpg"
-    },
-    "instruction_template": "添加一张卡片，正面为what is this?？附带一张狗的图片，图片路径为${path}，背面为dog",
+    "instruction_template": "添加一张卡片，正面为\"What is this?\"。然后查找所有带有What的卡片，将其替换为Where·",
     "evaluation_setup": {
         "scripts": [
             {
@@ -32,8 +29,8 @@
     },
     "events": {
         "card_added": "添加了卡片",
-        "image_added": "添加了图片",
-        "card_format_correct": "卡片格式匹配"
+        "search_card_called" : "调用了查找函数",
+        "replace_card_success" : "调用了替换函数"
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
 }

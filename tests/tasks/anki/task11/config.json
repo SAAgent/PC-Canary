@@ -1,7 +1,7 @@
 {
     "task_id": "11",
-    "task_name": "添加填空卡片",
-    "description": "添加一个填空题卡片到系统默认，内容为The capital of China is Beijing，对Beijing进行挖空",
+    "task_name": "添加带有有序列表卡片",
+    "description": "添加一个问答题卡片，问题为Three largest countries in the world,其中对largest加粗, 答案使用有序列表，分别填入Russia,Canada, China",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -10,7 +10,7 @@
         ],
         "cwd": "/home/agent/anki"
     },
-    "instruction_template": "添加一个填空题卡片到系统默认，内容为The capital of China is Beijing，对Beijing进行挖空",
+    "instruction_template": "添加一个问答题卡片，问题为Three largest countries in the world,其中对largest加粗,答案使用有序列表，分别填入Russia,Canada, China",
     "evaluation_setup": {
         "scripts": [
             {

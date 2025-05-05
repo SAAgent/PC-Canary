@@ -1,7 +1,7 @@
 {
     "task_id": "15",
-    "task_name": "搁置",
-    "description": "设置标签为delay的卡片为搁置",
+    "task_name": "设置自动备份时间",
+    "description": "设置自动备份时间为15分钟",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -11,9 +11,9 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "tag_name" : "delay"
+        "time" : "15"
     },
-    "instruction_template": "设置标签为${tag_name}的卡片为搁置",
+    "instruction_template": "设置自动备份时间为${time}分钟",
     "evaluation_setup": {
         "scripts": [
             {
@@ -31,7 +31,8 @@
         "timeout": 60
     },
     "events": {
-        "delay" : "搁置成功"
+        "set_sucess" : "设置成功",
+        "set_wrong" : "设置错误"
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
 }

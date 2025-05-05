@@ -1,7 +1,7 @@
 {
     "task_id": "16",
-    "task_name": "设置自动备份时间",
-    "description": "设置自动备份时间为15分钟",
+    "task_name": "设置次日起点（每日轮换卡片的时间）为1时",
+    "description": "设置次日起点（每日轮换卡片的时间）为1时",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -11,9 +11,9 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "time" : "15"
+        "time" : "1"
     },
-    "instruction_template": "设置自动备份时间为${time}分钟",
+    "instruction_template": "设置次日起点（每日轮换卡片的时间）为${time}时",
     "evaluation_setup": {
         "scripts": [
             {

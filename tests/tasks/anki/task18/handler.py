@@ -8,8 +8,8 @@ from common import *
 def handle_storage_set_config(context: Context,message,data) -> Status:
     context.update_database()
     status = Status()
-    config = context.anki_config["collapseTime"]
-    if config == int(tp.time) * 60:
+    config = context.anki_config["defaultSearchText"]
+    if config == tp.key_word:
         status.emit(EventSetSucess())
     else:
         status.emit(EventSetWrong(str(config),tp.time*60))

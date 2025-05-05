@@ -1,7 +1,7 @@
 {
     "task_id": "12",
-    "task_name": "添加带有有序列表卡片",
-    "description": "添加一个问答题卡片，问题为Three largest countries in the world,其中对largest加粗, 答案使用有序列表，分别填入Russia,Canada, China",
+    "task_name": "添加一张卡片，正面为what is this? 附带一张狗的照片，背面为dog",
+    "description": "添加一张卡片，正面为what is this? 附带一张狗的照片，背面为dog",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -10,7 +10,10 @@
         ],
         "cwd": "/home/agent/anki"
     },
-    "instruction_template": "添加一个问答题卡片，问题为Three largest countries in the world,其中对largest加粗,答案使用有序列表，分别填入Russia,Canada, China",
+    "task_parameters": {
+        "path" : "/home/agent/PC-Canary/tests/tasks/anki/task13/dog.jpg"
+    },
+    "instruction_template": "添加一张卡片，正面为what is this?？附带一张狗的图片，图片路径为${path}，背面为dog",
     "evaluation_setup": {
         "scripts": [
             {
@@ -29,8 +32,8 @@
     },
     "events": {
         "card_added": "添加了卡片",
-        "card_format_correct": "卡片格式匹配",
-        "card_format_wrong": "卡片格式不匹配"
+        "image_added": "添加了图片",
+        "card_format_correct": "卡片格式匹配"
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
 }

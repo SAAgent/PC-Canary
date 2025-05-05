@@ -14,13 +14,13 @@ def handle_storage_add_card(context: Context,message,data) -> Status:
     if len(note.fields) != 2:
         return status
 
-    first_field = '<span style="color: rgb(255, 0, 0);">x<sup>2</sup></span>-2x+1=0'
-    second_field = "x=1"
+    first_field = 'To <span style="color: rgb(255, 0, 0);">be</span> or <span style="color: rgb(255, 0, 0);">not to be</span>'
+    second_field = "that's a question"
 
-    if note.fields[0] == first_field and note.fields[1] == second_field:
+    if note.fields[0] == first_field and note.fields[1] == second_field and len(note.tags) == 1 and note.tags[0] == "quote":
         status.emit(EventCorrectField())
         status.emit(EventCorrectFormat())
-    elif second_field == note.fields[1] and "x" in note.fields[0] and "2" in note.fields[0] and "-2x+1=0" in note.fields[0]:
+    elif second_field == note.fields[1] and "To" in note.fields[0] and "be" in note.fields[0] and "not to be" in note.fields[0]:
         status.emit(EventCorrectField())
         status.emit(EventWrongFormat(f"{note.fields[0]}",first_field))
     else:

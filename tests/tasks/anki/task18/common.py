@@ -27,5 +27,5 @@ class EventSetWrong(FridaEvent):
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:
-    time : str
-tp = TaskParameters(**{'time': '30'})
+    key_word : str
+tp = TaskParameters(**{'key_word': 'cs'})

@@ -2,18 +2,17 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import json
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
 def handle_storage_set_config(context: Context,message,data) -> Status:
     context.update_database()
     status = Status()
-    config = context.anki_config["rollover"]
-    if config == int(tp.time):
+    config = context.anki_config["collapseTime"]
+    if config == int(tp.time) * 60:
         status.emit(EventSetSucess())
     else:
-        status.emit(EventSetWrong(str(config),tp.time))
+        status.emit(EventSetWrong(str(config),tp.time*60))
     return status 
 
 TRACE_HANDLERS = {

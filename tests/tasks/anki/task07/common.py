@@ -4,10 +4,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../comm
 from exanki import *
 
 card_added_ : str = "card_added"  # 数据库中出现卡片
-correct_field_ : str = "correct_field"  # 卡片数据匹配
-wrong_field_ : str = "wrong_field"  # 卡片数据不匹配
-correct_format_ : str = "correct_format"  # 卡片格式匹配
-wrong_format_ : str = "wrong_format"  # 卡片格式不匹配
+search_card_called_ : str = "search_card_called"  # 调用了查找函数
+update_card_expiration_date_ : str = "update_card_expiration_date"  # 更新了卡片过期日期
 
 class EventCardAdded(FridaEvent):
 
@@ -18,39 +16,27 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "数据库中出现卡片"
     
-class EventCorrectField(FridaEvent):
+class EventSearchCardCalled(FridaEvent):
 
     def __init__(self,value=True):
-        super().__init__("correct_field", value)
+        super().__init__("search_card_called", value)
 
 
     def describe(self):
-        return "卡片数据匹配"
+        return "调用了查找函数"
     
-class EventWrongField(FridaEvent):
-
-    def __init__(self,get="",expect=""):
-        super().__init__("wrong_field", f"got {get}, expect {expect}")
-
-
-    def describe(self):
-        return "卡片数据不匹配"
-    
-class EventCorrectFormat(FridaEvent):
+class EventUpdateCardExpirationDate(FridaEvent):
 
     def __init__(self,value=True):
-        super().__init__("correct_format", value)
+        super().__init__("update_card_expiration_date", value)
 
 
     def describe(self):
-        return "卡片格式匹配"
+        return "更新了卡片过期日期"
     
-class EventWrongFormat(FridaEvent):
-
-    def __init__(self,get="",expect=""):
-        super().__init__("wrong_format", f"got {get}, expect {expect}")
-
-
-    def describe(self):
-        return "卡片格式不匹配"
-    
+from dataclasses import dataclass
+@dataclass
+class TaskParameters:
+    search_keyword : str
+    due_days : str
+tp = TaskParameters(**{'search_keyword': 'computer', 'due_days': '4'})

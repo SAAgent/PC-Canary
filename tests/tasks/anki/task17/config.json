@@ -1,7 +1,7 @@
 {
     "task_id": "17",
-    "task_name": "设置次日起点（每日轮换卡片的时间）为1时",
-    "description": "设置次日起点（每日轮换卡片的时间）为1时",
+    "task_name": "设置提前学习的时间上限为30分钟",
+    "description": "设置提前学习的时间上限为30分钟",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -11,9 +11,9 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "time" : "1"
+        "time" : "30"
     },
-    "instruction_template": "设置次日起点（每日轮换卡片的时间）为${time}时",
+    "instruction_template": "设置提前学习的时间上限为${time}分钟",
     "evaluation_setup": {
         "scripts": [
             {

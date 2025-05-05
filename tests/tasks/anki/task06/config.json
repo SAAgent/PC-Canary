@@ -1,7 +1,7 @@
 {
-    "task_id": "21",
-    "task_name": "添加带有颜色卡片",
-    "description": "添加一张复杂的问答题卡片到系统默认",
+    "task_id": "06",
+    "task_name": "添加带有上标卡片",
+    "description": "添加一张问答题卡片到系统默认，正面为x^2-2x+1=0，需使用上标完成,x^2字体为红色，背面为x=1",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -12,7 +12,7 @@
     },
     "task_parameters": {
     },
-    "instruction_template": "添加一张问答题卡片到系统默认，正面为To be or not to be，其中be和not to be设置为红色，背面为that's a question，设置标签为quote",
+    "instruction_template": "添加一张问答题卡片到系统默认，正面为x^2-2x+1=0，需使用上标完成。并且x^2需要标记字体为红色，背面为x=1",
     "evaluation_setup": {
         "scripts": [
             {
@@ -34,8 +34,7 @@
         "correct_field": "卡片数据匹配",
         "wrong_field": "卡片数据不匹配",
         "correct_format": "卡片格式匹配",
-        "wrong_format": "卡片格式不匹配",
-        "wrong_quote": "标签错误"
+        "wrong_format": "卡片格式不匹配"
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
 }

@@ -3,34 +3,19 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common')))
 from exanki import *
 
-card_added_ : str = "card_added"  # 添加了卡片
-search_card_called_ : str = "search_card_called"  # 调用了查找函数
-replace_card_success_ : str = "replace_card_success"  # 调用了替换函数
+delay_ : str = "delay"  # 搁置成功
 
-class EventCardAdded(FridaEvent):
+class EventDelay(FridaEvent):
 
     def __init__(self,value=True):
-        super().__init__("card_added", value)
+        super().__init__("delay", value)
 
 
     def describe(self):
-        return "添加了卡片"
+        return "搁置成功"
     
-class EventSearchCardCalled(FridaEvent):
-
-    def __init__(self,value=True):
-        super().__init__("search_card_called", value)
-
-
-    def describe(self):
-        return "调用了查找函数"
-    
-class EventReplaceCardSuccess(FridaEvent):
-
-    def __init__(self,value=True):
-        super().__init__("replace_card_success", value)
-
-
-    def describe(self):
-        return "调用了替换函数"
-    
+from dataclasses import dataclass
+@dataclass
+class TaskParameters:
+    tag_name : str
+tp = TaskParameters(**{'tag_name': 'delay'})

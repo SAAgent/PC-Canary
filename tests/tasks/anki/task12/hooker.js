@@ -1,4 +1,5 @@
 const TRACE_FUNCTION = [
+    "service_add_media_file",
     "storage_add_card",
 ]
 function initHooks() {

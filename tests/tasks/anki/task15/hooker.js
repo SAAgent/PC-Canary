@@ -1,5 +1,5 @@
 const TRACE_FUNCTION = [
-    "storage_update_card",
+    "storage_set_config" 
 ]
 function initHooks() {
     // iterate function name and addr, init it.

@@ -1,7 +1,7 @@
 {
     "task_id": "10",
-    "task_name": "删除所有未使用的标签",
-    "description": "删除所有未使用的标签",
+    "task_name": "添加填空卡片",
+    "description": "添加一个填空题卡片到系统默认，内容为The capital of China is Beijing，对Beijing进行挖空",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -10,7 +10,7 @@
         ],
         "cwd": "/home/agent/anki"
     },
-    "instruction_template": "删除所有未使用的标签",
+    "instruction_template": "添加一个填空题卡片到系统默认，内容为The capital of China is Beijing，对Beijing进行挖空",
     "evaluation_setup": {
         "scripts": [
             {
@@ -28,7 +28,9 @@
         "timeout": 60
     },
     "events": {
-        "clear_unused_tags": "删除所有未使用的标签"
+        "card_added": "添加了卡片",
+        "card_format_correct": "卡片格式匹配",
+        "card_format_wrong": "卡片格式不匹配"
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
 }

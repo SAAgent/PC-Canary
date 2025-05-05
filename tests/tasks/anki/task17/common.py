@@ -28,4 +28,4 @@ from dataclasses import dataclass
 @dataclass
 class TaskParameters:
     time : str
-tp = TaskParameters(**{'time': '1'})
+tp = TaskParameters(**{'time': '30'})

@@ -4,8 +4,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../comm
 from exanki import *
 
 card_added_ : str = "card_added"  # 添加了卡片
-image_added_ : str = "image_added"  # 添加了图片
-card_format_correct_ : str = "card_format_correct"  # 卡片格式匹配
+search_card_called_ : str = "search_card_called"  # 调用了查找函数
+replace_card_success_ : str = "replace_card_success"  # 调用了替换函数
 
 class EventCardAdded(FridaEvent):
 
@@ -16,26 +16,21 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "添加了卡片"
     
-class EventImageAdded(FridaEvent):
+class EventSearchCardCalled(FridaEvent):
 
     def __init__(self,value=True):
-        super().__init__("image_added", value)
+        super().__init__("search_card_called", value)
 
 
     def describe(self):
-        return "添加了图片"
+        return "调用了查找函数"
     
-class EventCardFormatCorrect(FridaEvent):
+class EventReplaceCardSuccess(FridaEvent):
 
     def __init__(self,value=True):
-        super().__init__("card_format_correct", value)
+        super().__init__("replace_card_success", value)
 
 
     def describe(self):
-        return "卡片格式匹配"
+        return "调用了替换函数"
     
-from dataclasses import dataclass
-@dataclass
-class TaskParameters:
-    path : str
-tp = TaskParameters(**{'path': '/home/agent/PC-Canary/tests/tasks/anki/task13/dog.jpg'})

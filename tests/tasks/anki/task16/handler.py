@@ -9,11 +9,11 @@ from common import *
 def handle_storage_set_config(context: Context,message,data) -> Status:
     context.update_database()
     status = Status()
-    config = context.anki_config["backups"]
-    if config["minimum_interval_mins"] == int(tp.time):
+    config = context.anki_config["rollover"]
+    if config == int(tp.time):
         status.emit(EventSetSucess())
     else:
-        status.emit(EventSetWrong(str(config["minimum_interval_mins"]),tp.time))
+        status.emit(EventSetWrong(str(config),tp.time))
     return status 
 
 TRACE_HANDLERS = {

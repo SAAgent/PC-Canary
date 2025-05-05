@@ -2,12 +2,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import re
 sys.path.append(os.path.dirname(__file__))
 from common import *
-
-def remove_html_tags(text):
-    return re.sub(r'<[^>]+>', '', text)
 
 def handle_storage_add_card(context: Context,message,data) -> Status:
     context.update_database()
@@ -15,33 +11,31 @@ def handle_storage_add_card(context: Context,message,data) -> Status:
     note = latest_card.get_note()
     status = Status()
     status.emit(EventCardAdded())
-    if len(note.fields) == 2:
-        note = note.fields
-        if not remove_html_tags(note[0]) == 'three largest countries in the world':
-            status.emit(EventCardFormatWrong(remove_html_tags(note.fields[0]),'three largest countries in the world'))
-            # status.mark_error()
-            return status
-        if note[0] != 'three <b>largest</b> countries in the world':
-            status.emit(EventCardFormatWrong(note.fields[0],'three <b>largest</b> countries in the world'))
-            # status.mark_error()
-            return status
-        if note[1] != "<ol><li>Russia</li><li>Canada</li><li>China</li></ol>":
-            status.emit(EventCardFormatWrong(note[1],"<ol><li>Russia</li><li>Canada</li><li>China</li></ol>"))
-            # status.mark_error()
-            return status
+    if len(note.fields) == 2 and "What is this?" in note.fields[0] and \
+        tp.path.split('/')[-1] in note.fields[0] and note.fields[1] == "dog":
         status.emit(EventCardFormatCorrect())
-    # else:
-    #     status.mark_error()
+    else:
+        status.mark_error()
     return status
+
+def handle_add_media_file(context: Context,message,data) -> Status:
+    status = Status()
+    status.emit(EventImageAdded())
+    status.mark_progress()
+    return status
+
 TRACE_HANDLERS = {
     "storage_add_card": handle_storage_add_card,
+    "service_add_media_file" : handle_add_media_file,
 }   
+
 dependency_graph = {
-    card_added_ : [],
+    image_added_: [],
+    card_added_ : [image_added_],
     card_format_correct_ : [card_added_]
 }
 finished_list = [
-    card_format_correct_
+   card_added_ 
 ]
 
 bind_handlers(TRACE_HANDLERS,dependency_graph,finished_list)

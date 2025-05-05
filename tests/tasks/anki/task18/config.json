@@ -1,7 +1,7 @@
 {
     "task_id": "18",
-    "task_name": "设置提前学习的时间上限为30分钟",
-    "description": "设置提前学习的时间上限为30分钟",
+    "task_name": "设置搜索框默认搜索内容为\"cs\"",
+    "description": "设置搜索框默认搜索内容为\"cs\"",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -11,9 +11,9 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "time" : "30"
+        "key_word" : "cs"
     },
-    "instruction_template": "设置提前学习的时间上限为${time}分钟",
+    "instruction_template": "设置搜索框默认搜索内容为\"cs\"",
     "evaluation_setup": {
         "scripts": [
             {
