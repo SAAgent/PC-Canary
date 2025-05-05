@@ -124,8 +124,13 @@ class Context:
             os.unlink(os.path.join(self.tmpdirname,"collection.anki2-wal"))
         dst_file = shutil.copy(self.sql_path, self.tmpdirname)
         time.sleep(0.3)
-        _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
-        
+        if os.path.exists(self.sql_path+"-wal"):
+            _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
+        else:
+            time.sleep(1)
+            if os.path.exists(self.sql_path+"-wal"):
+                _dst_file2 = shutil.copy(self.sql_path+"-wal", self.tmpdirname)
+            
 
         try:
            self.conn = sqlite3.connect(f'file:{dst_file}', uri=True)

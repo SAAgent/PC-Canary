@@ -4,6 +4,7 @@ from typing import Dict, Any, Optional
 HANDLERS = None
 DEPENDENCY_GRAPH = None
 FINISHED_LIST = None
+INIT = None
 
 def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     CONTEXT = message_handler.context 
@@ -24,11 +25,12 @@ def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     return None
 
 
-def bind_handlers(handlers:Dict,dependency_graph,finished_condition):
-    global HANDLERS,DEPENDENCY_GRAPH,FINISHED_LIST
+def bind_handlers(handlers:Dict,dependency_graph,finished_condition,init=None):
+    global HANDLERS,DEPENDENCY_GRAPH,FINISHED_LIST,INIT
     HANDLERS = handlers
     FINISHED_LIST = finished_condition
     DEPENDENCY_GRAPH = dependency_graph
+    INIT = init
     
 def register_handlers(evaluator):
     config = evaluator.config
@@ -43,6 +45,8 @@ def register_handlers(evaluator):
         raise RuntimeError("Finished list is not initialized")
     CONTEXT = Context(evaluator,DEPENDENCY_GRAPH,FINISHED_LIST)
     CONTEXT.register_trace_handlers(HANDLERS)
+    if INIT is not None:
+        INIT(CONTEXT)
     message_handler.context = CONTEXT
     return message_handler
 
