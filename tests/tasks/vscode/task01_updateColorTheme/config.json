@@ -6,7 +6,7 @@
     "application_info": {
         "name": "vscode",
         "executable_path": "/usr/share/code/code",
-        "args": ["--no-sandbox", "--user-data-dir=apps/vscode_user_data_dir/"]
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
     },
 
     "task_parameters": {
@@ -40,6 +40,20 @@
         {
             "command": "mcp-proxy",
             "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
         }
     ]
 }
