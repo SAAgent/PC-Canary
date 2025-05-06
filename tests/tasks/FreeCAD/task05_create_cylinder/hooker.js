@@ -12,7 +12,7 @@
   const FUNCTION_NOT_FOUND = "function_not_found"
   const FUNCTION_FOUND = "function_found"
   const FUNCTION_CALLED = "function_called"
-  const FUNCTION_KEY_WORD_DETECTED = "funtion_key_word_detected"
+  const FUNCTION_KEY_WORD_DETECTED = "function_key_word_detected"
   const ERROR = "error"
   const HOOK_INSTALLED = "hook_installed"
 
@@ -98,7 +98,7 @@ doc = FreeCAD.open(file_path)
 if doc is None:
     result = None
 else:
-    # 查找最后一个创建的Part::Cylinder对象
+    # 查找最后一个创建的圆柱体对象
     cylinder = None
     for obj in reversed(doc.Objects):
         if obj.TypeId == "PartDesign::AdditiveCylinder" or obj.TypeId == "Part::Cylinder":

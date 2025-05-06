@@ -29,6 +29,7 @@
     "preconditions": {
         "FreeCAD_running": true
     },
+    "total_key_steps": 2,
     "events": {
         "script_initialized": {
             "description": "钩子脚本初始化",
