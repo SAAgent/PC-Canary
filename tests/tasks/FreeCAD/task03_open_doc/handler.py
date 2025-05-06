@@ -7,79 +7,25 @@ FreeCAD事件处理器
 """
 
 import os
-import json
-import time
-from typing import Dict, Any, Optional, Callable
+from typing import Dict, Any, Optional, List
 
-# 全局评估器实例，由message_handler使用
-_EVALUATOR = None
-_CONFIG = None
-_START_TIME = None
-
-FUNCTION_NAME = "_ZN3Gui11Application4openEPKcS2_"
-ORIGIN_FUNCTION_NAME = "Application::open"
-FUNCTION_BEHAVIOR = "打开文档"
-
-SCRIPT_INITIALIZED = "script_initialized"
-FUNCTION_NOT_FOUND = "function_not_found"
-FUNCTION_FOUND = "function_found"
-FUNCTION_CALLED = "function_called"
-FUNCTION_KEY_WORD_DETECTED = "funtion_key_word_detected"
-ERROR = "error"
-HOOK_INSTALLED = "hook_installed"
-
+# 常量定义
+FUNCTION_KEY_WORD_DETECTED = "function_key_word_detected"
 SOURCE_PATH = "source_path"
 KEY = "filename"
-KEY_WORDS = [KEY, SOURCE_PATH]
 
-APP_NAME = "FreeCAD"
-  
-def set_evaluator(evaluator):
-    """设置全局评估器实例"""
-    global _EVALUATOR, _CONFIG
-    _EVALUATOR = evaluator
-    
-    # 使用评估器的已更新配置，而不是重新读取文件
-    if hasattr(evaluator, 'config') and evaluator.config:
-        _CONFIG = evaluator.config
-        _EVALUATOR.logger.info("使用评估器中的更新配置")
-    else:
-        # 作为备份，如果评估器中没有配置，才从文件读取
-        try:
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            config_file = os.path.join(current_dir, "config.json")
-            
-            with open(config_file, 'r') as f:
-                _CONFIG = json.load(f)
-                _EVALUATOR.logger.info("从文件加载配置")
-        except Exception as e:
-            if _EVALUATOR:
-                _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
-            # 提供一个默认配置以避免空引用
-            _CONFIG = {"task_parameters": {SOURCE_PATH: "/FreeCAD/", KEY: "task03.FCStd"}}
-
-def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
+def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     """
     处理从钩子脚本接收的消息
-    
+
     Args:
         message: Frida消息对象
-        data: 附加数据
-        
+        logger: 记录日志的logger对象
+        task_parameter: 任务参数
+
     Returns:
-        str: 如果任务成功完成返回"success"，否则返回None
+        Optional[List[Dict[str, Any]]]: 状态字典列表或None
     """
-    global _EVALUATOR, _CONFIG, _START_TIME
-    
-    # 初始化开始时间
-    if _START_TIME is None:
-        _START_TIME = time.time()
-    
-    # 检查评估器是否已设置
-    if _EVALUATOR is None:
-        print("警告: 评估器未设置，无法处理消息")
-        return None
-    
     # 处理消息
     if message.get('type') == 'send' and 'payload' in message:
         payload = message['payload']
@@ -87,69 +33,71 @@ def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
         # 检查是否包含事件类型
         if 'event' in payload:
             event_type = payload['event']
-            _EVALUATOR.logger.debug(f"接收到事件: {event_type}")
+            logger.debug(f"接收到事件: {event_type}")
             
-            # 记录事件
-            _EVALUATOR.record_event(event_type, payload)
+            # 返回的状态更新列表
+            updates = []
             
             # 处理特定事件
-            if event_type == SCRIPT_INITIALIZED:
-                _EVALUATOR.logger.info(f"钩子脚本初始化: {payload.get('message', '')}")
+            if event_type == "script_initialized":
+                logger.info(f"钩子脚本初始化: {payload.get('message', '')}")
                 
-            elif event_type == FUNCTION_FOUND:
-                _EVALUATOR.logger.info(f"找到函数: {payload.get('address', '')}")
-                _EVALUATOR.update_metric(FUNCTION_FOUND, True)
+            elif event_type == "function_found":
+                logger.info(f"找到函数: {payload.get('address', '')}")
+                # 不再将其标记为关键步骤
                 
-            elif event_type == FUNCTION_CALLED: 
-                _EVALUATOR.logger.info(f"函数被调用: {payload.get('message', '')}")
-                _EVALUATOR.update_metric(FUNCTION_CALLED, True)
+            elif event_type == "function_called": 
+                logger.info(f"函数被调用: {payload.get('message', '')}")
+                # 不再将其标记为关键步骤
                 
             elif event_type == FUNCTION_KEY_WORD_DETECTED:
                 log_info = f"函数检测到关键字: {payload.get('message', '')}"
-                for key in KEY_WORDS:
-                    log_info += f", {key}: {{{payload.get(key, '')}}}"
-                _EVALUATOR.logger.info(log_info)
+                logger.info(log_info)
 
-                source_path = _CONFIG.get("task_parameters", {}).get(SOURCE_PATH, '')
-                expected_key = source_path + _CONFIG.get("task_parameters", {}).get(KEY, '')
-                key = payload.get(KEY, '')
-                _EVALUATOR.logger.debug(f"预期关键字: {expected_key}, 实际关键字: {key}")
+                source_path = task_parameter.get(SOURCE_PATH, '')
+                expected_key = source_path + task_parameter.get(KEY, '')
+                key = payload.get('filename', '')
+                logger.debug(f"预期关键字: {expected_key}, 实际关键字: {key}")
 
-                if key == expected_key and os.path.exists(expected_key):
-                    _EVALUATOR.update_metric(FUNCTION_KEY_WORD_DETECTED, True)
-                    # 标记任务成功并计算完成时间
-                    _EVALUATOR.update_metric("success", True)
-                    completion_time = time.time() - _START_TIME
-                    _EVALUATOR.update_metric("time_to_complete", completion_time)
+                if key and os.path.exists(expected_key):
+                    # 这是唯一的关键步骤
+                    updates.append({
+                        'status': 'key_step',
+                        'index': 1,
+                    })
                     
-                    _EVALUATOR.logger.info(f"任务成功完成! 耗时: {completion_time:.2f} 秒")
-                        
-                    # 返回成功标志
-                    return "success"
+                    # 标记任务成功
+                    updates.append({
+                        'status': 'success',
+                        'reason': f"成功打开文档: {key}"
+                    })
+                    
+                    logger.info(f"任务成功完成！文档已打开: {key}")
                 
             elif event_type == "error":
                 error_type = payload.get("error_type", "unknown")
-                message = payload.get("message", "未知错误")
+                error_message = payload.get("message", "未知错误")
                 
-                _EVALUATOR.logger.error(f"钩子脚本错误 ({error_type}): {message}")
-                _EVALUATOR.update_metric("error", {"type": error_type, "message": message})
+                logger.error(f"钩子脚本错误 ({error_type}): {error_message}")
+                
+                # 报告错误
+                updates.append({
+                    'status': 'error',
+                    'type': error_type,
+                    'message': error_message
+                })
+            
+            # 如果有状态更新，返回它们
+            if updates:
+                return updates
                 
     elif message.get('type') == 'error':
-        _EVALUATOR.logger.error(f"钩子脚本错误: {message.get('stack', '')}")
+        logger.error(f"钩子脚本错误: {message.get('stack', '')}")
+        return [{
+            'status': 'error',
+            'type': 'script_error',
+            'message': f"钩子脚本错误: {message.get('description', '未知错误')}", 
+            'stack_trace': message.get('stack', '')
+        }]
     
     return None
-
-
-def register_handlers(evaluator):
-    """
-    注册所有事件处理函数到评估器
-    
-    Args:
-        evaluator: 评估器实例
-        
-    Returns:
-        message_handler: 处理函数
-    """
-    # 设置全局评估器，用于message_handler
-    set_evaluator(evaluator)
-    return message_handler
