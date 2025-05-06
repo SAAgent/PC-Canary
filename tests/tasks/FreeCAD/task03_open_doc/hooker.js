@@ -54,14 +54,6 @@
         return FuncAddr;
     }
     
-    // 读取C++标准字符串内容
-    function readCXXStdString(Ptr) {
-        const str_ptr = Ptr;
-        const len = str_ptr.add(0x8).readU64();
-        const str = str_ptr.readPointer().readCString(len)
-        return str;
-    }
-    
     // 初始化钩子并立即执行
     function initHook() {
         sendEvent(SCRIPT_INITIALIZED, {

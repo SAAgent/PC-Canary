@@ -13,7 +13,7 @@ SCRIPT_INITIALIZED = "script_initialized"
 FUNCTION_NOT_FOUND = "function_not_found"
 FUNCTION_FOUND = "function_found"
 FUNCTION_CALLED = "function_called"
-FUNCTION_KEY_WORD_DETECTED = "funtion_key_word_detected"
+FUNCTION_KEY_WORD_DETECTED = "function_key_word_detected"
 ERROR = "error"
 HOOK_INSTALLED = "hook_installed"
 
@@ -57,7 +57,8 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
             elif event_type == FUNCTION_KEY_WORD_DETECTED:
                 log_info = f"函数检测到关键字: {payload.get('message', '')}"
                 for key in KEY_WORD:
-                    log_info += f", {key}: {{{payload.get(key, '')}}}"
+                    if key in payload:  # 确保键存在
+                        log_info += f", {key}: {payload.get(key, '')}"
                 logger.info(log_info)
                 
                 # 创建状态更新列表

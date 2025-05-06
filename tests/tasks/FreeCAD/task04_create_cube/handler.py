@@ -8,6 +8,15 @@ FreeCAD事件处理器
 
 from typing import Dict, Any, Optional, List
 
+# 事件类型常量
+SCRIPT_INITIALIZED = "script_initialized"
+FUNCTION_NOT_FOUND = "function_not_found"
+FUNCTION_FOUND = "function_found"
+FUNCTION_CALLED = "function_called"
+FUNCTION_KEY_WORD_DETECTED = "function_key_word_detected"
+ERROR = "error"
+HOOK_INSTALLED = "hook_installed"
+
 # 关键字相关常量
 LENGTH = "length"
 WIDTH = "width"
@@ -66,13 +75,13 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
             event_type = payload['event']
             logger.debug(f"接收到事件: {event_type}")
             
-            if event_type == "script_initialized":
+            if event_type == SCRIPT_INITIALIZED:
                 logger.info(f"钩子脚本初始化: {payload.get('message', '')}")
                 
-            elif event_type == "function_found":
+            elif event_type == FUNCTION_FOUND:
                 logger.info(f"找到函数: {payload.get('address', '')}")
                 
-            elif event_type == "function_called":
+            elif event_type == FUNCTION_CALLED:
                 logger.info(f"函数被调用: {payload.get('message', '')}")
                 # 更新第一个关键步骤状态
                 updates.append({
@@ -81,12 +90,12 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
                     'name': '保存文档'
                 })
                 
-            elif event_type == "function_key_word_detected":
+            elif event_type == FUNCTION_KEY_WORD_DETECTED:
                 # 执行Python代码并获取结果
                 code = payload.get('code', '')
                 filename = payload.get('filename', '')
                 expected_path = task_parameter.get("source_path", "") + task_parameter.get("filename", "")
-                logger.info(f"检测到关键字，文档路径: {{{filename}}}, 预期文档路径: {{{expected_path}}}")
+                logger.info(f"检测到关键字，文档路径: {filename}, 预期文档路径: {expected_path}")
                 
                 if filename == expected_path:
                     result = execute_python_code(code, logger)
@@ -119,7 +128,7 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
                                 'reason': '成功创建了符合尺寸要求的立方体并保存'
                             })
                 
-            elif event_type == "error":
+            elif event_type == ERROR:
                 error_type = payload.get("error_type", "unknown")
                 error_message = payload.get("message", "未知错误")
                 
