@@ -131,6 +131,7 @@ class BaseEvaluator:
         elif evaluator_type == "StateInspector":
             self.hook_manager = StateInspector(
                 app_path=app_path,
+                app_working_cwd=app_working_cwd,
                 args=launch_args,
                 logger=self.logger,
                 evaluate_on_completion=evaluate_on_completion
@@ -150,25 +151,21 @@ class BaseEvaluator:
             raise RuntimeError("缺少evaluation_setup或script")
         
         for script in self.config["evaluation_setup"]["scripts"]:
-            script_path = os.path.realpath(os.path.join(self.task_path,script["path"])) # panic if path is not exist
+            script_path = os.path.realpath(os.path.join(self.task_path, script["path"])) # panic if path is not exist
             if not os.path.exists(script_path):
                 raise RuntimeError("脚本文件不存在")
             
             match script["role"]:
                 case "hook":
+                    dep_script_list = []
                     if "dependency" in script:
-                        dep_script_list = []
                         for dep in script["dependency"]:
-                            dep_path = os.path.realpath(os.path.join(self.task_path,dep))
+                            dep_path = os.path.realpath(os.path.join(self.task_path, dep))
                             if not os.path.exists(dep_path):
                                 raise RuntimeError("hook dependency文件不存在")
-                            with open(dep_path, 'r') as f:
-                                dep_script_list.append(f.read())
-                        dep_script = "\n".join(dep_script_list)
-                    else:
-                        dep_script = ""
-                    self.hook_manager.add_script(script_path, dep_script)
-                case "handler":    
+                            dep_script_list.append(dep_path)
+                    self.hook_manager.add_script(script_path, dep_script_list)
+                case "handler":
                     self.set_message_handler(script_path)
         self.logger.info(f"评估器初始化完成: {self.task_id}")
 
