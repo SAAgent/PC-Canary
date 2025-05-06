@@ -1,0 +1,44 @@
+{
+    "task_id": "24",
+    "task_name": "新建一个问答题模板",
+    "description": "新建一个问题题模板，含有一个\"笔记\"部分。并添加一张卡牌",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "name": "simple2",
+        "first_field" : "The quick brown fox jumps over the lazy dog.",
+        "second_field" : "test",
+        "third_field" : "note"
+    },
+    "instruction_template": "创建一个叫${name}的模板，复制问答题的模板。添加一个新字段叫Note,并放在第三个字段的位置。在正面使用条件替换语法，例如这样的：{{#Tags}}\n标签：{{Tags}}\n{{/Tags}}。使用条件替换语法，如果存在Note字段，则将正面标蓝，并把Note放到反面答案的后面。如果没有Note字段，则不需要标蓝。添加一张卡片，卡片的正面写上\"${first_field}\"，反面写上\"${second_field}\",Note写上\"${thrid_field}\"",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120
+    },
+    "events": {
+        "add_notetype": "添加成功",
+        "notetype_field_correct": "字段正确",
+        "notetype_template_correct": "模板正确",
+        "add_card_success": "添加卡片成功",
+        "card_correct": "卡片内容正确"
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+}
