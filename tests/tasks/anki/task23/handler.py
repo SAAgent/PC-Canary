@@ -4,6 +4,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
+import re
 
 
 def handle_storage_update_notetypes(context: Context,message,data) -> Status:
@@ -22,9 +23,9 @@ def handle_storage_update_notetypes(context: Context,message,data) -> Status:
     if len(notetype.fields) == 3 and notetype.fields[0] == "question" and notetype.fields[1] == "short_answer" and notetype.fields[2] == "long_answer":
         status.emit(EventNotetypeFieldCorret())
    
-
+    pattern = r'\{\{FrontSide\}\}.+\<div.+color:red.+\>\{\{short_answer\}\}.+\{\{long_answer\}\}'
     if  len(notetype.templates) == 2:
-        if "{{FrontSide}}\n\n<hr id=answer>\n\n<div style='color:red'>{{short_answer}}</div>\n\n{{long_answer}}" in notetype.templates[1]:
+        if re.match(pattern,notetype.templates[1],re.DOTALL):
             status.emit(EventNotetypeFormatCorrect())
 
     return status
