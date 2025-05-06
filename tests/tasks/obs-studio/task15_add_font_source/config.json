@@ -31,17 +31,25 @@
 	"preconditions": {
 	  "obs_studio_running": true
 	},
-	"success_conditions": [
-	  "success",
-      "settings_set_success",
-      "create_success"
-	],
+    "total_key_steps": 3,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "function called": "拦截到函数调用",
-        "function returned": "函数返回",
-        "settings_set_success": "设置配置成功",
-        "create_success": "创建新的文本源成功",
-        "error": "错误事件"
+        "found_scene": {
+            "description": "创建新场景成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "创建新场景成功"
+        },
+        "found_text_source": {
+            "description": "创建新的文本源成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "创建新的文本源成功"
+        },
+        "settings_matched": {
+            "description": "文本源属性匹配成功",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "文本源属性匹配成功"
+        }
     }
 }

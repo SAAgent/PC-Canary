@@ -22,14 +22,19 @@
     "preconditions": {
         "obs_studio_running": true
     },
-    "success_conditions": [
-        "success"
-    ],
+    "total_key_steps": 2,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "function called": "拦截到函数调用",
-        "function returned": "函数返回",
-        "collection_scenes_json_path": "当前场景集合配置文件的路径",
-        "error": "错误事件"
+        "scene_collections_name_matches": {
+            "description": "场景集合名称匹配成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "场景集合名称匹配成功"
+        },
+        "scenes_list_matches": {
+            "description": "场景列表匹配成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "场景列表匹配成功"
+        }
     }
 } 

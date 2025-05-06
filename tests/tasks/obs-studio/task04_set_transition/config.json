@@ -21,14 +21,13 @@
 	"preconditions": {
 	  "obs_studio_running": true
 	},
-	"success_conditions": [
-	  "success"
-	],
+    "total_key_steps": 1,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "setTransition_called": "拦截到函数调用",
-        "setTransition_returned": "函数返回",
-        "current_transition": "当前转场动画模式名称",
-        "error": "错误事件"
+        "transition_match": {
+            "description":"转场动画匹配成功", 
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "当前转场动画匹配成功"
+        }
     }
 }

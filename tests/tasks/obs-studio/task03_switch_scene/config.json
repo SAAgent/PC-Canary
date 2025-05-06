@@ -21,14 +21,13 @@
 	"preconditions": {
 	  "obs_studio_running": true
 	},
-	"success_conditions": [
-	  "success"
-	],
+    "total_key_steps": 1,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "setCurrentScene_called": "拦截到切换当前场景的函数调用",
-        "setCurrentScene_returned": "切换当前场景的函数返回",
-        "current_scene": "当前场景编号",
-        "error": "错误事件"
+        "scene_match": {
+            "description":"场景匹配成功", 
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "当前场景匹配成功"
+        }
     }
 }

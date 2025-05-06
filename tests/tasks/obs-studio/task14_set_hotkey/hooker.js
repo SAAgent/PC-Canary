@@ -123,6 +123,7 @@
                     function: function_name,
                     symbol: symbol_name
                 });
+                console.log(this.pressed);
                 sendEvent("hotkey_press", {
                     message: "热键被触发",
                     name: this.name,

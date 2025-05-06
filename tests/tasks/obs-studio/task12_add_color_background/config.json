@@ -14,7 +14,7 @@
         "width": 1280,
         "height": 720
     },
-    "instruction_template": "请在obs-studio新建一个新的场景${test_scene}, 在这个场景中增加新的源, 名字是${source_name}, 类型是${source_type}.纯色源宽度 ${width}, 高度${height}", 
+    "instruction_template": "请在obs-studio新建一个新的场景${new_scene_name}, 在这个场景中增加新的源, 名字是${source_name}, 类型是${source_type}.纯色源宽度 ${width}, 高度${height}", 
     "evaluation_setup": {
         "scripts": [
 		  { "role": "hook",    "path": "hooker.js" },
@@ -25,17 +25,31 @@
 	"preconditions": {
 	  "obs_studio_running": true
 	},
-	"success_conditions": [
-	  "success",
-      "create_success",
-      "config_save"
-	],
+    "total_key_steps": 4,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "function called": "拦截到函数调用",
-        "function returned": "函数返回",
-        "create_success": "创建源成功",
-        "config_save": "配置文件更新完毕",
-        "error": "错误事件"
+        "scene_name_matched": {
+            "description": "场景名字匹配成功", 
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "场景名字匹配成功"
+        },
+        "source_name_matched": {
+            "description": "源名称匹配成功", 
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "源名称匹配成功"
+        },
+        "source_type_matched": {
+            "description": "源类型匹配成功", 
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "源类型匹配成功"
+        },
+        "color_source_config_matched": {
+            "description": "纯色源的属性更新完成", 
+            "is_key_step": true,
+            "key_step_index": 4,
+            "key_step_name": "设置为纯色源"
+        }
     }
 }

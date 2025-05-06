@@ -1,7 +1,7 @@
 {
     "task_id": "18",
     "task_name": "configure_transition",
-    "description": "配置OBS转场动画",
+    "description": "configure transition animation to Fade and change scene",
 
     "application_info": {
         "name": "obs-studio",
@@ -10,11 +10,12 @@
     },
 
     "task_parameters": {
-        "transition_name": "淡入淡出",
-        "duration_ms": 1000
+        "transition_name": "Fade",
+        "duration_ms": 1000,
+        "dest_scene": "test_scene"
     },
 
-    "instruction_template": "将OBS的转场动画设置为${transition_name}，持续时间设置为${duration_ms}毫秒",
+    "instruction_template": "将OBS的转场动画设置为${transition_name},持续时间设置为${duration_ms}毫秒, 并切换场景到${dest_scene}",
 
     "evaluation_setup": {
         "scripts": [
@@ -24,11 +25,25 @@
         "timeout": 120
     },
 
-    "success_conditions": [
-        "transition_configured"
-    ],
-
+    "total_key_steps": 2,
     "events": {
-        "transition_configured": "成功配置转场动画"
+        "name_matches": {
+            "description": "name matches",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "name matches"
+        },
+        "duration_matches": {
+            "description": "duration matches",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "duration matches"
+        },
+        "dest_scene_matches": {
+            "description": "scene matches",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "scene matches"
+        }
     }
 } 

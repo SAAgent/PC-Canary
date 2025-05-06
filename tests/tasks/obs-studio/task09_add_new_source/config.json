@@ -22,14 +22,13 @@
 	"preconditions": {
 	  "obs_studio_running": true
 	},
-	"success_conditions": [
-	  "success"
-	],
+	"total_key_steps": 1,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "function called": "拦截到函数调用",
-        "function returned": "函数返回",
-        "scene_json_path": "当前json配置文件的路径",
-        "error": "错误事件"
+        "source_added": {
+            "description":"源添加成功", 
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "当前源添加成功"
+        }
     }
 }

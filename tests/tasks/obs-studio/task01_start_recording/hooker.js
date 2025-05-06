@@ -52,7 +52,7 @@
                     message: "录制更新函数返回"
                 });
                 
-                sendEvent("is_recording", {
+                sendEvent("is_recording_active", {
                     recording: retval,
                     message: `当前录制状态: ${retval}`
                 });

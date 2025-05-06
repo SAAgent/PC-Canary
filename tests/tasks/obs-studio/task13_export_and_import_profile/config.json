@@ -23,17 +23,19 @@
 	"preconditions": {
 	  "obs_studio_running": true
 	},
-	"success_conditions": [
-	  "success",
-      "import_success",
-      "export_success"
-	],
+	"total_key_steps": 2,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "function called": "拦截到函数调用",
-        "function returned": "函数返回",
-        "import_success": "导入成功",
-        "export_success": "导出成功",
-        "error": "错误事件"
+        "import_success": {
+            "description": "导入配置成功", 
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "导入配置成功"
+        },
+        "export_success": {
+            "description": "导出配置成功", 
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "导出配置成功"
+        }
     }
 }

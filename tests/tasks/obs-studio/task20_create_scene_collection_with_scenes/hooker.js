@@ -77,7 +77,6 @@
 
         // 初始化各个钩子
         hookSaveSceneCollection();
-        hookSaveFunction();
 
         sendEvent("hook_installed", {
             message: MESSAGE_HOOK_INSTALLED

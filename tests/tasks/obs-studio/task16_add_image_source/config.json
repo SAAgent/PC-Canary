@@ -24,14 +24,19 @@
         ],
         "timeout": 120
     },
-
-    "success_conditions": [
-        "image_source_added",
-        "opacity_set"
-    ],
-
+    "total_key_steps": 2,
     "events": {
-        "image_source_added": "成功添加图像源",
-        "opacity_set": "成功设置不透明度"
+        "image_source_added": {
+            "description": "图像源添加成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "添加图像源成功"
+        },
+        "opacity_set": {
+            "description": "不透明度设置成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "设置不透明度成功"
+        }
     }
 } 

@@ -1,0 +1,48 @@
+{
+    "task_id": "10",
+    "task_name": "set_source_visibility",
+    "description": "obs-studio set source visibility",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": []
+    },
+    "task_parameters": {
+        "source_name": "Display Capture (XSHM)",
+        "source_visible": false
+    },
+    "instruction_template": "Please set the visibility of ${source_name} to ${source_visible} in obs-studio",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "total_key_steps": 1,
+    "events": {
+        "source_invisible": {
+            "description": "Source visibility matched",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Current source visibility matched successfully"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

@@ -55,7 +55,7 @@
                     function: FUNCTION_SET_VISIBLE_NAME,
                     symbol: FUNCTION_SET_VISIBLE_SYMBOL
                 });
-                this.visible = args[1];
+                this.visible = args[1].toInt32();
                 const item_pointer = new NativePointer(args[0]);
                 console.log(item_pointer);
                 this.source_name = item_pointer.add(32).readPointer().readPointer().readCString(-1);
@@ -70,7 +70,7 @@
                 });
                 sendEvent(EVENT_SET_VISIBLE_SUCCESS, {
                     message: MESSAGE_ON_SUCCESS,
-                    flag: retval == 1 ? "true" : "false",
+                    flag: retval.toInt32(),
                     visible: this.visible,
                     source_name: this.source_name,
                 });

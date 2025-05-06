@@ -23,17 +23,31 @@
 	"preconditions": {
 	  "obs_studio_running": true
 	},
-	"success_conditions": [
-	  "success",
-      "create_success",
-      "updated_source"
-	],
+    "total_key_steps": 4,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "function called": "拦截到函数调用",
-        "function returned": "函数返回",
-        "create_success": "创建源成功",
-        "updated_source": "源的属性更新完成",
-        "error": "错误事件"
+        "scene_name_matched": {
+            "description": "场景名字匹配成功", 
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "场景名字匹配成功"
+        },
+        "source_name_matched": {
+            "description": "源名称匹配成功", 
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "源名称匹配成功"
+        },
+        "source_type_matched": {
+            "description": "源类型匹配成功", 
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "源类型匹配成功"
+        },
+        "loop": {
+            "description": "循环视频源的属性更新完成", 
+            "is_key_step": true,
+            "key_step_index": 4,
+            "key_step_name": "设置为循环视频源"
+        }
     }
 }

@@ -19,15 +19,28 @@
 	  "obs_studio_running": true,
       "obs_studio_recording": true
 	},
-	"success_conditions": [
-	  "success"
-	],
+    "total_key_steps": 1,
     "events": {
-        "script_initialized": "钩子脚本初始化",
-        "obs_output_stop_called": "拦截到结束录制函数调用",
-        "obs_output_force_stop_called" : "拦截到强制结束录制函数调用",
-        "obs_output_stop_returned": "成功结束录制",
-        "obs_output_force_stop_returned": "成功强制结束录制",
+        "obs_output_stop_called": {
+            "description": "拦截到结束录制函数调用",
+            "is_key_step": false
+        },
+        "obs_output_force_stop_called" : {
+            "description": "拦截到强制结束录制函数调用",
+            "is_key_step": false
+        },
+        "obs_output_stop_returned": {
+            "description": "成功结束录制",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "结束录制"
+        },
+        "obs_output_force_stop_returned": {
+            "description": "成功强制结束录制",
+            "is_key_step": false,
+            "key_step_index": 1,
+            "key_step_name": "强制结束录制"
+        },
         "error": "错误事件"
     }
 }

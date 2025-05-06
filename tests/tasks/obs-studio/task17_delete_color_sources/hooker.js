@@ -11,7 +11,7 @@
     function sendEvent(eventType, data = {}) {
         console.log("[Event]", eventType, JSON.stringify(data, null, 2));
         const payload = {
-            type: eventType,
+            event: eventType,
             ...data,
             timestamp: new Date().getTime()
         };

@@ -7,7 +7,7 @@
     function sendEvent(eventType, data = {}) {
         console.log("[Event]", eventType, JSON.stringify(data, null, 2));
         const payload = {
-            type: eventType,
+            event: eventType,
             ...data,
             timestamp: new Date().getTime()
         };
@@ -40,6 +40,7 @@
                 onEnter(args) {
                     this.transition = args[0];
                     this.duration = args[2].toInt32();
+                    this.dest = args[3];
                     console.log(`[Debug] 转场开始函数被调用，持续时间：${this.duration}ms`);
                 },
                 
@@ -52,6 +53,7 @@
                     );
                     const namePtr = getSourceName(this.transition);
                     const transitionName = namePtr.readCString();
+                    const destName = getSourceName(this.dest).readCString();
 
                     console.log(`[Debug] 转场开始：类型=${transitionName}，持续时间=${this.duration}ms`);
                     
@@ -59,7 +61,8 @@
                     sendEvent("transition_executed", {
                         transition_name: transitionName,
                         duration_ms: this.duration,
-                        success: retval.toInt32() !== 0
+                        success: retval.toInt32() !== 0,
+                        dest: destName
                     });
                 }
             });
