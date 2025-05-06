@@ -38,7 +38,7 @@
       
       // 如果没找到，报错
       if (!FuncAddr) {
-          sendEvent("error", {
+          sendEvent(ERROR, {  // 使用常量而非直接字符串
               error_type: FUNCTION_NOT_FOUND,
               message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
           });

@@ -11,7 +11,7 @@
   const FUNCTION_NOT_FOUND = "function_not_found"
   const FUNCTION_FOUND = "function_found"
   const FUNCTION_CALLED = "function_called"
-  const FUNCTION_KEY_WORD_DETECTED = "funtion_key_word_detected"
+  const FUNCTION_KEY_WORD_DETECTED = "function_key_word_detected"
   const ERROR = "error"
   const HOOK_INSTALLED = "hook_installed"
 
@@ -37,7 +37,7 @@
       
       // 如果没找到，报错
       if (!FuncAddr) {
-          sendEvent("error", {
+          sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
               message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
           });

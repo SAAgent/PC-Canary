@@ -9,8 +9,16 @@ FreeCAD事件处理器
 import os
 from typing import Dict, Any, Optional, List
 
-# 常量定义
+# 事件类型常量
+SCRIPT_INITIALIZED = "script_initialized"
+FUNCTION_NOT_FOUND = "function_not_found"
+FUNCTION_FOUND = "function_found"
+FUNCTION_CALLED = "function_called"
 FUNCTION_KEY_WORD_DETECTED = "function_key_word_detected"
+ERROR = "error"
+HOOK_INSTALLED = "hook_installed"
+
+# 常量定义
 SOURCE_PATH = "source_path"
 KEY = "filename"
 
@@ -39,14 +47,14 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
             updates = []
             
             # 处理特定事件
-            if event_type == "script_initialized":
+            if event_type == SCRIPT_INITIALIZED:
                 logger.info(f"钩子脚本初始化: {payload.get('message', '')}")
                 
-            elif event_type == "function_found":
+            elif event_type == FUNCTION_FOUND:
                 logger.info(f"找到函数: {payload.get('address', '')}")
                 # 不再将其标记为关键步骤
                 
-            elif event_type == "function_called": 
+            elif event_type == FUNCTION_CALLED: 
                 logger.info(f"函数被调用: {payload.get('message', '')}")
                 # 不再将其标记为关键步骤
                 
@@ -74,7 +82,7 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
                     
                     logger.info(f"任务成功完成！文档已打开: {key}")
                 
-            elif event_type == "error":
+            elif event_type == ERROR:
                 error_type = payload.get("error_type", "unknown")
                 error_message = payload.get("message", "未知错误")
                 
