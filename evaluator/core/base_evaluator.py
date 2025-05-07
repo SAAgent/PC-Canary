@@ -202,7 +202,10 @@ class BaseEvaluator:
                 sys.modules["handler"] = handler_module
                 spec.loader.exec_module(handler_module)
             
-                if hasattr(handler_module, 'message_handler'):
+                if hasattr(handler_module, 'register_handlers'):
+                    self.message_handler = handler_module.register_handlers(self)
+                    self.logger.info(f"成功设置回调函数: {module_path}.message_handlers")
+                elif hasattr(handler_module, 'message_handler'):
                     self.message_handler = handler_module.message_handler
                     self.logger.info(f"成功设置回调函数: {module_path}.message_handler")
                 else:
