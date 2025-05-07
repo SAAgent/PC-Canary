@@ -19,3 +19,6 @@
 [submodule "apps/vscode"]
 	path = apps/vscode
 	url = https://github.com/SAAgent/vscode.git
+[submodule "apps/joplin"]
+	path = apps/joplin
+	url = https://github.com/SAAgent/joplin.git
