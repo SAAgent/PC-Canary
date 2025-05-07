@@ -58,8 +58,7 @@ from dataclasses import dataclass
 @dataclass
 class TaskParameters:
     name : str
-    filed_name : str
     first_field : str
     second_field : str
     third_field : str
-tp = TaskParameters(**{'name': 'simple2', 'filed_name': 'Note', 'first_field': 'The quick brown fox jumps over the lazy dog.', 'second_field': 'test', 'third_field': 'note'})
+tp = TaskParameters(**{'name': 'simple2', 'first_field': 'The quick brown fox jumps over the lazy dog.', 'second_field': 'test', 'third_field': 'note'})
