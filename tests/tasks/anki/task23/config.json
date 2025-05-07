@@ -11,7 +11,7 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "name" : "simple"
+        "name": "simple"
     },
     "instruction_template": "创建一个叫${name}的模板，含有3个字段。第一个字段为question，第二个字段为\"short answer\"，第三个字段为\"long answer\"。第二个和第三个字段都在背面，并且用两个<br>分割开。第二个字段需要使用红色。",
     "evaluation_setup": {
@@ -31,11 +31,31 @@
         "timeout": 60
     },
     "events": {
-        "add_notetype" : "添加成功",
-        "notetype_field_corret" : "字段名称正确",
-        "notetype_field_wrong" : "字段名称错误",
-        "notetype_format_correct" : "字段格式正确",
-        "notetype_format_wrong" : "字段格式错误"
+        "add_notetype": {
+            "description": "添加成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "添加成功"
+        },
+        "notetype_field_corret": {
+            "description": "字段名称正确",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "字段名称正确"
+        },
+        "notetype_field_wrong": {
+            "description": "字段名称错误",
+            "is_key_step": false
+        },
+        "notetype_format_correct": {
+            "description": "字段格式正确",
+            "is_key_step": false
+        },
+        "notetype_format_wrong": {
+            "description": "字段格式错误",
+            "is_key_step": false
+        }
     },
-    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2
 }

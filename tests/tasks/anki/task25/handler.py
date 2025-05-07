@@ -7,7 +7,7 @@ from common import *
 import json
 import re
 
-def handle_storage_add_note(context: Context,message,data) -> Status:
+def handle_storage_add_note(context: Context,message) -> Status:
     status = Status()
     context.update_database()
 

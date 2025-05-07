@@ -31,9 +31,23 @@
         "timeout": 60
     },
     "events": {
-        "deck_added": "数据库中出现卡片",
-        "correct_deck": "卡片Deck正确",
-        "wrong_deck": "卡片Deck不正确"
+        "deck_added": {
+            "description": "数据库中出现卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "数据库中出现卡片"
+        },
+        "correct_deck": {
+            "description": "卡片Deck正确",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "卡片Deck正确"
+        },
+        "wrong_deck": {
+            "description": "卡片Deck不正确",
+            "is_key_step": false
+        }
     },
-    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2
 }

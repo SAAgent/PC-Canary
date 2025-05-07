@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
-def handle_storage_add_deck(context: Context,message,data) -> Status:
+def handle_storage_add_deck(context: Context,message) -> Status:
     context.update_database()
     status = Status()
     deck : Deck = sorted(AnkiObjMap().array_by_type("deck"),key=lambda x: x.mtime,reverse=True)[0]
@@ -19,7 +19,7 @@ def handle_storage_add_deck(context: Context,message,data) -> Status:
         status.emit(EventAddDeck())
     return status
 
-def handle_storage_update_card(context: Context,message,data) -> Status:
+def handle_storage_update_card(context: Context,message) -> Status:
     context.update_database()
     status = Status()
     card : Card = sorted(AnkiObjMap().array_by_type("card"),key=lambda x: x.mod,reverse=True)[0]

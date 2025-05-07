@@ -11,7 +11,7 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "tag_name" : "cs"
+        "tag_name": "cs"
     },
     "instruction_template": "给所有标签为${tag_name}的卡片打上红色旗标",
     "evaluation_setup": {
@@ -31,8 +31,19 @@
         "timeout": 60
     },
     "events": {
-        "add_red_flag" : "添加一个红色旗标",
-        "add_all_red_flags" : "添加完所有卡片"
+        "add_red_flag": {
+            "description": "添加一个红色旗标",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "添加一个红色旗标"
+        },
+        "add_all_red_flags": {
+            "description": "添加完所有卡片",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "添加完所有卡片"
+        }
     },
-    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2
 }

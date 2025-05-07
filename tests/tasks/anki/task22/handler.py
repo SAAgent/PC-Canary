@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(__file__))
 from common import *
 
 
-def handle_storage_update_card(context: Context,message,data) -> Status:
+def handle_storage_update_card(context: Context,message) -> Status:
     context.update_database()
     status = Status()
     for cid in context._cards_to_check:

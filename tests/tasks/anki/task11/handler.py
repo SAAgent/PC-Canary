@@ -9,7 +9,7 @@ from common import *
 def remove_html_tags(text):
     return re.sub(r'<[^>]+>', '', text)
 
-def handle_storage_add_card(context: Context,message,data) -> Status:
+def handle_storage_add_card(context: Context,message) -> Status:
     context.update_database()
     latest_card : Card = sorted(AnkiObjMap().array_by_type("card"),key=lambda x: x.mod,reverse=True)[0]
     note = latest_card.get_note()

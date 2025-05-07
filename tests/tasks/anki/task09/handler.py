@@ -6,7 +6,7 @@ import datetime
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
-def handle_clear_unused_tags(context: Context,message,data) -> Status:
+def handle_clear_unused_tags(context: Context,message) -> Status:
     status = Status()
     status.emit(EventClearUnusedTags())
     return status

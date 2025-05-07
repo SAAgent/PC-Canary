@@ -11,7 +11,7 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "tag_name" : "delay"
+        "tag_name": "delay"
     },
     "instruction_template": "设置标签为${tag_name}的卡片为搁置",
     "evaluation_setup": {
@@ -31,7 +31,13 @@
         "timeout": 60
     },
     "events": {
-        "delay" : "搁置成功"
+        "delay": {
+            "description": "搁置成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "搁置成功"
+        }
     },
-    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 1
 }

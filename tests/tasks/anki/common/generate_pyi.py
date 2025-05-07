@@ -13,9 +13,13 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../common')))
 from exanki import *\n\n"""
     if "events" in data:
-        for event_key, event_description in data["events"].items():
-            template += f"{event_key}_ : str = \"{event_key}\"  # {event_description}\n"
-        for event_key, event_description in data["events"].items():
+
+        for event_key, value in data["events"].items():
+            template += f"{event_key}_ : str = \"{event_key}\"  # {value["description"]}\n"
+        for event_key, value in data["events"].items():
+            description = value["description"]
+            is_key_event = value["is_key_step"]
+            key_step_index = value.pop("key_step_index", 0)
             class_name = ''.join(word.capitalize() for word in event_key.split('_'))
             template += f"""
 class Event{class_name}(FridaEvent):
@@ -34,8 +38,14 @@ class Event{class_name}(FridaEvent):
 """
             template+=f"""
     def describe(self):
-        return "{event_description}"
-    """
+        return "{description}"
+    
+    def is_key_event(self):
+        return {is_key_event}
+
+    def key_index(self):
+        return {key_step_index}
+"""
     template += "\n"
     if "task_parameters" in data and data["task_parameters"]:
         template += f"""from dataclasses import dataclass

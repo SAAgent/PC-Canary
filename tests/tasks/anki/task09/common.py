@@ -14,3 +14,9 @@ class EventClearUnusedTags(FridaEvent):
     def describe(self):
         return "删除所有未使用的标签"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+

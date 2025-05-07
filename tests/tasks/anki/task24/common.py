@@ -18,6 +18,12 @@ class EventAddNotetype(FridaEvent):
     def describe(self):
         return "添加成功"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventNotetypeFieldCorrect(FridaEvent):
 
     def __init__(self,value=True):
@@ -27,6 +33,12 @@ class EventNotetypeFieldCorrect(FridaEvent):
     def describe(self):
         return "字段正确"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventNotetypeTemplateCorrect(FridaEvent):
 
     def __init__(self,value=True):
@@ -36,6 +48,12 @@ class EventNotetypeTemplateCorrect(FridaEvent):
     def describe(self):
         return "模板正确"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 3
+
 class EventAddCardSuccess(FridaEvent):
 
     def __init__(self,value=True):
@@ -45,6 +63,12 @@ class EventAddCardSuccess(FridaEvent):
     def describe(self):
         return "添加卡片成功"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 4
+
 class EventCardCorrect(FridaEvent):
 
     def __init__(self,value=True):
@@ -54,6 +78,12 @@ class EventCardCorrect(FridaEvent):
     def describe(self):
         return "卡片内容正确"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 5
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

@@ -19,6 +19,12 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "数据库中出现卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventCorrectField(FridaEvent):
 
     def __init__(self,value=True):
@@ -28,6 +34,12 @@ class EventCorrectField(FridaEvent):
     def describe(self):
         return "卡片数据匹配"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventWrongField(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -37,6 +49,12 @@ class EventWrongField(FridaEvent):
     def describe(self):
         return "卡片数据不匹配"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 class EventCorrectFormat(FridaEvent):
 
     def __init__(self,value=True):
@@ -46,6 +64,12 @@ class EventCorrectFormat(FridaEvent):
     def describe(self):
         return "卡片格式匹配"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 class EventWrongFormat(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -55,6 +79,12 @@ class EventWrongFormat(FridaEvent):
     def describe(self):
         return "卡片格式不匹配"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 class EventWrongQuote(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -64,3 +94,9 @@ class EventWrongQuote(FridaEvent):
     def describe(self):
         return "标签错误"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+

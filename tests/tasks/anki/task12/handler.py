@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
-def handle_storage_add_card(context: Context,message,data) -> Status:
+def handle_storage_add_card(context: Context,message) -> Status:
     context.update_database()
     latest_card : Card = sorted(AnkiObjMap().array_by_type("card"),key=lambda x: x.mod,reverse=True)[0]
     note = latest_card.get_note()
@@ -18,7 +18,7 @@ def handle_storage_add_card(context: Context,message,data) -> Status:
         status.mark_error()
     return status
 
-def handle_add_media_file(context: Context,message,data) -> Status:
+def handle_add_media_file(context: Context,message) -> Status:
     status = Status()
     status.emit(EventImageAdded())
     status.mark_progress()

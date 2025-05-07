@@ -18,6 +18,12 @@ class EventAddNotetype(FridaEvent):
     def describe(self):
         return "添加成功"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventNotetypeFieldCorret(FridaEvent):
 
     def __init__(self,value=True):
@@ -27,6 +33,12 @@ class EventNotetypeFieldCorret(FridaEvent):
     def describe(self):
         return "字段名称正确"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventNotetypeFieldWrong(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -36,6 +48,12 @@ class EventNotetypeFieldWrong(FridaEvent):
     def describe(self):
         return "字段名称错误"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 class EventNotetypeFormatCorrect(FridaEvent):
 
     def __init__(self,value=True):
@@ -45,6 +63,12 @@ class EventNotetypeFormatCorrect(FridaEvent):
     def describe(self):
         return "字段格式正确"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 class EventNotetypeFormatWrong(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -54,6 +78,12 @@ class EventNotetypeFormatWrong(FridaEvent):
     def describe(self):
         return "字段格式错误"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

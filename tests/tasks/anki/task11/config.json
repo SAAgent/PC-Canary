@@ -28,9 +28,23 @@
         "timeout": 60
     },
     "events": {
-        "card_added": "添加了卡片",
-        "card_format_correct": "卡片格式匹配",
-        "card_format_wrong": "卡片格式不匹配"
+        "card_added": {
+            "description": "添加了卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "添加了卡片"
+        },
+        "card_format_correct": {
+            "description": "卡片格式匹配",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "卡片格式匹配"
+        },
+        "card_format_wrong": {
+            "description": "卡片格式不匹配",
+            "is_key_step": false
+        }
     },
-    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2
 }

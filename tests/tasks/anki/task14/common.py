@@ -14,6 +14,12 @@ class EventDelay(FridaEvent):
     def describe(self):
         return "搁置成功"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

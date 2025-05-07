@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
-def handle_storage_set_config(context: Context,message,data) -> Status:
+def handle_storage_set_config(context: Context,message) -> Status:
     context.update_database()
     status = Status()
     config = context.anki_config["defaultSearchText"]

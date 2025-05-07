@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
-def handle_storage_update_card(context: Context,message,data) -> Status:
+def handle_storage_update_card(context: Context,message) -> Status:
     context.update_database()
     status = Status()
     cards : List[Card] = list(filter(lambda card: tp.tag_name in card.get_note().tags,AnkiObjMap().array_by_type("card")))

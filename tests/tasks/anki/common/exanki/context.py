@@ -8,8 +8,9 @@ import tempfile
 from enum import Enum
 from .orm import AnkiObjMap,Deck,Note,Card,Collection,Notetype
 import json
+from abc import ABC,abstractmethod
 
-class FridaEvent:
+class FridaEvent(ABC):
     def __init__(self,key,value):
         self.key = key
         self.value = value
@@ -22,7 +23,15 @@ class FridaEvent:
      
     def into_metric(self) -> Tuple[Any, Any]:
         return (self.key,self.value)
+    
+    @abstractmethod
+    def is_key_event(self):
+        return False
         
+    @abstractmethod
+    def key_index(self):
+        return 0
+    
 class EventMonitor:
     def __init__(self, dependency_graph: Dict[str, List[str]], finish_events : List[str]):
         # 依赖关系图：键是事件名，值是该事件依赖的事件列表
@@ -170,19 +179,39 @@ class Context:
         for function_name, handler in handlers.items():
             self.trace_handlers[function_name] = handler    
     
-    def handle_trace(self,function_name,message,data) -> str:
+    def handle_trace(self,function_name,message) -> str:
         if function_name in self.trace_handlers:
-            result : Optional[Status] = self.trace_handlers[function_name](self,message,data)
+            result : Optional[Status] = self.trace_handlers[function_name](self,message)
             if not (result and isinstance(result,Status)):
                 return None
+            updates = []
             for v in result.metric: 
                 self.monitor.trigger_event(v)
                 if self.monitor.is_finished():
                     result.mark_success()
                 key,value = v.into_metric()
-                self.evaluator.update_metric(key,value)
+                if v.is_key_event():
+                    updates.append(
+                        {'status': 'key_step', 'index': v.key_index(), 'name' : key}
+                    )
+                else:
+                    updates.append(
+                        {'status': 'app_event','name': key, "payload": value}
+                    )
+                
             if result.status:
-                return result.status.value
+                if result.status == StatusType.SUCCESS:
+                    updates.append({
+                        "status" : "success",
+                        "reason" : "Monitor checking success"
+                    })
+                elif result.status == StatusType.ERROR:
+                    updates.append({
+                        "status" : "error",
+                        "type" : "validation_failed",
+                        "message" : ""
+                    })
+            return updates
         else:
             self.log("error",f"Trace handler for {function_name} not found")
         return None

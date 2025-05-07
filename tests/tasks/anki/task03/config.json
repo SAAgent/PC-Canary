@@ -31,11 +31,22 @@
         "timeout": 60
     },
     "events": {
-        "deck_added": "数据库中添加成功",
-        "deck_removed": "数据库中删除成功"
+        "deck_added": {
+            "description": "数据库中添加成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "数据库中添加成功"
+        },
+        "deck_removed": {
+            "description": "数据库中删除成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "数据库中删除成功"
+        }
     },
     "success_conditions": [
         "deck_removed"
     ],
-    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2
 }

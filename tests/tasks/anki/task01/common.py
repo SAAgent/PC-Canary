@@ -18,6 +18,12 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "数据库中出现卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventCorrectField(FridaEvent):
 
     def __init__(self,value=True):
@@ -27,6 +33,12 @@ class EventCorrectField(FridaEvent):
     def describe(self):
         return "卡片数据匹配"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventWrongField(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -36,6 +48,12 @@ class EventWrongField(FridaEvent):
     def describe(self):
         return "卡片数据不匹配"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 class EventCorrectDeck(FridaEvent):
 
     def __init__(self,value=True):
@@ -45,6 +63,12 @@ class EventCorrectDeck(FridaEvent):
     def describe(self):
         return "卡片Deck正确"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 class EventWrongDeck(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -54,6 +78,12 @@ class EventWrongDeck(FridaEvent):
     def describe(self):
         return "卡片Deck不匹配"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

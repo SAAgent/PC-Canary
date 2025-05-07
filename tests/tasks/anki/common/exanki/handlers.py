@@ -1,12 +1,12 @@
 from .context import Context
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 HANDLERS = None
 DEPENDENCY_GRAPH = None
 FINISHED_LIST = None
 INIT = None
 
-def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
+def message_handler(message: Dict[str, Any], logger, _task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:    
     CONTEXT = message_handler.context 
     if CONTEXT is None:
         raise RuntimeError("Context is not initialized")
@@ -17,9 +17,13 @@ def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
     match event_type:
         case 'trace':
             function_name = message["function"]
-            return CONTEXT.handle_trace(function_name,message, data)
+            return CONTEXT.handle_trace(function_name,message)
         case "error":
-            CONTEXT.log("error",str(message))
+            return {
+                "status" : "error",
+                "type" : "script_error",
+                "message" : message
+            }
         case 'log':
             CONTEXT.log(message["level"],message["msg"])
     return None

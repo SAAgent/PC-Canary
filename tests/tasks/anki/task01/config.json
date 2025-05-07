@@ -32,11 +32,31 @@
         "timeout": 60
     },
     "events": {
-        "card_added": "数据库中出现卡片",
-        "correct_field": "卡片数据匹配",
-        "wrong_field": "卡片数据不匹配",
-        "correct_deck": "卡片Deck正确",
-        "wrong_deck": "卡片Deck不匹配"
+        "card_added": {
+            "description": "数据库中出现卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "数据库中出现卡片"
+        },
+        "correct_field": {
+            "description": "卡片数据匹配",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "卡片数据匹配"
+        },
+        "wrong_field": {
+            "description": "卡片数据不匹配",
+            "is_key_step": false
+        },
+        "correct_deck": {
+            "description": "卡片Deck正确",
+            "is_key_step": false
+        },
+        "wrong_deck": {
+            "description": "卡片Deck不匹配",
+            "is_key_step": false
+        }
     },
-    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2
 }

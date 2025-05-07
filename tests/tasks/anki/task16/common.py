@@ -15,6 +15,12 @@ class EventSetSucess(FridaEvent):
     def describe(self):
         return "设置成功"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventSetWrong(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -24,6 +30,12 @@ class EventSetWrong(FridaEvent):
     def describe(self):
         return "设置错误"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

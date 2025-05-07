@@ -16,6 +16,12 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "添加了卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventSearchCardCalled(FridaEvent):
 
     def __init__(self,value=True):
@@ -25,6 +31,12 @@ class EventSearchCardCalled(FridaEvent):
     def describe(self):
         return "调用了查找函数"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventReplaceCardSuccess(FridaEvent):
 
     def __init__(self,value=True):
@@ -34,3 +46,9 @@ class EventReplaceCardSuccess(FridaEvent):
     def describe(self):
         return "调用了替换函数"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 3
+

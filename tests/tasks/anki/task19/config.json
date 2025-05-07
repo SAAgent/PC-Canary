@@ -11,7 +11,7 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "tag_name" : "suspend"
+        "tag_name": "suspend"
     },
     "instruction_template": "设置所有标签为${tag_name}的卡片删除",
     "evaluation_setup": {
@@ -31,8 +31,19 @@
         "timeout": 60
     },
     "events": {
-        "remove_note" : "删除一个卡片",
-        "remove_all_notes" : "删除了所有卡片"
+        "remove_note": {
+            "description": "删除一个卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "删除一个卡片"
+        },
+        "remove_all_notes": {
+            "description": "删除了所有卡片",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "删除了所有卡片"
+        }
     },
-    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2
 }

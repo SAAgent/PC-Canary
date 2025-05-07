@@ -15,6 +15,12 @@ class EventDeckAdded(FridaEvent):
     def describe(self):
         return "数据库中添加成功"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventDeckRemoved(FridaEvent):
 
     def __init__(self,value=True):
@@ -24,6 +30,12 @@ class EventDeckRemoved(FridaEvent):
     def describe(self):
         return "数据库中删除成功"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

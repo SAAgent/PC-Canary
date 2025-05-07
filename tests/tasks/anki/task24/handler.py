@@ -7,7 +7,7 @@ from common import *
 import re
 
 
-def handle_storage_update_notetypes(context: Context,message,data) -> Status:
+def handle_storage_update_notetypes(context: Context,message) -> Status:
     status = Status()
     notetype : Notetype = None
     time.sleep(0.3)
@@ -42,7 +42,7 @@ def handle_storage_update_notetypes(context: Context,message,data) -> Status:
 
     return status
 
-def handle_storage_add_card(context: Context,message,data) -> Status:
+def handle_storage_add_card(context: Context,message) -> Status:
     status = Status()
     print("ok!")
     if not context.monitor.is_event_triggered(EventNotetypeTemplateCorrect()):

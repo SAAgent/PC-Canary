@@ -16,6 +16,12 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "添加了卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventCardFormatCorrect(FridaEvent):
 
     def __init__(self,value=True):
@@ -25,6 +31,12 @@ class EventCardFormatCorrect(FridaEvent):
     def describe(self):
         return "卡片格式匹配"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventCardFormatWrong(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -34,3 +46,9 @@ class EventCardFormatWrong(FridaEvent):
     def describe(self):
         return "卡片格式不匹配"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+

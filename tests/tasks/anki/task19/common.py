@@ -15,6 +15,12 @@ class EventRemoveNote(FridaEvent):
     def describe(self):
         return "删除一个卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventRemoveAllNotes(FridaEvent):
 
     def __init__(self,value=True):
@@ -24,6 +30,12 @@ class EventRemoveAllNotes(FridaEvent):
     def describe(self):
         return "删除了所有卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

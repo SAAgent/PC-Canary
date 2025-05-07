@@ -7,7 +7,7 @@ from common import *
 import re
 
 
-def handle_storage_update_notetypes(context: Context,message,data) -> Status:
+def handle_storage_update_notetypes(context: Context,message) -> Status:
     status = Status()
     notetype : Notetype = None
     time.sleep(0.3)

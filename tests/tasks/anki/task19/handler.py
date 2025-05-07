@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
-def handle_service_remove_notes(context: Context,message,data) -> Status:
+def handle_service_remove_notes(context: Context,message) -> Status:
     context.update_database()
     status = Status()
     notes : set[int] = set(map(lambda note:note.nid,AnkiObjMap().array_by_type("note")))

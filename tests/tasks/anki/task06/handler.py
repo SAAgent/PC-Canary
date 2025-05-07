@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
-def handle_storage_add_card(context: Context,message,data) -> Status:
+def handle_storage_add_card(context: Context,message) -> Status:
     context.update_database()
     latest : Card = sorted(AnkiObjMap().array_by_type("card"),key=lambda x: x.mod,reverse=True)[0]
     note = latest.get_note()

@@ -16,6 +16,12 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "数据库中出现卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventSearchCardCalled(FridaEvent):
 
     def __init__(self,value=True):
@@ -25,6 +31,12 @@ class EventSearchCardCalled(FridaEvent):
     def describe(self):
         return "调用了查找函数"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventUpdateCardExpirationDate(FridaEvent):
 
     def __init__(self,value=True):
@@ -34,6 +46,12 @@ class EventUpdateCardExpirationDate(FridaEvent):
     def describe(self):
         return "更新了卡片过期日期"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 3
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

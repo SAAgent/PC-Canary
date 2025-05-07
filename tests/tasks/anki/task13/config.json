@@ -28,9 +28,25 @@
         "timeout": 60
     },
     "events": {
-        "card_added": "添加了卡片",
-        "search_card_called" : "调用了查找函数",
-        "replace_card_success" : "调用了替换函数"
+        "card_added": {
+            "description": "添加了卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "添加了卡片"
+        },
+        "search_card_called": {
+            "description": "调用了查找函数",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "调用了查找函数"
+        },
+        "replace_card_success": {
+            "description": "调用了替换函数",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "调用了替换函数"
+        }
     },
-    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2"
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 3
 }

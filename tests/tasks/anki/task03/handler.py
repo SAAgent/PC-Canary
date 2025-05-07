@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
-def handle_storage_add_deck(context: Context,message,data) -> Status:
+def handle_storage_add_deck(context: Context,message) -> Status:
     context.update_database()
     deck : Deck = sorted(AnkiObjMap().array_by_type("deck"),key=lambda x: x.mtime,reverse=True)
     status = Status()
@@ -15,7 +15,7 @@ def handle_storage_add_deck(context: Context,message,data) -> Status:
         status.mark_progress()
     return status
 
-def handle_storage_remove_deck(context: Context,message,data) -> Status:
+def handle_storage_remove_deck(context: Context,message) -> Status:
     context.update_database()
     status = Status()
     if all([deck.name != tp.deck_name for deck in AnkiObjMap().array_by_type("deck")]):

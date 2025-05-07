@@ -17,6 +17,12 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "卡片添加"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventCardCorrect(FridaEvent):
 
     def __init__(self,value=True):
@@ -26,6 +32,12 @@ class EventCardCorrect(FridaEvent):
     def describe(self):
         return "卡片信息正确"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventCardWrong(FridaEvent):
 
     def __init__(self,get="",expect=""):
@@ -35,6 +47,12 @@ class EventCardWrong(FridaEvent):
     def describe(self):
         return "卡片信息错误"
     
+    def is_key_event(self):
+        return False
+
+    def key_index(self):
+        return 0
+
 class EventUndo(FridaEvent):
 
     def __init__(self,value=True):
@@ -44,6 +62,12 @@ class EventUndo(FridaEvent):
     def describe(self):
         return "卡片撤销添加"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 3
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

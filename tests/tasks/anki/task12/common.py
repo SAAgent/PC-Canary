@@ -16,6 +16,12 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "添加了卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventImageAdded(FridaEvent):
 
     def __init__(self,value=True):
@@ -25,6 +31,12 @@ class EventImageAdded(FridaEvent):
     def describe(self):
         return "添加了图片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventCardFormatCorrect(FridaEvent):
 
     def __init__(self,value=True):
@@ -34,6 +46,12 @@ class EventCardFormatCorrect(FridaEvent):
     def describe(self):
         return "卡片格式匹配"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 3
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

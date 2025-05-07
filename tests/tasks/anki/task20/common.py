@@ -16,6 +16,12 @@ class EventAddDeck(FridaEvent):
     def describe(self):
         return "添加成功"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventMoveCard(FridaEvent):
 
     def __init__(self,value=True):
@@ -25,6 +31,12 @@ class EventMoveCard(FridaEvent):
     def describe(self):
         return "移动一个卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 class EventMoveAllCards(FridaEvent):
 
     def __init__(self,value=True):
@@ -34,6 +46,12 @@ class EventMoveAllCards(FridaEvent):
     def describe(self):
         return "移动完所有卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 3
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

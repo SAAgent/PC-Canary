@@ -15,6 +15,12 @@ class EventCardAdded(FridaEvent):
     def describe(self):
         return "添加了卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventTagAdded(FridaEvent):
 
     def __init__(self,value=True):
@@ -24,6 +30,12 @@ class EventTagAdded(FridaEvent):
     def describe(self):
         return "添加了标签"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:

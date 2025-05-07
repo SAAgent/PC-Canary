@@ -5,12 +5,12 @@ import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
 
-def handle_service_search_cards(context: Context,message,data) -> Status:
+def handle_service_search_cards(context: Context,message) -> Status:
     status = Status()
     status.emit(EventSearchCardCalled())
     return status
 
-def handle_service_find_and_replace(context: Context,message,data) -> Status:    
+def handle_service_find_and_replace(context: Context,message) -> Status:    
     if not context.should_event_trigger(EventSearchCardCalled()):
         return None
     context.update_database()
@@ -20,7 +20,7 @@ def handle_service_find_and_replace(context: Context,message,data) -> Status:
         status.emit(EventReplaceCardSuccess())
     return status
 
-def handle_storage_add_card(context: Context,message,data) -> Status:
+def handle_storage_add_card(context: Context,message) -> Status:
     context.update_database()
     cards : List[Card] = sorted(AnkiObjMap().array_by_type("card"),key=lambda x: x.mod,reverse=True)
     note = cards[0].get_note()

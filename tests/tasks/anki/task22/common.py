@@ -15,6 +15,12 @@ class EventAddRedFlag(FridaEvent):
     def describe(self):
         return "添加一个红色旗标"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 1
+
 class EventAddAllRedFlags(FridaEvent):
 
     def __init__(self,value=True):
@@ -24,6 +30,12 @@ class EventAddAllRedFlags(FridaEvent):
     def describe(self):
         return "添加完所有卡片"
     
+    def is_key_event(self):
+        return True
+
+    def key_index(self):
+        return 2
+
 from dataclasses import dataclass
 @dataclass
 class TaskParameters:
