@@ -32,6 +32,7 @@ class HookManager:
         self.app_process = None
         self.evaluate_on_completion = evaluate_on_completion
         self.app_started = False
+        self.eval_handler = None
         
     def add_script(self, hooker_path: str, dep_script_list: list) -> None:
         """
@@ -61,6 +62,7 @@ class HookManager:
             self.logger.warning("没有脚本可加载")
             return False
         
+        self.eval_handler = eval_handler
         try:
             # 连接到目标进程
             self.logger.info(f"连接到进程: {self.app_process.pid}")
@@ -100,6 +102,9 @@ class HookManager:
         卸载所有脚本
         """
         try:
+            if self.evaluate_on_completion:
+                self.trigger_evaluate_on_completion()
+
             for script in self.loaded_scripts:
                 script.unload()
             
@@ -205,4 +210,6 @@ class HookManager:
                 self.logger.error(f"终止应用进程时出错: {str(e)}")
 
     def trigger_evaluate_on_completion(self):
-        pass
+        self.eval_handler({
+            "type": "send", "payload": { "event": "evaluate_on_completion" }
+        })
