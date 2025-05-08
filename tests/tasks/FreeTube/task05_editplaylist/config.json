@@ -1,0 +1,41 @@
+{
+    "task_id": "05",
+    "task_name": "editplaylist",
+    "description": "在FreeTube中修改指定名称播放列表的名称和简介",
+
+    "application_info": {
+        "name": "FreeTube",
+        "executable_path": "/usr/bin/freetube"
+    },
+
+    "task_parameters": {
+        "origin_name": "Watch Later",
+        "expected_name": "Course",
+        "expected_description": "MIT"
+    },
+
+    "instruction_template": "在FreeTube应用中将名为 '${origin_name}' 的播放列表的名称修改为 ${expected_name}, 简介修改为 ${expected_description}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "freetube_running": true
+    },
+    "events": {
+        "find_name_inputbox": "检测到name输入框",
+        "save_edit_by_enter": "通过回车触发保存",
+        "hook_name_inputbox_click": "成功hook到name输入框的click事件",
+        "edit_name": "修改playlist的名字",
+        "hook_name_inputbox_input": "成功hook到name输入框的input事件",
+        "find_description_inputbox": "检测到description输入框",
+        "hook_description_inputbox_click": "成功hook到description输入框的click事件",
+        "edit_description": "修改playlist的简介",
+        "hook_description_inputbox_input": "成功hook到description输入框的input事件",
+        "save_by_click_button": "通过点击保存按钮触发保存"
+    }
+}

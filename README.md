@@ -1,9 +1,20 @@
-# That Monitor Guy: PC Agent基准测试评估器
+# PC-Canary: PC Agent基准测试评估器
 
 基于触发器监视与开源用户软件的PC Agent基准测试评估系统，用于评估Agent执行桌面任务的能力。
 
+## 功能特点
+
+- 无侵入式监控应用程序行为，无需无障碍应用权限
+- 异步评估模式，不干扰Agent正常执行
+- 可扩展的任务注册机制
+- 详细的评估报告生成
+- 易于与任意结构的Agent系统集成
+
+## 当前支持的任务
+
+- **Telegram搜索任务**：评估Agent在Telegram客户端中搜索"news"的能力
 ## 运行
-### 运行基本的VNC远程桌面环境
+### 配置 VNC 远程桌面环境
 克隆本仓库
 ```bash
 git clone https://github.com/k0zhevnikov/image_setup
@@ -21,13 +32,11 @@ run 这个镜像并进入容器环境中
 docker run --rm -it \
   --privileged \
   --network host \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -v /YOUR_USER_ROOT/.Xauthority:/home/agent/.Xauthority \
   monitor_env:cpu                         
 ```
 进入环境后，执行命令
 ```bash
-vncserver 
+vncserver -xstartup /home/agent/.vnc/xstartup  -geometry  1024x768 :=5
 ```
 以启动VNC桌面，根据你实际启动的桌面号（如:5）重设 DISPLAY 变量
 ```bash
@@ -40,7 +49,7 @@ vnc://YOUR_SERVER_IP:5905
 ### 在远程桌面内运行 tdesktop 客户端
 本项目将 tdesktop 的源代码仓库作为自己的一个子模块，首先需要初始化它
 ```bash
-git submodule update --init --recursive
+git submodule update --init --recursive tdesktop
 ```
 #### （可选）自行编译并配置得到 tdesktop 客户端和用户数据
 对于项目开发者，建议进入 `apps/tdesktop` 目录，参考官方文档自行编译并配置得到 Debug 模式的 tdesktop 客户端。
@@ -91,74 +100,25 @@ sudo chown -R agent:agent /apps/tdesktop/Debug/
 ```
 配置完成后，重新生成容器并进入环境，运行 `/apps/tdesktop/Debug/Telegram` 客户端，验证是否已经自带用户数据。若已经自带，则基本环境配置完成。
 
-## 功能特点
+### 评估器
 
-- 基于Frida钩子技术，无侵入式监控应用程序行为
-- 异步评估模式，不干扰Agent正常执行
-- 可扩展的任务注册机制
-- 详细的评估报告生成
-- 易于与任意结构的Agent系统集成
-
-## 当前支持的任务
-
-- **Telegram搜索任务**：评估Agent在Telegram客户端中搜索"news"的能力
-
-## 系统要求
-
-- Python 3.8+
-- Frida 16.0.0+
-- 相关依赖项（见requirements.txt）
-
-## 使用方法
-
-### 直接测试评估器
-
-可以直接运行评估器，然后手动执行Telegram搜索操作：
+可以直接运行`test_evaluator.py`和`run_evaluator.py`，然后手动在 GUI 环境内操作Telegram 客户端，点击搜索栏输入搜索内容，观察是否能在正确输入时触发 evaluator 回调：
 
 ```bash
 python test_evaluator.py
 ```
 
-参数说明：
-- `--process`：目标进程名称（默认：Telegram）
-- `--wait`：等待时间，单位为秒（默认：60）
-
 ### 与Agent系统集成
 
-将评估器与Agent系统集成运行：
+目前本项目有一个基本的 prompt-based 的 GUI Agent， 可以测试将评估器与Agent系统集成运行：
 
 ```bash
 python run_agent_with_evaluator.py
 ```
 
-参数说明：
-- `--model`：使用的模型类型（openai、gemini或qwen，默认：openai）
-- `--api_key`：API密钥（如果未提供则从环境变量获取）
-- `--max_steps`：最大执行步骤数（默认：10）
-- `--eval_wait`：评估器启动等待时间（秒，默认：5）
-
 ## 架构说明
 
 整个评估系统由以下核心组件组成：
-
-1. **核心评估器（BenchmarkEvaluator）**：负责Frida初始化、脚本加载以及结果收集
-2. **任务评估器（如TelegramSearchEvaluator）**：实现特定任务的评估逻辑
-3. **Frida钩子脚本**：监控目标应用程序，并向评估器发送事件
-4. **集成模块**：与现有Agent系统的集成功能
-
-## 自定义任务
-
-要添加新的评估任务，需要：
-
-1. 创建新的Frida钩子脚本（如evaluator/scripts/new_task_hooker.js）
-2. 创建对应的任务评估器类（如evaluator/new_task.py）
-3. 在集成模块中使用新任务
-
-## 注意事项
-
-- 需要确保Telegram应用已经启动
-- Frida钩子脚本可能需要根据不同版本的Telegram客户端进行调整
-- 建议使用 Docker 容器环境以复现评估结果
 
 ```bash
 project/                         # 项目根目录
@@ -194,5 +154,11 @@ project/                         # 项目根目录
 ├── utils/                           # 通用工具库
 │   └── logger.py                    # 日志记录模块
 │
-└── telegram_evaluator_test.py       # Telegram评估器测试脚本
+├── run_agent_with_evaluator.py       # 测试脚本
+│
+├── test_evaluator.py       # 测试脚本
+│
+├── run_evaluator.py       # 运行评估器
+│
+└── README.md       # 说明文档
 ```

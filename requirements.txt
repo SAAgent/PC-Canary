@@ -30,3 +30,5 @@ tqdm==4.67.1
 typing_extensions==4.12.2
 wcwidth==0.2.13
 websockets==13.1
+eventlet
+socketio

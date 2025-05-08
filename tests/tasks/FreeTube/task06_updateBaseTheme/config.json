@@ -1,0 +1,32 @@
+{
+    "task_id": "06",
+    "task_name": "updateBaseTheme",
+    "description": "在FreeTube中修改主题颜色",
+
+    "application_info": {
+        "name": "FreeTube",
+        "executable_path": "/usr/bin/freetube"
+    },
+
+    "task_parameters": {
+        "theme": "dracula"
+    },
+
+    "instruction_template": "在FreeTube应用中将主题颜色改为 ${theme}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "freetube_running": true
+    },
+    "events": {
+        "change_theme_on_load": "在加载页面时事先修改主题颜色",
+        "change_theme_to": "修改主题颜色",
+        "hook_change": "成功修改change函数"
+    }
+}

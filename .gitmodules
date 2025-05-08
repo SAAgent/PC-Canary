@@ -13,3 +13,9 @@
 [submodule "apps/mpv"]
 	path = apps/mpv
 	url = https://github.com/k0zhevnikov/mpv
+[submodule "apps/FreeTube"]
+	path = apps/FreeTube
+	url = https://github.com/SAAgent/FreeTube.git
+[submodule "apps/vscode"]
+	path = apps/vscode
+	url = https://github.com/SAAgent/vscode.git

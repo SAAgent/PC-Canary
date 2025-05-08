@@ -1,0 +1,43 @@
+{
+    "task_id": "01",
+    "task_name": "send_message",
+    "description": "在zulip中发送消息",
+
+    "application_info": {
+        "name": "zulip",
+        "executable_path": "/opt/Zulip/zulip",
+        "args": ["--no-sandbox", "--user-data-dir=apps/zulip_user_data_dir"]
+    },
+
+    "task_parameters": {
+        "user_name": "David",
+        "message": "Nice to meet you!",
+        "expected_content": "<p>Nice to meet you!</p>"
+    },
+
+    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.py" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "StateInspector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "zulip_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时检测消息是否发送成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "消息发送成功"
+        }
+    },
+    "mcp_servers": [],
+    "context_data": []
+}

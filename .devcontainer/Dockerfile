@@ -130,12 +130,21 @@ USER agent
 ENV USER=agent
 SHELL [ "bash", "-c" ]
 
+# 安装和配置 Miniconda
+RUN mkdir -p ~/miniconda3 && \
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh && \
+    bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3 && \
+    rm ~/miniconda3/miniconda.sh && \
+    ~/miniconda3/bin/conda init --all
+
 # 配置环境变量
 RUN echo 'export DISPLAY=:4' >> ~/.bashrc && \
     echo 'export http_proxy=http://10.29.46.139:7890' >> ~/.bashrc && \
     echo 'export https_proxy=http://10.29.46.139:7890' >> ~/.bashrc && \
     echo 'export XDG_SESSION_TYPE=x11' >> ~/.bashrc && \
-    echo 'export PATH=/opt/TurboVNC/bin:$PATH' >> ~/.bashrc
+    echo 'export PATH=/opt/TurboVNC/bin:$PATH' >> ~/.bashrc && \
+    echo 'export WIDTH=1024' >> ~/.bashrc && \
+    echo 'export HEIGHT=768' >> ~/.bashrc
 #     echo 'export DISPLAY=:1' >> ~/.bashrc && \
 #     echo 'export VGL_DISPLAY=:0' >> ~/.bashrc && \
 #     echo 'alias vglrun="/opt/VirtualGL/bin/vglrun"' >> ~/.bashrc
