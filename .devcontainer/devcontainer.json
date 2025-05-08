@@ -1,5 +1,6 @@
 {
     "name": "benchmark_env",
+    // "image": "agent-pc:v3",
     "build": {
         "dockerfile": "Dockerfile",
         "args": {
@@ -35,9 +36,9 @@
         "--ulimit",
         "memlock=-1",
         "--device=/dev/kvm",
-        "-v",
-        "/tmp/.X11-unix:/tmp/.X11-unix",
-        "-v",
-        "/data/yyh/.Xauthority:/home/agent/.Xauthority"
+        // "-v",
+        // "/tmp/.X11-unix:/tmp/.X11-unix",
+        // "-v",
+        // "/data/user_home/pc/.Xauthority:/home/agent/.Xauthority"
     ]
 }

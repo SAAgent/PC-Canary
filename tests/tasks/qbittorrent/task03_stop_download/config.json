@@ -1,0 +1,40 @@
+{
+    "task_id": "03", 
+	"task_name": "stop_torrent", 
+    "description": "暂停指定种子文件下载。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "file_name": "/home/agent/Desktop/[BYRBT].Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB.torrent"
+    },
+
+    "instruction_template": "请在Qbittorrent中，将会话列表中的文件${file_name} 删除取消下载。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 ,
+        "evaluate_on_completion": true
+    },
+	"preconditions": {
+	  "telegram_running": true,
+      "file_existence": true
+	},
+	"success_conditions": [
+	  "remove_torrent_result"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function_found": "找到了目标函数",
+        "add_torrent_called": "拦截到删除会话框种子函数调用",
+		"add_torrent_result": "删除种子成功",
+        "error": "错误事件"
+    }
+}

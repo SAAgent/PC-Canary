@@ -1,0 +1,10 @@
+2025-04-26 16:52:51,160 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task01_add_torrent_file/hooker.js
+2025-04-26 16:52:51,160 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 尝试导入回调函数模块: tests.tasks.qbittorrent.task01_add_torrent_file.handler
+2025-04-26 16:52:51,162 - qbittorrent_task01_add_torrent_file_evaluator - ERROR - 导入回调函数模块失败: invalid syntax (handler.py, line 67)
+2025-04-26 16:52:51,162 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 加载任务指令: 
+2025-04-26 16:52:51,162 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器初始化完成: task01_add_torrent_file
+2025-04-26 16:52:51,162 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 注册了新的完成回调函数
+2025-04-26 16:52:51,162 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-04-26 16:52:51,163 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 应用启动成功，进程ID: 75870
+2025-04-26 16:52:51,164 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 等待应用窗口加载完成...
+2025-04-26 16:52:51,179 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 启动前窗口行数: 0

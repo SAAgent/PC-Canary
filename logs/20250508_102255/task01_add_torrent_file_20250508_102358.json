@@ -1,0 +1,112 @@
+{
+  "events": [
+    {
+      "type": "script_initialized",
+      "data": {
+        "event": "script_initialized",
+        "message": "qBittorrent \u79cd\u5b50\u6dfb\u52a0\u76d1\u63a7\u811a\u672c\u5df2\u542f\u52a8",
+        "timestamp": 1746699777844
+      },
+      "timestamp": 1746699777.8443928
+    },
+    {
+      "type": "function_found",
+      "data": {
+        "event": "function_found",
+        "function_name": "_ZN17AddTorrentManager19addTorrentToSessionERK7QStringRKN10BitTorrent17TorrentDescriptorERKNS3_16AddTorrentParamsE",
+        "address": "0x5f8e4886dcb8",
+        "message": "\u627e\u5230\u51fd\u6570 _ZN17AddTorrentManager19addTorrentToSessionERK7QStringRKN10BitTorrent17TorrentDescriptorERKNS3_16AddTorrentParamsE \u7684\u5b9e\u9645\u5730\u5740",
+        "timestamp": 1746699777844
+      },
+      "timestamp": 1746699777.844652
+    },
+    {
+      "type": "all_hooks_installed",
+      "data": {
+        "event": "all_hooks_installed",
+        "message": "\u6240\u6709\u76d1\u63a7\u94a9\u5b50\u5b89\u88c5\u5b8c\u6210\uff0c\u7b49\u5f85\u6dfb\u52a0\u79cd\u5b50\u64cd\u4f5c...",
+        "timestamp": 1746699777844
+      },
+      "timestamp": 1746699777.844836
+    },
+    {
+      "type": "add_torrent_called",
+      "data": {
+        "event": "add_torrent_called",
+        "message": "\u62e6\u622a\u5230\u6dfb\u52a0\u79cd\u5b50\u5230\u4f1a\u8bdd\u51fd\u6570\u8c03\u7528",
+        "timestamp": 1746699797507
+      },
+      "timestamp": 1746699797.5090363
+    },
+    {
+      "type": "add_torrent_result",
+      "data": {
+        "event": "add_torrent_result",
+        "message": "\u6dfb\u52a0\u79cd\u5b50\u5230\u4f1a\u8bdd\u51fd\u6570\u6b63\u786e\u8fd4\u56de",
+        "torrent_data": "\u0a18\u2968\u7cfb",
+        "timestamp": 1746699797508
+      },
+      "timestamp": 1746699797.5094035
+    }
+  ],
+  "metrics": {
+    "found_group": true,
+    "duration": 60.11559319496155
+  },
+  "start_time": 1746699777.747966,
+  "config": {
+    "task_id": "01",
+    "task_name": "add_torrent_file",
+    "description": "\u5c06\u6307\u5b9a\u79cd\u5b50\u6587\u4ef6\u6dfb\u52a0\u5230 qbittorrent \u4e2d\u3002",
+    "application_info": {
+      "name": "Qbittorrent Desktop",
+      "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+      "args": []
+    },
+    "task_parameters": {
+      "file_name": "/home/agent/Desktop/[BYRBT].Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB.torrent"
+    },
+    "instruction_template": "\u8bf7\u5728Qbittorrent\u4e2d\uff0c\u5c06\u684c\u9762\u7684\u6587\u4ef6${file_name} \u6dfb\u52a0\u5230qbittorrent\u4e0b\u8f7d\u5217\u8868\u4e0b'\u3002",
+    "evaluation_setup": {
+      "scripts": [
+        {
+          "role": "hook",
+          "path": "hooker.js"
+        },
+        {
+          "role": "handler",
+          "path": "handler.py"
+        }
+      ],
+      "timeout": 180,
+      "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+    "preconditions": {
+      "telegram_running": true,
+      "file_existence": true
+    },
+    "success_conditions": [
+      "add_torrent_result"
+    ],
+    "events": {
+      "script_initialized": {
+        "description": "\u94a9\u5b50\u811a\u672c\u521d\u59cb\u5316",
+        "is_key_step": false
+      },
+      "function_found": {
+        "description": "\u627e\u5230\u4e86\u76ee\u6807\u7fa4\u7ec4 (\u539f\u59cb\u4e8b\u4ef6\uff0c\u89e6\u53d1\u68c0\u67e5)",
+        "is_key_step": true,
+        "key_step_index": 1,
+        "key_step_name": "\u627e\u5230\u76ee\u6807\u7fa4\u7ec4"
+      },
+      "add_torrent_called": "\u62e6\u622a\u5230\u6dfb\u52a0\u79cd\u5b50\u5230\u4f1a\u8bdd\u51fd\u6570\u8c03\u7528",
+      "add_torrent_result": "\u6dfb\u52a0\u79cd\u5b50\u5230\u4f1a\u8bdd\u51fd\u6570\u6b63\u786e\u8fd4\u56de",
+      "error": "\u9519\u8bef\u4e8b\u4ef6"
+    }
+  },
+  "app_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+  "app_process_pid": 1659132,
+  "end_time": 1746699837.8635592,
+  "duration": 60.11559319496155
+}

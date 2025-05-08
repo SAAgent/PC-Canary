@@ -1,0 +1,38 @@
+{
+    "task_id": "04", 
+	"task_name": "stop_all_torrents", 
+    "description": "暂停所有种子文件下载。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+    },
+
+    "instruction_template": "请暂停所有 qbittorrent 种子文件的下载", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 ,
+        "evaluate_on_completion": true
+    },
+	"preconditions": {
+	  "qBittorrent_running": true,
+	},
+	"success_conditions": [
+	  "stop_all_torrents"
+	],
+    "events": {
+        "script_initialized": "钩子脚本初始化",
+        "function_found": "找到了目标函数",
+        "stop_all_torrents": "成功暂停所有种子文件",
+		"all_hooks_installed":"所有监控钩子安装完成，等待添加种子操作...",
+        "error": "错误事件"
+    }
+}

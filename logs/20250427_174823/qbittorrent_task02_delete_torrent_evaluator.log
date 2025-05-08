@@ -1,0 +1,31 @@
+2025-04-27 17:48:23,679 - qbittorrent_task02_delete_torrent_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task02_delete_torrent/hooker.js
+2025-04-27 17:48:23,679 - qbittorrent_task02_delete_torrent_evaluator - INFO - 尝试导入回调函数模块: tests.tasks.qbittorrent.task02_delete_torrent.handler
+2025-04-27 17:48:23,680 - qbittorrent_task02_delete_torrent_evaluator - INFO - 成功设置回调函数: tests.tasks.qbittorrent.task02_delete_torrent.handler.message_handler
+2025-04-27 17:48:23,680 - qbittorrent_task02_delete_torrent_evaluator - INFO - 加载任务指令: 
+2025-04-27 17:48:23,680 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估器初始化完成: task02_delete_torrent
+2025-04-27 17:48:23,680 - qbittorrent_task02_delete_torrent_evaluator - INFO - 注册了新的完成回调函数
+2025-04-27 17:48:23,680 - qbittorrent_task02_delete_torrent_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-04-27 17:48:23,681 - qbittorrent_task02_delete_torrent_evaluator - INFO - 应用启动成功，进程ID: 331376
+2025-04-27 17:48:23,682 - qbittorrent_task02_delete_torrent_evaluator - INFO - 等待应用窗口加载完成...
+2025-04-27 17:48:23,696 - qbittorrent_task02_delete_torrent_evaluator - INFO - 启动前窗口行数: 294
+2025-04-27 17:48:24,222 - qbittorrent_task02_delete_torrent_evaluator - INFO - 检测到新窗口，当前窗口行数: 295
+2025-04-27 17:48:26,223 - qbittorrent_task02_delete_torrent_evaluator - INFO - 连接到进程: 331376
+2025-04-27 17:48:26,314 - qbittorrent_task02_delete_torrent_evaluator - INFO - 钩子脚本初始化: qBittorrent 种子添加监控脚本已启动
+2025-04-27 17:48:26,314 - qbittorrent_task02_delete_torrent_evaluator - INFO - 找到了目标函数 :0x646832304062
+2025-04-27 17:48:26,314 - qbittorrent_task02_delete_torrent_evaluator - INFO - 更新指标: found_group = True
+2025-04-27 17:48:26,314 - qbittorrent_task02_delete_torrent_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task02_delete_torrent/hooker.js
+2025-04-27 17:48:26,315 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务会话开始: task02_delete_torrent
+2025-04-27 17:48:26,315 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估器启动成功
+2025-04-27 17:48:46,321 - qbittorrent_task02_delete_torrent_evaluator - ERROR - 卸载脚本失败: script is destroyed
+2025-04-27 17:48:46,322 - qbittorrent_task02_delete_torrent_evaluator - INFO - 更新指标: duration = 20.099183320999146
+2025-04-27 17:48:46,322 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务会话结束: task02_delete_torrent
+2025-04-27 17:48:46,322 - qbittorrent_task02_delete_torrent_evaluator - INFO - Event: evaluator_stopped - evaluator stopped
+2025-04-27 17:48:46,322 - qbittorrent_task02_delete_torrent_evaluator - ERROR - Error executing callback: handle_evaluator_event() missing 1 required positional argument: 'evaluator'
+2025-04-27 17:48:46,323 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务结果已保存: logs/20250427_174823/task02_delete_torrent_20250427_174846.json
+2025-04-27 17:48:46,323 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估结果已保存: logs/20250427_174823/task02_delete_torrent_20250427_174846.json
+2025-04-27 17:48:46,323 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估器已停止，总耗时: 20.10秒
+2025-04-27 17:48:47,325 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务结果已保存: logs/20250427_174823/task02_delete_torrent_20250427_174847.json
+2025-04-27 17:48:47,325 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估结果已保存: logs/20250427_174823/task02_delete_torrent_20250427_174847.json
+2025-04-27 17:48:47,325 - qbittorrent_task02_delete_torrent_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 331376)
+2025-04-27 17:48:47,325 - qbittorrent_task02_delete_torrent_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-04-27 17:48:47,325 - qbittorrent_task02_delete_torrent_evaluator - INFO - 应用进程已自行关闭

@@ -1,0 +1,53 @@
+{
+  "events": [],
+  "metrics": {
+    "duration": 20.019739389419556
+  },
+  "start_time": 1745775960.390419,
+  "config": {
+    "task_id": "02",
+    "task_name": "delete_torrent",
+    "description": "\u5220\u9664\u6307\u5b9a\u79cd\u5b50\u6587\u4ef6\u3002",
+    "application_info": {
+      "name": "Qbittorrent Desktop",
+      "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+      "args": []
+    },
+    "task_parameters": {
+      "file_name": "/home/agent/Desktop/[BYRBT].Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB.torrent"
+    },
+    "instruction_template": "\u8bf7\u5728Qbittorrent\u4e2d\uff0c\u5c06\u4f1a\u8bdd\u5217\u8868\u4e2d\u7684\u6587\u4ef6${file_name} \u5220\u9664\u53d6\u6d88\u4e0b\u8f7d\u3002",
+    "evaluation_setup": {
+      "scripts": [
+        {
+          "role": "hook",
+          "path": "hooker.js"
+        },
+        {
+          "role": "handler",
+          "path": "handler.py"
+        }
+      ],
+      "timeout": 180,
+      "evaluate_on_completion": true
+    },
+    "preconditions": {
+      "telegram_running": true,
+      "file_existence": true
+    },
+    "success_conditions": [
+      "remove_torrent_result"
+    ],
+    "events": {
+      "script_initialized": "\u94a9\u5b50\u811a\u672c\u521d\u59cb\u5316",
+      "function_found": "\u627e\u5230\u4e86\u76ee\u6807\u51fd\u6570",
+      "add_torrent_called": "\u62e6\u622a\u5230\u5220\u9664\u4f1a\u8bdd\u6846\u79cd\u5b50\u51fd\u6570\u8c03\u7528",
+      "add_torrent_result": "\u5220\u9664\u79cd\u5b50\u6210\u529f",
+      "error": "\u9519\u8bef\u4e8b\u4ef6"
+    }
+  },
+  "app_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+  "app_process_pid": 330941,
+  "end_time": 1745775980.4101584,
+  "duration": 20.019739389419556
+}

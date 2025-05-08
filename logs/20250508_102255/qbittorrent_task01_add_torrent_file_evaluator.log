@@ -1,0 +1,32 @@
+2025-05-08 10:22:55,209 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task01_add_torrent_file/hooker.js
+2025-05-08 10:22:55,209 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 尝试导入回调函数模块: tests.tasks.qbittorrent.task01_add_torrent_file.handler
+2025-05-08 10:22:55,210 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 成功设置回调函数: tests.tasks.qbittorrent.task01_add_torrent_file.handler.message_handler
+2025-05-08 10:22:55,211 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 加载任务指令: 
+2025-05-08 10:22:55,211 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器初始化完成: task01_add_torrent_file
+2025-05-08 10:22:55,211 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 注册了新的完成回调函数
+2025-05-08 10:22:55,211 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-08 10:22:55,212 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 应用启动成功，进程ID: 1659132
+2025-05-08 10:22:55,212 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-08 10:22:55,224 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 启动前窗口行数: 290
+2025-05-08 10:22:55,747 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 检测到新窗口，当前窗口行数: 312
+2025-05-08 10:22:57,748 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 连接到进程: 1659132
+2025-05-08 10:22:57,844 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 钩子脚本初始化: qBittorrent 种子添加监控脚本已启动
+2025-05-08 10:22:57,844 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 找到了目标函数 :0x5f8e4886dcb8
+2025-05-08 10:22:57,844 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 更新指标: found_group = True
+2025-05-08 10:22:57,845 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task01_add_torrent_file/hooker.js
+2025-05-08 10:22:57,845 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务会话开始: task01_add_torrent_file
+2025-05-08 10:22:57,845 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器启动成功
+2025-05-08 10:23:17,509 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 拦截到添加种子文件调用: 
+2025-05-08 10:23:57,863 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 脚本卸载完成
+2025-05-08 10:23:57,863 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 更新指标: duration = 60.11559319496155
+2025-05-08 10:23:57,863 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务会话结束: task01_add_torrent_file
+2025-05-08 10:23:57,863 - qbittorrent_task01_add_torrent_file_evaluator - INFO - Event: evaluator_stopped - evaluator stopped
+2025-05-08 10:23:57,863 - qbittorrent_task01_add_torrent_file_evaluator - ERROR - Error executing callback: handle_evaluator_event() missing 1 required positional argument: 'evaluator'
+2025-05-08 10:23:57,864 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务结果已保存: logs/20250508_102255/task01_add_torrent_file_20250508_102357.json
+2025-05-08 10:23:57,865 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估结果已保存: logs/20250508_102255/task01_add_torrent_file_20250508_102357.json
+2025-05-08 10:23:57,865 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器已停止，总耗时: 60.12秒
+2025-05-08 10:23:58,865 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务结果已保存: logs/20250508_102255/task01_add_torrent_file_20250508_102358.json
+2025-05-08 10:23:58,865 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估结果已保存: logs/20250508_102255/task01_add_torrent_file_20250508_102358.json
+2025-05-08 10:23:58,865 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 1659132)
+2025-05-08 10:23:58,866 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-08 10:23:58,980 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 应用进程已自行关闭

@@ -1,0 +1,10 @@
+2025-04-27 17:45:05,445 - qbittorrent_task02_delete_torrent_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task02_delete_torrent/hooker.js
+2025-04-27 17:45:05,445 - qbittorrent_task02_delete_torrent_evaluator - INFO - 尝试导入回调函数模块: tests.tasks.qbittorrent.task02_delete_torrent.handler
+2025-04-27 17:45:05,447 - qbittorrent_task02_delete_torrent_evaluator - INFO - 成功设置回调函数: tests.tasks.qbittorrent.task02_delete_torrent.handler.message_handler
+2025-04-27 17:45:05,447 - qbittorrent_task02_delete_torrent_evaluator - INFO - 加载任务指令: 
+2025-04-27 17:45:05,447 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估器初始化完成: task02_delete_torrent
+2025-04-27 17:45:05,447 - qbittorrent_task02_delete_torrent_evaluator - INFO - 注册了新的完成回调函数
+2025-04-27 17:45:05,447 - qbittorrent_task02_delete_torrent_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-04-27 17:45:05,448 - qbittorrent_task02_delete_torrent_evaluator - INFO - 应用启动成功，进程ID: 330726
+2025-04-27 17:45:05,448 - qbittorrent_task02_delete_torrent_evaluator - INFO - 等待应用窗口加载完成...
+2025-04-27 17:45:05,470 - qbittorrent_task02_delete_torrent_evaluator - INFO - 启动前窗口行数: 0
