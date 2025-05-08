@@ -33,7 +33,7 @@ class HookManager:
         self.evaluate_on_completion = evaluate_on_completion
         self.app_started = False
         
-    def add_script(self, hooker_path: str, dep_script: str) -> None:
+    def add_script(self, hooker_path: str, dep_script_list: list) -> None:
         """
         添加钩子脚本
         
@@ -41,7 +41,7 @@ class HookManager:
             task_id: 脚本路径
         """
         if os.path.exists(hooker_path):
-            self.scripts.append((hooker_path,dep_script))
+            self.scripts.append((hooker_path, dep_script_list))
             self.logger.info(f"添加钩子脚本: {hooker_path}")
         else:
             self.logger.error(f"脚本文件不存在: {hooker_path}")
@@ -67,10 +67,15 @@ class HookManager:
             self.frida_session = frida.attach(self.app_process.pid)
             
             # 加载所有脚本
-            for (script_path,dep_script) in self.scripts:
+            for (script_path, dep_script_list) in self.scripts:
                 try:
-                    with open(script_path, 'r') as f:
-                        script_content = "".join([dep_script,f.read()])
+                    scripts = []
+                    with open(script_path, 'r', encoding="UTF8") as f:
+                        scripts.append(f.read())
+                    for script in dep_script_list:
+                        with open(script, 'r', encoding="UTF8") as f:
+                            scripts.append(f.read())
+                    script_content = "\n".join(scripts)
                     
                     script = self.frida_session.create_script(script_content)
                     script.on('message', eval_handler)
