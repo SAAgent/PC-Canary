@@ -9,88 +9,18 @@
 import os
 import json
 import time
-from typing import Dict, Any, Optional, Callable
+from typing import Dict, Any, Optional, Callable, List
 
-# 全局评估器实例，由message_handler使用
-_EVALUATOR = None
-_CONFIG = None
-_START_TIME = None
-
-def set_evaluator(evaluator):
-    """设置全局评估器实例"""
-    global _EVALUATOR, _CONFIG
-    _EVALUATOR = evaluator
-    
-    # 使用评估器的已更新配置，而不是重新读取文件
-    if hasattr(evaluator, 'config') and evaluator.config:
-        _CONFIG = evaluator.config
-        _EVALUATOR.logger.info("使用评估器中的更新配置")
-    else:
-        # 作为备份，如果评估器中没有配置，才从文件读取
-        try:
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            config_file = os.path.join(current_dir, "config.json")
-            
-            with open(config_file, 'r') as f:
-                _CONFIG = json.load(f)
-                _EVALUATOR.logger.info("从文件加载配置")
-        except Exception as e:
-            if _EVALUATOR:
-                _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
-            # 提供一个默认配置以避免空引用
-            _CONFIG = {"task_parameters": {
-                "user_name": "David",
-                "message": "Nice to meet you!",
-                "expected_content": "<p>Nice to meet you!</p>"
-            }}
-
-def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
-    """
-    处理从钩子脚本接收的消息
-    
-    Args:
-        message: injector消息对象
-        data: 附加数据
-        
-    Returns:
-        str: 如果任务成功完成返回"success"，否则返回None
-    """
-    global _EVALUATOR, _CONFIG, _START_TIME
-    
-    # 初始化开始时间
-    if _START_TIME is None:
-        _START_TIME = time.time()
-    
-    # 检查评估器是否已设置
-    if _EVALUATOR is None:
-        print("警告: 评估器未设置，无法处理消息")
-        return None
-    
-    # _EVALUATOR.logger.info(f"{message}")
+def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     latest_message = message.get("content", None)
     receiver_name = message.get('display_recipient', [])
-    expected_content = _CONFIG.get("task_parameters", {}).get("expected_content", "<p>Nice to meet you!</p>")
-    expected_full_name = _CONFIG.get("task_parameters", {}).get("user_name", "David")
+    expected_content = task_parameter.get("expected_content", "<p>Nice to meet you!</p>")
+    expected_full_name = task_parameter.get("user_name", "David")
     if latest_message == expected_content\
         and any([i.get("full_name", None) == expected_full_name for i in receiver_name]):
-        _EVALUATOR.update_metric("success", True)
-        # update time
-        completion_time = time.time() - _START_TIME
-        _EVALUATOR.update_metric("time_to_complete", completion_time)
-        _EVALUATOR.logger.info(f"任务成功完成! 耗时: {completion_time:.2f} 秒")
-        return "success"
-    return None
-
-def register_handlers(evaluator):
-    """
-    注册所有事件处理函数到评估器
-    
-    Args:
-        evaluator: 评估器实例
-        
-    Returns:
-        message_handler: 处理函数
-    """
-    # 设置全局评估器，用于message_handler
-    set_evaluator(evaluator)
-    return message_handler
+        return [
+            {"status": "key_step", "index": 1},
+            {"status": "success", "reason": f"成功向{expected_full_name}发送消息{expected_content}"}
+        ]
+    else:
+        return [{"status": "error", "type": "evaluate_on_completion", "message": "任务没有完成"}]

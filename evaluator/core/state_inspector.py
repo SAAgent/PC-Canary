@@ -10,17 +10,17 @@ class StateInspector(HookManager):
     
     本评估方式是没有必要处理各种异步事件的
     """
-    def __init__(self, app_path: str = None, args: List[str] = None, logger: Optional[logging.Logger] = None, evaluate_on_completion: bool = False):
-        super().__init__(app_path, args, logger, evaluate_on_completion)
+    def __init__(self, app_path: str = None, app_working_cwd: Optional[str] = None,
+                 args: List[str] = None, logger: Optional[logging.Logger] = None,
+                 evaluate_on_completion: bool = False):
+        super().__init__(app_path, app_working_cwd, args, logger, evaluate_on_completion)
         self.inspector_on_start = []
         self.inspector_on_completion = []
         self.eval_handler = None
 
-    def add_script(self, task_path: str) -> None:
-        # 目前选择的APP库基本是python实现
-        hooker_path = os.path.join(task_path, "hooker.py")
+    def add_script(self, hooker_path: str, dep_script_list: str) -> None:
         if os.path.exists(hooker_path):
-            self.scripts.append(hooker_path)
+            self.scripts.append((hooker_path, dep_script_list))
             self.logger.info(f"添加钩子脚本: {hooker_path}")
         else:
             self.logger.error(f"脚本文件不存在: {hooker_path}")
@@ -32,17 +32,20 @@ class StateInspector(HookManager):
             return False
 
         # 加载所有脚本
-        for script_path in self.scripts:
+        for (script_path, dep_script_list) in self.scripts:
             try:
-                module_path = '.'.join(script_path.split("/")[-5:-1]+['hooker'])
-                script_module = importlib.import_module(module_path)
-                if hasattr(script_module, 'inspector_on_start'):
-                    self.inspector_on_start.append(script_module.inspector_on_start)
-                    # 获取app初始状态
-                    script_module.inspector_on_start()
-                if hasattr(script_module, 'inspector_on_completion'):
-                    self.inspector_on_completion.append(script_module.inspector_on_completion)
-                self.loaded_scripts.append(script_path)
+                dep_script_list.append(script_path)
+                for script in dep_script_list:
+                    segments = script.split("/")
+                    module_path = '.'.join(segments[-5:-1]+[segments[-1].split('.')[0]])
+                    script_module = importlib.import_module(module_path)
+                    if hasattr(script_module, 'inspector_on_start'):
+                        self.inspector_on_start.append(script_module.inspector_on_start)
+                        # 获取app初始状态
+                        script_module.inspector_on_start()
+                    if hasattr(script_module, 'inspector_on_completion'):
+                        self.inspector_on_completion.append(script_module.inspector_on_completion)
+                self.loaded_scripts.append((script_path, dep_script_list))
                 self.logger.info(f"加载脚本成功: {script_path}")
             except Exception as e:
                 self.logger.error(f"加载脚本失败 {script_path}: {str(e)}")
