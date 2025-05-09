@@ -340,15 +340,6 @@ class BaseEvaluator:
 
                 case _:
                     self.logger.warning(f"Handler 返回列表中包含无法识别的状态: '{status}' in {update}")
-    
-    def get_metric(self, metric_name: str) -> Any:
-        """
-        获取评估指标
-        
-        Args:
-            metric_name: 指标名称
-        """
-        return self.metrics.get(metric_name, None)
 
     def register_completion_callback(self, callback: Callable[[CallbackEventData, 'BaseEvaluator'], None]) -> None:
         """
