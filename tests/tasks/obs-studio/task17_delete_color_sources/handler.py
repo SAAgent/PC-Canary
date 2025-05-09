@@ -28,7 +28,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             if _DELETED_SOURCES == set(task_parameter["source_names"]):
                 return [
                     {"status": "key_step", "index": 1},
-                    {"status": "success", "reason": "不透明度设置成功"},
+                    {"status": "success", "reason": "删除色源成功"},
                 ]
 
     return None

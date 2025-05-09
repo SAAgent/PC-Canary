@@ -1,11 +1,11 @@
 {
-    "task_id": "23", 
-    "task_name": "batch_manage_text_source_filters", 
-    "description": "为文本源批量添加、启用、禁用及移除滤镜", 
+    "task_id": "23",
+    "task_name": "batch_manage_text_source_filters",
+    "description": "Batch add, enable, disable and remove filters for text source",
     "application_info": {
-        "name": "obs-studio", 
+        "name": "obs-studio",
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
-        "args": [] 
+        "args": []
     },
     "task_parameters": {
         "text_source_name": "text_src",
@@ -20,13 +20,19 @@
             }
         ]
     },
-    "instruction_template": "请在obs-studio中为名为'${text_source_name}'的文本源添加${filters}滤镜，然后启用、禁用和移除它们", 
+    "instruction_template": "Please add ${filters} filters to the text source named '${text_source_name}' in obs-studio, then disable, enable and remove them",
     "evaluation_setup": {
         "scripts": [
-            { "role": "hook", "path": "hooker.js" },
-            { "role": "handler", "path": "handler.py" }
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
         ],
-        "timeout": 180 
+        "timeout": 180
     },
     "preconditions": {
         "obs_studio_running": true
@@ -39,22 +45,30 @@
     "total_key_steps": 3,
     "key_steps": [
         {
-            "name": "添加滤镜",
-            "description": "为文本源添加滤镜",
+            "name": "Add filters",
+            "description": "Add filters to text source",
             "is_key_step": true,
             "key_step_index": 1
         },
         {
-            "name": "启用禁用滤镜",
-            "description": "启用和禁用滤镜",
+            "name": "Enable disable filters",
+            "description": "Enable and disable filters",
             "is_key_step": true,
             "key_step_index": 2
         },
         {
-            "name": "移除滤镜",
-            "description": "移除滤镜",
+            "name": "Remove filters",
+            "description": "Remove filters",
             "is_key_step": true,
             "key_step_index": 3
+        }
+    ],
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
         }
     ]
 }

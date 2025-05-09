@@ -1,36 +1,48 @@
 {
     "task_id": "17",
     "task_name": "delete_color_sources",
-    "description": "批量删除三个颜色源",
-
+    "description": "Batch delete three color sources",
     "application_info": {
         "name": "obs-studio",
         "executable_path": "apps/obs-studio/bin/64bit/obs64",
         "args": []
     },
-
     "task_parameters": {
-        "source_names": ["color1", "color2", "color3"]
+        "source_names": [
+            "color1",
+            "color2",
+            "color3"
+        ]
     },
-
-    "instruction_template": "删除名为${source_names}的多个或单个颜色源",
-
+    "instruction_template": "Delete multiple or single color sources named ${source_names} in obs-studio",
     "evaluation_setup": {
         "scripts": [
-            { "role": "hook", "path": "hooker.js" },
-            { "role": "handler", "path": "handler.py" }
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
         ],
         "timeout": 120
     },
-
     "total_steps": 1,
-
     "events": {
         "sources_deleted": {
-            "description": "成功删除所有指定的颜色源",
+            "description": "Successfully deleted all specified color sources",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "删除颜色源成功"
+            "key_step_name": "Color sources deleted successfully"
         }
-    }
-} 
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

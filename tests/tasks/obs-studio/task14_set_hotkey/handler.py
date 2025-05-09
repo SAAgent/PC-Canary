@@ -6,24 +6,40 @@ import json
 import time
 from typing import Dict, Any, Optional, List
 
+step = 0
+
 def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
+    global step
     payload = message['payload']
     event_type = payload['event']
     logger.debug(f"接收到事件: {event_type}")
     if event_type == "hotkey_press":
-        name = payload.get("name")
+        name = payload.get("name", "")
         if name == "OBSBasic.StartRecording":
-            return [
-                {"status": "key_step", "index": 2},
-            ]
+            if step == 2:
+                return [
+                    {"status": "key_step", "index": 3},
+                    {"status": "success", "reason": "成功找到热键并且触发测试完成"},
+                ]
+            
+    elif event_type == "inject_hotkey":
+        name = payload.get("name", "")
+        if name == "OBSBasic.StartRecording":
+            if step == 2:
+                return [
+                    {"status": "key_step", "index": 3},
+                    {"status": "success", "reason": "成功找到热键并且触发测试完成"},
+                ]
 
     elif event_type == "set_hotkey_success":
         name = payload.get("name", "")
         print("set_hotkey_success: " + name)
         if name == "OBSBasic.StartRecording" or name == "OBSBasic.StopRecording":
-            return [
-                {"status": "key_step", "index": 1},
-            ]
+            if step == 0 :
+                step = 1
+                return [
+                    {"status": "key_step", "index": 1},
+                ]
 
     elif event_type == "save_success":
         file_path = payload.get("file", "")
@@ -59,14 +75,16 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                     {"status": "error", "reason": "script_error", "message": "录制热键未设置绑定"},
                 ]
                 
-            start_key = start_bindings[0].get("key", "")
-            stop_key = stop_bindings[0].get("key", "")
+            start_key = start_bindings[0]
+            stop_key = stop_bindings[0]
+            expected_key = task_parameter.get("hotkey", {})
             
-            if start_key == "OBS_KEY_R" and stop_key == "OBS_KEY_R":
-                return [
-                    {"status": "key_step", "index": 3},
-                    {"status": "success", "reason": "成功找到热键并且触发测试完成"},
-                ]
+            if start_key == expected_key and stop_key == expected_key:
+                if step == 1:
+                    step = 2
+                    return [
+                        {"status": "key_step", "index": 2}
+                    ]
             else:
                 return [
                     {"status": "error", "reason": "script_error", "message": "热键配置不正确"},

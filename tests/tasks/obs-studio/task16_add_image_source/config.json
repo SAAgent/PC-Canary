@@ -1,42 +1,58 @@
 {
     "task_id": "16",
     "task_name": "add_image_source",
-    "description": "添加图像源并调整不透明度",
-
+    "description": "Add image source and adjust opacity",
     "application_info": {
         "name": "obs-studio",
         "executable_path": "/usr/local/bin/obs",
         "args": []
     },
-
     "task_parameters": {
         "source_name": "test-img",
-        "image_path": "/workspace/PC-Canary/tests/tasks/obs-studio/anime-9063542_1280.png",
+        "image_path": "/home/agent/obs-studio-data/anime-9063542_1280.png",
         "opacity": 50
     },
-
-    "instruction_template": "添加一个名为'${source_name}'的图像源，使用图片'${image_path}'，并将其不透明度设置为${opacity}%",
-
+    "instruction_template": "Add an image source named '${source_name}' in obs-studio, using the image '${image_path}', and set its opacity to ${opacity}%",
     "evaluation_setup": {
         "scripts": [
-            { "role": "hook", "path": "hooker.js" },
-            { "role": "handler", "path": "handler.py" }
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
         ],
         "timeout": 120
     },
     "total_key_steps": 2,
     "events": {
         "image_source_added": {
-            "description": "图像源添加成功",
+            "description": "Image source added successfully",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "添加图像源成功"
+            "key_step_name": "Adding image source successful"
         },
         "opacity_set": {
-            "description": "不透明度设置成功",
+            "description": "Opacity set successfully",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "设置不透明度成功"
+            "key_step_name": "Setting opacity successful"
         }
-    }
-} 
+    },
+    "context_data": [
+        {
+        "from": "tests/context_data/obs-studio",
+        "to": "/home/agent/obs-studio-data"
+        }
+    ],
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

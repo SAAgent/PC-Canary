@@ -1,51 +1,66 @@
 {
-    "task_id": "25", 
-    "task_name": "add_stinger_transition", 
-    "description": "添加 Stinger 过渡并演示切换", 
+    "task_id": "25",
+    "task_name": "add_stinger_transition",
+    "description": "Add Stinger transition and demonstrate switching",
     "application_info": {
-        "name": "obs-studio", 
+        "name": "obs-studio",
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
-        "args": [] 
+        "args": []
     },
     "task_parameters": {
-        "stinger_file": "/workspace/PC-Canary/tests/tasks/obs-studio/stinger_transition.mp4",
+        "stinger_file": "/home/agent/obs-studio-data/stinger_transition.mp4",
         "transition_point_ms": 300
     },
-    "instruction_template": "在OBS Studio中添加一个Stinger过渡效果, 使用${stinger_file}作为视频文件，设置过渡点为${transition_point_ms}毫秒，然后在两个场景之间演示切换", 
+    "instruction_template": "Current DISPLAY is defined in ~/.bashrc, Do not launch another obs-studio if there it is already launched. Add a Stinger transition effect in OBS Studio, using ${stinger_file} as the video file, set the transition point to ${transition_point_ms} milliseconds, then demonstrate switching between two scenes",
     "evaluation_setup": {
         "scripts": [
-          { "role": "hook",    "path": "hooker.js" },
-          { "role": "handler", "path": "handler.py" }
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
         ],
-        "timeout": 180 
+        "timeout": 180
     },
     "preconditions": {
-      "obs_studio_running": true
+        "obs_studio_running": true
     },
-    "success_conditions": [
-      "stinger_transition_created",
-      "stinger_transition_configured",
-      "stinger_transition_used"
-    ],
     "total_key_steps": 3,
     "events": {
         "stinger_transition_created": {
-            "description": "Stinger过渡已创建", 
+            "description": "Stinger transition has been created",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "Stinger过渡已创建"
+            "key_step_name": "Stinger transition has been created"
         },
         "stinger_transition_configured": {
-            "description": "Stinger过渡已配置", 
+            "description": "Stinger transition has been configured",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "Stinger过渡已配置"
+            "key_step_name": "Stinger transition has been configured"
         },
         "stinger_transition_used": {
-            "description": "Stinger过渡已使用", 
+            "description": "Stinger transition has been used",
             "is_key_step": true,
             "key_step_index": 3,
-            "key_step_name": "Stinger过渡已使用"
+            "key_step_name": "Stinger transition has been used"
         }
-    }
+    },
+    "context_data": [
+        {
+        "from": "tests/context_data/obs-studio",
+        "to": "/home/agent/obs-studio-data"
+        }
+    ],
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
 }

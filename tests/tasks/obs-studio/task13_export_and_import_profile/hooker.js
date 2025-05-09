@@ -86,6 +86,20 @@
         });
     }
 
+    function init_getconfig() {
+        Interceptor.attach(getFunctionAddress("os_get_config_path"), {
+            onEnter(args){
+                this.name = args[0];
+            },
+            onLeave(retval) {
+                sendEvent("get_config_path", {
+                    message: "获取配置文件路径",
+                    path: this.name.readCString()
+                });
+            }
+        })
+    }
+
     // 初始化钩子
     function initHook() {
         sendEvent("script_initialized", {
@@ -94,6 +108,7 @@
 
         // 初始化各个钩子
         hook();
+        init_getconfig();
         sendEvent("hook_installed", {
             message: MESSAGE_hook_installed
         });

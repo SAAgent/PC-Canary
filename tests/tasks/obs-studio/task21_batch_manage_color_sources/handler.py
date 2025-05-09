@@ -39,8 +39,6 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             for scene_item in scene_items:
                 if scene_item.get('name') == scene_name:
                     settings_items = scene_item.get('settings', {}).get('items', [])
-                    settings_items_name = [item.get('name') for item in settings_items]
-                    print(settings_items_name)
                     matched_items = [item.get('name') for item in settings_items if item.get('name') in add_sources]
                     if matched_items == add_sources:
                         if not dict_have_index(key_steps, 1):
@@ -64,7 +62,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                         ]
     return None
 
-def dict_have_index(key_steps: Dict[str, Any], index: int) -> bool:
+def dict_have_index(key_steps: List[Dict[str, Any]], index: int) -> bool:
     for key_step in key_steps:
         if "index" in key_step and key_step["index"] == index:
             return True

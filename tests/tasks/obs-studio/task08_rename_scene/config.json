@@ -1,34 +1,48 @@
 {
-    "task_id": "08", 
-	"task_name": "rename_scene", 
-    "description": "obs-studio重命名场景", 
+    "task_id": "08",
+    "task_name": "rename_scene",
+    "description": "obs-studio rename scene",
     "application_info": {
-        "name": "obs-studio", 
+        "name": "obs-studio",
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
-        "args": [] 
+        "args": []
     },
     "task_parameters": {
         "old_scene_name": "tmp_scene",
         "new_scene_name": "new_scene"
     },
-    "instruction_template": "请在obs-studio中重命名 ${old_scene_name} 为 ${new_scene_name}", 
+    "instruction_template": "Please rename ${old_scene_name} to ${new_scene_name} in obs-studio",
     "evaluation_setup": {
         "scripts": [
-		  { "role": "hook",    "path": "hooker.js" },
-		  { "role": "handler", "path": "handler.py" }
-		],
-        "timeout": 180 
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
     },
-	"preconditions": {
-	  "obs_studio_running": true
-	},
-	"total_key_steps": 1,
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "total_key_steps": 1,
     "events": {
         "scene_renamed": {
-            "description":"场景重命名成功", 
+            "description": "Scene renamed successfully",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "当前场景重命名成功"
+            "key_step_name": "Current scene renamed successfully"
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
 }

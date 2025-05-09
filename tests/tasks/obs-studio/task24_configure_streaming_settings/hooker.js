@@ -34,8 +34,8 @@
 
     // 监控配置文件修改
     function hookConfigSave() {
-        let function_name = "config_save_safe";
-        let symbol_name = "config_save_safe";
+        let function_name = "config_save";
+        let symbol_name = "config_save";
 
         Interceptor.attach(getFunctionAddress(symbol_name), {
             onEnter(args) {

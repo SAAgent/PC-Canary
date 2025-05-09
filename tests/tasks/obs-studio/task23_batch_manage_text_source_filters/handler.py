@@ -91,7 +91,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             logger.info(f"滤镜 '{filter_name}' 已启用")
             
             # 检查启用和禁用的条件
-            check_enable_disable_status(logger, task_parameter)
+            return check_enable_disable_status(logger, task_parameter)
     
     elif event_type == "filter_disabled":
         filter_name = payload.get("filterName")
@@ -100,7 +100,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             logger.info(f"滤镜 '{filter_name}' 已禁用")
             
             # 检查启用和禁用的条件
-            check_enable_disable_status(logger, task_parameter)
+            return check_enable_disable_status(logger, task_parameter)
     
     elif event_type == "filter_removed":
         filter_name = payload.get("filterName")
@@ -113,16 +113,12 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             if all(filter_name in _FILTERS_REMOVED for filter_name in expected_filters):
                 logger.info("所有滤镜已成功移除")
                 filters_removed = True
-                return [
-                    {"status": "key_step", "index": 3},
-                ]
-    
-    # 检查任务是否完成
-    if check_task_completed():
-        return [
-            {"status": "success", "reason": "添加、启用禁用、删除滤镜操作完成"},
-        ]
-    
+                # 检查任务是否完成
+                if check_task_completed():
+                    return [
+                        {"status": "key_step", "index": 3},
+                        {"status": "success", "reason": "添加、启用禁用、删除滤镜操作完成"},
+                    ]
     return None
 
 def check_enable_disable_status(logger, task_parameter) -> Optional[List[Dict[str, Any]]]:

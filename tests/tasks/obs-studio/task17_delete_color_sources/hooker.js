@@ -83,6 +83,39 @@
         });
     }
 
+    function hookSourceRemove() {
+        console.log("[Hook] 开始设置obs_source_remove钩子");
+        const funcAddr = getFunctionAddress("obs_source_remove");
+        if (!funcAddr) return;
+
+        Interceptor.attach(funcAddr, {
+            onEnter(args) {
+                this.source = args[0];
+                if (this.source) {
+                    try {
+                        const source = new OBSSource(this.source);
+                        const source_name = source.getName();
+                        const source_id = source.getId();
+                        
+                        console.log("[obs_source_remove] 源名称:", source_name);
+                        console.log("[obs_source_remove] 源类型:", source_id);
+                        
+                        // 只关注颜色源
+                        if (source_id === "color_source_v3") {
+                            sendEvent("source_deleted", {
+                                source_name: source_name,
+                                source_id: source_id,
+                                message: MESSAGE_source_deleted
+                            });
+                        }
+                    } catch (error) {
+                        console.log("[Error] 获取源信息失败:", error);
+                    }
+                }
+            }
+        });
+    }
+
     // OBSSource类用于操作OBS的源
     class OBSSource {
         constructor(ptr) {
@@ -126,7 +159,8 @@
 
         // 初始化各个钩子
         hookSceneItemRemove();
-
+        hookSourceRemove();
+        
         console.log("[Init] 钩子初始化完成");
         sendEvent("hook_installed", {
             message: MESSAGE_hook_installed

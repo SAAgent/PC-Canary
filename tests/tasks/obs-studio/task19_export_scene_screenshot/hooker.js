@@ -200,6 +200,25 @@
         });
     }
 
+    function initRequestHandlerSaveScreenshotHook() {
+        const funcAddr = getFunctionAddress("_ZN14RequestHandler20SaveSourceScreenshotERK7Request");
+        if (!funcAddr) {
+            return;
+        }
+
+        Interceptor.attach(funcAddr, {
+            onEnter(args) {
+                console.log("call RequestHandler");
+            },
+            onLeave(retval) {
+                console.log("leave RequestHandler");
+                sendEvent("RequestHandlerSaveScreenshot_returned", {
+                    message: MESSAGE_ON_SUCCESS
+                });
+            }
+        });
+    }
+
     // 初始化钩子
     function initHook() {
         sendEvent("script_initialized", {
@@ -210,6 +229,7 @@
         initHook_screenshot();
         initHook_getOutputFilename();
         initHook_muxAndFinish();
+        initRequestHandlerSaveScreenshotHook();
         
         sendEvent("hook_installed", {
             message: MESSAGE_hook_installed

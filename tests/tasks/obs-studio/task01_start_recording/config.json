@@ -1,13 +1,13 @@
 {
     "task_id": "01", 
 	"task_name": "start_recording", 
-    "description": "开始obs-studio的录制", 
+    "description": "Start recording in obs-studio", 
     "application_info": {
         "name": "obs-studio", 
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
         "args": [] 
     },
-    "instruction_template": "请在obs-studio中开始录制", 
+    "instruction_template": "Please start recording in obs-studio", 
     "evaluation_setup": {
         "scripts": [
 		  { "role": "hook",    "path": "hooker.js" },
@@ -21,19 +21,25 @@
     "total_key_steps": 1,
     "events": {
         "script_initialized": {             
-            "description": "钩子脚本初始化",             
+            "description": "Hook script initialized",             
             "is_key_step": false     
         },
         "start_recording_called": {
-            "description": "拦截到开始录制函数调用",
+            "description": "Intercepted start recording function call",
             "is_key_step": false
         },
         "is_recording_active": {             
-            "description": "已经开始录制状态",             
+            "description": "Recording has started",             
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "正在录制"     
+            "key_step_name": "Recording in progress"     
         },
-        "error": "错误事件"
-    }
+        "error": "Error event"
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": ["/home/agent/obs-mcp/build/index.js"]
+        }
+    ]
 }

@@ -1,41 +1,61 @@
 {
-    "task_id": "13", 
-	"task_name": "导出配置并导入配置", 
-    "description": "obs-studio导出配置并导入配置", 
+    "task_id": "13",
+    "task_name": "export_and_import_profile",
+    "description": "obs-studio export profile and import profile",
     "application_info": {
-        "name": "obs-studio", 
+        "name": "obs-studio",
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
-        "args": [] 
+        "args": []
     },
     "task_parameters": {
-        "profile_name": "Untitled",
-        "export_path": "/home/agent/agent-tmp-file",
-        "import_path": "/home/agent/agent-tmp-file/Untitled"
+        "profile_name": "agent",
+        "export_path": "/tmp",
+        "import_path": "/home/agent/agent-tmp-file/agent1"
     },
-    "instruction_template": "请在obs中导出名字为${profile_name}的配置到${export_path}, 之后导入${import_path}的配置文件", 
+    "instruction_template": "Please export the profile named ${profile_name} in obs to ${export_path}, then import the profile configuration file from ${import_path}",
     "evaluation_setup": {
         "scripts": [
-		  { "role": "hook",    "path": "hooker.js" },
-		  { "role": "handler", "path": "handler.py" }
-		],
-        "timeout": 180 
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
     },
-	"preconditions": {
-	  "obs_studio_running": true
-	},
-	"total_key_steps": 2,
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "total_key_steps": 2,
     "events": {
-        "import_success": {
-            "description": "导入配置成功", 
+        "export_success": {
+            "description": "Export profile successful",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "导入配置成功"
+            "key_step_name": "Export profile successful"
         },
-        "export_success": {
-            "description": "导出配置成功", 
+        "import_success": {
+            "description": "Import profile successful",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "导出配置成功"
+            "key_step_name": "Import profile successful"
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/obs-studio/task13",
+            "to": "/home/agent/agent-tmp-file"
+        }
+    ]
 }

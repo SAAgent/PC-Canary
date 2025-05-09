@@ -1,7 +1,7 @@
 {
     "task_id": "04", 
 	"task_name": "set_transition", 
-    "description": "obs-studio切换转场动画", 
+    "description": "obs-studio change transition animation", 
     "application_info": {
         "name": "obs-studio", 
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
@@ -10,7 +10,7 @@
     "task_parameters": {
         "transition": "fade_transition"
     },
-    "instruction_template": "请在obs-studio中切换到场景 ${transition}", 
+    "instruction_template": "Please change the transition animation to ${transition} in obs-studio", 
     "evaluation_setup": {
         "scripts": [
 		  { "role": "hook",    "path": "hooker.js" },
@@ -24,10 +24,16 @@
     "total_key_steps": 1,
     "events": {
         "transition_match": {
-            "description":"转场动画匹配成功", 
+            "description":"Transition animation matched successfully", 
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "当前转场动画匹配成功"
+            "key_step_name": "Current transition animation matched successfully"
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": ["/home/agent/obs-mcp/build/index.js"]
+        }
+    ]
 }

@@ -1,45 +1,62 @@
 {
-    "task_id": "14", 
-	"task_name": "set_hotkey", 
-    "description": "设置热键触发录制", 
+    "task_id": "14",
+    "task_name": "set_hotkey",
+    "description": "Set hotkey to trigger recording",
     "application_info": {
-        "name": "obs-studio", 
+        "name": "obs-studio",
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
-        "args": [] 
+        "args": []
     },
     "task_parameters": {
-        "hotkey": "OBS_KEY_R"
+        "hotkey": {
+            "control": true,
+            "key": "OBS_KEY_R"
+        }
     },
-    "instruction_template": "请在obs中设置开始录制和结束录制的快捷键为${hotkey}", 
+    "instruction_template": "Please set the shortcut key for starting and ending recording in OBS to ${hotkey}, and test the shortcut key by triggering it",
     "evaluation_setup": {
         "scripts": [
-		  { "role": "hook",    "path": "hooker.js" },
-		  { "role": "handler", "path": "handler.py" }
-		],
-        "timeout": 180 
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
     },
-	"preconditions": {
-	  "obs_studio_running": true
-	},
-    "total_key_steps":3,
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "total_key_steps": 3,
     "events": {
         "set_hotkey_success": {
-            "description": "设置热键成功",
+            "description": "Hotkey set successfully",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "设置热键成功"
-        },
-        "hotkey_press": {
-            "description":"热键被触发",
-            "is_key_step": true,
-            "key_step_index": 2,
-            "key_step_name": "热键被触发"
+            "key_step_name": "Hotkey set successfully"
         },
         "found_success": {
-            "description":"在配置文件中找到热键",
+            "description": "Hotkey found in configuration file",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Hotkey found in configuration file"
+        },
+        "hotkey_press": {
+            "description": "Hotkey triggered",
             "is_key_step": true,
             "key_step_index": 3,
-            "key_step_name": "在配置文件中找到热键"
+            "key_step_name": "Hotkey triggered"
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
 }

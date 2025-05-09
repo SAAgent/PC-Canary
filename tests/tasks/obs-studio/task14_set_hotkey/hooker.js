@@ -133,6 +133,34 @@
         });
     }
 
+    function init_hotkey_inject() {
+        Interceptor.attach(getFunctionAddress("inject_hotkey"), {
+            onEnter(args) {
+                this.binding = args[2];
+            },
+            onLeave(retval) {
+                const obs_hotkey_binding_get_hotkey = new NativeFunction(
+                    getFunctionAddress("obs_hotkey_binding_get_hotkey"),
+                    'pointer', ['pointer']
+                )
+                const obs_hotkey_get_name = new NativeFunction(
+                    getFunctionAddress("obs_hotkey_get_name"),
+                    'pointer', ['pointer']
+                )
+                const hotkey = obs_hotkey_binding_get_hotkey(this.binding);
+                const name = obs_hotkey_get_name(hotkey).readCString();
+                console.log(name);
+                const pressed = this.binding.add(8).readU8();
+                console.log(pressed);
+                sendEvent("inject_hotkey", {
+                    message: "热键被触发",
+                    name: name,
+                    pressed: pressed == 0x1 ? "true" : "false"
+                });
+            }
+        })
+    }
+
     // 初始化钩子
     function initHook() {
         sendEvent("script_initialized", {
@@ -143,6 +171,7 @@
         hook();
         hook_obs_save_hotkey();
         hook_obs_hotkey_press();
+        init_hotkey_inject();
         sendEvent("hook_installed", {
             message: MESSAGE_hook_installed
         });

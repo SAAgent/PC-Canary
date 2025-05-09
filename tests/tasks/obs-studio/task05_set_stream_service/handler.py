@@ -9,6 +9,7 @@ _EVENT_SUCCESS = "current_stream_service"
 _PAYLOAD_SUCCESS = "stream_service"
 
 def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
+    print(message)
     payload = message['payload']
     event_type = payload['event']
     logger.debug(f"接收到事件: {event_type}")
@@ -20,6 +21,18 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             return [
                 {"status": "key_step", "index": 1},
                 {"status": "success", "reason": "成功设置流媒体服务"},
+            ]
+        
+    if event_type == "obs_data_save_json_safe_returned":
+        logger.info("保存配置成功")
+        logger.info(payload)
+        json_path = payload.get("json", "")
+        print(json_path)
+        success = payload.get("success", "")
+        if success == "0x1":
+            return [
+                {"status": "key_step", "index": 1},
+                {"status": "success", "reason": "成功保存配置"},
             ]
                 
     return None

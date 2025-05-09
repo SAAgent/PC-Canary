@@ -97,6 +97,36 @@
         })
     }
 
+    function inithook_savejsonsafe() {
+        const funcAddr = getFunctionAddress("obs_data_save_json_safe");
+        if (!funcAddr) {
+            return;
+        }
+
+        Interceptor.attach(funcAddr, {
+            onEnter(args) {
+                sendEvent(EVENT_ON_ENTER, {
+                    message: MESSAGE_called,
+                    function: FUNCTION_NAME,
+                    symbol: FUNCTION_SYMBOL
+                });
+                this.json = args[1].readCString();
+                console.log(this.json);
+            },
+            
+            onLeave(retval) {
+                console.log(retval);
+                sendEvent("obs_data_save_json_safe_returned", {
+                    message: MESSAGE_returned,
+                    function: FUNCTION_NAME,
+                    symbol: FUNCTION_SYMBOL,
+                    json: this.json,
+                    success: retval
+                });
+            }
+        })
+    }
+
     // 初始化钩子
     function initHook() {
         sendEvent("script_initialized", {
@@ -105,6 +135,7 @@
 
         // 初始化各个钩子
         initHook_inner();
+        inithook_savejsonsafe();
         sendEvent("hook_installed", {
             message: MESSAGE_hook_installed
         });

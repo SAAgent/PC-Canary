@@ -141,12 +141,29 @@
                         
                         console.log("[obs_source_filter_add] source:", source_name);
                         console.log("[obs_source_filter_add] filter_id:", filter_id);
+
+                        const obs_source_get_settings = new NativeFunction(
+                            getFunctionAddress("obs_source_get_settings"),
+                            'pointer',
+                            ['pointer']
+                        );
+                        const settingsPtr = obs_source_get_settings(this.filter);
+                        const settings = new OBSData(settingsPtr);
+                        const opacity = settings.getDouble("opacity", 1.0);
+                        console.log("[obs_source_filter_add] 不透明度:", opacity);
                         
                         // 保存滤镜信息以便后续处理
                         if (filter_id === "color_key_filter_v2" || filter_id === "chroma_key_filter_v2") {
                             const sourceInfo = imageSources.get(this.source.toString());
                             sourceInfo.filter = this.filter;
                             sourceInfo.ptr = this.source;
+                            sourceInfo.opacity = opacity;
+                            sendEvent("filter_added", {
+                                source_name: source_name,
+                                filter_id: filter_id,
+                                opacity: opacity * 100,  // 转换为百分比
+                                message: "滤镜添加成功"
+                            });
                         }
                     } catch (error) {
                         console.log("[Error] 获取滤镜信息失败:", error);

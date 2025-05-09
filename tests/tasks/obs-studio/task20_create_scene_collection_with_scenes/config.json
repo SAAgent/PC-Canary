@@ -1,23 +1,32 @@
 {
-    "task_id": "20", 
-    "task_name": "create_scene_collection_with_scenes", 
-    "description": "新建场景集合并在里面新建场景", 
+    "task_id": "20",
+    "task_name": "create_scene_collection_with_scenes",
+    "description": "Create a new scene collection and create scenes inside it",
     "application_info": {
-        "name": "obs-studio", 
+        "name": "obs-studio",
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
-        "args": [] 
+        "args": []
     },
     "task_parameters": {
         "collection_name": "test_collection",
-        "scene_names": ["a", "b"]
+        "scene_names": [
+            "a",
+            "b"
+        ]
     },
-    "instruction_template": "请在obs-studio中新建一个名为${collection_name}的场景集合，并在里面新建场景${scene_names}", 
+    "instruction_template": "Please create a new scene collection in obs-studio named ${collection_name}, and create scenes ${scene_names} inside it",
     "evaluation_setup": {
         "scripts": [
-            { "role": "hook", "path": "hooker.js" },
-            { "role": "handler", "path": "handler.py" }
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
         ],
-        "timeout": 180 
+        "timeout": 180
     },
     "preconditions": {
         "obs_studio_running": true
@@ -25,16 +34,24 @@
     "total_key_steps": 2,
     "events": {
         "scene_collections_name_matches": {
-            "description": "场景集合名称匹配成功",
+            "description": "Scene collection name matched successfully",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "场景集合名称匹配成功"
+            "key_step_name": "Scene collection name matched successfully"
         },
         "scenes_list_matches": {
-            "description": "场景列表匹配成功",
+            "description": "Scene list matched successfully",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "场景列表匹配成功"
+            "key_step_name": "Scene list matched successfully"
         }
-    }
-} 
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

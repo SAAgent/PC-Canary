@@ -4,24 +4,29 @@
 import time
 from typing import Dict, Any, Optional, List
 
+step = 0
+
 def check_transition(transition_name: str, duration_ms: int, dest: str, logger, task_parameter) -> Optional[List[Dict[str, Any]]]:
     """检查转场配置是否符合要求"""
+    global step
     expected_name = task_parameter["transition_name"]
     expected_duration = task_parameter["duration_ms"]
-    expected_dest = task_parameter["dest"]
+    expected_dest = task_parameter["dest_scene"]
     
     name_match = transition_name == expected_name
     duration_match = duration_ms == expected_duration
     dest_match = dest == expected_dest
     
     key_step = []
-    if name_match:
+    if name_match and step == 0:
+        step = 1
         key_step.append({"status": "key_step", "index": 1})
 
-    if duration_match:
+    if duration_match and step == 1:
+        step = 2
         key_step.append({"status": "key_step", "index": 2})
     
-    if dest_match:
+    if dest_match and step == 2:
         key_step.append({"status": "key_step", "index":3})
         key_step.append({"status": "success", "reason": "name and duration matched"})
         

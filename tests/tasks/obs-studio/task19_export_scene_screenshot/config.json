@@ -1,7 +1,7 @@
 {
     "task_id": "19",
     "task_name": "export_scene_screenshot",
-    "description": "obs-studio导出场景截图",
+    "description": "obs-studio export scene screenshot",
     "application_info": {
         "name": "obs-studio",
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
@@ -9,37 +9,48 @@
     },
     "task_parameters": {
         "scene_name": "Scene",
-        "save_path": "/home/agent",
+        "save_path": "/home/agent/scene_screenshot.png",
         "width": 1024,
         "height": 768
     },
-    "instruction_template": "请在obs-studio中导出场景${scene_name}的截图，保存到${save_path}，分辨率为${width}x${height}",
+    "instruction_template": "Please export a screenshot of scene ${scene_name} in obs-studio, save it to ${save_path}, with resolution ${width}x${height}",
     "evaluation_setup": {
         "scripts": [
-            {"role": "hook", "path": "hooker.js"},
-            {"role": "handler", "path": "handler.py"}
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
         ],
         "timeout": 180
     },
     "preconditions": {
         "obs_studio_running": true
     },
-    "success_conditions": [
-        "screenshot_saved"
-    ],
     "total_key_steps": 2,
     "events": {
         "path_match": {
-            "description": "截图路径匹配",
+            "description": "Screenshot path matched",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "截图路径匹配"
+            "key_step_name": "Screenshot path matched"
         },
         "size_match": {
-            "description": "尺寸匹配",
+            "description": "Size matched",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "尺寸匹配"
+            "key_step_name": "Size matched"
         }
-    }
-} 
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

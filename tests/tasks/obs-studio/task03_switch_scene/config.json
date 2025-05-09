@@ -1,7 +1,7 @@
 {
     "task_id": "03", 
 	"task_name": "switch_scene", 
-    "description": "设置obs-studio的场景", 
+    "description": "Set obs-studio scene", 
     "application_info": {
         "name": "obs-studio", 
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
@@ -10,7 +10,7 @@
     "task_parameters": {
         "scene": "Scene"
     },
-    "instruction_template": "请在obs-studio中切换到场景 ${scene}", 
+    "instruction_template": "Please switch to scene ${scene} in obs-studio", 
     "evaluation_setup": {
         "scripts": [
 		  { "role": "hook",    "path": "hooker.js" },
@@ -24,10 +24,16 @@
     "total_key_steps": 1,
     "events": {
         "scene_match": {
-            "description":"场景匹配成功", 
+            "description":"Scene matched successfully", 
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "当前场景匹配成功"
+            "key_step_name": "Current scene matched successfully"
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": ["/home/agent/obs-mcp/build/index.js"]
+        }
+    ]
 }

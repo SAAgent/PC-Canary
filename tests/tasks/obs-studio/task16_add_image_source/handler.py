@@ -35,5 +35,18 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                 {"status": "key_step", "index": 2},
                 {"status": "success", "reason": "不透明度设置成功"},
             ]
+    
+    elif event_type == "filter_added":
+        source_name = payload.get("source_name")
+        filter_id = payload.get("filter_id")
+        opacity = payload.get("opacity")
+        if (source_name == task_parameter["source_name"] and 
+            filter_id == task_parameter["filter_id"] and
+            opacity == task_parameter["opacity"]):
+            logger.info("滤镜添加成功")
+            return [
+                {"status": "key_step", "index": 2},
+                {"status": "success", "reason": "滤镜添加成功"},
+            ]
 
     return None

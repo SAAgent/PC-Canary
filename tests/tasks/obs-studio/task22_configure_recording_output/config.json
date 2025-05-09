@@ -1,23 +1,29 @@
 {
-    "task_id": "22", 
-    "task_name": "configure_recording_output", 
-    "description": "配置录制输出路径与格式并测试录制", 
+    "task_id": "22",
+    "task_name": "configure_recording_output",
+    "description": "Configure recording output path and format, and test recording",
     "application_info": {
-        "name": "obs-studio", 
+        "name": "obs-studio",
         "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
-        "args": [] 
+        "args": []
     },
     "task_parameters": {
         "output_path": "/tmp/obs-recordings",
         "output_format": "mp4"
     },
-    "instruction_template": "请在obs-studio中配置录制输出路径为${output_path}，格式为${output_format}，然后测试录制功能", 
+    "instruction_template": "Please configure the recording output path as ${output_path} in obs-studio, with format ${output_format}, and then test the recording function",
     "evaluation_setup": {
         "scripts": [
-            { "role": "hook", "path": "hooker.js" },
-            { "role": "handler", "path": "handler.py" }
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
         ],
-        "timeout": 180 
+        "timeout": 180
     },
     "preconditions": {
         "obs_studio_running": true
@@ -25,22 +31,30 @@
     "total_key_steps": 3,
     "events": {
         "output_path_configured": {
-            "description": "录制输出路径已配置",
+            "description": "Recording output path configured",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "录制输出路径配置成功"
+            "key_step_name": "Recording output path configured successfully"
         },
         "output_format_configured": {
-            "description": "录制输出格式已配置",
+            "description": "Recording output format configured",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "录制输出格式配置成功"
+            "key_step_name": "Recording output format configured successfully"
         },
         "recording_tested": {
-            "description": "录制功能已测试",
+            "description": "Recording function tested",
             "is_key_step": true,
             "key_step_index": 3,
-            "key_step_name": "录制功能测试成功"
+            "key_step_name": "Recording function tested successfully"
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
 }

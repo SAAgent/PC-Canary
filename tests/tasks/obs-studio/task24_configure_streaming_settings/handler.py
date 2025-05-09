@@ -143,7 +143,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
     # 检查任务是否已全部完成
     return check_task_completion()
 
-def dict_have_index(key_steps: Dict[str, Any], index: int) -> bool:
+def dict_have_index(key_steps: List[Dict[str, Any]], index: int) -> bool:
     for key_step in key_steps:
         if "index" in key_step and key_step["index"] == index:
             return True
