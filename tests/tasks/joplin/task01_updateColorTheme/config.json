@@ -1,0 +1,45 @@
+{
+    "task_id": "01",
+    "task_name": "update_color_theme",
+    "description": "在Joplin中修改颜色主题",
+
+    "application_info": {
+        "name": "joplin",
+        "executable_path": "/home/user/Desktop/agent-demo/PC-Canary/apps/joplin/packages/app-desktop",
+        "args": []
+    },
+
+    "task_parameters": {
+        "theme": "Light"
+    },
+
+    "instruction_template": "在Joplin中修改颜色主题为 ${theme}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "joplin_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时判断主题颜色是否符合预期",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "主题颜色已经设置成功"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ]
+} 
