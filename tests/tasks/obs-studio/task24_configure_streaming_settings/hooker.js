@@ -181,19 +181,4 @@
 
     // 启动脚本
     initHook();
-
-    // 添加evaluate支持
-    recv('evaluate', function () {
-        sendEvent("debug", {
-            message: "正在执行evaluate检查..."
-        });
-
-        // 这里可以添加额外的检查逻辑，如果需要的话
-        // 目前使用的是实时检测设置的方式，所以evaluate主要用作最后的确认
-
-        send({
-            event: 'evaluate_finished',
-            message: '评估完成'
-        });
-    });
 })();

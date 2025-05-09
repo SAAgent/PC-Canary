@@ -1,7 +1,7 @@
 {
     "task_id": "24",
     "task_name": "configure_streaming_settings",
-    "description": "增加直播源并且设置Output中的一些设置",
+    "description": "设置Output中的一些设置",
     
     "application_info": {
         "name": "obs-studio",
@@ -23,23 +23,41 @@
             { "role": "hook", "path": "hooker.js" },
             { "role": "handler", "path": "handler.py" }
         ],
-        "timeout": 180,
-        "evaluator_type": "IpcInjector"
+        "timeout": 180
     },
-    
-    "success_conditions": [
-        "video_bitrate_set",
-        "audio_bitrate_set",
-        "encoder_preset_set",
-        "replay_buffer_enabled",
-        "replay_time_set"
-    ],
-    
+
+    "total_key_steps": 5,
+
     "events": {
-        "video_bitrate_set": "视频比特率设置为2000Kbps",
-        "audio_bitrate_set": "音频码率设置为320",
-        "encoder_preset_set": "编码预设设置为faster",
-        "replay_buffer_enabled": "回放缓冲区已启用",
-        "replay_time_set": "最大回放时间设为30秒"
+        "video_bitrate_set": {
+            "key_step_name": "设置视频比特率",
+            "description": "设置视频比特率为2000Kbps",
+            "is_key_step": true,
+            "key_step_index": 1
+        },
+        "audio_bitrate_set": {
+            "key_step_name": "设置音频码率",
+            "description": "设置音频码率为320",
+            "is_key_step": true,
+            "key_step_index": 2
+        },
+        "encoder_preset_set": {
+            "key_step_name": "设置编码预设",
+            "description": "设置编码预设为faster",
+            "is_key_step": true,
+            "key_step_index": 3
+        },
+        "replay_buffer_enabled": {
+            "key_step_name": "启用回放缓冲区",
+            "description": "启用回放缓冲区",
+            "is_key_step": true,
+            "key_step_index": 4
+        },
+        "replay_time_set": {
+            "key_step_name": "设置回放时间",
+            "description": "设置最大回放时间为30秒",
+            "is_key_step": true,
+            "key_step_index": 5
+        }
     }
 }

@@ -1,0 +1,5 @@
+__pycache__
+logs
+context_data*
+*.mp4
+*.png

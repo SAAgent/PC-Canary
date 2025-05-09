@@ -36,15 +36,25 @@
         "filters_enabled_disabled",
         "filters_removed"
     ],
-    "events": {
-        "script_initialized": "钩子脚本初始化",
-        "filter_created": "滤镜已创建",
-        "filter_enabled": "滤镜已启用",
-        "filter_disabled": "滤镜已禁用",
-        "filter_removed": "滤镜已移除",
-        "filters_added": "所有滤镜已添加",
-        "filters_enabled_disabled": "所有滤镜已启用禁用",
-        "filters_removed": "所有滤镜已移除",
-        "error": "错误事件"
-    }
+    "total_key_steps": 3,
+    "key_steps": [
+        {
+            "name": "添加滤镜",
+            "description": "为文本源添加滤镜",
+            "is_key_step": true,
+            "key_step_index": 1
+        },
+        {
+            "name": "启用禁用滤镜",
+            "description": "启用和禁用滤镜",
+            "is_key_step": true,
+            "key_step_index": 2
+        },
+        {
+            "name": "移除滤镜",
+            "description": "移除滤镜",
+            "is_key_step": true,
+            "key_step_index": 3
+        }
+    ]
 }
