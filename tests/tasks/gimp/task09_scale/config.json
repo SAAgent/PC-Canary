@@ -1,0 +1,57 @@
+{
+    "task_id": "09",
+    "task_name": "scale_image",
+    "description": "在GIMP中缩放图像",
+
+    "application_info": {
+        "name": "gimp",
+        "executable_path": "/usr/local/bin/gimp",
+        "args": []
+    },
+
+    "instruction_template": "将图像缩放为宽度1000像素，高度500像素",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 60,
+        "evaluator_type": "HookManager",
+        "evaluate_on_completion": false
+    },
+
+    "preconditions": {
+        "gimp_running": true
+    },
+
+    "total_key_steps": 1,
+
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到函数",
+            "is_key_step": false
+        },
+        "image_scaled": {
+            "description": "图像被缩放",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功将图像缩放为指定尺寸"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ]
+} 

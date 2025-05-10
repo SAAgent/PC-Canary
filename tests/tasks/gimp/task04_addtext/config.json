@@ -1,0 +1,61 @@
+{
+    "task_id": "04",
+    "task_name": "add_text",
+    "description": "在GIMP中添加文字",
+
+    "application_info": {
+        "name": "gimp",
+        "executable_path": "/usr/local/bin/gimp",
+        "args": []
+    },
+
+    "instruction_template": "在图像中添加文字",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 60,
+        "evaluator_type": "HookManager",
+        "evaluate_on_completion": false
+    },
+
+    "preconditions": {
+        "gimp_running": true
+    },
+
+    "total_key_steps": 1,
+
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到函数",
+            "is_key_step": false
+        },
+        "text_layer_created": {
+            "description": "创建文字图层",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功添加文字"
+        },
+        "text_content_updated": {
+            "description": "文字内容更新",
+            "is_key_step": false
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ]
+} 

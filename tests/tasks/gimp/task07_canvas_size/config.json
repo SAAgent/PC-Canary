@@ -1,0 +1,57 @@
+{
+    "task_id": "07",
+    "task_name": "canvas_size",
+    "description": "在GIMP中调整画布大小",
+
+    "application_info": {
+        "name": "gimp",
+        "executable_path": "/usr/local/bin/gimp",
+        "args": []
+    },
+
+    "instruction_template": "调整画布高度为1000像素",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 60,
+        "evaluator_type": "HookManager",
+        "evaluate_on_completion": false
+    },
+
+    "preconditions": {
+        "gimp_running": true
+    },
+
+    "total_key_steps": 1,
+
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到函数",
+            "is_key_step": false
+        },
+        "canvas_resized": {
+            "description": "画布大小被调整",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功调整画布高度为1000像素"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ]
+} 

@@ -1,0 +1,57 @@
+{
+    "task_id": "06",
+    "task_name": "invert_colors",
+    "description": "在GIMP中反转图像颜色（负片效果）",
+
+    "application_info": {
+        "name": "gimp",
+        "executable_path": "/usr/local/bin/gimp",
+        "args": []
+    },
+
+    "instruction_template": "反转图像颜色",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 60,
+        "evaluator_type": "HookManager",
+        "evaluate_on_completion": false
+    },
+
+    "preconditions": {
+        "gimp_running": true
+    },
+
+    "total_key_steps": 1,
+
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到函数",
+            "is_key_step": false
+        },
+        "colors_inverted": {
+            "description": "图像颜色被反转",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功反转图像颜色"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ]
+} 

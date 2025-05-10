@@ -1,0 +1,61 @@
+{
+    "task_id": "01",
+    "task_name": "create_image",
+    "description": "在GIMP中创建一张新图像",
+
+    "application_info": {
+        "name": "gimp",
+        "executable_path": "/usr/local/bin/gimp",
+        "args": []
+    },
+
+    "instruction_template": "创建一张新图像",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+    "timeout": 60,
+        "evaluator_type": "HookManager",
+        "evaluate_on_completion": false
+    },
+
+    "preconditions": {
+        "gimp_running": true
+    },
+
+    "total_key_steps": 1,
+
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到函数",
+            "is_key_step": false
+        },
+        "image_create_called": {
+            "description": "调用 image_new_create_image 创建图像",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功创建图像"
+        },
+        "image_create_returned": {
+            "description": "image_new_create_image 函数返回",
+            "is_key_step": false
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+    }
+    },
+
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ]
+}

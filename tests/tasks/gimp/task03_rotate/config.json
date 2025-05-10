@@ -1,0 +1,61 @@
+{
+    "task_id": "03",
+    "task_name": "rotate_image",
+    "description": "在GIMP中将图像旋转90度",
+
+    "application_info": {
+        "name": "gimp",
+        "executable_path": "/usr/local/bin/gimp",
+        "args": []
+    },
+
+    "instruction_template": "将图像旋转90度",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 60,
+        "evaluator_type": "HookManager",
+        "evaluate_on_completion": false
+    },
+
+    "preconditions": {
+        "gimp_running": true
+    },
+
+    "total_key_steps": 1,
+
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到函数",
+            "is_key_step": false
+        },
+        "rotate_called": {
+            "description": "调用 gimp_image_rotate 旋转图像",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功旋转图像"
+        },
+        "rotate_returned": {
+            "description": "gimp_image_rotate 函数返回",
+            "is_key_step": false
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ]
+} 
