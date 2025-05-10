@@ -1,0 +1,36 @@
+{
+    "task_id": "10",
+    "task_name": "add_related_item",
+    "description": "添加相关文献",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "target_item_desc": "TODO",
+        "related_item_desc": "TODO"
+    },
+    "instruction_template": "向 ${target_item_desc} 添加相关文献 ${related_item_desc}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "related_item_added": "成功添加相关文献"
+    }
+}
