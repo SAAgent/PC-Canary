@@ -1,0 +1,37 @@
+{
+    "task_id": "15",
+    "task_name": "batch_import_items_by_dois",
+    "description": "根据json格式的dois文件，批量向当前分类导入条目",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "collection_desc": "TODO",
+        "dois_file_path": "TODO"
+    },
+    "instruction_template": "读取 ${dois_file_path} 的json文件内容，并导入其中所有的doi url至 ${collection_desc}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "batch_dois_importing": "导入一个doi，剩余正在导入中",
+        "batch_dois_impoted": "成功导入所有doi"
+    }
+}
