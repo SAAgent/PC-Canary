@@ -1,0 +1,35 @@
+{
+    "task_id": "14",
+    "task_name": "generate_tag_of_item",
+    "description": "根据条目pdf文件生成tags",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "TODO"
+    },
+    "instruction_template": "阅读条目 ${item_desc} 的pdf内容，总结出来多个tag并添加至该条目 ${item_desc}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "generated_tags_added": "成功添加tags"
+    }
+}
