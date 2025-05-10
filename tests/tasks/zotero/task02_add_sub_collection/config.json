@@ -1,0 +1,35 @@
+{
+    "task_id": "02",
+    "task_name": "add_sub_collection",
+    "description": "在Zotero分类中中添加子分类",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "sub_collection_name": "Type-1虚拟化"
+    },
+    "instruction_template": "在zotero中添加子分类为 ${sub_collection_name}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "sub_collection_added": "成功添加子分类"
+    }
+}
