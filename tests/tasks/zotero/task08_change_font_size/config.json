@@ -1,0 +1,33 @@
+{
+    "task_id": "08",
+    "task_name": "change_font_size",
+    "description": "调整Zotero字体，使字体变大",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {},
+    "instruction_template": "调整Zotero字体，使字体变大",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "font_size_changed_bigger": "成功调整使得字体变大"
+    }
+}
