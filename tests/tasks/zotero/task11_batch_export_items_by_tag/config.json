@@ -1,0 +1,38 @@
+{
+    "task_id": "11",
+    "task_name": "batch_export_items_by_tag",
+    "description": "根据tag批量导出条目",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "tag": "TODO",
+        "export_path": "TODO"
+    },
+    "instruction_template": "将含有 ${tag} 的 所有条目导出至 ${export_path} 目录下，按item论文的标题命名导出文件",
+    "instruction_template_en": "Export all items with tag ${tag} to ${export_path} directory, named by Arabic numerals",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "exporting_items_by_tag": "导出一个条目，后续条目正在导出中",
+        "exported_items_by_tag": "批量导出成功"
+    }
+}
