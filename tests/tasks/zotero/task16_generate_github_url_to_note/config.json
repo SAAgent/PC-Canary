@@ -1,0 +1,38 @@
+{
+    "task_id": "16",
+    "task_name": "generate_github_url_to_note",
+    "description": "根据条目pdf文件生成论文开源仓库github链接笔记",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "TODO"
+    },
+    "instruction_template": "读取 ${item_desc} 的pdf文件内容，并导入其中的开源仓库github url至它本身的笔记中",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "success_conditions": [
+        "github_url_note_added"
+    ],
+    "events": {
+        "github_url_note_added": "成功添加github url笔记"
+    }
+}
