@@ -1,0 +1,36 @@
+{
+    "task_id": "05",
+    "task_name": "add_item_tag",
+    "description": "在Zotero条目中添加标签",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "TODO",
+        "tag": "测试"
+    },
+    "instruction_template": "在zotero向${item_desc}添加标签${tag}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "item_tag_added": "成功添加条目标签"
+    }
+}
