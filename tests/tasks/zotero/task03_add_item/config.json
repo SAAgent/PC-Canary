@@ -1,0 +1,36 @@
+{
+    "task_id": "03",
+    "task_name": "add_item",
+    "description": "在Zotero分类中中添加条目",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "collection_name": "TODO",
+        "item_url": "TODO"
+    },
+    "instruction_template": "在zotero中通过${item_url}向${collection_name}中添加条目",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "item_added": "成功添加条目"
+    }
+}
