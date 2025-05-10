@@ -1,0 +1,35 @@
+{
+    "task_id": "07",
+    "task_name": "restore_item",
+    "description": "将Zotero Trash中的条目恢复",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "TODO"
+    },
+    "instruction_template": "在zotero中将${item_desc}从Trash中恢复",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "item_restored": "成功将条目从Trash中恢复"
+    }
+}
