@@ -12,7 +12,7 @@
     "task_parameters": {
     },
 
-    "instruction_template": "在FreeCAD应用中创建新文档，展示创建结果",
+    "instruction_template": "应用已经打开。在FreeCAD应用中创建新文档，展示创建结果",
 
     "evaluation_setup": {
         "scripts": [

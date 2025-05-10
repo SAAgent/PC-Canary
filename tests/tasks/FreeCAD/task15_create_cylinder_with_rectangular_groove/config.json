@@ -20,7 +20,7 @@
         "groove_angle": 30.0
     },
 
-    "instruction_template": "在FreeCAD中创建一个半径为${cylinder_radius}mm，高度为${cylinder_height}mm的圆柱体，然后在其侧面创建一个倾斜的矩形凹槽。凹槽宽度为${groove_width}mm，深度为${groove_depth}mm，高度为${groove_height}mm，绕Y轴倾斜角度为${groove_angle}度。圆柱体的创建方式应为create an additive cylinder，矩形凹槽的创建方式为create a subtractive box。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "应用已经打开。在FreeCAD中创建一个半径为${cylinder_radius}mm，高度为${cylinder_height}mm的圆柱体，然后在其侧面创建一个倾斜的矩形凹槽。凹槽宽度为${groove_width}mm，深度为${groove_depth}mm，高度为${groove_height}mm，绕Y轴倾斜角度为${groove_angle}度。圆柱体的创建方式应为create an additive cylinder，矩形凹槽的创建方式为create a subtractive box。最后将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [

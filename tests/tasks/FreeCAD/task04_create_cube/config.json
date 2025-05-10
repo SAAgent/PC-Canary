@@ -1,7 +1,7 @@
 {
     "task_id": "04",
     "task_name": "create_cube",
-    "description": "在FreeCAD中添加增料立方体",
+    "description": "在FreeCAD中添加加法立方体",
 
     "application_info": {
         "name": "FreeCAD",
@@ -17,7 +17,7 @@
         "height": 10
     },
 
-    "instruction_template": "在FreeCAD中添加一个长${length}、宽${width}、高${height}的增料立方体,并将文件保存到${source_path}${filename}",
+    "instruction_template": "应用已经打开。在FreeCAD中添加一个长${length}、宽${width}、高${height}的加法立方体,创建方式为create an additive Box,并将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [

@@ -14,7 +14,7 @@
         "final_unit_system": 0
     },
 
-    "instruction_template": "在FreeCAD应用中先将单位系统设置为${first_unit_system}，再设置回${final_unit_system}",
+    "instruction_template": "应用已经打开。在FreeCAD应用中先将单位系统设置为${first_unit_system}，再设置回${final_unit_system}",
 
     "evaluation_setup": {
         "scripts": [

@@ -18,7 +18,7 @@
         "sides_count": 8
     },
 
-    "instruction_template": "在FreeCAD中创建一个正八边形棱柱，棱柱的外接圆半径为${prism_radius}mm，高度为${prism_height}mm，然后在棱柱的中心添加一个半径为${hole_radius}mm的圆形通孔。棱柱的创建方式可以是create a polygon prism或通过挤压多边形实现，圆孔的创建方式应为create a subtractive cylinder。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "应用已经打开。在FreeCAD中创建一个正八边形棱柱，棱柱的外接圆半径为${prism_radius}mm，高度为${prism_height}mm，然后在棱柱的中心添加一个半径为${hole_radius}mm的圆形通孔。棱柱的创建方式可以是create a polygon prism或通过挤压多边形实现，圆孔的创建方式应为create a subtractive cylinder。最后将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [

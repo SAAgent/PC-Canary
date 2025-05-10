@@ -108,97 +108,83 @@ else:
     base_length = 0.0
     base_width = 0.0
     pyramid_height = 0.0
+    processed_objects = set()
     
-    # 检查所有对象，寻找四棱锥和镜像特征
-    for obj in doc.Objects:
-        # 检查是否为实体对象
-        if hasattr(obj, "Shape"):
-            # 检查形状类型
-            if hasattr(obj.Shape, "ShapeType"):
-                # 对于Part设计方法创建的对象，我们需要检查子对象
-                if obj.TypeId == "PartDesign::Body":
-                    # 防止重复计数同一个对象
-                    processed_objects = set()
-                    
-                    for subobj in obj.OutList:
-                        if hasattr(subobj, "Shape") and hasattr(subobj.Shape, "ShapeType"):
-                            # 检查是否是四棱锥
-                            if 'Pyramid' in subobj.TypeId or 'AdditivePyramid' in subobj.TypeId:
-                                # 使用对象ID作为唯一标识符
-                                obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
-                                
-                                # 如果这个对象已经处理过，跳过
-                                if obj_id in processed_objects:
-                                    continue
-                                processed_objects.add(obj_id)
-                                
-                                # 尝试获取四棱锥的参数
-                                if hasattr(subobj, "Length"):
-                                    base_length = subobj.Length.Value
-                                if hasattr(subobj, "Width"):
-                                    base_width = subobj.Width.Value
-                                if hasattr(subobj, "Height"):
-                                    pyramid_height = subobj.Height.Value
-                                
-                                pyramid = subobj
-                            
-                            # 检查是否有镜像特征
-                            elif 'Mirror' in subobj.TypeId:
-                                # 使用对象ID作为唯一标识符
-                                obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
-                                
-                                # 如果这个对象已经处理过，跳过
-                                if obj_id in processed_objects:
-                                    continue
-                                processed_objects.add(obj_id)
-                                
-                                # 标记存在镜像特征
-                                has_mirror = True
-                                mirror_feature = subobj
-                                
-                                # 尝试获取镜像平面
-                                if hasattr(subobj, "MirrorPlane"):
-                                    # 检查镜像平面参数
-                                    mirror_plane_obj = subobj.MirrorPlane
-                                    
-                                    # 尝试分析镜像平面类型
-                                    if hasattr(mirror_plane_obj, "Axis"):
-                                        axis = mirror_plane_obj.Axis
-                                        # 根据轴向判断平面
-                                        if abs(axis.x) > 0.9 and abs(axis.y) < 0.1 and abs(axis.z) < 0.1:
-                                            mirror_plane = "YZ"  # X轴垂直于YZ平面
-                                        elif abs(axis.y) > 0.9 and abs(axis.x) < 0.1 and abs(axis.z) < 0.1:
-                                            mirror_plane = "XZ"  # Y轴垂直于XZ平面
-                                        elif abs(axis.z) > 0.9 and abs(axis.x) < 0.1 and abs(axis.y) < 0.1:
-                                            mirror_plane = "XY"  # Z轴垂直于XY平面
+    # Check all objects, looking for pyramid and mirror feature
+    for subobj in doc.Objects:
+        if 'Pyramid' in subobj.TypeId or 'AdditivePyramid' in subobj.TypeId:
+            obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
+            
+            # If this object has already been processed, skip it
+            if obj_id in processed_objects:
+                continue
+            processed_objects.add(obj_id)
+            
+            # Try to get pyramid parameters
+            if hasattr(subobj, "Length"):
+                base_length = subobj.Length.Value
+            if hasattr(subobj, "Width"):
+                base_width = subobj.Width.Value
+            if hasattr(subobj, "Height"):
+                pyramid_height = subobj.Height.Value
+            
+            pyramid = subobj
+        
+        # Check if there's a mirror feature
+        elif 'Mirror' in subobj.TypeId:
+            # Use object ID as a unique identifier
+            obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
+            
+            # If this object has already been processed, skip it
+            if obj_id in processed_objects:
+                continue
+            processed_objects.add(obj_id)
+            
+            # Mark that mirror feature exists
+            has_mirror = True
+            mirror_feature = subobj
+            
+            # Try to get mirror plane
+            if hasattr(subobj, "MirrorPlane"):
+                # Check mirror plane parameters
+                mirror_plane_obj = subobj.MirrorPlane
+                
+                # Try to analyze mirror plane type
+                if hasattr(mirror_plane_obj, "Axis"):
+                    axis = mirror_plane_obj.Axis
+                    # Determine plane based on axis
+                    if abs(axis.x) > 0.9 and abs(axis.y) < 0.1 and abs(axis.z) < 0.1:
+                        mirror_plane = "YZ"  # X axis perpendicular to YZ plane
+                    elif abs(axis.y) > 0.9 and abs(axis.x) < 0.1 and abs(axis.z) < 0.1:
+                        mirror_plane = "XZ"  # Y axis perpendicular to XZ plane
+                    elif abs(axis.z) > 0.9 and abs(axis.x) < 0.1 and abs(axis.y) < 0.1:
+                        mirror_plane = "XY"  # Z axis perpendicular to XY plane
     
     # 如果没有找到四棱锥，尝试通过形状特征识别
     if not pyramid:
         # 遍历文档中的所有对象
         for obj in doc.Objects:
-            if hasattr(obj, "Shape") and obj.Shape.ShapeType == "Solid":
-                # 检查是否是楔形（可能被用来创建金字塔）
-                if hasattr(obj, "TypeId") and ("Wedge" in obj.TypeId or "Part::Wedge" in obj.TypeId):
+            if hasattr(obj, "TypeId") and ("Wedge" in obj.TypeId or "Part::Wedge" in obj.TypeId):
+                pyramid = obj
+                if hasattr(obj, "Xmin") and hasattr(obj, "Xmax") and hasattr(obj, "Ymin") and hasattr(obj, "Ymax") and hasattr(obj, "Zmin") and hasattr(obj, "Zmax"):
+                    base_length = abs(obj.Xmax - obj.Xmin)
+                    base_width = abs(obj.Ymax - obj.Ymin)
+                    pyramid_height = abs(obj.Zmax - obj.Zmin)
+                continue
+            
+            # If not a direct wedge object, check vertex and face count
+            if hasattr(obj.Shape, "Vertexes") and (len(obj.Shape.Vertexes) == 5 or len(obj.Shape.Vertexes) == 6):
+                # A pyramid should have 5 faces (quadrangular pyramid) or 6 faces (wedge)
+                if hasattr(obj.Shape, "Faces") and (len(obj.Shape.Faces) == 5 or len(obj.Shape.Faces) == 6):
                     pyramid = obj
-                    if hasattr(obj, "Xmin") and hasattr(obj, "Xmax") and hasattr(obj, "Ymin") and hasattr(obj, "Ymax") and hasattr(obj, "Zmin") and hasattr(obj, "Zmax"):
-                        base_length = abs(obj.Xmax - obj.Xmin)
-                        base_width = abs(obj.Ymax - obj.Ymin)
-                        pyramid_height = abs(obj.Zmax - obj.Zmin)
-                    continue
-                
-                # 如果不是直接的楔形对象，检查顶点和面数量
-                if hasattr(obj.Shape, "Vertexes") and (len(obj.Shape.Vertexes) == 5 or len(obj.Shape.Vertexes) == 6):
-                    # 金字塔应该有5个面(四棱锥)或6个面(楔形)
-                    if hasattr(obj.Shape, "Faces") and (len(obj.Shape.Faces) == 5 or len(obj.Shape.Faces) == 6):
-                        pyramid = obj
-                        
-                        # 尝试计算尺寸
-                        if hasattr(obj.Shape, "BoundBox"):
-                            bbox = obj.Shape.BoundBox
-                            # 对于XZ平面上的楔形，X和Z是底面的维度
-                            base_length = bbox.XLength
-                            base_width = bbox.ZLength  # 对于在XZ平面上的楔形，Z是宽度
-                            pyramid_height = bbox.YLength  # Y是高度
+                    
+                    # Try to calculate dimensions
+                    if hasattr(obj.Shape, "BoundBox"):
+                        bbox = obj.Shape.BoundBox
+                        # For wedges on XZ plane, X and Z are base dimensions
+                        base_length = bbox.XLength
+                        base_width = bbox.ZLength  # For wedges on XZ plane, Z is width
+                        pyramid_height = bbox.YLength  # Y is height
     
     # 如果没有找到镜像特征，尝试通过检测对称性来确定
     if not has_mirror:

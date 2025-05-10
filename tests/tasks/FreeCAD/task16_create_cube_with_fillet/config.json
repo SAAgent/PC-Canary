@@ -18,7 +18,7 @@
         "fillet_radius": 5.0
     },
 
-    "instruction_template": "在FreeCAD中创建一个长为${cube_length}mm，宽为${cube_width}mm，高为${cube_height}mm的立方体，然后在其所有边缘添加半径为${fillet_radius}mm的倒角。立方体的创建方式应为create an additive cube，倒角的创建方式应为create a fillet。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. Create a cube in FreeCAD with length ${cube_length}mm, width ${cube_width}mm, and height ${cube_height}mm, then add fillets with a radius of ${fillet_radius}mm to all its edges. The cube should be created as an additive cube (typeid), and the fillets should be created using the create a fillet feature on cube. Do not create the shapes separately and use Boolean subtraction or cut. Finally, save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [

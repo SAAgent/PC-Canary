@@ -14,7 +14,7 @@
         "filename": "task03.FCStd"
     },
 
-    "instruction_template": "在FreeCAD应用中打开文档，文档名为${source_path}${filename},展示打开结果",
+    "instruction_template": "应用已经打开。在FreeCAD应用中打开文档，文档名为${source_path}${filename},展示打开结果",
 
     "evaluation_setup": {
         "scripts": [

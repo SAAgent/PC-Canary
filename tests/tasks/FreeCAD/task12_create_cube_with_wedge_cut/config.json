@@ -27,7 +27,7 @@
         "wedge_Z2max": 5.0
     },
 
-    "instruction_template": "在FreeCAD中创建一个长度为${cube_length}，宽度为${cube_width}，高度为${cube_height}的长方体，然后在其顶部创建一个楔形切口，切口的参数为：Xmin=${wedge_Xmin}，Xmax=${wedge_Xmax}，Ymin=${wedge_Ymin}，Ymax=${wedge_Ymax}，Zmin=${wedge_Zmin}，Zmax=${wedge_Zmax}，X2min=${wedge_X2min}，X2max=${wedge_X2max}，Z2min=${wedge_Z2min}，Z2max=${wedge_Z2max}。长方体的创建方式应为create an additive cube，楔形切口的创建方式为create subtractive wedge。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "应用已经打开。在FreeCAD中创建一个长度为${cube_length}，宽度为${cube_width}，高度为${cube_height}的长方体，然后在其顶部创建一个楔形切口，切口的参数为：Xmin=${wedge_Xmin}，Xmax=${wedge_Xmax}，Ymin=${wedge_Ymin}，Ymax=${wedge_Ymax}，Zmin=${wedge_Zmin}，Zmax=${wedge_Zmax}，X2min=${wedge_X2min}，X2max=${wedge_X2max}，Z2min=${wedge_Z2min}，Z2max=${wedge_Z2max}。长方体的创建方式应为create an additive cube，楔形切口的创建方式为create subtractive wedge。最后将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
