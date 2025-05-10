@@ -1,0 +1,39 @@
+{
+    "task_id": "task01_add_collection",
+    "task_name": "add_collection",
+    "description": "在Zotero中添加分类",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "collection_name": "虚拟化"
+    },
+    "instruction": "在zotero`MyLibrary`中添加分类`virtualization`",
+    "preconditions": {
+        "zotero_running": true
+    },
+    "instruction_template": "在zotero中添加分类为 `${collection_name}`",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "collection_added": "成功添加分类"
+    }
+}
