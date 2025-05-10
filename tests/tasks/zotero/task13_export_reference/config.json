@@ -1,0 +1,35 @@
+{
+    "task_id": "13",
+    "task_name": "export_reference",
+    "description": "导出所选条目参考文献表",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "TODO"
+    },
+    "instruction_template": "导出条目 ${item_desc} 的参考文献表",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "reference_exported": "导出成功"
+    }
+}
