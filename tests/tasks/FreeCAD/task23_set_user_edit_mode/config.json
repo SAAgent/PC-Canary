@@ -14,7 +14,7 @@
         "final_mode": 0
     },
 
-    "instruction_template": "在FreeCAD应用中先将用户编辑模式设置为${first_mode}，然后再设置为${final_mode}",
+    "instruction_template": "应用已经打开。在FreeCAD应用中先将用户编辑模式设置为${first_mode}，然后再设置为${final_mode}",
 
     "evaluation_setup": {
         "scripts": [

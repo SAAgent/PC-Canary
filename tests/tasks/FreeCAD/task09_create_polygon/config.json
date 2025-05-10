@@ -16,7 +16,7 @@
         "radius": 20
     },
 
-    "instruction_template": "在FreeCAD中创建一个有${sides}条边、外接圆半径为${radius}mm的正多边形，并将文件保存到${source_path}${filename}",
+    "instruction_template": "应用已经打开。在FreeCAD中的part design中通过草图创建一个有${sides}条边、外接圆半径为${radius}mm的正多边形，并将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [

@@ -21,7 +21,7 @@
         "torus_angle3": 360.0
     },
 
-    "instruction_template": "在FreeCAD中创建一个半径为${disk_radius}mm，高度为${disk_height}mm的圆盘，然后在其上部创建一个环形槽。环形槽的主半径(Radius1)为${torus_radius1}mm，次半径(Radius2)为${torus_radius2}mm，角度参数为Angle1=${torus_angle1}度，Angle2=${torus_angle2}度，Angle3=${torus_angle3}度，默认为整圆环形槽。圆盘的创建方式应为create an additive cylinder，环形槽的创建方式为create subtractive torus。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "应用已经打开。在FreeCAD中创建一个半径为${disk_radius}mm，高度为${disk_height}mm的圆盘，然后在其上部创建一个环形槽。环形槽的主半径(Radius1)为${torus_radius1}mm，次半径(Radius2)为${torus_radius2}mm，角度参数为Angle1=${torus_angle1}度，Angle2=${torus_angle2}度，Angle3=${torus_angle3}度，默认为整圆环形槽,盘上环形槽深度与次半径相等。圆盘的创建方式应为create an additive cylinder（typeid），环形槽的创建方式为create subtractive torus（typeid），不要分别创建形体后使用布尔减法。最后将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [

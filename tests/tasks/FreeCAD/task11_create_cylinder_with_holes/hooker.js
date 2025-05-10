@@ -220,11 +220,30 @@ else:                    # 查找文档中的圆柱体和孔
             # 如果无法转换，返回原始值
             return val
     
+    # 提取圆柱体中心轴的位置
+    cylinder_center_x = main_cylinder['position']['x'] if main_cylinder and main_cylinder['position'] else 0
+    cylinder_center_y = main_cylinder['position']['y'] if main_cylinder and main_cylinder['position'] else 0
+    
+    # 准备孔位信息
+    hole_positions = []
+    for hole in holes:
+        if hole['position']:
+            hole_positions.append({
+                'x': hole['position']['x'],
+                'y': hole['position']['y'],
+                'z': hole['position']['z']
+            })
+    
+    # 对孔位进行排序 - 按照Z坐标排序
+    sorted_hole_positions = sorted(hole_positions, key=lambda p: p['z']) if hole_positions else []
+    
     result = {
         'cylinder_radius': extract_value(main_cylinder['radius']) if main_cylinder else None,
         'cylinder_height': extract_value(main_cylinder['height']) if main_cylinder else None,
         'hole_radius': extract_value(holes[0]['radius']) if holes else None,
-        'hole_count': len(holes)
+        'hole_count': len(holes),
+        'cylinder_position': main_cylinder['position'] if main_cylinder else None,
+        'hole_positions': sorted_hole_positions
     }
                     `
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {

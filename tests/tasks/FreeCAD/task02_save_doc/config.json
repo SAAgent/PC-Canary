@@ -14,7 +14,7 @@
         "filename": "task02.FCStd"
     },
 
-    "instruction_template": "在FreeCAD应用中保存文档，文档名为${source_path}${filename},展示保存结果",
+    "instruction_template": "应用已经打开。在FreeCAD应用中创建并保存文档，文档名为${source_path}${filename},展示保存结果",
 
     "evaluation_setup": {
         "scripts": [

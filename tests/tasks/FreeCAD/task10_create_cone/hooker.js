@@ -105,63 +105,68 @@ else:
     
     # 检查所有对象，寻找圆锥体
     for obj in doc.Objects:
+        try:
         # 检查是否是Part::Feature或相关类型对象
-        if hasattr(obj, "TypeId") and "Part" in obj.TypeId:
-            if hasattr(obj, "Shape") and hasattr(obj.Shape, "ShapeType"):
-                # 检查对象是否有特定的形状类型
-                if obj.Shape.ShapeType == "Solid":
-                    faces = obj.Shape.Faces
-                    
-                    # 使用additive cone创建的圆锥体通常有2到3个面：顶面（小圆形或无）、底面（大圆形）和侧面
-                    if len(faces) in [2, 3]:
-                        # 查找是否有一个或两个圆形面和一个侧面
-                        circle_faces = []
-                        side_face = None
+            if hasattr(obj, "TypeId") and "Part" in obj.TypeId:
+                if hasattr(obj, "Shape") and hasattr(obj.Shape, "ShapeType"):
+                    # 检查对象是否有特定的形状类型
+                    if obj.Shape.ShapeType == "Solid":
+                        faces = obj.Shape.Faces
                         
-                        for face in faces:
-                            # 检查是否是平面
-                            if face.Surface.TypeId == 'Part::GeomPlane':
-                                # 检查是否是圆形
-                                is_circle = True
-                                radius = None
-                                for edge in face.Edges:
-                                    if edge.Curve.TypeId == 'Part::GeomCircle':
-                                        radius = edge.Curve.Radius
-                                        break
-                                    else:
-                                        is_circle = False
-                                        break
+                        # 使用additive cone创建的圆锥体通常有2到3个面：顶面（小圆形或无）、底面（大圆形）和侧面
+                        if len(faces) in [2, 3]:
+                            # 查找是否有一个或两个圆形面和一个侧面
+                            circle_faces = []
+                            side_face = None
+                            
+                            for face in faces:
+                                # 检查是否是平面
+                                if face.Surface.TypeId == 'Part::GeomPlane':
+                                    # 检查是否是圆形
+                                    is_circle = True
+                                    radius = None
+                                    for edge in face.Edges:
+                                        if edge.Curve.TypeId == 'Part::GeomCircle':
+                                            radius = edge.Curve.Radius
+                                            break
+                                        else:
+                                            is_circle = False
+                                            break
+                                    
+                                    if is_circle and radius is not None:
+                                        # 记录圆面的中心位置和半径
+                                        center = face.Surface.Position
+                                        circle_faces.append({
+                                            "radius": radius,
+                                            "center": center
+                                        })
+                                else:
+                                    # 可能是侧面
+                                    side_face = face
+                            
+                            # 如果找到一个或两个圆面和一个侧面，那么这很可能是一个圆锥体
+                            if len(circle_faces) >= 1 and side_face is not None:
+                                # 按照z坐标排序圆面，底面在下，顶面在上（如果存在）
+                                circle_faces.sort(key=lambda x: x["center"].z)
+                                bottom_face = circle_faces[0]
+                                top_face = circle_faces[1] if len(circle_faces) > 1 else None
                                 
-                                if is_circle and radius is not None:
-                                    # 记录圆面的中心位置和半径
-                                    center = face.Surface.Position
-                                    circle_faces.append({
-                                        "radius": radius,
-                                        "center": center
-                                    })
-                            else:
-                                # 可能是侧面
-                                side_face = face
-                        
-                        # 如果找到一个或两个圆面和一个侧面，那么这很可能是一个圆锥体
-                        if len(circle_faces) >= 1 and side_face is not None:
-                            # 按照z坐标排序圆面，底面在下，顶面在上（如果存在）
-                            circle_faces.sort(key=lambda x: x["center"].z)
-                            bottom_face = circle_faces[0]
-                            top_face = circle_faces[1] if len(circle_faces) > 1 else None
-                            
-                            # 计算底面半径、顶面半径（如果存在）和高度
-                            bottom_radius = bottom_face["radius"]
-                            top_radius = top_face["radius"] if top_face else 0
-                            height = (top_face["center"].z - bottom_face["center"].z) if top_face else side_face.BoundBox.ZLength
-                            
-                            # 如果底面半径大于顶面半径，则认为这是一个圆锥（截头圆锥或标准圆锥）
-                            if bottom_radius > top_radius and height > 0:
-                                cone = {
-                                    "radius": bottom_radius,
-                                    "height": abs(height)
-                                }
-                                break
+                                # 计算底面半径、顶面半径（如果存在）和高度
+                                bottom_radius = bottom_face["radius"]
+                                top_radius = top_face["radius"] if top_face else 0
+                                height = (top_face["center"].z - bottom_face["center"].z) if top_face else side_face.BoundBox.ZLength
+                                
+                                # 如果底面半径大于顶面半径，则认为这是一个圆锥（截头圆锥或标准圆锥）
+                                if bottom_radius > top_radius and height > 0:
+                                    cone = {
+                                        "radius": bottom_radius,
+                                        "height": abs(height)
+                                    }
+                                    break
+        except Exception as e:
+            # 处理异常
+            print(f"Error processing object {obj.Name}: {str(e)}")
+            continue
     
     result = cone
                     `

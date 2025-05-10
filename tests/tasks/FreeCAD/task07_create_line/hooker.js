@@ -89,59 +89,59 @@
 import freecad
 import FreeCAD
 import math
-from PySide import QtCore
 
 # 打开指定的文件
-file_path = '${this.filename}'
+file_path = '/FreeCAD/task07.FCStd'
 doc = FreeCAD.open(file_path)
 
 # 获取活动文档
 if doc is None:
     result = None
 else:
-    # 查找草图对象
-    sketch = None
     for obj in doc.Objects:
+        # 查找草图对象
+        sketch = None
         if obj.TypeId == "Sketcher::SketchObject":
             sketch = obj
-            break
-
-    if sketch is None:
-        result = {
-            "found": False,
-            "message": "未找到草图对象"
-        }
-    else:
-        # 检查草图中是否有直线
-        has_line = False
-        line_length = 0.0
-        
-        # 遍历草图中的几何体
-        for i in range(sketch.GeometryCount):
-            geo = sketch.Geometry[i]
-            if geo.TypeId == "Part::GeomLineSegment":
-                # 找到直线
-                has_line = True
-                # 计算直线长度
-                start = geo.StartPoint
-                end = geo.EndPoint
-                dx = end.x - start.x
-                dy = end.y - start.y
-                line_length = math.sqrt(dx*dx + dy*dy)
-                break
-        
-        if has_line:
+        if sketch is None:
             result = {
-                "found": True,
-                "has_line": True,
-                "length": line_length
+                "found": False,
+                "message": "未找到草图对象"
             }
         else:
-            result = {
-                "found": True,
-                "has_line": False,
-                "message": "草图中未找到直线"
+            # 检查草图中是否有直线
+            has_line = False
+            line_length = 0.0
+            
+            # 遍历草图中的几何体
+            for i in range(sketch.GeometryCount):
+                geo = sketch.Geometry[i]
+                if geo.TypeId == "Part::GeomLineSegment":
+                    # 找到直线
+                    has_line = True
+                    # 计算直线长度
+                    start = geo.StartPoint
+                    end = geo.EndPoint
+                    dx = end.x - start.x
+                    dy = end.y - start.y
+                    line_length = math.sqrt(dx*dx + dy*dy)
+                    break
+            
+            if has_line:
+                result = {
+                    "found": True,
+                    "has_line": True,
+                    "length": line_length
+                }
+                break
+            else:
+                result = {
+                    "found": True,
+                    "has_line": False,
+                    "message": "草图中未找到直线"
             }
+
+    print(result)
 `
                     // 发送包含Python代码的关键字事件
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {

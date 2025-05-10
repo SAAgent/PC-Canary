@@ -10,10 +10,12 @@
     },
 
     "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task07.FCStd",
         "line_length": 50.0
     },
 
-    "instruction_template": "在FreeCAD中创建一条长度为${line_length}的直线",
+    "instruction_template": "应用已经打开。在FreeCAD的part design中通过草图创建一条长度为${line_length}的直线,并将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [

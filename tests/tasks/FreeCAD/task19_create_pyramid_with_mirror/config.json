@@ -18,7 +18,7 @@
         "mirror_plane": "XZ"
     },
 
-    "instruction_template": "在FreeCAD中创建一个四棱锥（金字塔），底面是一个矩形，底面长为${base_length}mm，宽为${base_width}mm，高度为${pyramid_height}mm，底面应位于XZ平面，然后对该四棱锥添加一个${mirror_plane}平面的镜像特征。四棱锥的创建方式可以是create a pyramid、通过楔形(wedge)或通过挤出多边形实现，镜像特征的创建方式应为Mirror Feature（镜像特征）。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. Create a pyramid in FreeCAD with a rectangular base that has length ${base_length}mm and width ${base_width}mm, and a height of ${pyramid_height}mm. The base should be positioned on the XZ plane. Then add a mirror feature to this pyramid using the ${mirror_plane} plane. The pyramid can be created using 'create a addtive wedge'. The mirror feature should be created using 'apply a pattern -> mirror'. Finally, save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [

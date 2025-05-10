@@ -1,7 +1,7 @@
 {
     "task_id": "05",
     "task_name": "create_cylinder",
-    "description": "在FreeCAD中创建指定尺寸的圆柱体",
+    "description": "在FreeCAD中创建指定尺寸的加法圆柱体",
 
     "application_info": {
         "name": "FreeCAD",
@@ -16,7 +16,7 @@
         "height": 10
     },
 
-    "instruction_template": "在FreeCAD中创建一个半径为${radius}、高度为${height}的圆柱体,并将文件保存到${source_path}${filename}",
+    "instruction_template": "应用已经打开。在FreeCAD中创建一个半径为${radius}、高度为${height}的加法圆柱体,创建方式为create an additive cylinder,并将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -55,5 +55,11 @@
             "description": "错误事件",
             "is_key_step": false
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
 }

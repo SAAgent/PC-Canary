@@ -14,7 +14,7 @@
         "final_language": "English"
     },
 
-    "instruction_template": "在FreeCAD应用中先将界面语言切换为${first_language}，然后再改回${final_language}",
+    "instruction_template": "应用已经打开。在FreeCAD应用中先将界面语言切换为${first_language}，然后再改回${final_language}",
 
     "evaluation_setup": {
         "scripts": [

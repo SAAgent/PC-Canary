@@ -105,94 +105,57 @@ else:
     fillet = None
     has_fillet = False
     fillet_radius = 0.0
-    
-    # 检查所有对象，寻找立方体和倒角
-    for obj in doc.Objects:
-        # 检查是否为实体对象
-        if hasattr(obj, "Shape"):
-            # 检查形状类型
-            if hasattr(obj.Shape, "ShapeType"):
-                # 对于Part设计方法创建的对象，我们需要检查子对象
-                if obj.TypeId == "PartDesign::Body":
-                    # 防止重复计数同一个对象
-                    processed_objects = set()
+    processed_objects = set()  # To track processed objects
+    # Check all objects, looking for cube and fillets
+    for subobj in doc.Objects:
+        if hasattr(subobj, "Shape") and hasattr(subobj.Shape, "ShapeType"):
+            # Use TypeId to check if it's an additive cube
+            if subobj.TypeId == 'PartDesign::AdditiveBox' or subobj.TypeId == 'Part::Box':
+                # Use object ID as a unique identifier
+                obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
+                
+                # If this object has already been processed, skip it
+                if obj_id in processed_objects:
+                    continue
+                processed_objects.add(obj_id)
+                
+                if subobj.Shape.ShapeType == "Solid":
+                    # Check if it's a cube, read properties directly
+                    cube_length = subobj.Length.Value if hasattr(subobj, "Length") else 0
+                    cube_width = subobj.Width.Value if hasattr(subobj, "Width") else 0
+                    cube_height = subobj.Height.Value if hasattr(subobj, "Height") else 0
                     
-                    for subobj in obj.OutList:
-                        if hasattr(subobj, "Shape") and hasattr(subobj.Shape, "ShapeType"):
-                            # 使用 TypeId 检查是否为增料立方体
-                            if subobj.TypeId == 'PartDesign::AdditiveBox' or subobj.TypeId == 'Part::Box':
-                                # 使用对象ID作为唯一标识符
-                                obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
-                                
-                                # 如果这个对象已经处理过，跳过
-                                if obj_id in processed_objects:
-                                    continue
-                                processed_objects.add(obj_id)
-                                
-                                if subobj.Shape.ShapeType == "Solid":
-                                    # 检查是否是立方体，直接读取属性
-                                    cube_length = subobj.Length.Value if hasattr(subobj, "Length") else 0
-                                    cube_width = subobj.Width.Value if hasattr(subobj, "Width") else 0
-                                    cube_height = subobj.Height.Value if hasattr(subobj, "Height") else 0
-                                    
-                                    # 存储立方体信息
-                                    cube = {
-                                        'length': cube_length,
-                                        'width': cube_width,
-                                        'height': cube_height
-                                    }
-                            
-                            # 检查是否有倒角特征（可能是多种类型）
-                            elif subobj.TypeId == 'PartDesign::Fillet' or 'Fillet' in subobj.TypeId:
-                                # 使用对象ID作为唯一标识符
-                                obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
-                                
-                                # 如果这个对象已经处理过，跳过
-                                if obj_id in processed_objects:
-                                    continue
-                                processed_objects.add(obj_id)
-                                
-                                # 标记存在倒角
-                                has_fillet = True
-                                
-                                # 尝试获取倒角半径
-                                if hasattr(subobj, "Radius"):
-                                    if isinstance(subobj.Radius, list):
-                                        # 如果是一个列表，取第一个值
-                                        if len(subobj.Radius) > 0:
-                                            fillet_radius = float(subobj.Radius[0])
-                                    else:
-                                        # 直接获取值
-                                        fillet_radius = float(subobj.Radius)
-                                elif hasattr(subobj, "FilletRadius"):
-                                    fillet_radius = float(subobj.FilletRadius)
-                                
-                # 也可能是直接使用Part模块创建的对象
-                elif obj.TypeId == 'Part::Box':
-                    if hasattr(obj, "Length") and hasattr(obj, "Width") and hasattr(obj, "Height"):
-                        # 存储立方体信息
-                        cube = {
-                            'length': obj.Length.Value,
-                            'width': obj.Width.Value,
-                            'height': obj.Height.Value
-                        }
-    
-    # 如果在对象中没有找到倒角特征，尝试通过形状几何检测
-    if not has_fillet and cube is not None:
-        # 检查文档中是否有带倒角的形状特征
-        for obj in doc.Objects:
-            if hasattr(obj, "Shape"):
-                # 检查边缘的曲率半径
-                if hasattr(obj.Shape, "Edges"):
-                    for edge in obj.Shape.Edges:
-                        if hasattr(edge, "Curve") and hasattr(edge.Curve, "Radius"):
-                            # 如果边有曲率，可能是倒角
-                            edge_radius = edge.Curve.Radius
-                            if edge_radius > 0 and edge_radius < min(cube['length'], cube['width'], cube['height']) / 2:
-                                has_fillet = True
-                                # 如果没有找到倒角特征但找到了倒角边，使用边的半径
-                                if fillet_radius == 0.0:
-                                    fillet_radius = edge_radius
+                    # Store cube information
+                    cube = {
+                        'length': cube_length,
+                        'width': cube_width,
+                        'height': cube_height
+                    }
+            
+            # Check if there are fillet features (could be multiple types)
+            elif subobj.TypeId == 'PartDesign::Fillet' or 'Fillet' in subobj.TypeId:
+                # Use object ID as a unique identifier
+                obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
+                
+                # If this object has already been processed, skip it
+                if obj_id in processed_objects:
+                    continue
+                processed_objects.add(obj_id)
+                
+                # Mark that fillets exist
+                has_fillet = True
+                
+                # Try to get the fillet radius
+                if hasattr(subobj, "Radius"):
+                    if isinstance(subobj.Radius, list):
+                        # If it's a list, take the first value
+                        if len(subobj.Radius) > 0:
+                            fillet_radius = float(subobj.Radius[0])
+                    else:
+                        # Get value directly
+                        fillet_radius = float(subobj.Radius)
+                elif hasattr(subobj, "FilletRadius"):
+                    fillet_radius = float(subobj.FilletRadius)
     
     # 返回结果 - 确保返回纯数字而不是带单位的值
     # 处理可能带单位的值

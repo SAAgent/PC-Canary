@@ -95,68 +95,53 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
                 
                 result = execute_python_code(code, logger)
                 if result:
-                    # 检查草图是否创建
-                    if result.get(FOUND, False):
-                        # 更新第二个关键步骤状态
-                        updates.append({
-                            'status': 'key_step',
-                            'index': 2,
-                            'name': '成功创建草图'
-                        })
+                    # 检查草图是否创建并且有直线
+                    if result.get(FOUND, False) and result.get(HAS_LINE, False):
+                        # 检查直线长度是否符合要求
+                        expected_length = task_parameter.get('line_length', 50.0)
+                        actual_length = result.get(LENGTH, 0.0)
                         
-                        # 检查是否有直线
-                        if result.get(HAS_LINE, False):
-                            # 更新第三个关键步骤状态
+                        # 验证长度是否符合要求
+                        if abs(actual_length - expected_length) <= 0.00001:
+                            logger.info(f"直线长度符合要求: 预期 {expected_length:.2f}, 实际 {actual_length:.2f}")
+                            
+                            # 更新第二个关键步骤状态 - 创建直线并保存成功
                             updates.append({
                                 'status': 'key_step',
-                                'index': 3,
-                                'name': '成功创建直线'
+                                'index': 2,
+                                'name': '创建直线并保存成功'
                             })
                             
-                            # 检查直线长度是否符合要求
-                            expected_length = task_parameter.get('line_length', 50.0)
-                            actual_length = result.get(LENGTH, 0.0)
+                            # 报告任务成功
+                            updates.append({
+                                'status': 'success',
+                                'reason': f'成功创建长度为{actual_length:.2f}的直线'
+                            })
                             
-                            # 允许一点误差范围（±1.0）
-                            if abs(actual_length - expected_length) <= 0.00001:
-                                logger.info(f"直线长度符合要求: 预期 {expected_length:.2f}, 实际 {actual_length:.2f}")
-                                
-                                # 报告关键步骤已完成
-                                updates.append({
-                                    'status': 'key_step',
-                                    'index': 4,
-                                    'name': '直线长度符合要求'
-                                })
-                                
-                                # 报告任务成功
-                                updates.append({
-                                    'status': 'success',
-                                    'reason': f'成功创建长度为{actual_length:.2f}的直线'
-                                })
-                                
-                                logger.info("任务成功完成!")
-                            else:
-                                logger.error(f"直线长度不符合要求: 预期 {expected_length:.2f}, 实际 {actual_length:.2f}")
-                                
-                                updates.append({
-                                    'status': 'error',
-                                    'type': 'validation_failed',
-                                    'message': f'直线长度不符合要求：期望{expected_length:.2f}，实际{actual_length:.2f}'
-                                })
+                            logger.info("任务成功完成!")
                         else:
+                            logger.error(f"直线长度不符合要求: 预期 {expected_length:.2f}, 实际 {actual_length:.2f}")
+                            
+                            updates.append({
+                                'status': 'error',
+                                'type': 'validation_failed',
+                                'message': f'直线长度不符合要求：期望{expected_length:.2f}，实际{actual_length:.2f}'
+                            })
+                    else:
+                        if not result.get(FOUND, False):
+                            logger.error("未找到草图对象")
+                            updates.append({
+                                'status': 'error',
+                                'type': 'validation_failed',
+                                'message': '未找到草图对象'
+                            })
+                        elif not result.get(HAS_LINE, False):
                             logger.error("草图中未找到直线")
                             updates.append({
                                 'status': 'error',
                                 'type': 'validation_failed',
                                 'message': '草图中未找到直线'
                             })
-                    else:
-                        logger.error("未找到草图对象")
-                        updates.append({
-                            'status': 'error',
-                            'type': 'validation_failed',
-                            'message': '未找到草图对象'
-                        })
                 
             elif event_type == ERROR:
                 error_type = payload.get("error_type", "unknown")

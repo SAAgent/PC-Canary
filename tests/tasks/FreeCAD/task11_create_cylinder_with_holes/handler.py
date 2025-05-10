@@ -7,6 +7,7 @@ FreeCAD带孔圆柱体事件处理器
 """
 
 from typing import Dict, Any, Optional, List
+import math
 
 # 事件类型常量
 SCRIPT_INITIALIZED = "script_initialized"
@@ -137,7 +138,79 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
                             hole_radius_error = False
                             hole_count_correct = False
                         
-                        if cylinder_radius_error and cylinder_height_error and hole_radius_error and hole_count_correct:
+                        # 检查孔的位置分布是否正确
+                        position_correct = True
+                        
+                        # 获取孔位信息
+                        hole_positions = result.get('hole_positions', [])
+                        cylinder_position = result.get('cylinder_position', {'x': 0, 'y': 0, 'z': 0})
+                        
+                        if hole_positions and len(hole_positions) >= 2 and cylinder_position:
+                            # 检查1: 孔是否沿高度方向均匀分布
+                            cylinder_center_x = cylinder_position.get('x', 0)
+                            cylinder_center_y = cylinder_position.get('y', 0)
+                            
+                            # 如果有多个孔，检查它们是否在高度方向上均匀分布
+                            if len(hole_positions) > 1:
+                                # 先按z坐标排序孔的位置
+                                sorted_holes = sorted(hole_positions, key=lambda p: p.get('z', 0))
+                                
+                                # 计算相邻孔之间的高度差
+                                height_diffs = []
+                                for i in range(1, len(sorted_holes)):
+                                    height_diff = sorted_holes[i].get('z', 0) - sorted_holes[i-1].get('z', 0)
+                                    height_diffs.append(height_diff)
+                                
+                                # 检查高度差是否均匀（允许0.1%的误差）
+                                if height_diffs and len(height_diffs) > 0:
+                                    avg_height_diff = sum(height_diffs) / len(height_diffs)
+                                    if avg_height_diff == 0:
+                                        position_correct = False
+                                    else:
+                                        height_uniformity = all(
+                                            abs((diff - avg_height_diff) / avg_height_diff) <= 0.001 
+                                            for diff in height_diffs
+                                        )
+                                        if not height_uniformity:
+                                            logger.warning("孔在高度方向上未均匀分布")
+                                            position_correct = False
+                            
+                            # 检查2: 孔是否与圆柱体轴线保持相同水平距离
+                            horizontal_distances = []
+                            for hole in hole_positions:
+                                hole_x = hole.get('x', 0)
+                                hole_y = hole.get('y', 0)
+                                
+                                # 计算水平距离（到圆柱体中心轴的距离）
+                                horizontal_distance = math.sqrt(
+                                    (hole_x - cylinder_center_x)**2 + 
+                                    (hole_y - cylinder_center_y)**2
+                                )
+                                horizontal_distances.append(horizontal_distance)
+                            
+                            # 检查所有孔的水平距离是否相同（允许0.1%的误差）
+                            if horizontal_distances and len(horizontal_distances) > 0:
+                                avg_distance = sum(horizontal_distances) / len(horizontal_distances)
+                                if avg_distance > 0:
+                                    distance_uniformity = all(
+                                        abs((dist - avg_distance) / avg_distance) <= 0.001 
+                                        for dist in horizontal_distances
+                                    )
+                                    
+                                    if not distance_uniformity:
+                                        logger.warning("孔到圆柱体中心轴的距离不一致")
+                                        position_correct = False
+                                else:
+                                    logger.warning("孔的水平距离为0，无法进行分布验证")
+                                    position_correct = False
+                            if not position_correct:
+                                logger.info(f"孔位置分布验证失败: {hole_positions}")
+                        elif expected_hole_count > 1:
+                            logger.warning("未能获取足够的孔位信息进行分布验证")
+                            position_correct = False
+                        
+                        # 综合所有条件检查
+                        if cylinder_radius_error and cylinder_height_error and hole_radius_error and hole_count_correct and position_correct:
                             # 更新第二个关键步骤状态
                             updates.append({
                                 'status': 'key_step',
@@ -151,8 +224,19 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
                                 'reason': '成功创建了符合要求的带孔圆柱体并保存'
                             })
                         else:
-                            logger.warning(f"参数验证失败: 期望圆柱 {expected_cylinder_radius}×{expected_cylinder_height}, " +
-                                      f"孔 {expected_hole_radius}×{expected_hole_count}")
+                            failure_reasons = []
+                            if not cylinder_radius_error:
+                                failure_reasons.append("圆柱半径不符")
+                            if not cylinder_height_error:
+                                failure_reasons.append("圆柱高度不符")
+                            if not hole_radius_error:
+                                failure_reasons.append("孔半径不符")
+                            if not hole_count_correct:
+                                failure_reasons.append("孔数量不符")
+                            if not position_correct:
+                                failure_reasons.append("孔分布不符合要求")
+                            
+                            logger.warning(f"参数验证失败: {', '.join(failure_reasons)}")
                 
             elif event_type == ERROR:
                 error_type = payload.get("error_type", "unknown")

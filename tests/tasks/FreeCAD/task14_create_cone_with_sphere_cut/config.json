@@ -1,7 +1,7 @@
 {
     "task_id": "14",
     "task_name": "create_cone_with_sphere_cut",
-    "description": "在FreeCAD中创建一个带有半球状凹坑的圆锥体",
+    "description": "Create a cone with a hemispherical cutout in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -21,7 +21,7 @@
         "sphere_position_z": 40.0
     },
 
-    "instruction_template": "在FreeCAD中创建一个底部半径为${cone_radius1}mm，顶部半径为${cone_radius2}mm，高度为${cone_height}mm的圆锥体，然后在其顶面中心创建一个半球状凹坑。切口球体的半径为${sphere_radius}mm，球心位置应位于圆锥顶面中心(${sphere_position_x}, ${sphere_position_y}, ${sphere_position_z})mm。圆锥体的创建方式应为create an additive cone，半球凹坑的创建方式为create subtractive sphere。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. In FreeCAD, create a cone with a bottom radius of ${cone_radius1}mm, a top radius of ${cone_radius2}mm, and a height of ${cone_height}mm. Then, create a hemispherical cutout at the center of its top surface. The radius of the cutting sphere is ${sphere_radius}mm, and its center should be positioned at the cone's top surface center (${sphere_position_x}, ${sphere_position_y}, ${sphere_position_z})mm. The cone should be created using the 'create an additive cone' method (typeid), and the hemispherical cutout should be created using the 'create subtractive sphere' method (typeid). Do not create the shapes separately and use Boolean subtraction or cut. Finally, save the file to ${source_path}${filename}.",
 
     "evaluation_setup": {
         "scripts": [
@@ -37,27 +37,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Save document function found",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Save document function called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Save document"
         },
         "function_key_word_detected": {
-            "description": "检测到保存文档关键内容",
+            "description": "Detected key content for saving document",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建带半球状凹坑的圆锥体并保存成功"
+            "key_step_name": "Successfully created a cone with a hemispherical cutout and saved"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

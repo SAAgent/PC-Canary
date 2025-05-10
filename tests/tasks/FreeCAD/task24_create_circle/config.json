@@ -15,7 +15,7 @@
         "radius": 10
     },
 
-    "instruction_template": "在FreeCAD的2D草图中创建一个以原点(0,0)为圆心、半径为${radius}的圆形，并将文件保存到${source_path}${filename}",
+    "instruction_template": "应用已经打开。在FreeCAD的2D草图中创建一个以原点(0,0)为圆心、半径为${radius}的圆形，并将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -56,8 +56,8 @@
     },
     "mcp_servers": [
         {
-            "command": "mcp-proxy",
-            "args": ["http://127.0.0.1:6010/sse"]
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
         }
     ]
 }

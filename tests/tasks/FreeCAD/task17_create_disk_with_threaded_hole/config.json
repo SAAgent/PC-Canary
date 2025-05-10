@@ -19,7 +19,7 @@
         "model_thread": true
     },
 
-    "instruction_template": "在FreeCAD中创建一个半径为${disk_radius}mm，高度为${disk_height}mm的圆盘，然后在其中心添加以下参数的螺纹孔：\n- Profile: ISO metric regular profile\n- Size: ${thread_size}\n- Clearance: Standard\n- Depth: ${thread_depth}mm\n- Threaded: 勾选\n- Model Thread: ${model_thread ? '勾选' : '不勾选'}\n圆盘的创建方式应为create an additive cylinder，螺纹孔的创建方式应为create a threaded hole。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "应用已经打开。在FreeCAD中创建一个半径为${disk_radius}mm，高度为${disk_height}mm的圆盘，然后在其中心添加以下参数的螺纹孔：\n- Profile: ISO metric regular profile\n- Size: ${thread_size}\n- Clearance: Standard\n- Depth: ${thread_depth}mm\n- Threaded: 勾选\n- Model Thread: ${model_thread ? '勾选' : '不勾选'}\n圆盘的创建方式应为create an additive cylinder，螺纹孔的创建方式应为create a threaded hole。最后将文件保存到${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
