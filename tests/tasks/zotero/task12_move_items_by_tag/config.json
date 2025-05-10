@@ -1,0 +1,37 @@
+{
+    "task_id": "12",
+    "task_name": "move_items_by_tag",
+    "description": "根据tag批量移动条目",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "tag": "TODO",
+        "move_collection_desc": "TODO"
+    },
+    "instruction_template": "将含有 ${tag} 的 所有条目添加至 ${move_collection_desc}，如果不存在该分类，则创建一个新的分类",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "moving_items_by_tag": "添加一个条目，后续条目正在添加中",
+        "moved_items_by_tag": "批量添加成功"
+    }
+}
