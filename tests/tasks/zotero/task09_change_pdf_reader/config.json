@@ -1,0 +1,35 @@
+{
+    "task_id": "09",
+    "task_name": "change_pdf_reader",
+    "description": "调整Zotero pdf 阅读器",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "pdf_reader_path": "TODO"
+    },
+    "instruction_template": "调整Zotero pdf 阅读器为 ${pdf_reader_path}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "events": {
+        "pdf_reader_changed": "成功调整使得字体变大"
+    }
+}
