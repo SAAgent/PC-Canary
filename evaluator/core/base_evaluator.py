@@ -17,6 +17,7 @@ from evaluator.core.state_inspector import StateInspector
 from evaluator.core.result_collector import ResultCollector
 from evaluator.core.events import AgentEvent
 from evaluator.utils.logger import setup_logger
+from evaluator.utils.restore_context_data import restore_context_data
 
 # Data structure for completion callbacks
 class CallbackEventData:
@@ -57,8 +58,8 @@ class BaseEvaluator:
         # 设置日志记录器
         self.logger = setup_logger(f"{self.task_category}_{self.task_id}_evaluator", self.session_dir,level=logging.DEBUG)
         FILE_ROOT = os.path.dirname(os.path.abspath(__file__))
-        CANARY_ROOT = os.path.dirname(os.path.dirname(FILE_ROOT))
-        self.task_path = os.path.join(CANARY_ROOT, "tests/tasks", self.task_category, self.task_id)
+        self.canary_root = os.path.dirname(os.path.dirname(FILE_ROOT))
+        self.task_path = os.path.join(self.canary_root, "tests/tasks", self.task_category, self.task_id)
 
         # 评估状态
         self.is_running = False
@@ -130,6 +131,7 @@ class BaseEvaluator:
         elif evaluator_type == "StateInspector":
             self.hook_manager = StateInspector(
                 app_path=app_path,
+                app_working_cwd=app_working_cwd,
                 args=launch_args,
                 logger=self.logger,
                 evaluate_on_completion=evaluate_on_completion
@@ -149,25 +151,21 @@ class BaseEvaluator:
             raise RuntimeError("缺少evaluation_setup或script")
         
         for script in self.config["evaluation_setup"]["scripts"]:
-            script_path = os.path.realpath(os.path.join(self.task_path,script["path"])) # panic if path is not exist
+            script_path = os.path.realpath(os.path.join(self.task_path, script["path"])) # panic if path is not exist
             if not os.path.exists(script_path):
                 raise RuntimeError("脚本文件不存在")
             
             match script["role"]:
                 case "hook":
+                    dep_script_list = []
                     if "dependency" in script:
-                        dep_script_list = []
                         for dep in script["dependency"]:
-                            dep_path = os.path.realpath(os.path.join(self.task_path,dep))
+                            dep_path = os.path.realpath(os.path.join(self.task_path, dep))
                             if not os.path.exists(dep_path):
                                 raise RuntimeError("hook dependency文件不存在")
-                            with open(dep_path, 'r') as f:
-                                dep_script_list.append(f.read())
-                        dep_script = "\n".join(dep_script_list)
-                    else:
-                        dep_script = ""
-                    self.hook_manager.add_script(script_path, dep_script)
-                case "handler":    
+                            dep_script_list.append(dep_path)
+                    self.hook_manager.add_script(script_path, dep_script_list)
+                case "handler":
                     self.set_message_handler(script_path)
         self.logger.info(f"评估器初始化完成: {self.task_id}")
 
@@ -201,7 +199,10 @@ class BaseEvaluator:
                 sys.modules["handler"] = handler_module
                 spec.loader.exec_module(handler_module)
             
-                if hasattr(handler_module, 'message_handler'):
+                if hasattr(handler_module, 'register_handlers'):
+                    self.message_handler = handler_module.register_handlers(self)
+                    self.logger.info(f"成功设置回调函数: {module_path}.message_handlers")
+                elif hasattr(handler_module, 'message_handler'):
                     self.message_handler = handler_module.message_handler
                     self.logger.info(f"成功设置回调函数: {module_path}.message_handler")
                 else:
@@ -380,6 +381,18 @@ class BaseEvaluator:
             return False
 
         if not self.hook_manager.app_started:
+            # 恢复用户数据
+            try:
+                data_restore_config = self.config.get("context_data", [])
+                for config in data_restore_config:
+                    from_relative_path = config.get("from")
+                    from_path = os.path.join(self.canary_root, from_relative_path)
+                    to_path = config.get("to")
+                    restore_context_data(from_path, to_path)
+            except Exception as e:
+                self.logger.error(f"无法从{str(e)}恢复用户数据")
+                return False
+            self.logger.info("用户数据成功恢复")
             self.start_app()
 
         try:

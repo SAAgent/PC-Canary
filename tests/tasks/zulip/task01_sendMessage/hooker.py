@@ -17,7 +17,7 @@ def inspector_on_completion(handler: Callable[[Dict[str, Any], Any], None]):
         "num_after": 0,
         "narrow": [
             {"operator": "sender", "operand": self_email},
-        ],
+        ]
     }
     last_message = client.get_messages(request)
     if last_message.get('result', "error") == "success":

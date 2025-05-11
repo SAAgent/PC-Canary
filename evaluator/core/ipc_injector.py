@@ -20,9 +20,15 @@ class IpcInjector:
 
         @sio.event
         def connect(sid, _):
-            for (p, _) in shared_dict['scripts']:
-                with open(p, 'r') as f:
-                    sio.emit('inject', f.read(), to=sid)
+            for (p, l) in shared_dict['scripts']:
+                s = []
+                with open(p, 'r', encoding="UTF8") as f:
+                    s.append(f.read())
+                for i in l:
+                    with open(i, 'r', encoding="UTF8") as f:
+                        s.append(f.read())
+                c = "\n".join(s)
+                sio.emit('inject', c, to=sid)
             # 更新共享的session_id列表
             shared_dict['target_session_id'].append(sid)
             shared_dict['logger'].info(f"客户端app连接到服务器: {sid}")
@@ -145,9 +151,9 @@ class IpcInjector:
                 self.shared_dict['logger'].error(f"处理消息错误: {str(e)}")
             time.sleep(0.5)
 
-    def add_script(self, hooker_path: str, dep_script:str) -> None:
+    def add_script(self, hooker_path: str, dep_script_list:str) -> None:
         if os.path.exists(hooker_path):
-            self.shared_dict['scripts'].append((hooker_path, dep_script))
+            self.shared_dict['scripts'].append((hooker_path, dep_script_list))
             self.shared_dict['logger'].info(f"添加钩子脚本: {hooker_path}")
         else:
             self.shared_dict['logger'].error(f"脚本文件不存在: {hooker_path}")
@@ -164,11 +170,15 @@ class IpcInjector:
 
         try:
             success = False
-            
-            for (script_path, dep_script) in self.shared_dict['scripts']:
+            for (script_path, dep_script_list) in self.shared_dict['scripts']:
                 try:
-                    with open(script_path, 'r') as f:
-                        script_content = "".join([dep_script,f.read()])
+                    scripts = []
+                    with open(script_path, 'r', encoding="UTF8") as f:
+                        scripts.append(f.read())
+                    for script in dep_script_list:
+                        with open(script, 'r', encoding="UTF8") as f:
+                            scripts.append(f.read())
+                    script_content = "\n".join(scripts)
                     
                     # 向所有已连接的客户端发送注入命令
                     for sid in self.shared_dict['target_session_id']:
@@ -178,7 +188,7 @@ class IpcInjector:
                             'content': script_content
                         })
                     
-                    self.shared_dict['loaded_scripts'].append(script_path)
+                    self.shared_dict['loaded_scripts'].append((script_path, dep_script_list))
                     success = True
                     self.shared_dict['logger'].info(f"加载脚本成功: {script_path}, {self.shared_dict['target_session_id']}")
                 except Exception as e:

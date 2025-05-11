@@ -19,4 +19,6 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                 {"status": "key_step", "index": 1},
                 {"status": "success", "reason": f"颜色主题已经成功设置成{expected_theme}"}
             ]
+        else:
+            return [{"status": "error", "type": "evaluate_on_completion", "message": "任务没有完成"}]
     return None
