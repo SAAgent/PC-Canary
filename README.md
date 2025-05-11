@@ -36,7 +36,7 @@ docker run --rm -it \
 ```
 进入环境后，执行命令
 ```bash
-vncserver -xstartup /home/agent/.vnc/xstartup  -geometry  1024x768 :=5
+vncserver -xstartup /home/agent/.vnc/xstartup  -geometry  1024x768 :5
 ```
 以启动VNC桌面，根据你实际启动的桌面号（如:5）重设 DISPLAY 变量
 ```bash
