@@ -3,27 +3,25 @@ joplin.plugins.register({
     onStart: async function() {
         console.log('Joplin plugin started');
         
-        // 主题值映射
-        const themeMap = {
-            '1': 'Light',
-            '2': 'Dark',
-            '3': 'Sepia'
-        };
-
         // 监听 evaluate 事件
         socket.on("evaluate", async () => {
-            console.log('Task01_updateColorTheme---------------------------');
+            console.log('Task05_deleteNote---------------------------');
             try {
-                // 获取当前主题
-                const themeValue = await joplin.settings.globalValue('preferredLightTheme');
-                const currentTheme = themeMap[themeValue] || 'Unknown';
-                console.log('Current theme value:', themeValue, 'mapped to:', currentTheme);
+                // 获取所有笔记
+                const notes = await joplin.data.get(['notes']);
+                const noteList = notes.items;
+                
+                // 获取当前笔记名称
+                const currentNoteNames = noteList.map(note => note.title);
+                console.log('Current notes:', currentNoteNames);
                 
                 // 使用 postMessage 发送评估消息
                 window.postMessage({
                     "event_type": "evaluate_on_completion",
-                    "message": "任务结束时Joplin的主题颜色是" + currentTheme,
-                    "data": currentTheme
+                    "message": "当前笔记列表: " + currentNoteNames.join(', '),
+                    "data": {
+                        "notes": currentNoteNames
+                    }
                 }, '*');
                 console.log('Evaluation result sent via postMessage');
             } catch (error) {

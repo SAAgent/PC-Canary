@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "update_color_theme",
-    "description": "在Joplin中修改颜色主题",
+    "task_id": "02",
+    "task_name": "create_notebook",
+    "description": "检查Joplin中是否存在名为指定名称的笔记本",
 
     "application_info": {
         "name": "joplin",
@@ -10,17 +10,17 @@
     },
 
     "task_parameters": {
-        "theme": "Dark"
+        "notebook_name": "hello"
     },
 
-    "instruction_template": "在Joplin中修改颜色主题为 ${theme}",
+    "instruction_template": "在Joplin中创建名为 ${notebook_name} 的笔记本（注意不是笔记）",
 
     "evaluation_setup": {
         "scripts": [
             { "role": "hook",    "path": "hooker.js" },
             { "role": "handler", "path": "handler.py" }
         ],
-        "timeout": 10,
+        "timeout": 120,
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
@@ -30,10 +30,10 @@
     },
     "events": {
         "evaluate_on_completion": {
-            "description": "在任务结束时判断主题颜色是否符合预期",
+            "description": "在任务结束时判断指定名称的笔记本是否存在",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "主题颜色已经设置成功"
+            "key_step_name": "笔记本检查完成"
         }
     },
     "mcp_servers": [

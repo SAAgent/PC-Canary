@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "update_color_theme",
-    "description": "在Joplin中修改颜色主题",
+    "task_id": "20",
+    "task_name": "modify_note_title",
+    "description": "在Joplin中修改指定笔记的标题",
 
     "application_info": {
         "name": "joplin",
@@ -10,17 +10,19 @@
     },
 
     "task_parameters": {
-        "theme": "Dark"
+        "notebook_name": "hello",
+        "old_note_name": "hi",
+        "new_note_name": "hello world"
     },
 
-    "instruction_template": "在Joplin中修改颜色主题为 ${theme}",
+    "instruction_template": "在Joplin中将笔记本 ${notebook_name} 下的笔记 ${old_note_name} 的标题修改为 ${new_note_name}",
 
     "evaluation_setup": {
         "scripts": [
             { "role": "hook",    "path": "hooker.js" },
             { "role": "handler", "path": "handler.py" }
         ],
-        "timeout": 10,
+        "timeout": 120,
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
@@ -30,10 +32,10 @@
     },
     "events": {
         "evaluate_on_completion": {
-            "description": "在任务结束时判断主题颜色是否符合预期",
+            "description": "在任务结束时判断指定笔记的标题是否已修改",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "主题颜色已经设置成功"
+            "key_step_name": "笔记标题修改完成"
         }
     },
     "mcp_servers": [
