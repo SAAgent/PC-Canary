@@ -168,6 +168,8 @@ class Context:
             pos = result[0].find(b'@')
             templates = list(map(lambda x:x.decode("utf-8",errors="ignore"),result[0][:pos].split(b"\x12")))
             notetype.templates = templates
+        cur.execute("SELECT * FROM col;")
+        self.col = Collection.from_row(cur.fetchone())
         
     def __del__(self):
         if self.conn:
