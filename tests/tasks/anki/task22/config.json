@@ -28,8 +28,7 @@
                 "path": "handler.py"
             }
         ],
-        "timeout": 60,
-        "evaluate_on_completion" : true
+        "timeout": 60
     },
     "events": {
         "add_red_flag": {

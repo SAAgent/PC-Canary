@@ -30,8 +30,12 @@ def scan_remove_items(context: Context):
     assert len(cards) > 0, "No cards found with the tag"
     
 
+def handle_done(context: Context,message): 
+    if not context.monitor.is_event_triggered(EventRemoveNote()) or not context.monitor.is_event_triggered(EventRemoveAllNotes()):
+        return handle_service_remove_notes(context,None)
+
 TRACE_HANDLERS = {
-    "service_remove_notes": handle_service_remove_notes,
+    "storage_remove_notes": handle_service_remove_notes,
 }   
 dependency_graph = {
    remove_note_ : [],
@@ -41,4 +45,4 @@ finished_list = [
     remove_all_notes_
 ]
 
-bind_handlers(TRACE_HANDLERS,dependency_graph,finished_list,init=scan_remove_items)
+bind_handlers(TRACE_HANDLERS,dependency_graph,finished_list,init=scan_remove_items,done=handle_done)

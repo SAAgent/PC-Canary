@@ -87,6 +87,15 @@ class Status:
     def __init__(self,metric:List[FridaEvent]=None,status:StatusType = StatusType.NONE):
         self.metric = metric if metric is not None else []
         self.status = status
+    
+    def __iadd__(self,other):
+        self.metric.extend(other.metric)
+        if self.status == StatusType.ERROR or other.status == StatusType.ERROR:
+            self.status = StatusType.ERROR
+        elif other.status == StatusType.SUCCESS:
+            self.status = StatusType.SUCCESS
+        else:
+            self.status = StatusType.PROGRESS
         
     def emit(self,metric:FridaEvent):
         self.metric.append(metric) 
@@ -181,6 +190,10 @@ class Context:
         for function_name, handler in handlers.items():
             self.trace_handlers[function_name] = handler    
     
+    def trigger_event_immediately(self,events : List[FridaEvent]):
+        for event in events:
+            self.monitor.trigger_event(event) 
+
     def handle_trace(self,function_name,message) -> str:
         if function_name in self.trace_handlers:
             result : Optional[Status] = self.trace_handlers[function_name](self,message)

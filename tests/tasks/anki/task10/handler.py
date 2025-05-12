@@ -4,6 +4,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
+import re
 
 def handle_storage_add_card(context: Context,message) -> Status:
     context.update_database()
@@ -11,7 +12,8 @@ def handle_storage_add_card(context: Context,message) -> Status:
     note = latest_card.get_note()
     status = Status()
     status.emit(EventCardAdded())
-    if len(note.fields) == 2 and note.fields[0] == 'The capital of China is&nbsp;{{c1::Beijing}}':
+    s = note.fields[0].replace("&nbsp"," ")
+    if len(note.fields) == 2 and re.findall("The\s+capital\s+of\s+China\s+is\s+\{\{c1::Beijing\}\}",s):
         status.emit(EventCardFormatCorrect())
     else:
         status.emit(EventCardFormatWrong(note.fields[0],'The capital of China is&nbsp;{{c1::Beijing}}'))

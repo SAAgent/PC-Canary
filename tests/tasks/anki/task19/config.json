@@ -28,7 +28,9 @@
                 "path": "handler.py"
             }
         ],
-        "timeout": 60
+        "timeout": 60,
+        "evaluate_on_completion" : true
+
     },
     "events": {
         "remove_note": {
