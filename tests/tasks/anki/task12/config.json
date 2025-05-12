@@ -11,7 +11,7 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "path": "/home/agent/PC-Canary/tests/tasks/anki/task13/dog.jpg"
+        "path": "/home/agent/agent-demo/PC-Canary/tests/tasks/anki/task12/dog.jpg"
     },
     "instruction_template": "添加一张卡片，正面为what is this?？附带一张狗的图片，图片路径为${path}，背面为dog",
     "evaluation_setup": {
@@ -51,5 +51,13 @@
         }
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
-    "total_key_steps": 3
+    "total_key_steps": 3,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
 }

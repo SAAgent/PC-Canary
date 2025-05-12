@@ -13,7 +13,7 @@
     "task_parameters": {
         "time": "30"
     },
-    "instruction_template": "设置提前学习的时间上限为${time}分钟",
+    "instruction_template": "在设置里面，设置提前学习的时间上限为${time}分钟",
     "evaluation_setup": {
         "scripts": [
             {
@@ -43,5 +43,13 @@
         }
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
-    "total_key_steps": 1
+    "total_key_steps": 1,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
 }

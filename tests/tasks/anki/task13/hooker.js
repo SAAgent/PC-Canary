@@ -1,5 +1,6 @@
 const TRACE_FUNCTION = [
     "storage_add_card",
+    "storage_update_note",
     "service_serach_cards",
     "service_find_and_replace",
 ]

@@ -14,7 +14,7 @@
         "search_keyword": "computer",
         "due_days": "4"
     },
-    "instruction_template": "创建一张卡片，正面的内容是\"What is a ${search_keyword}\",查找所有带有${search_keyword}的卡片，设置这些卡片到期日为随机选择${due_days}天",
+    "instruction_template": "创建一张卡片，正面的内容是\"What is a ${search_keyword}\",查找所有带有${search_keyword}的卡片，设置这些卡片到期日为${due_days}天",
     "evaluation_setup": {
         "scripts": [
             {
@@ -52,5 +52,13 @@
         }
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
-    "total_key_steps": 3
+    "total_key_steps": 3,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
 }

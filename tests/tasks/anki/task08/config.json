@@ -45,5 +45,13 @@
         }
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
-    "total_key_steps": 2
+    "total_key_steps": 2,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
 }

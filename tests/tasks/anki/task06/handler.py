@@ -4,7 +4,21 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 from common import *
+import re
 
+def check_first_field(s) -> bool:
+    s = s.replace("&nbsp","")
+    red_pattern1 = r'color.*rgb(255, 0, 0)'
+    red_pattern2 = r'color.*red'
+    if not re.findall(red_pattern1,s) and not re.findall(red_pattern2,s):
+        return False
+    
+    if not re.findall(r'x\s*<sup>\s*2\s*</sup>\s*</span>\s*\-\s*2x\s*\+\s*1\s*=\s*0',s):
+        return False
+    
+    return True
+    
+    
 def handle_storage_add_card(context: Context,message) -> Status:
     context.update_database()
     latest : Card = sorted(AnkiObjMap().array_by_type("card"),key=lambda x: x.mod,reverse=True)[0]
@@ -14,17 +28,16 @@ def handle_storage_add_card(context: Context,message) -> Status:
     if len(note.fields) != 2:
         return status
 
-    first_field = '<span style="color: rgb(255, 0, 0);">x<sup>2</sup></span>-2x+1=0'
     second_field = "x=1"
 
-    if note.fields[0] == first_field and note.fields[1] == second_field:
+    if check_first_field(note.fields[0]) and note.fields[1] == second_field:
         status.emit(EventCorrectField())
         status.emit(EventCorrectFormat())
     elif second_field == note.fields[1] and "x" in note.fields[0] and "2" in note.fields[0] and "-2x+1=0" in note.fields[0]:
         status.emit(EventCorrectField())
-        status.emit(EventWrongFormat(f"{note.fields[0]}",first_field))
+        status.emit(EventWrongFormat(f"{note.fields[0]}","""<span style="color: red;">x<sup>2</sup></span>-2x+1=0"""))
     else:
-        status.emit(EventWrongField(note.fields,f"[{first_field} {second_field}]"))
+        status.emit(EventWrongField(note.fields,f"[{'<span style="color: red;">x<sup>2</sup></span>-2x+1=0'} {second_field}]"))
     return status
       
 TRACE_HANDLERS = {

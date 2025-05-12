@@ -17,12 +17,12 @@ def handle_storage_add_card(context: Context,message) -> Status:
     status.emit(EventCardAdded())
     if len(note.fields) == 2:
         note = note.fields
-        if not remove_html_tags(note[0]) == 'three largest countries in the world':
-            status.emit(EventCardFormatWrong(remove_html_tags(note.fields[0]),'three largest countries in the world'))
+        if not remove_html_tags(note[0]) == 'Three largest countries in the world':
+            status.emit(EventCardFormatWrong(remove_html_tags(note.fields[0]),'Three largest countries in the world'))
             # status.mark_error()
             return status
-        if note[0] != 'three <b>largest</b> countries in the world':
-            status.emit(EventCardFormatWrong(note.fields[0],'three <b>largest</b> countries in the world'))
+        if '<b>largest</b>' not in note[0]:
+            status.emit(EventCardFormatWrong(note[0],'Three <b>largest</b> countries in the world'))
             # status.mark_error()
             return status
         if note[1] != "<ol><li>Russia</li><li>Canada</li><li>China</li></ol>":

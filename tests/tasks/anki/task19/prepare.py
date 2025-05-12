@@ -1,5 +1,12 @@
 import requests
 import json
+def unset_proxy():
+    import os 
+    # unset proxy
+    os.environ['http_proxy'] = ''
+    os.environ['https_proxy'] = ''
+
+unset_proxy()
 
 resp = requests.post("http://localhost:8765", json={
     "action": "deckNames",

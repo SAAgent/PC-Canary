@@ -25,7 +25,7 @@ def handle_storage_update_notetypes(context: Context,message) -> Status:
    
     pattern = r'\{\{FrontSide\}\}.+\<div.+color:red.+\>\{\{short_answer\}\}.+\{\{long_answer\}\}'
     if  len(notetype.templates) == 2:
-        if re.match(pattern,notetype.templates[1],re.DOTALL):
+        if re.findall(pattern,notetype.templates[1],re.DOTALL):
             status.emit(EventNotetypeFormatCorrect())
 
     return status

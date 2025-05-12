@@ -11,7 +11,7 @@
         "cwd": "/home/agent/anki"
     },
     "task_parameters": {
-        "tag_name": "cs"
+        "tag_name": "red"
     },
     "instruction_template": "给所有标签为${tag_name}的卡片打上红色旗标",
     "evaluation_setup": {
@@ -28,7 +28,8 @@
                 "path": "handler.py"
             }
         ],
-        "timeout": 60
+        "timeout": 60,
+        "evaluate_on_completion" : true
     },
     "events": {
         "add_red_flag": {
@@ -45,5 +46,13 @@
         }
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
-    "total_key_steps": 2
+    "total_key_steps": 2,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
 }

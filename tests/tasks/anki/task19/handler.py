@@ -9,12 +9,15 @@ def handle_service_remove_notes(context: Context,message) -> Status:
     context.update_database()
     status = Status()
     notes : set[int] = set(map(lambda note:note.nid,AnkiObjMap().array_by_type("note")))
-    print(notes)
+    to_remove = []
     for nid in context._cards_to_remove:
         if nid not in notes:
-            context._cards_to_remove.remove(nid)
-            status.emit(EventRemoveNote())
-            break
+            to_remove.append(nid)
+            status.emit(EventRemoveNote(nid))
+        else:
+            print(f"nid {nid}")
+    for nid in to_remove:
+        context._cards_to_remove.remove(nid)
     if not context._cards_to_remove:
         status.emit(EventRemoveAllNotes())
         

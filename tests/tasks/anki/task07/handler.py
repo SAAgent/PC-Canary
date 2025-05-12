@@ -12,7 +12,7 @@ def handle_service_search_cards(context: Context,message) -> Status:
     return status
 
 def handle_storage_update_card(context: Context,message) -> Status:    
-    if not context.should_event_trigger(EventUpdateCardExpirationDate):
+    if not context.should_event_trigger(EventUpdateCardExpirationDate()):
         return None
     context.update_database()
     status = Status()

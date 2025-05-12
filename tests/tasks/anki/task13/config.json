@@ -1,7 +1,7 @@
 {
     "task_id": "13",
     "task_name": "查找替换",
-    "description": "添加一张卡片，正面为What is this?。然后查找所有带有What的卡片，将其替换为Where",
+    "description": "添加一张卡片，正面为What is this?。然后查找所有带有What的卡片，将其替换为Where。请使用查找批量替换，因为可能有很多条",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -10,7 +10,7 @@
         ],
         "cwd": "/home/agent/anki"
     },
-    "instruction_template": "添加一张卡片，正面为\"What is this?\"。然后查找所有带有What的卡片，将其替换为Where·",
+    "instruction_template": "添加一张卡片，正面为\"What is this?\"。然后查找所有带有What的卡片，将其替换为Where·请使用查找批量替换，因为可能有很多条",
     "evaluation_setup": {
         "scripts": [
             {
@@ -48,5 +48,13 @@
         }
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
-    "total_key_steps": 3
+    "total_key_steps": 3,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
 }

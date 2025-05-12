@@ -47,7 +47,9 @@
         },
         "correct_format": {
             "description": "卡片格式匹配",
-            "is_key_step": false
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "卡片数据匹配"
         },
         "wrong_format": {
             "description": "卡片格式不匹配",
@@ -59,5 +61,13 @@
         }
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
-    "total_key_steps": 2
+    "total_key_steps": 3,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
 }

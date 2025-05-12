@@ -56,4 +56,4 @@ from dataclasses import dataclass
 @dataclass
 class TaskParameters:
     path : str
-tp = TaskParameters(**{'path': '/home/agent/PC-Canary/tests/tasks/anki/task13/dog.jpg'})
+tp = TaskParameters(**{'path': '/home/agent/agent-demo/PC-Canary/tests/tasks/anki/task13/dog.jpg'})

@@ -12,7 +12,7 @@ def handle_storage_add_card(context: Context,message) -> Status:
     note = latest_card.get_note()
     status = Status()
     if len(note.fields) == 2:
-        status = Status.mark_progress()
+        status.mark_progress()
         status.emit(EventCardAdded())
     
     if tp.tag_name in note.tags:
