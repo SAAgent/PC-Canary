@@ -16,7 +16,9 @@ def message_handler(message: Dict[str, Any], logger, _task_parameter: Dict[str, 
     event_type = message.get('type')
     if event_type == "send":
         message = message.get('payload')
-        event_type = message.get('event')
+        event_type = message.get('type',None)
+        if event_type is None:
+            event_type = message.get('event')
     match event_type:
         case "evaluate_on_completion":
             if DONE:
