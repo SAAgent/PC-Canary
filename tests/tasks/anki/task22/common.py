@@ -40,4 +40,4 @@ from dataclasses import dataclass
 @dataclass
 class TaskParameters:
     tag_name : str
-tp = TaskParameters(**{'tag_name': 'cs'})
+tp = TaskParameters(**{'tag_name': 'red'})

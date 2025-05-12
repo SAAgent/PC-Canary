@@ -26,6 +26,9 @@ def scan_items(context: Context):
     context._cards_to_check = cards
     assert len(cards) > 0, "No cards found with the tag"
     
+def handle_done(context: Context,message):
+    if not context.monitor.is_event_triggered(EventAddAllRedFlags()):
+        return handle_storage_update_card(context,None)
 
 TRACE_HANDLERS = {
     "storage_update_card": handle_storage_update_card,
@@ -38,4 +41,4 @@ finished_list = [
     add_all_red_flags_
 ]
 
-bind_handlers(TRACE_HANDLERS,dependency_graph,finished_list,init=scan_items)
+bind_handlers(TRACE_HANDLERS,dependency_graph,finished_list,init=scan_items,done=handle_done)

@@ -28,7 +28,7 @@ def handle_service_undo(context: Context,message) -> Status:
     context.update_database()
     status = Status()
     
-    if not any([(len(note.fields) == 2 and note.field[0] == tp.first_field and 
+    if not any([(len(note.fields) == 2 and note.fields[0] == tp.first_field and 
             note.fields[1] == tp.second_field) for note in AnkiObjMap().array_by_type("note")]):
         status.emit(EventUndo())
     return status
