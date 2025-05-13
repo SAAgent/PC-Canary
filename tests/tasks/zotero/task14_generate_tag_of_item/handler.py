@@ -1,73 +1,32 @@
 import os
 import json
 import time
-from typing import Dict, Any, Optional, Callable
+from typing import Dict, Any, Optional, List
 import shutil
 import sqlite3
 import platform
 
-# 全局评估器实例，由message_handler使用
-_EVALUATOR = None
-_CONFIG = None
-_START_TIME = None
 
-def set_evaluator(evaluator):
-    """设置全局评估器实例"""
-    global _EVALUATOR, _CONFIG
-    _EVALUATOR = evaluator
-    
-    # 使用评估器的已更新配置，而不是重新读取文件
-    if hasattr(evaluator, 'config') and evaluator.config:
-        _CONFIG = evaluator.config
-        _EVALUATOR.logger.info("使用评估器中的更新配置")
-    else:
-        # 作为备份，如果评估器中没有配置，才从文件读取
-        try:
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            config_file = os.path.join(current_dir, "config.json")
-            
-            with open(config_file, 'r') as f:
-                _CONFIG = json.load(f)
-                _EVALUATOR.logger.info("从文件加载配置")
-        except Exception as e:
-            if _EVALUATOR:
-                _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
-
-def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
-    """
-    处理从钩子脚本接收的消息
-    
-    Args:
-        message: injector消息对象
-        data: 附加数据
-        
-    Returns:
-        str: 如果任务成功完成返回"success"，否则返回None
-    """
-    global _EVALUATOR, _CONFIG, _START_TIME
-    
-    # 初始化开始时间
-    if _START_TIME is None:
-        _START_TIME = time.time()
-    
-    # 检查评估器是否已设置
-    if _EVALUATOR is None:
-        print("警告: 评估器未设置，无法处理消息")
-        return None
-    # TODO:
+def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     event_type = message.get('event_type')
     if event_type == 'generated_tags_added':
-        # TODO: 这里的tag能生成出来其实就可以了，对其内容的检查是后续延申的步骤
-        if check_tag_for_doi(message.get('doi'), message.get('tag')):
-            _EVALUATOR.update_metric("success", True)
-            return "success"
+        # 获取标签数组
+        tags = message.get('tags')
+        if isinstance(tags, str):
+            # 如果是字符串，转换为列表
+            tags = [tags]
+            
+        if check_tags_for_doi(message.get('doi'), tags):
+            return [
+                {"status": "key_step", "index": 1},
+                {"status": "success", "reason": "条目已成功添加标签"}
+            ]
+        else:
+            return None
     else:
-        _EVALUATOR.update_metric("error", {"type": "unknown", "message": "未知错误"})
-        return "error"
-
-def register_handlers(evaluator):
-    set_evaluator(evaluator)
-    return message_handler
+        return [
+            {"status": "error", "type": "evaluate_on_completion", "message": "任务没有完成"}
+        ]
 
 
 # 根据操作系统找到 Zotero 数据库路径
@@ -84,9 +43,19 @@ def get_zotero_db_path():
     else:
         raise Exception("不支持的操作系统")
 
-# 检查指定 DOI 的条目是否有特定标签
-def check_tag_for_doi(doi, tag_name):
+# 检查指定 DOI 的条目是否有特定标签（数组中的任意一个）
+def check_tags_for_doi(doi, tags):
     try:
+        # 确保标签是列表
+        if isinstance(tags, str):
+            tags = [tags]
+        
+        if not tags:
+            print("没有提供标签列表")
+            return False
+            
+        print(f"检查 DOI {doi} 是否包含以下任意标签: {tags}")
+        
         # 获取原始数据库路径
         original_db_path = get_zotero_db_path()
         if not os.path.exists(original_db_path):
@@ -132,27 +101,28 @@ def check_tag_for_doi(doi, tag_name):
             item_key = item[1]
             print(f"找到条目 ID: {item_id}, Key: {item_key}, DOI: {doi}")
             
-            # 3. 查找该条目是否有指定标签
-            # 在 Zotero 中，标签存储在 tags 表中，通过 itemTags 表与条目关联
+            # 3. 查找该条目的所有标签
             cursor.execute("""
                 SELECT tags.name 
                 FROM itemTags 
                 JOIN tags ON itemTags.tagID = tags.tagID 
-                WHERE itemTags.itemID = ? AND tags.name LIKE ?
-            """, (item_id, f"%{tag_name}%"))
+                WHERE itemTags.itemID = ?
+            """, (item_id,))
             
-            tags = cursor.fetchall()
-            print(f"查询到的标签: {tags}")
+            item_tags = [tag[0] for tag in cursor.fetchall()]
+            print(f"条目具有的标签: {item_tags}")
             
             conn.close()
             
-            if tags:
-                for tag in tags:
-                    print(f"条目包含标签: {tag[0]}")
-                return True
-            else:
-                print(f"DOI 为 {doi} 的条目不包含标签 '{tag_name}'")
-                return False
+            # 检查条目标签中是否包含任意一个目标标签
+            for tag in tags:
+                for item_tag in item_tags:
+                    if tag.lower() in item_tag.lower():
+                        print(f"找到匹配标签: 目标标签 '{tag}' 在条目标签 '{item_tag}' 中")
+                        return True
+            
+            print(f"DOI 为 {doi} 的条目不包含任何目标标签: {tags}")
+            return False
             
         except sqlite3.Error as e:
             print(f"查询数据库时出错: {e}")
