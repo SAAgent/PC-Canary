@@ -1,6 +1,10 @@
 (function() {
     // 脚本设置 - 目标函数
     const FUNCTION_NAME_START_ALL_TORRENTS = "_ZN18TransferListWidget20startVisibleTorrentsEv";
+    const FUNCTION_NAME_START_TORRENT = "_ZN10BitTorrent11TorrentImpl5startENS_22TorrentOperatingModeNS20TorrentOperatingModeE";
+    const OFFSET_TO_TORRENT_INFO_NAME = 0xa8;
+    const OFFSET_TO_TORRENT_STATUS = 0x530;
+    let statusArray = [];
 
     // 向评估系统发送事件
     function sendEvent(eventType, data = {}) {
@@ -72,48 +76,81 @@
         }
     }
     
-  
+    // 检查所有种子是否成功启动
+    function checkAllSuccess() {
+        return statusArray.every(status => status === 0);
+    }
     
-
-    // 初始化AddTorrentManager::addTorrentToSession监控钩子
+    // 初始化监控钩子函数
     function initStartAllTorrentHook() {
         const funcAddr = getFunctionAddress(FUNCTION_NAME_START_ALL_TORRENTS);
-     
+        const startTorrentAddr = getFunctionAddress(FUNCTION_NAME_START_TORRENT);
 
+        let isStartVisibleTorrentsCalled = false;
+        
+        // 监控启动所有种子的函数
         Interceptor.attach(funcAddr, {
             onEnter: function(args) {
                 this.source = args[0];
+                isStartVisibleTorrentsCalled = true;
                 
+                sendEvent("start_all_torrents_called", {
+                    message: "拦截到启动所有种子的函数调用"
+                });
             },
 
             onLeave: function(retval) {
                 console.log("source:", this.source);
                 
-            
                 sendEvent("start_all_torrents", {
-                    message: "成功启动所有种子文件下载",
-                   
+                    message: "成功执行启动所有种子文件命令"
                 });
+                isStartVisibleTorrentsCalled = false;
             }
         });
 
-    
+        // 监控单个种子的启动函数
+        Interceptor.attach(startTorrentAddr, {
+            onEnter: function(args) {
+                // 检查是否是从startVisibleTorrents调用的
+                if (isStartVisibleTorrentsCalled) {
+                    this.torrent = args[0];
+                    console.log("[+] torrent->start() called from within startVisibleTorrents!");
+                    console.log("  Torrent Object:", this);
+                } 
+            },
+            onLeave: function(retval) {
+                // 当单个种子启动函数完成时
+                if (isStartVisibleTorrentsCalled) {
+                    console.log("[+] torrent->start() finished.");
+                    const torrent_status = this.torrent.add(OFFSET_TO_TORRENT_STATUS);
+                    let start_status = Memory.readU8(torrent_status);
+                    console.log("start status: ", start_status);
+                    statusArray.push(start_status);
+                }
+                
+                // 检查是否所有种子都已成功启动
+                if (checkAllSuccess()) {
+                    sendEvent("start_all_torrents_result", {
+                        message: "已成功启动所有种子下载",
+                        success: 1
+                    });
+                }
+            }
+        });
     }
     
-
-
     // 启动脚本
     function initHook() {
         sendEvent("script_initialized", {
-            message: "qBittorrent 种子添加监控脚本已启动"
+            message: "qBittorrent 启动所有种子文件监控脚本已启动"
         });
         
-
         // 初始化钩子
         initStartAllTorrentHook();
         
         sendEvent("all_hooks_installed", {
-            message: "所有监控钩子安装完成，等待启动种子操作..."
+            message: "所有监控钩子安装完成，等待启动所有种子操作..."
         });
     }
 

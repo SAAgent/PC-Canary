@@ -1,0 +1,61 @@
+{
+    "task_id": "20", 
+	"task_name": "add_torrent_tag", 
+    "description": "在qBittorrent中为种子添加标签。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "torrent_name": "Harry Potter Collection",
+        "tag_name": "Movies"
+    },
+
+    "instruction_template": "请在qBittorrent中，为种子${torrent_name}添加标签${tag_name}。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180,
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+	"preconditions": {
+	  "qbittorrent_running": true,
+      "has_torrents": true
+	},
+	"success_conditions": [
+	  "add_tag_result"
+	],
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到目标函数",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标函数"
+        },
+        "add_tag_called": {
+            "description": "拦截到添加标签函数调用",
+            "is_key_step": false
+        },
+		"add_tag_result": {
+            "description": "为种子添加标签成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "为种子添加标签成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    }
+}

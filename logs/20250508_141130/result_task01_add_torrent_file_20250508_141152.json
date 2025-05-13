@@ -1,0 +1,120 @@
+{
+  "metadata": {
+    "session_start_iso": "2025-05-08T14:11:33+0000",
+    "session_start_unix": 1746713493.4666204,
+    "task_config_at_start": {
+      "task_id": "01",
+      "task_name": "add_torrent_file",
+      "description": "将指定种子文件添加到 qbittorrent 中。",
+      "application_info": {
+        "name": "Qbittorrent Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": []
+      },
+      "task_parameters": {
+        "file_name": "/home/agent/Desktop/[BYRBT].Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB.torrent"
+      },
+      "instruction_template": "请在Qbittorrent中，将桌面的文件${file_name} 添加到qbittorrent下载列表下'。",
+      "evaluation_setup": {
+        "scripts": [
+          {
+            "role": "hook",
+            "path": "hooker.js"
+          },
+          {
+            "role": "handler",
+            "path": "handler.py"
+          }
+        ],
+        "timeout": 180,
+        "evaluate_on_completion": true
+      },
+      "total_key_steps": 2,
+      "preconditions": {
+        "telegram_running": true,
+        "file_existence": true
+      },
+      "success_conditions": [
+        "add_torrent_result"
+      ],
+      "events": {
+        "script_initialized": {
+          "description": "钩子脚本初始化",
+          "is_key_step": false
+        },
+        "function_found": {
+          "description": "找到了目标群组 (原始事件，触发检查)",
+          "is_key_step": true,
+          "key_step_index": 1,
+          "key_step_name": "找到目标群组"
+        },
+        "add_torrent_called": {
+          "description": "钩子脚本初始化",
+          "is_key_step": false
+        },
+        "add_torrent_result": {
+          "description": "添加种子到会话函数正确返回",
+          "is_key_step": true,
+          "key_step_index": 2,
+          "key_step_name": "添加种子到会话函数正确返回"
+        },
+        "error": {
+          "description": "错误事件",
+          "is_key_step": false
+        }
+      }
+    },
+    "app_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+    "app_process_pid": 1683507,
+    "session_end_iso": "2025-05-08T14:11:52+0000",
+    "session_end_unix": 1746713512.6773443,
+    "session_duration_seconds": 19.211
+  },
+  "raw_events": [
+    {
+      "event_type": "TASK_START",
+      "timestamp": 1746713493.4666204
+    },
+    {
+      "event_type": "TASK_END",
+      "status": "stopped",
+      "reason": "Evaluator stopped externally or timed out before handler completion",
+      "timestamp": 1746713512.6775193
+    }
+  ],
+  "computed_metrics": {
+    "total_duration_seconds": null,
+    "llm_call_count": 0,
+    "llm_token_usage": {
+      "total_prompt_tokens": 0,
+      "total_completion_tokens": 0,
+      "total_tokens": 0
+    },
+    "task_completion_status": {
+      "status": "unknown",
+      "reason": ""
+    },
+    "agent_reported_completion": {
+      "completed": false,
+      "reasoning": null
+    },
+    "tool_usage_stats": {
+      "total_tool_calls": 0,
+      "tools": {}
+    },
+    "error_summary": {
+      "total_error_count": 0,
+      "errors_by_source": {}
+    },
+    "key_step_tracker": {
+      "total_steps": 2,
+      "completed_steps_count": 0,
+      "highest_index_reached": 0,
+      "completion_rate_by_count": 0.0,
+      "completion_rate_by_progress": 0.0,
+      "final_step_reached": false,
+      "completed_indices_list": [],
+      "completion_timeline": []
+    }
+  }
+}

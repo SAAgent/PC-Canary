@@ -1,6 +1,10 @@
 (function() {
     // 脚本设置 - 目标函数
     const FUNCTION_NAME_STOP_ALL_TORRENTS = "_ZN18TransferListWidget19stopVisibleTorrentsEv";
+    const FUNCTION_NAME_STOP_TORRENT = "_ZN10BitTorrent11TorrentImpl4stopEv";
+    const OFFSET_TO_TORRENT_INFO_NAME = 0xa8;
+    const OFFSET_TO_TORRENT_STOP = 0x530;
+    let statusArray = [];
 
     // 向评估系统发送事件
     function sendEvent(eventType, data = {}) {
@@ -72,48 +76,81 @@
         }
     }
     
-  
+    // 检查所有种子是否成功停止
+    function checkAllSuccess() {
+        return statusArray.every(status => status === 1);
+    }
     
-
-    // 初始化AddTorrentManager::addTorrentToSession监控钩子
+    // 初始化监控钩子函数
     function initStopAllTorrentHook() {
         const funcAddr = getFunctionAddress(FUNCTION_NAME_STOP_ALL_TORRENTS);
-     
+        const stopTorrentAddr = getFunctionAddress(FUNCTION_NAME_STOP_TORRENT);
 
+        let isStopVisibleTorrentsCalled = false;
+        
+        // 监控停止所有种子的函数
         Interceptor.attach(funcAddr, {
             onEnter: function(args) {
                 this.source = args[0];
+                isStopVisibleTorrentsCalled = true;
                 
+                sendEvent("stop_all_torrents_called", {
+                    message: "拦截到暂停所有种子的函数调用"
+                });
             },
 
             onLeave: function(retval) {
                 console.log("source:", this.source);
                 
-            
                 sendEvent("stop_all_torrents", {
-                    message: "成功暂停所有种子文件",
-                   
+                    message: "成功暂停所有种子文件"
                 });
+                isStopVisibleTorrentsCalled = false;
             }
         });
 
-    
+        // 监控单个种子的停止函数
+        Interceptor.attach(stopTorrentAddr, {
+            onEnter: function(args) {
+                // 检查是否是从stopVisibleTorrents调用的
+                if (isStopVisibleTorrentsCalled) {
+                    this.torent = args[0];
+                    console.log("[+] torrent->stop() called from within stopVisibleTorrents!");
+                    console.log("  Torrent Object:", this);
+                } 
+            },
+            onLeave: function(retval) {
+                // 当单个种子停止函数完成时
+                if (isStopVisibleTorrentsCalled) {
+                    console.log("[+] torrent->stop() finished.");
+                    const torrent_stop_status = this.torent.add(OFFSET_TO_TORRENT_STOP);
+                    let stop_status = Memory.readU8(torrent_stop_status);
+                    console.log("stop status: ", stop_status);
+                    statusArray.push(stop_status);
+                }
+                
+                // 检查是否所有种子都已成功停止
+                if (checkAllSuccess()) {
+                    sendEvent("stop_all_torrents_result", {
+                        message: "已成功暂停所有种子下载",
+                        success: 1
+                    });
+                }
+            }
+        });
     }
     
-
-
     // 启动脚本
     function initHook() {
         sendEvent("script_initialized", {
-            message: "qBittorrent 种子添加监控脚本已启动"
+            message: "qBittorrent 暂停所有种子文件监控脚本已启动"
         });
         
-
         // 初始化钩子
         initStopAllTorrentHook();
         
         sendEvent("all_hooks_installed", {
-            message: "所有监控钩子安装完成，等待添加种子操作..."
+            message: "所有监控钩子安装完成，等待暂停所有种子操作..."
         });
     }
 

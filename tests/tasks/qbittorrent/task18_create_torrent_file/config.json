@@ -1,0 +1,61 @@
+{
+    "task_id": "18", 
+	"task_name": "create_torrent_file", 
+    "description": "在qBittorrent中创建种子文件。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "torrent_path": "/home/agent/Desktop/123.torrent",
+        "torrent_save_path": "/workspace/files"
+    },
+
+    "instruction_template": "请在qBittorrent中，为${torrent_path}文件夹创建种子文件，并保存到${torrent_save_path}。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180,
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+	"preconditions": {
+	  "qbittorrent_running": true,
+      "has_torrents": true
+	},
+	"success_conditions": [
+	  "create_torrent_file_result"
+	],
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到目标函数",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标函数"
+        },
+        "create_torrent_file_called": {
+            "description": "拦截到创建种子文件函数调用",
+            "is_key_step": false
+        },
+		"create_torrent_file_result": {
+            "description": "创建种子文件成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "创建种子文件成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    }
+}

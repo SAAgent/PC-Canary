@@ -1,0 +1,63 @@
+{
+    "task_id": "12", 
+	"task_name": "download_seleted_torrent", 
+    "description": "在qBittorrent中选择性下载种子中的特定文件。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "torrent_name": "Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB",
+        "file_names": ["2001_HARRY_POTTER_AND_SORCERER_STON.iso" , "2002_HARRY_POTTER_COS.iso","2004_HARRYPOTTER3.iso"]
+    },
+
+    "instruction_template": "请在qBittorrent中，选择性下载种子${torrent_name}中的文件${file_names}。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 ,
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 3,
+	"preconditions": {
+	  "qbittorrent_running": true,
+      "has_torrents": true
+	},
+	"success_conditions": [
+	  "file_download_started"
+	],
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到目标函数",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标函数"
+        },
+        "file_selection_detected": {
+            "description": "检测到文件选择操作",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "检测到文件选择操作"
+        },
+        "file_download_started": {
+            "description": "文件开始下载",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "文件开始下载"
+        },
+        "error":  {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    }
+}

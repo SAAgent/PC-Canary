@@ -1,0 +1,196 @@
+2025-05-13 08:26:51,948 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 加载任务指令: 请在qBittorrent中，选择性下载种子Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB中的文件['2001_HARRY_POTTER_AND_SORCERER_STON.iso']。
+2025-05-13 08:26:51,948 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_082651
+2025-05-13 08:26:51,948 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/hooker.js
+2025-05-13 08:26:51,948 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/handler.py.message_handler
+2025-05-13 08:26:51,949 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估器初始化完成: task12_download_seleted_torrent
+2025-05-13 08:26:51,949 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 08:26:51,949 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 用户数据成功恢复
+2025-05-13 08:26:51,949 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 08:26:51,950 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 应用启动成功，进程ID: 2451558
+2025-05-13 08:26:51,950 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 08:26:51,966 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 启动前窗口行数: 328
+2025-05-13 08:26:52,509 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-13 08:26:54,510 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 开始为任务 task12_download_seleted_torrent 注册指标...
+2025-05-13 08:26:54,510 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task12_download_seleted_torrent
+2025-05-13 08:26:54,510 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: llm_call_count for task task12_download_seleted_torrent
+2025-05-13 08:26:54,510 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task12_download_seleted_torrent
+2025-05-13 08:26:54,511 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: task_completion_status for task task12_download_seleted_torrent
+2025-05-13 08:26:54,511 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task12_download_seleted_torrent
+2025-05-13 08:26:54,511 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task12_download_seleted_torrent
+2025-05-13 08:26:54,511 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: error_summary for task task12_download_seleted_torrent
+2025-05-13 08:26:54,511 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task12_download_seleted_torrent (Total Steps: 3, Names: {1: '找到目标函数', 2: '检测到文件选择操作', 3: '文件开始下载'})
+2025-05-13 08:26:54,511 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 的指标注册完成，共 8 个指标。
+2025-05-13 08:26:54,511 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 正在重置任务 task12_download_seleted_torrent 的指标状态...
+2025-05-13 08:26:54,512 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 的 8 个指标已重置。
+2025-05-13 08:26:54,512 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务会话开始: task12_download_seleted_torrent
+2025-05-13 08:26:54,512 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_START - {'timestamp': 1747124814.5122263}
+2025-05-13 08:26:54,512 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747124814.5122263
+2025-05-13 08:26:54,512 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 连接到进程: 2451558
+2025-05-13 08:26:54,638 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 选择性下载监控脚本已启动', 'timestamp': 1747124814638}
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 选择性下载监控脚本已启动
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN19TorrentContentModel15setItemPriorityERK11QModelIndexN10BitTorrent16DownloadPriorityE', 'address': '0x5775332e712e', 'message': '找到函数 _ZN19TorrentContentModel15setItemPriorityERK11QModelIndexN10BitTorrent16DownloadPriorityE 的实际地址', 'timestamp': 1747124814638}
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 找到函数地址: 0x5775332e712e
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124814.6394937, 'step_index': 1}
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN23TorrentContentModelFile11setPriorityEN10BitTorrent16DownloadPriorityEb', 'address': '0x5775332f2b92', 'message': '找到函数 _ZN23TorrentContentModelFile11setPriorityEN10BitTorrent16DownloadPriorityEb 的实际地址', 'timestamp': 1747124814638}
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 找到函数地址: 0x5775332f2b92
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 08:26:54,639 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124814.6399121, 'step_index': 1}
+2025-05-13 08:26:54,640 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN19AddNewTorrentDialog6acceptEv', 'address': '0x577533166812', 'message': '找到函数 _ZN19AddNewTorrentDialog6acceptEv 的实际地址', 'timestamp': 1747124814638}
+2025-05-13 08:26:54,640 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 找到函数地址: 0x577533166812
+2025-05-13 08:26:54,640 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 08:26:54,640 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124814.6401541, 'step_index': 1}
+2025-05-13 08:26:54,640 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待选择文件操作...', 'timestamp': 1747124814638}
+2025-05-13 08:26:54,640 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/hooker.js
+2025-05-13 08:26:54,640 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估器启动成功
+2025-05-13 08:27:03,214 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_detected, Payload: {'event': 'file_selection_detected', 'message': '检测到文件选择操作', 'torrent_name': '2001_HARRY_POTTER_AND_SORCERER_STON.iso', 'priority_name': 'Normal', 'timestamp': 1747124823202}
+2025-05-13 08:27:03,225 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 检测到文件选择操作: 2001_HARRY_POTTER_AND_SORCERER_STON.iso
+2025-05-13 08:27:03,236 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 在目标种子中检测到文件选择: 2001_HARRY_POTTER_AND_SORCERER_STON.iso
+2025-05-13 08:27:03,246 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 08:27:03,257 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124823.2466173, 'step_index': 2}
+2025-05-13 08:27:03,268 - qbittorrent_task12_download_seleted_torrent_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=2, Name='检测到文件选择操作'
+2025-05-13 08:27:03,278 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_detected, Data: {}
+2025-05-13 08:27:03,289 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124823.2466173, 'name': 'file_selection_detected', 'payload': {}}
+2025-05-13 08:27:03,325 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_finished, Payload: {'event': 'file_selection_finished', 'message': '检测到文件选择操作结束', 'torrent_name': '2001_HARRY_POTTER_AND_SORCERER_STON.iso', 'priority_name': 'Ignored', 'timestamp': 1747124823202}
+2025-05-13 08:27:03,336 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件选择操作结束: 种子 2001_HARRY_POTTER_AND_SORCERER_STON.iso
+2025-05-13 08:27:03,346 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:03,356 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124823.3462894, 'step_index': 3}
+2025-05-13 08:27:03,367 - qbittorrent_task12_download_seleted_torrent_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=3, Name='文件开始下载'
+2025-05-13 08:27:03,377 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_finished, Data: {}
+2025-05-13 08:27:03,387 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124823.3462894, 'name': 'file_selection_finished', 'payload': {}}
+2025-05-13 08:27:03,423 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_detected, Payload: {'event': 'file_selection_detected', 'message': '检测到文件选择操作', 'torrent_name': '2002_HARRY_POTTER_COS.iso', 'priority_name': 'Normal', 'timestamp': 1747124823203}
+2025-05-13 08:27:03,434 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 检测到文件选择操作: 2002_HARRY_POTTER_COS.iso
+2025-05-13 08:27:03,444 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 在目标种子中检测到文件选择: 2002_HARRY_POTTER_COS.iso
+2025-05-13 08:27:03,454 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 08:27:03,465 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124823.454933, 'step_index': 2}
+2025-05-13 08:27:03,475 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_detected, Data: {}
+2025-05-13 08:27:03,485 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124823.454933, 'name': 'file_selection_detected', 'payload': {}}
+2025-05-13 08:27:03,522 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_finished, Payload: {'event': 'file_selection_finished', 'message': '检测到文件选择操作结束', 'torrent_name': '2002_HARRY_POTTER_COS.iso', 'priority_name': 'Ignored', 'timestamp': 1747124823203}
+2025-05-13 08:27:03,532 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件选择操作结束: 种子 2002_HARRY_POTTER_COS.iso
+2025-05-13 08:27:03,542 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:03,553 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124823.542738, 'step_index': 3}
+2025-05-13 08:27:03,563 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_finished, Data: {}
+2025-05-13 08:27:03,573 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124823.542738, 'name': 'file_selection_finished', 'payload': {}}
+2025-05-13 08:27:03,609 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_detected, Payload: {'event': 'file_selection_detected', 'message': '检测到文件选择操作', 'torrent_name': '2004_HARRYPOTTER3.iso', 'priority_name': 'Normal', 'timestamp': 1747124823204}
+2025-05-13 08:27:03,620 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 检测到文件选择操作: 2004_HARRYPOTTER3.iso
+2025-05-13 08:27:03,630 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 在目标种子中检测到文件选择: 2004_HARRYPOTTER3.iso
+2025-05-13 08:27:03,640 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 08:27:03,651 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124823.6408935, 'step_index': 2}
+2025-05-13 08:27:03,661 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_detected, Data: {}
+2025-05-13 08:27:03,671 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124823.6408935, 'name': 'file_selection_detected', 'payload': {}}
+2025-05-13 08:27:03,708 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_finished, Payload: {'event': 'file_selection_finished', 'message': '检测到文件选择操作结束', 'torrent_name': '2004_HARRYPOTTER3.iso', 'priority_name': 'Ignored', 'timestamp': 1747124823204}
+2025-05-13 08:27:03,718 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件选择操作结束: 种子 2004_HARRYPOTTER3.iso
+2025-05-13 08:27:03,728 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:03,739 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124823.7287383, 'step_index': 3}
+2025-05-13 08:27:03,749 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_finished, Data: {}
+2025-05-13 08:27:03,759 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124823.7287383, 'name': 'file_selection_finished', 'payload': {}}
+2025-05-13 08:27:03,795 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_detected, Payload: {'event': 'file_selection_detected', 'message': '检测到文件选择操作', 'torrent_name': '2005_HP4_GOBLET02.iso', 'priority_name': 'Normal', 'timestamp': 1747124823205}
+2025-05-13 08:27:03,806 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 检测到文件选择操作: 2005_HP4_GOBLET02.iso
+2025-05-13 08:27:03,816 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 在目标种子中检测到文件选择: 2005_HP4_GOBLET02.iso
+2025-05-13 08:27:03,826 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 08:27:03,837 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124823.8267562, 'step_index': 2}
+2025-05-13 08:27:03,847 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_detected, Data: {}
+2025-05-13 08:27:03,857 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124823.8267562, 'name': 'file_selection_detected', 'payload': {}}
+2025-05-13 08:27:03,893 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_finished, Payload: {'event': 'file_selection_finished', 'message': '检测到文件选择操作结束', 'torrent_name': '2005_HP4_GOBLET02.iso', 'priority_name': 'Ignored', 'timestamp': 1747124823206}
+2025-05-13 08:27:03,903 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件选择操作结束: 种子 2005_HP4_GOBLET02.iso
+2025-05-13 08:27:03,914 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:03,924 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124823.9141834, 'step_index': 3}
+2025-05-13 08:27:03,934 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_finished, Data: {}
+2025-05-13 08:27:03,945 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124823.9141834, 'name': 'file_selection_finished', 'payload': {}}
+2025-05-13 08:27:03,981 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_detected, Payload: {'event': 'file_selection_detected', 'message': '检测到文件选择操作', 'torrent_name': '2007_HP5_PHOENIX02.iso', 'priority_name': 'Normal', 'timestamp': 1747124823206}
+2025-05-13 08:27:03,991 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 检测到文件选择操作: 2007_HP5_PHOENIX02.iso
+2025-05-13 08:27:04,001 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 在目标种子中检测到文件选择: 2007_HP5_PHOENIX02.iso
+2025-05-13 08:27:04,012 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 08:27:04,022 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.0120578, 'step_index': 2}
+2025-05-13 08:27:04,032 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_detected, Data: {}
+2025-05-13 08:27:04,043 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.0120578, 'name': 'file_selection_detected', 'payload': {}}
+2025-05-13 08:27:04,079 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_finished, Payload: {'event': 'file_selection_finished', 'message': '检测到文件选择操作结束', 'torrent_name': '2007_HP5_PHOENIX02.iso', 'priority_name': 'Ignored', 'timestamp': 1747124823207}
+2025-05-13 08:27:04,089 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件选择操作结束: 种子 2007_HP5_PHOENIX02.iso
+2025-05-13 08:27:04,099 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:04,110 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.0997465, 'step_index': 3}
+2025-05-13 08:27:04,120 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_finished, Data: {}
+2025-05-13 08:27:04,130 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.0997465, 'name': 'file_selection_finished', 'payload': {}}
+2025-05-13 08:27:04,166 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_detected, Payload: {'event': 'file_selection_detected', 'message': '检测到文件选择操作', 'torrent_name': '2009_HARRY_POTTER_6.iso', 'priority_name': 'Normal', 'timestamp': 1747124823207}
+2025-05-13 08:27:04,177 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 检测到文件选择操作: 2009_HARRY_POTTER_6.iso
+2025-05-13 08:27:04,187 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 在目标种子中检测到文件选择: 2009_HARRY_POTTER_6.iso
+2025-05-13 08:27:04,197 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 08:27:04,208 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.197646, 'step_index': 2}
+2025-05-13 08:27:04,218 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_detected, Data: {}
+2025-05-13 08:27:04,228 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.197646, 'name': 'file_selection_detected', 'payload': {}}
+2025-05-13 08:27:04,264 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_finished, Payload: {'event': 'file_selection_finished', 'message': '检测到文件选择操作结束', 'torrent_name': '2009_HARRY_POTTER_6.iso', 'priority_name': 'Ignored', 'timestamp': 1747124823208}
+2025-05-13 08:27:04,275 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件选择操作结束: 种子 2009_HARRY_POTTER_6.iso
+2025-05-13 08:27:04,285 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:04,295 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.285623, 'step_index': 3}
+2025-05-13 08:27:04,306 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_finished, Data: {}
+2025-05-13 08:27:04,316 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.285623, 'name': 'file_selection_finished', 'payload': {}}
+2025-05-13 08:27:04,352 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_detected, Payload: {'event': 'file_selection_detected', 'message': '检测到文件选择操作', 'torrent_name': '2010_HARRY_POTTER_7_PART_1.iso', 'priority_name': 'Normal', 'timestamp': 1747124823209}
+2025-05-13 08:27:04,362 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 检测到文件选择操作: 2010_HARRY_POTTER_7_PART_1.iso
+2025-05-13 08:27:04,373 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 在目标种子中检测到文件选择: 2010_HARRY_POTTER_7_PART_1.iso
+2025-05-13 08:27:04,383 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 08:27:04,393 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.3833532, 'step_index': 2}
+2025-05-13 08:27:04,404 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_detected, Data: {}
+2025-05-13 08:27:04,414 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.3833532, 'name': 'file_selection_detected', 'payload': {}}
+2025-05-13 08:27:04,450 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_finished, Payload: {'event': 'file_selection_finished', 'message': '检测到文件选择操作结束', 'torrent_name': '2010_HARRY_POTTER_7_PART_1.iso', 'priority_name': 'Ignored', 'timestamp': 1747124823209}
+2025-05-13 08:27:04,460 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件选择操作结束: 种子 2010_HARRY_POTTER_7_PART_1.iso
+2025-05-13 08:27:04,471 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:04,481 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.471006, 'step_index': 3}
+2025-05-13 08:27:04,491 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_finished, Data: {}
+2025-05-13 08:27:04,502 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.471006, 'name': 'file_selection_finished', 'payload': {}}
+2025-05-13 08:27:04,538 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_detected, Payload: {'event': 'file_selection_detected', 'message': '检测到文件选择操作', 'torrent_name': '2011_HARRY_POTTER_7_PART_2.iso', 'priority_name': 'Normal', 'timestamp': 1747124823210}
+2025-05-13 08:27:04,548 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 检测到文件选择操作: 2011_HARRY_POTTER_7_PART_2.iso
+2025-05-13 08:27:04,558 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 在目标种子中检测到文件选择: 2011_HARRY_POTTER_7_PART_2.iso
+2025-05-13 08:27:04,568 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 08:27:04,579 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.5689232, 'step_index': 2}
+2025-05-13 08:27:04,589 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_detected, Data: {}
+2025-05-13 08:27:04,599 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.5689232, 'name': 'file_selection_detected', 'payload': {}}
+2025-05-13 08:27:04,636 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_finished, Payload: {'event': 'file_selection_finished', 'message': '检测到文件选择操作结束', 'torrent_name': '2011_HARRY_POTTER_7_PART_2.iso', 'priority_name': 'Ignored', 'timestamp': 1747124823211}
+2025-05-13 08:27:04,646 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件选择操作结束: 种子 2011_HARRY_POTTER_7_PART_2.iso
+2025-05-13 08:27:04,656 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:04,667 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.6566875, 'step_index': 3}
+2025-05-13 08:27:04,677 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_finished, Data: {}
+2025-05-13 08:27:04,687 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.6566875, 'name': 'file_selection_finished', 'payload': {}}
+2025-05-13 08:27:04,734 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_detected, Payload: {'event': 'file_selection_detected', 'message': '检测到文件选择操作', 'torrent_name': '2001_HARRY_POTTER_AND_SORCERER_STON.iso', 'priority_name': 'Ignored', 'timestamp': 1747124824070}
+2025-05-13 08:27:04,745 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 检测到文件选择操作: 2001_HARRY_POTTER_AND_SORCERER_STON.iso
+2025-05-13 08:27:04,755 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 在目标种子中检测到文件选择: 2001_HARRY_POTTER_AND_SORCERER_STON.iso
+2025-05-13 08:27:04,765 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 08:27:04,776 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.7657185, 'step_index': 2}
+2025-05-13 08:27:04,786 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_detected, Data: {}
+2025-05-13 08:27:04,796 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.7657185, 'name': 'file_selection_detected', 'payload': {}}
+2025-05-13 08:27:04,833 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_selection_finished, Payload: {'event': 'file_selection_finished', 'message': '检测到文件选择操作结束', 'torrent_name': '2001_HARRY_POTTER_AND_SORCERER_STON.iso', 'priority_name': 'Normal', 'timestamp': 1747124824071}
+2025-05-13 08:27:04,843 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件选择操作结束: 种子 2001_HARRY_POTTER_AND_SORCERER_STON.iso
+2025-05-13 08:27:04,853 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:04,864 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124824.8538368, 'step_index': 3}
+2025-05-13 08:27:04,874 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_selection_finished, Data: {}
+2025-05-13 08:27:04,884 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124824.8538368, 'name': 'file_selection_finished', 'payload': {}}
+2025-05-13 08:27:05,525 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: file_download_started, Payload: {'event': 'file_download_started', 'message': '文件开始下载', 'selected_files': ['2001_HARRY_POTTER_AND_SORCERER_STON.iso'], 'timestamp': 1747124825498}
+2025-05-13 08:27:05,536 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 文件开始下载: 种子 ['2001_HARRY_POTTER_AND_SORCERER_STON.iso']
+2025-05-13 08:27:05,546 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 成功开始下载文件: ['2001_HARRY_POTTER_AND_SORCERER_STON.iso']
+2025-05-13 08:27:05,556 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 08:27:05,567 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124825.556869, 'step_index': 3}
+2025-05-13 08:27:05,577 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported success: 成功开始下载文件: ['2001_HARRY_POTTER_AND_SORCERER_STON.iso']
+2025-05-13 08:27:05,577 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124825.556869, 'status': 'success', 'reason': "成功开始下载文件: ['2001_HARRY_POTTER_AND_SORCERER_STON.iso']"}
+2025-05-13 08:27:05,588 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124825.556869
+2025-05-13 08:27:05,598 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: success, 原因: 成功开始下载文件: ['2001_HARRY_POTTER_AND_SORCERER_STON.iso']
+2025-05-13 08:27:05,609 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_completed - 成功开始下载文件: ['2001_HARRY_POTTER_AND_SORCERER_STON.iso']
+2025-05-13 08:27:05,624 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler reported app event: file_download_started, Data: {}
+2025-05-13 08:27:05,624 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - APP_SPECIFIC_EVENT - {'timestamp': 1747124825.556869, 'name': 'file_download_started', 'payload': {}}
+2025-05-13 08:27:05,629 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 脚本卸载完成
+2025-05-13 08:27:05,629 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 开始为任务 task12_download_seleted_torrent 计算最终指标...
+2025-05-13 08:27:05,629 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): total_duration_seconds = 11.045
+2025-05-13 08:27:05,629 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): llm_call_count = 0
+2025-05-13 08:27:05,629 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-13 08:27:05,629 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): task_completion_status = {'status': 'success', 'reason': "成功开始下载文件: ['2001_HARRY_POTTER_AND_SORCERER_STON.iso']"}
+2025-05-13 08:27:05,629 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-13 08:27:05,629 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-13 08:27:05,630 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-13 08:27:05,630 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): key_step_tracker = {'total_steps': 3, 'completed_steps_count': 3, 'highest_index_reached': 3, 'completion_rate_by_count': 1.0, 'completion_rate_by_progress': 1.0, 'final_step_reached': True, 'completed_indices_list': [1, 2, 3], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747124814.6394937}, {'step_index': 2, 'step_name': '检测到文件选择操作', 'timestamp': 1747124823.2466173}, {'step_index': 3, 'step_name': '文件开始下载', 'timestamp': 1747124823.3462894}]}
+2025-05-13 08:27:05,630 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 的最终指标计算完成。
+2025-05-13 08:27:05,630 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务会话结束: task12_download_seleted_torrent. 总时长: 11.118 秒
+2025-05-13 08:27:05,631 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 结果已保存: logs/20250513_082651/result_task12_download_seleted_torrent_20250513_082705.json
+2025-05-13 08:27:05,631 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估结果已保存: logs/20250513_082651/result_task12_download_seleted_torrent_20250513_082705.json
+2025-05-13 08:27:06,633 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 结果已保存: logs/20250513_082651/result_task12_download_seleted_torrent_20250513_082706.json
+2025-05-13 08:27:06,633 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估结果已保存: logs/20250513_082651/result_task12_download_seleted_torrent_20250513_082706.json
+2025-05-13 08:27:06,633 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2451558)
+2025-05-13 08:27:06,633 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-13 08:27:07,752 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 应用进程已自行关闭

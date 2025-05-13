@@ -1,0 +1,69 @@
+2025-05-13 11:47:48,412 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 加载任务指令: 请在qBittorrent中，为/home/agent/Desktop/123.torrent文件夹创建种子文件，并保存到/workspace/files。
+2025-05-13 11:47:48,412 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_114748
+2025-05-13 11:47:48,412 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task18_create_torrent_file/hooker.js
+2025-05-13 11:47:48,434 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task18_create_torrent_file/handler.py.message_handler
+2025-05-13 11:47:48,434 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 评估器初始化完成: task18_create_torrent_file
+2025-05-13 11:47:48,434 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 11:47:48,434 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 用户数据成功恢复
+2025-05-13 11:47:48,434 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 11:47:48,435 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 应用启动成功，进程ID: 2491743
+2025-05-13 11:47:48,435 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 11:47:48,450 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 启动前窗口行数: 328
+2025-05-13 11:47:48,999 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-13 11:47:50,999 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 开始为任务 task18_create_torrent_file 注册指标...
+2025-05-13 11:47:51,000 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task18_create_torrent_file
+2025-05-13 11:47:51,000 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 注册标准指标: llm_call_count for task task18_create_torrent_file
+2025-05-13 11:47:51,000 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task18_create_torrent_file
+2025-05-13 11:47:51,000 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 注册标准指标: task_completion_status for task task18_create_torrent_file
+2025-05-13 11:47:51,000 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task18_create_torrent_file
+2025-05-13 11:47:51,000 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task18_create_torrent_file
+2025-05-13 11:47:51,001 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 注册标准指标: error_summary for task task18_create_torrent_file
+2025-05-13 11:47:51,001 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task18_create_torrent_file (Total Steps: 2, Names: {1: '找到目标函数', 2: '创建种子文件成功'})
+2025-05-13 11:47:51,001 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 任务 task18_create_torrent_file 的指标注册完成，共 8 个指标。
+2025-05-13 11:47:51,001 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 正在重置任务 task18_create_torrent_file 的指标状态...
+2025-05-13 11:47:51,001 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 任务 task18_create_torrent_file 的 8 个指标已重置。
+2025-05-13 11:47:51,001 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 任务会话开始: task18_create_torrent_file
+2025-05-13 11:47:51,001 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 记录原始事件: task18_create_torrent_file - TASK_START - {'timestamp': 1747136871.001516}
+2025-05-13 11:47:51,001 - qbittorrent_task18_create_torrent_file_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747136871.001516
+2025-05-13 11:47:51,001 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 连接到进程: 2491743
+2025-05-13 11:47:51,121 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 种子添加监控脚本已启动', 'timestamp': 1747136871120}
+2025-05-13 11:47:51,122 - qbittorrent_task18_create_torrent_file_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 种子添加监控脚本已启动
+2025-05-13 11:47:51,122 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10BitTorrent14TorrentCreator15creationSuccessERKNS_20TorrentCreatorResultE', 'address': '0x61f751fd0456', 'message': '找到函数 _ZN10BitTorrent14TorrentCreator15creationSuccessERKNS_20TorrentCreatorResultE 的实际地址', 'timestamp': 1747136871121}
+2025-05-13 11:47:51,122 - qbittorrent_task18_create_torrent_file_evaluator - INFO - Handler: 找到函数地址: 0x61f751fd0456
+2025-05-13 11:47:51,122 - qbittorrent_task18_create_torrent_file_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 11:47:51,122 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 记录原始事件: task18_create_torrent_file - KEY_STEP_COMPLETED - {'timestamp': 1747136871.122418, 'step_index': 1}
+2025-05-13 11:47:51,122 - qbittorrent_task18_create_torrent_file_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-13 11:47:51,122 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待添加种子操作...', 'timestamp': 1747136871121}
+2025-05-13 11:47:51,122 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task18_create_torrent_file/hooker.js
+2025-05-13 11:47:51,123 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 评估器启动成功
+2025-05-13 11:48:01,148 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: create_torrent_file_called, Payload: {'event': 'create_torrent_file_called', 'message': '拦截到创建种子文件函数调用', 'torrent_path': '/home/agent/Desktop/123.torrent', 'torrent_save_path': '/workspace/files', 'timestamp': 1747136881141}
+2025-05-13 11:48:01,154 - qbittorrent_task18_create_torrent_file_evaluator - INFO - Handler: 拦截到创建种子文件调用，源路径: /home/agent/Desktop/123.torrent, 保存路径: /workspace/files
+2025-05-13 11:48:01,160 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: create_torrent_file_result, Payload: {'event': 'create_torrent_file_result', 'message': '创建种子文件函数正确返回', 'torrent_path': '/home/agent/Desktop/123.torrent', 'torrent_save_path': '/workspace/files', 'timestamp': 1747136881142}
+2025-05-13 11:48:01,160 - qbittorrent_task18_create_torrent_file_evaluator - INFO - Handler: 创建种子文件，源路径: /home/agent/Desktop/123.torrent, 保存路径: /workspace/files
+2025-05-13 11:48:01,160 - qbittorrent_task18_create_torrent_file_evaluator - INFO - Handler: 成功创建种子文件: 源路径 /home/agent/Desktop/123.torrent, 保存到 /workspace/files
+2025-05-13 11:48:01,160 - qbittorrent_task18_create_torrent_file_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 11:48:01,160 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 记录原始事件: task18_create_torrent_file - KEY_STEP_COMPLETED - {'timestamp': 1747136881.1604333, 'step_index': 2}
+2025-05-13 11:48:01,171 - qbittorrent_task18_create_torrent_file_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=2, Name='创建种子文件成功'
+2025-05-13 11:48:01,176 - qbittorrent_task18_create_torrent_file_evaluator - INFO - Handler reported success: 成功创建种子文件: 源路径 /home/agent/Desktop/123.torrent, 保存到 /workspace/files
+2025-05-13 11:48:01,176 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 记录原始事件: task18_create_torrent_file - TASK_END - {'timestamp': 1747136881.1604333, 'status': 'success', 'reason': '成功创建种子文件: 源路径 /home/agent/Desktop/123.torrent, 保存到 /workspace/files'}
+2025-05-13 11:48:01,176 - qbittorrent_task18_create_torrent_file_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747136881.1604333
+2025-05-13 11:48:01,176 - qbittorrent_task18_create_torrent_file_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: success, 原因: 成功创建种子文件: 源路径 /home/agent/Desktop/123.torrent, 保存到 /workspace/files
+2025-05-13 11:48:01,176 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 触发回调: task_completed - 成功创建种子文件: 源路径 /home/agent/Desktop/123.torrent, 保存到 /workspace/files
+2025-05-13 11:48:01,182 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 脚本卸载完成
+2025-05-13 11:48:01,182 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 开始为任务 task18_create_torrent_file 计算最终指标...
+2025-05-13 11:48:01,182 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 指标计算完成 (task18_create_torrent_file): total_duration_seconds = 10.159
+2025-05-13 11:48:01,182 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 指标计算完成 (task18_create_torrent_file): llm_call_count = 0
+2025-05-13 11:48:01,182 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 指标计算完成 (task18_create_torrent_file): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-13 11:48:01,182 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 指标计算完成 (task18_create_torrent_file): task_completion_status = {'status': 'success', 'reason': '成功创建种子文件: 源路径 /home/agent/Desktop/123.torrent, 保存到 /workspace/files'}
+2025-05-13 11:48:01,182 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 指标计算完成 (task18_create_torrent_file): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-13 11:48:01,182 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 指标计算完成 (task18_create_torrent_file): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-13 11:48:01,182 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 指标计算完成 (task18_create_torrent_file): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-13 11:48:01,183 - qbittorrent_task18_create_torrent_file_evaluator - DEBUG - 指标计算完成 (task18_create_torrent_file): key_step_tracker = {'total_steps': 2, 'completed_steps_count': 2, 'highest_index_reached': 2, 'completion_rate_by_count': 1.0, 'completion_rate_by_progress': 1.0, 'final_step_reached': True, 'completed_indices_list': [1, 2], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747136871.122418}, {'step_index': 2, 'step_name': '创建种子文件成功', 'timestamp': 1747136881.1604333}]}
+2025-05-13 11:48:01,183 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 任务 task18_create_torrent_file 的最终指标计算完成。
+2025-05-13 11:48:01,183 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 任务会话结束: task18_create_torrent_file. 总时长: 10.182 秒
+2025-05-13 11:48:01,183 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 任务 task18_create_torrent_file 结果已保存: logs/20250513_114748/result_task18_create_torrent_file_20250513_114801.json
+2025-05-13 11:48:01,183 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 评估结果已保存: logs/20250513_114748/result_task18_create_torrent_file_20250513_114801.json
+2025-05-13 11:48:02,186 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 任务 task18_create_torrent_file 结果已保存: logs/20250513_114748/result_task18_create_torrent_file_20250513_114802.json
+2025-05-13 11:48:02,186 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 评估结果已保存: logs/20250513_114748/result_task18_create_torrent_file_20250513_114802.json
+2025-05-13 11:48:02,186 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2491743)
+2025-05-13 11:48:02,187 - qbittorrent_task18_create_torrent_file_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...

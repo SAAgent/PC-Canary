@@ -35,14 +35,6 @@
         "4g",
         "--ulimit",
         "memlock=-1",
-<<<<<<< HEAD
-        "--device=/dev/kvm",
-        // "-v",
-        // "/tmp/.X11-unix:/tmp/.X11-unix",
-        // "-v",
-        // "/data/user_home/pc/.Xauthority:/home/agent/.Xauthority"
-=======
         "--device=/dev/kvm"
->>>>>>> 778d483368f0b01b7137047a13f7f505a0ba6089
     ]
 }

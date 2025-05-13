@@ -1,0 +1,86 @@
+2025-05-12 14:39:22,989 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 加载任务指令: 请在qBittorrent中，获取名为Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB的种子文件的Tracker URL
+2025-05-12 14:39:22,989 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250512_143922
+2025-05-12 14:39:22,990 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task06_get_torrent_trackers/hooker.js
+2025-05-12 14:39:22,991 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task06_get_torrent_trackers/handler.py.message_handler
+2025-05-12 14:39:22,991 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 评估器初始化完成: task06_get_torrent_trackers
+2025-05-12 14:39:22,991 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 注册了新的完成回调函数
+2025-05-12 14:39:22,991 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 用户数据成功恢复
+2025-05-12 14:39:22,991 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-12 14:39:22,992 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 应用启动成功，进程ID: 2322029
+2025-05-12 14:39:22,993 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-12 14:39:23,005 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 启动前窗口行数: 328
+2025-05-12 14:39:23,557 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-12 14:39:25,558 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 开始为任务 task06_get_torrent_trackers 注册指标...
+2025-05-12 14:39:25,558 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task06_get_torrent_trackers
+2025-05-12 14:39:25,559 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 注册标准指标: llm_call_count for task task06_get_torrent_trackers
+2025-05-12 14:39:25,559 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task06_get_torrent_trackers
+2025-05-12 14:39:25,559 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 注册标准指标: task_completion_status for task task06_get_torrent_trackers
+2025-05-12 14:39:25,559 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task06_get_torrent_trackers
+2025-05-12 14:39:25,559 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task06_get_torrent_trackers
+2025-05-12 14:39:25,559 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 注册标准指标: error_summary for task task06_get_torrent_trackers
+2025-05-12 14:39:25,559 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 任务 task06_get_torrent_trackers 配置中未找到有效的 total_key_steps > 0，跳过注册 KeyStepMetric。
+2025-05-12 14:39:25,560 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 任务 task06_get_torrent_trackers 的指标注册完成，共 7 个指标。
+2025-05-12 14:39:25,560 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 正在重置任务 task06_get_torrent_trackers 的指标状态...
+2025-05-12 14:39:25,560 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 任务 task06_get_torrent_trackers 的 7 个指标已重置。
+2025-05-12 14:39:25,560 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 任务会话开始: task06_get_torrent_trackers
+2025-05-12 14:39:25,560 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 记录原始事件: task06_get_torrent_trackers - TASK_START - {'timestamp': 1747060765.5603795}
+2025-05-12 14:39:25,560 - qbittorrent_task06_get_torrent_trackers_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747060765.5603795
+2025-05-12 14:39:25,560 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 连接到进程: 2322029
+2025-05-12 14:39:25,676 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 获取种子Tracker监控脚本已启动', 'timestamp': 1747060765675}
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 获取种子Tracker监控脚本已启动
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN17TrackerListWidget14copyTrackerUrlEv', 'address': '0x621e8b975eaa', 'message': '找到函数 _ZN17TrackerListWidget14copyTrackerUrlEv 的实际地址', 'timestamp': 1747060765675}
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler: 找到函数地址: 0x621e8b975eaa
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - WARNING - Handler 返回 key_step 索引 1 超出配置的总步数 0
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 记录原始事件: task06_get_torrent_trackers - KEY_STEP_COMPLETED - {'timestamp': 1747060765.6772285, 'step_index': 1}
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10QClipboard7setTextERK7QStringNS_4ModeE', 'address': '0x771f793a35c0', 'message': '找到函数 _ZN10QClipboard7setTextERK7QStringNS_4ModeE 的实际地址', 'timestamp': 1747060765675}
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler: 找到函数地址: 0x771f793a35c0
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - WARNING - Handler 返回 key_step 索引 1 超出配置的总步数 0
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 记录原始事件: task06_get_torrent_trackers - KEY_STEP_COMPLETED - {'timestamp': 1747060765.6776114, 'step_index': 1}
+2025-05-12 14:39:25,677 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待获取种子Tracker操作...', 'timestamp': 1747060765676}
+2025-05-12 14:39:25,678 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task06_get_torrent_trackers/hooker.js
+2025-05-12 14:39:25,678 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 评估器启动成功
+2025-05-12 14:39:45,030 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - Handler: 接收到脚本事件: get_trackers_called, Payload: {'event': 'get_trackers_called', 'message': '拦截到获取Tracker URL的函数调用', 'timestamp': 1747060785021}
+2025-05-12 14:39:45,031 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler: 拦截到获取Tracker URL的函数调用
+2025-05-12 14:39:45,032 - qbittorrent_task06_get_torrent_trackers_evaluator - WARNING - Handler 返回 key_step 索引 2 超出配置的总步数 0
+2025-05-12 14:39:45,032 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-12 14:39:45,032 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 记录原始事件: task06_get_torrent_trackers - KEY_STEP_COMPLETED - {'timestamp': 1747060785.0320847, 'step_index': 2}
+2025-05-12 14:39:45,049 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - Handler: 接收到脚本事件: get_torrent_trackers_result, Payload: {'event': 'get_torrent_trackers_result', 'message': '成功获取种子文件的Tracker', 'torrent_trackers': 'https://tracker.byr.pt/announce.php?passkey=162c143597147a538281d084172fb3d1', 'timestamp': 1747060785022}
+2025-05-12 14:39:45,059 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler: 收到Tracker URL: https://tracker.byr.pt/announce.php?passkey=162c143597147a538281d084172fb3d1
+2025-05-12 14:39:45,069 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler: 成功获取种子文件的Tracker URL: https://tracker.byr.pt/announce.php?passkey=162c143597147a538281d084172fb3d1
+2025-05-12 14:39:45,080 - qbittorrent_task06_get_torrent_trackers_evaluator - WARNING - Handler 返回 key_step 索引 4 超出配置的总步数 0
+2025-05-12 14:39:45,090 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler reported key step completion: Index=4, Name from Handler='None'
+2025-05-12 14:39:45,100 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 记录原始事件: task06_get_torrent_trackers - KEY_STEP_COMPLETED - {'timestamp': 1747060785.0801427, 'step_index': 4}
+2025-05-12 14:39:45,110 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler reported success: 成功获取种子文件的Tracker URL: https://tracker.byr.pt/announce.php?passkey=162c143597147a538281d084172fb3d1
+2025-05-12 14:39:45,121 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 记录原始事件: task06_get_torrent_trackers - TASK_END - {'timestamp': 1747060785.0801427, 'status': 'success', 'reason': '成功获取种子文件的Tracker URL: https://tracker.byr.pt/announce.php?passkey=162c143597147a538281d084172fb3d1'}
+2025-05-12 14:39:45,131 - qbittorrent_task06_get_torrent_trackers_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747060785.0801427
+2025-05-12 14:39:45,141 - qbittorrent_task06_get_torrent_trackers_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: success, 原因: 成功获取种子文件的Tracker URL: https://tracker.byr.pt/announce.php?passkey=162c143597147a538281d084172fb3d1
+2025-05-12 14:39:45,141 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 触发回调: task_completed - 成功获取种子文件的Tracker URL: https://tracker.byr.pt/announce.php?passkey=162c143597147a538281d084172fb3d1
+2025-05-12 14:39:45,157 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - Handler reported app event: get_torrent_trackers_result, Data: {}
+2025-05-12 14:39:45,157 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 记录原始事件: task06_get_torrent_trackers - APP_SPECIFIC_EVENT - {'timestamp': 1747060785.0801427, 'name': 'get_torrent_trackers_result', 'payload': {}}
+2025-05-12 14:39:45,157 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - Handler: 接收到脚本事件: get_trackers, Payload: {'event': 'get_trackers', 'message': '获取Tracker URL函数执行完成', 'timestamp': 1747060785023}
+2025-05-12 14:39:45,157 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler: 获取Tracker URL函数执行完成
+2025-05-12 14:39:45,157 - qbittorrent_task06_get_torrent_trackers_evaluator - WARNING - Handler 返回 key_step 索引 3 超出配置的总步数 0
+2025-05-12 14:39:45,157 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-12 14:39:45,157 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 记录原始事件: task06_get_torrent_trackers - KEY_STEP_COMPLETED - {'timestamp': 1747060785.1578536, 'step_index': 3}
+2025-05-12 14:39:45,158 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - Handler reported app event: get_trackers, Data: {}
+2025-05-12 14:39:45,158 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 记录原始事件: task06_get_torrent_trackers - APP_SPECIFIC_EVENT - {'timestamp': 1747060785.1578536, 'name': 'get_trackers', 'payload': {}}
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 脚本卸载完成
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 开始为任务 task06_get_torrent_trackers 计算最终指标...
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 指标计算完成 (task06_get_torrent_trackers): total_duration_seconds = 19.52
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 指标计算完成 (task06_get_torrent_trackers): llm_call_count = 0
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 指标计算完成 (task06_get_torrent_trackers): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 指标计算完成 (task06_get_torrent_trackers): task_completion_status = {'status': 'success', 'reason': '成功获取种子文件的Tracker URL: https://tracker.byr.pt/announce.php?passkey=162c143597147a538281d084172fb3d1'}
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 指标计算完成 (task06_get_torrent_trackers): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 指标计算完成 (task06_get_torrent_trackers): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - DEBUG - 指标计算完成 (task06_get_torrent_trackers): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 任务 task06_get_torrent_trackers 的最终指标计算完成。
+2025-05-12 14:39:45,165 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 任务会话结束: task06_get_torrent_trackers. 总时长: 19.605 秒
+2025-05-12 14:39:45,166 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 任务 task06_get_torrent_trackers 结果已保存: logs/20250512_143922/result_task06_get_torrent_trackers_20250512_143945.json
+2025-05-12 14:39:45,166 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 评估结果已保存: logs/20250512_143922/result_task06_get_torrent_trackers_20250512_143945.json
+2025-05-12 14:39:46,167 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 任务 task06_get_torrent_trackers 结果已保存: logs/20250512_143922/result_task06_get_torrent_trackers_20250512_143946.json
+2025-05-12 14:39:46,168 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 评估结果已保存: logs/20250512_143922/result_task06_get_torrent_trackers_20250512_143946.json
+2025-05-12 14:39:46,168 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2322029)
+2025-05-12 14:39:46,168 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-12 14:39:48,237 - qbittorrent_task06_get_torrent_trackers_evaluator - INFO - 应用进程已自行关闭

@@ -1,9 +1,8 @@
 (function() {
     // 脚本设置 - 目标函数
     const FUNCTION_NAME_HANDLE_TORRENT_STOPPED = "_ZN10BitTorrent11SessionImpl20handleTorrentStoppedEPNS_11TorrentImplE";
-    const FUNCTION_NAME_GET_NAME="_ZNK10BitTorrent11TorrentInfo4nameEv"
-    const FUNCTION_NAME_GET_NAME1="_ZN9QtPrivate16QMetaTypeForTypeIN10BitTorrent11TorrentInfoEE4nameE"
-    const OFFSET_TO_TORRENT_INFO=688
+    const OFFSET_TO_TORRENT_INFO = 168;
+    
     // 向评估系统发送事件
     function sendEvent(eventType, data = {}) {
         const payload = {
@@ -30,6 +29,36 @@
             });
         }
         return funcAddr;
+    }
+
+    function readStdString(stringPtr) {
+        try {
+            // 对于大多数std::string实现，内存布局如下：
+            // - 短字符串可能直接存储在对象内部
+            // - 长字符串会有一个指向堆内存的指针
+            
+            // 首先检查是否为小字符串优化(SSO)
+            const capacity = stringPtr.add(16).readU64(); // 通常在此偏移位置保存容量
+            const isSmallString = capacity > 22; // 根据具体实现可能需要调整此值
+            
+            let dataPtr;
+            if (isSmallString) {
+                // 长字符串，从第一个8字节读取指针
+                dataPtr = stringPtr.readPointer();
+            } else {
+                // 短字符串，数据直接存储在对象内
+                dataPtr = stringPtr;
+            }
+            
+            // 读取字符串内容
+            return dataPtr.readCString();
+        } catch (e) {
+            sendEvent("error", {
+                error_type: "std_string_read_error",
+                message: `读取std::string错误: ${e.message}`
+            });
+            return null;
+        }
     }
 
     // 读取QString字符串内容
@@ -74,78 +103,46 @@
         }
     }
     
-  
-    
-
-    // 初始化AddTorrentManager::addTorrentToSession监控钩子
+    // 初始化监控钩子函数
     function initStopTorrentHook() {
         const funcAddr = getFunctionAddress(FUNCTION_NAME_HANDLE_TORRENT_STOPPED);
-        const nameFunc = getFunctionAddress(FUNCTION_NAME_GET_NAME);
-
-        // 检查函数地址是否找到
-        if (!nameFunc) {
-            sendEvent("error", {
-                error_type: "function_not_found",
-                message: `无法找到名称获取函数，尝试使用备用函数`
-            });
-            // 尝试使用备用函数
-            nameFunc = getFunctionAddress(FUNCTION_NAME_GET_NAME1);
-            if (!nameFunc) {
-                sendEvent("error", {
-                    error_type: "function_not_found",
-                    message: `备用函数也未找到，无法获取种子名称`
-                });
-                return;
-            }
-        }
-
+    
         Interceptor.attach(funcAddr, {
             onEnter: function(args) {
-                this.source = args[1];
-                const torrent_info=this.source.add(OFFSET_TO_TORRENT_INFO);
-                console.log("source:", this.source);
-                const get_name =new NativeFunction(
-                    nameFunc,
-                    'pointer',
-                    ['pointer']
-                );
-                m_infoName=get_name(torrent_info)
-                const sourcePath = readQString(m_infoName);
-                print(sourcePath);
-                sendEvent("add_torrent_called", {
-                    message: "拦截到添加种子到会话函数调用",
-                   
+                this.source = args[1];  
+                sendEvent("torrent_stopped_called", {
+                    message: "拦截到停止种子下载函数调用",
+    
                 });
             },
 
             onLeave: function(retval) {
-                // const success = retval.toInt32() !== 0;     
-                // const sourcePath = readQString(this.source);
+                const torrent_info = this.source.add(OFFSET_TO_TORRENT_INFO);
+                console.log("source:", this.source);
+
+                const sourcePath = readStdString(torrent_info);
+                console.log("sourcePath:", sourcePath);
+                
                
-                // sendEvent("add_torrent_result", {
-                //     message: "添加种子到会话函数正确返回",
-                //     torrent_data: sourcePath 
-                // });
+                sendEvent("torrent_stopped_result", {
+                    message: "停止种子下载成功",
+                    torrent_data: sourcePath
+                });
             }
         });
-
-    
     }
     
-
-
     // 启动脚本
     function initHook() {
         sendEvent("script_initialized", {
-            message: "qBittorrent 种子添加监控脚本已启动"
+            message: "qBittorrent 种子停止下载监控脚本已启动"
         });
         
-
         // 初始化钩子
         initStopTorrentHook();
         
         sendEvent("all_hooks_installed", {
-            message: "所有监控钩子安装完成，等待添加种子操作..."
+            message: "所有监控钩子安装完成，等待停止种子操作..."
         });
     }
 

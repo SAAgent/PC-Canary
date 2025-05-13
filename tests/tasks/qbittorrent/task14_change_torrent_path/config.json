@@ -1,0 +1,61 @@
+{
+    "task_id": "14", 
+	"task_name": "change_torrent_path", 
+    "description": "修改qBittorrent中指定种子的保存路径。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "torrent_name": "Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB",
+        "new_path": "/home/agent/Downloads"
+    },
+
+    "instruction_template": "请在qBittorrent中将种子${torrent_name}的保存路径修改为${new_path}。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 ,
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+	"preconditions": {
+	  "qbittorrent_running": true,
+      "has_torrents": true
+	},
+	"success_conditions": [
+	  "change_torrent_path_success"
+	],
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到目标函数",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标函数"
+        },
+        "change_torrent_path_called":  {
+            "description": "拦截到修改种子路径函数调用",
+            "is_key_step": false
+        },
+		"change_torrent_path_success": {
+            "description": "修改种子路径成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "修改种子路径成功"
+        },
+        "error":  {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    }
+}

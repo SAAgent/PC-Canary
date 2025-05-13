@@ -1,0 +1,52 @@
+2025-05-12 16:30:22,972 - qbittorrent_task09_change_lauguage_evaluator - INFO - 加载任务指令: 请在qBittorrent中，将界面语言更改为zh（中文）
+2025-05-12 16:30:22,972 - qbittorrent_task09_change_lauguage_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250512_163022
+2025-05-12 16:30:22,973 - qbittorrent_task09_change_lauguage_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task09_change_lauguage/hooker.js
+2025-05-12 16:30:22,973 - qbittorrent_task09_change_lauguage_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task09_change_lauguage/handler.py.message_handler
+2025-05-12 16:30:22,973 - qbittorrent_task09_change_lauguage_evaluator - INFO - 评估器初始化完成: task09_change_lauguage
+2025-05-12 16:30:22,973 - qbittorrent_task09_change_lauguage_evaluator - INFO - 注册了新的完成回调函数
+2025-05-12 16:30:22,973 - qbittorrent_task09_change_lauguage_evaluator - INFO - 用户数据成功恢复
+2025-05-12 16:30:22,973 - qbittorrent_task09_change_lauguage_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-12 16:30:22,974 - qbittorrent_task09_change_lauguage_evaluator - INFO - 应用启动成功，进程ID: 2344369
+2025-05-12 16:30:22,974 - qbittorrent_task09_change_lauguage_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-12 16:30:22,988 - qbittorrent_task09_change_lauguage_evaluator - INFO - 启动前窗口行数: 333
+2025-05-12 16:30:23,513 - qbittorrent_task09_change_lauguage_evaluator - INFO - 检测到新窗口，当前窗口行数: 334
+2025-05-12 16:30:25,513 - qbittorrent_task09_change_lauguage_evaluator - INFO - 开始为任务 task09_change_lauguage 注册指标...
+2025-05-12 16:30:25,514 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task09_change_lauguage
+2025-05-12 16:30:25,514 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 注册标准指标: llm_call_count for task task09_change_lauguage
+2025-05-12 16:30:25,514 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task09_change_lauguage
+2025-05-12 16:30:25,514 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 注册标准指标: task_completion_status for task task09_change_lauguage
+2025-05-12 16:30:25,514 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task09_change_lauguage
+2025-05-12 16:30:25,514 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task09_change_lauguage
+2025-05-12 16:30:25,514 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 注册标准指标: error_summary for task task09_change_lauguage
+2025-05-12 16:30:25,514 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task09_change_lauguage (Total Steps: 3, Names: {1: '找到目标函数', 2: '拦截到更改语言的函数调用', 3: '成功更改语言'})
+2025-05-12 16:30:25,514 - qbittorrent_task09_change_lauguage_evaluator - INFO - 任务 task09_change_lauguage 的指标注册完成，共 8 个指标。
+2025-05-12 16:30:25,515 - qbittorrent_task09_change_lauguage_evaluator - INFO - 正在重置任务 task09_change_lauguage 的指标状态...
+2025-05-12 16:30:25,515 - qbittorrent_task09_change_lauguage_evaluator - INFO - 任务 task09_change_lauguage 的 8 个指标已重置。
+2025-05-12 16:30:25,515 - qbittorrent_task09_change_lauguage_evaluator - INFO - 任务会话开始: task09_change_lauguage
+2025-05-12 16:30:25,515 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 记录原始事件: task09_change_lauguage - TASK_START - {'timestamp': 1747067425.51514}
+2025-05-12 16:30:25,515 - qbittorrent_task09_change_lauguage_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747067425.51514
+2025-05-12 16:30:25,515 - qbittorrent_task09_change_lauguage_evaluator - INFO - 连接到进程: 2344369
+2025-05-12 16:30:25,523 - qbittorrent_task09_change_lauguage_evaluator - ERROR - 连接到进程失败: unable to access process with pid 2344369
+2025-05-12 16:30:25,524 - qbittorrent_task09_change_lauguage_evaluator - INFO - 评估器启动成功
+2025-05-12 16:30:29,920 - qbittorrent_task09_change_lauguage_evaluator - INFO - 脚本卸载完成
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - INFO - 开始为任务 task09_change_lauguage 计算最终指标...
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator.TotalTimeMetric - WARNING - 无法计算总时长，开始: 1747067425.51514, 结束: None
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 指标计算完成 (task09_change_lauguage): total_duration_seconds = None
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 指标计算完成 (task09_change_lauguage): llm_call_count = 0
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 指标计算完成 (task09_change_lauguage): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 指标计算完成 (task09_change_lauguage): task_completion_status = {'status': 'unknown', 'reason': ''}
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 指标计算完成 (task09_change_lauguage): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 指标计算完成 (task09_change_lauguage): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 指标计算完成 (task09_change_lauguage): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 指标计算完成 (task09_change_lauguage): key_step_tracker = {'total_steps': 3, 'completed_steps_count': 0, 'highest_index_reached': 0, 'completion_rate_by_count': 0.0, 'completion_rate_by_progress': 0.0, 'final_step_reached': False, 'completed_indices_list': [], 'completion_timeline': []}
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - INFO - 任务 task09_change_lauguage 的最终指标计算完成。
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - INFO - 任务会话结束: task09_change_lauguage. 总时长: 4.407 秒
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - WARNING - Evaluator stopped externally or timed out before handler completion
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator - DEBUG - 记录原始事件: task09_change_lauguage - TASK_END - {'status': 'stopped', 'reason': 'Evaluator stopped externally or timed out before handler completion', 'timestamp': 1747067429.9217696}
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747067429.9217696
+2025-05-12 16:30:29,921 - qbittorrent_task09_change_lauguage_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: stopped, 原因: Evaluator stopped externally or timed out before handler completion
+2025-05-12 16:30:29,922 - qbittorrent_task09_change_lauguage_evaluator - INFO - 任务 task09_change_lauguage 结果已保存: logs/20250512_163022/result_task09_change_lauguage_20250512_163029.json
+2025-05-12 16:30:29,922 - qbittorrent_task09_change_lauguage_evaluator - INFO - 评估结果已保存: logs/20250512_163022/result_task09_change_lauguage_20250512_163029.json
+2025-05-12 16:30:29,922 - qbittorrent_task09_change_lauguage_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2344369)
+2025-05-12 16:30:29,922 - qbittorrent_task09_change_lauguage_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-12 16:30:29,922 - qbittorrent_task09_change_lauguage_evaluator - INFO - 应用进程已自行关闭

@@ -1,0 +1,104 @@
+2025-05-12 16:36:50,025 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 加载任务指令: 请在qBittorrent中，获取并查看当前软件的版本号
+2025-05-12 16:36:50,025 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250512_163650
+2025-05-12 16:36:50,025 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task10_get_qbittorrent_version/hooker.js
+2025-05-12 16:36:50,025 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task10_get_qbittorrent_version/handler.py.message_handler
+2025-05-12 16:36:50,025 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 评估器初始化完成: task10_get_qbittorrent_version
+2025-05-12 16:36:50,025 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 注册了新的完成回调函数
+2025-05-12 16:36:50,025 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 用户数据成功恢复
+2025-05-12 16:36:50,025 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-12 16:36:50,026 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 应用启动成功，进程ID: 2347255
+2025-05-12 16:36:50,026 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-12 16:36:50,039 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 启动前窗口行数: 328
+2025-05-12 16:36:50,580 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-12 16:36:52,581 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 开始为任务 task10_get_qbittorrent_version 注册指标...
+2025-05-12 16:36:52,581 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task10_get_qbittorrent_version
+2025-05-12 16:36:52,581 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 注册标准指标: llm_call_count for task task10_get_qbittorrent_version
+2025-05-12 16:36:52,581 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task10_get_qbittorrent_version
+2025-05-12 16:36:52,581 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 注册标准指标: task_completion_status for task task10_get_qbittorrent_version
+2025-05-12 16:36:52,582 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task10_get_qbittorrent_version
+2025-05-12 16:36:52,582 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task10_get_qbittorrent_version
+2025-05-12 16:36:52,582 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 注册标准指标: error_summary for task task10_get_qbittorrent_version
+2025-05-12 16:36:52,582 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task10_get_qbittorrent_version (Total Steps: 3, Names: {1: '找到目标函数', 2: '拦截到获取版本的函数调用', 3: '成功获取qBittorrent版本'})
+2025-05-12 16:36:52,582 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 任务 task10_get_qbittorrent_version 的指标注册完成，共 8 个指标。
+2025-05-12 16:36:52,582 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 正在重置任务 task10_get_qbittorrent_version 的指标状态...
+2025-05-12 16:36:52,582 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 任务 task10_get_qbittorrent_version 的 8 个指标已重置。
+2025-05-12 16:36:52,583 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 任务会话开始: task10_get_qbittorrent_version
+2025-05-12 16:36:52,583 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 记录原始事件: task10_get_qbittorrent_version - TASK_START - {'timestamp': 1747067812.5830324}
+2025-05-12 16:36:52,583 - qbittorrent_task10_get_qbittorrent_version_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747067812.5830324
+2025-05-12 16:36:52,583 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 连接到进程: 2347255
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 版本获取监控脚本已启动', 'timestamp': 1747067812687}
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 版本获取监控脚本已启动
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZNK11AboutDialog23copyVersionsToClipboardEv', 'address': '0x5ae9680216b8', 'message': '找到函数 _ZNK11AboutDialog23copyVersionsToClipboardEv 的实际地址', 'timestamp': 1747067812687}
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler: 找到函数地址: 0x5ae9680216b8
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 记录原始事件: task10_get_qbittorrent_version - KEY_STEP_COMPLETED - {'timestamp': 1747067812.6886013, 'step_index': 1}
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10QClipboard7setTextERK7QStringNS_4ModeE', 'address': '0x7ba6a3da35c0', 'message': '找到函数 _ZN10QClipboard7setTextERK7QStringNS_4ModeE 的实际地址', 'timestamp': 1747067812687}
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler: 找到函数地址: 0x7ba6a3da35c0
+2025-05-12 16:36:52,688 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-12 16:36:52,689 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 记录原始事件: task10_get_qbittorrent_version - KEY_STEP_COMPLETED - {'timestamp': 1747067812.6889684, 'step_index': 1}
+2025-05-12 16:36:52,689 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待获取版本操作...', 'timestamp': 1747067812687}
+2025-05-12 16:36:52,689 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task10_get_qbittorrent_version/hooker.js
+2025-05-12 16:36:52,689 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 评估器启动成功
+2025-05-12 16:36:56,793 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - Handler: 接收到脚本事件: get_qbittorrent_version, Payload: {'event': 'get_qbittorrent_version', 'message': '拦截到获取版本信息的函数调用', 'timestamp': 1747067816781}
+2025-05-12 16:36:56,798 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler: 拦截到获取版本信息的函数调用
+2025-05-12 16:36:56,798 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-12 16:36:56,804 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 记录原始事件: task10_get_qbittorrent_version - KEY_STEP_COMPLETED - {'timestamp': 1747067816.7989466, 'step_index': 2}
+2025-05-12 16:36:56,814 - qbittorrent_task10_get_qbittorrent_version_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=2, Name='拦截到获取版本的函数调用'
+2025-05-12 16:36:56,845 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - Handler: 接收到脚本事件: get_qbittorrent_version_result, Payload: {'event': 'get_qbittorrent_version_result', 'message': '成功获取qBittorrent版本信息', 'qbittorrent_version': 'Qt: 6.5.3\nLibtorrent: 2.0.10.0\nBoost: 1.82.0\nOpenSSL: 3.0.2\nzlib: 1.2.11\n', 'timestamp': 1747067816782}
+2025-05-12 16:36:56,856 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler: 获取到qBittorrent版本信息: Qt: 6.5.3
+Libtorrent: 2.0.10.0
+Boost: 1.82.0
+OpenSSL: 3.0.2
+zlib: 1.2.11
+
+2025-05-12 16:36:56,866 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler: 成功获取qBittorrent版本: Qt: 6.5.3
+Libtorrent: 2.0.10.0
+Boost: 1.82.0
+OpenSSL: 3.0.2
+zlib: 1.2.11
+
+2025-05-12 16:36:56,877 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-12 16:36:56,887 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 记录原始事件: task10_get_qbittorrent_version - KEY_STEP_COMPLETED - {'timestamp': 1747067816.876994, 'step_index': 3}
+2025-05-12 16:36:56,897 - qbittorrent_task10_get_qbittorrent_version_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=3, Name='成功获取qBittorrent版本'
+2025-05-12 16:36:56,908 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - Handler reported success: 成功获取qBittorrent版本: Qt: 6.5.3
+Libtorrent: 2.0.10.0
+Boost: 1.82.0
+OpenSSL: 3.0.2
+zlib: 1.2.11
+
+2025-05-12 16:36:56,918 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 记录原始事件: task10_get_qbittorrent_version - TASK_END - {'timestamp': 1747067816.876994, 'status': 'success', 'reason': '成功获取qBittorrent版本: Qt: 6.5.3\nLibtorrent: 2.0.10.0\nBoost: 1.82.0\nOpenSSL: 3.0.2\nzlib: 1.2.11\n'}
+2025-05-12 16:36:56,928 - qbittorrent_task10_get_qbittorrent_version_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747067816.876994
+2025-05-12 16:36:56,939 - qbittorrent_task10_get_qbittorrent_version_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: success, 原因: 成功获取qBittorrent版本: Qt: 6.5.3
+Libtorrent: 2.0.10.0
+Boost: 1.82.0
+OpenSSL: 3.0.2
+zlib: 1.2.11
+
+2025-05-12 16:36:56,949 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 触发回调: task_completed - 成功获取qBittorrent版本: Qt: 6.5.3
+Libtorrent: 2.0.10.0
+Boost: 1.82.0
+OpenSSL: 3.0.2
+zlib: 1.2.11
+
+2025-05-12 16:36:56,975 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - Handler reported app event: get_qbittorrent_version_result, Data: {}
+2025-05-12 16:36:56,975 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 记录原始事件: task10_get_qbittorrent_version - APP_SPECIFIC_EVENT - {'timestamp': 1747067816.876994, 'name': 'get_qbittorrent_version_result', 'payload': {}}
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 脚本卸载完成
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 开始为任务 task10_get_qbittorrent_version 计算最终指标...
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 指标计算完成 (task10_get_qbittorrent_version): total_duration_seconds = 4.294
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 指标计算完成 (task10_get_qbittorrent_version): llm_call_count = 0
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 指标计算完成 (task10_get_qbittorrent_version): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 指标计算完成 (task10_get_qbittorrent_version): task_completion_status = {'status': 'success', 'reason': '成功获取qBittorrent版本: Qt: 6.5.3\nLibtorrent: 2.0.10.0\nBoost: 1.82.0\nOpenSSL: 3.0.2\nzlib: 1.2.11\n'}
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 指标计算完成 (task10_get_qbittorrent_version): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 指标计算完成 (task10_get_qbittorrent_version): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 指标计算完成 (task10_get_qbittorrent_version): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - DEBUG - 指标计算完成 (task10_get_qbittorrent_version): key_step_tracker = {'total_steps': 3, 'completed_steps_count': 3, 'highest_index_reached': 3, 'completion_rate_by_count': 1.0, 'completion_rate_by_progress': 1.0, 'final_step_reached': True, 'completed_indices_list': [1, 2, 3], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747067812.6886013}, {'step_index': 2, 'step_name': '拦截到获取版本的函数调用', 'timestamp': 1747067816.7989466}, {'step_index': 3, 'step_name': '成功获取qBittorrent版本', 'timestamp': 1747067816.876994}]}
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 任务 task10_get_qbittorrent_version 的最终指标计算完成。
+2025-05-12 16:36:56,978 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 任务会话结束: task10_get_qbittorrent_version. 总时长: 4.396 秒
+2025-05-12 16:36:56,979 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 任务 task10_get_qbittorrent_version 结果已保存: logs/20250512_163650/result_task10_get_qbittorrent_version_20250512_163656.json
+2025-05-12 16:36:56,979 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 评估结果已保存: logs/20250512_163650/result_task10_get_qbittorrent_version_20250512_163656.json
+2025-05-12 16:36:57,980 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 任务 task10_get_qbittorrent_version 结果已保存: logs/20250512_163650/result_task10_get_qbittorrent_version_20250512_163657.json
+2025-05-12 16:36:57,980 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 评估结果已保存: logs/20250512_163650/result_task10_get_qbittorrent_version_20250512_163657.json
+2025-05-12 16:36:57,980 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2347255)
+2025-05-12 16:36:57,980 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-12 16:36:59,198 - qbittorrent_task10_get_qbittorrent_version_evaluator - INFO - 应用进程已自行关闭

@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "session_start_iso": "2025-05-12T16:07:49+0000",
+    "session_start_unix": 1747066069.0455253,
+    "task_config_at_start": {
+      "task_id": "07",
+      "task_name": "set_upload_rates",
+      "description": "设置全局上传速率限制。",
+      "application_info": {
+        "name": "Qbittorrent Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": []
+      },
+      "task_parameters": {
+        "upload_rate": "1024"
+      },
+      "instruction_template": "请在qBittorrent中，将全局上传速率设置为${upload_rate}KB/s",
+      "evaluation_setup": {
+        "scripts": [
+          {
+            "role": "hook",
+            "path": "hooker.js"
+          },
+          {
+            "role": "handler",
+            "path": "handler.py"
+          }
+        ],
+        "timeout": 180,
+        "evaluate_on_completion": true
+      },
+      "preconditions": {
+        "qbittorrent_running": true
+      },
+      "success_conditions": [
+        "set_upload_rates_result"
+      ],
+      "events": {
+        "script_initialized": {
+          "description": "钩子脚本初始化",
+          "is_key_step": false
+        },
+        "function_found": {
+          "description": "找到了目标函数",
+          "is_key_step": true,
+          "key_step_index": 1,
+          "key_step_name": "找到目标函数"
+        },
+        "set_upload_rates_called": {
+          "description": "拦截到设置上传速率的函数调用",
+          "is_key_step": true,
+          "key_step_index": 2,
+          "key_step_name": "拦截到设置上传速率的函数调用"
+        },
+        "set_upload_rates_result": {
+          "description": "成功设置上传速率",
+          "is_key_step": true,
+          "key_step_index": 3,
+          "key_step_name": "成功设置上传速率"
+        },
+        "error": {
+          "description": "错误事件",
+          "is_key_step": false
+        }
+      }
+    },
+    "app_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+    "app_process_pid": 2334774,
+    "session_end_iso": "2025-05-12T16:08:19+0000",
+    "session_end_unix": 1747066099.1669483,
+    "session_duration_seconds": 30.121
+  },
+  "raw_events": [
+    {
+      "event_type": "TASK_START",
+      "timestamp": 1747066069.0455253
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747066069.1603248,
+      "step_index": 1
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747066069.1607635,
+      "step_index": 1
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747066079.5774477,
+      "step_index": 2
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747066079.6202497,
+      "step_index": 3
+    },
+    {
+      "event_type": "TASK_END",
+      "status": "stopped",
+      "reason": "Evaluator stopped externally or timed out before handler completion",
+      "timestamp": 1747066099.167023
+    }
+  ],
+  "computed_metrics": {
+    "total_duration_seconds": null,
+    "llm_call_count": 0,
+    "llm_token_usage": {
+      "total_prompt_tokens": 0,
+      "total_completion_tokens": 0,
+      "total_tokens": 0
+    },
+    "task_completion_status": {
+      "status": "unknown",
+      "reason": ""
+    },
+    "agent_reported_completion": {
+      "completed": false,
+      "reasoning": null
+    },
+    "tool_usage_stats": {
+      "total_tool_calls": 0,
+      "tools": {}
+    },
+    "error_summary": {
+      "total_error_count": 0,
+      "errors_by_source": {}
+    }
+  }
+}

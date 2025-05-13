@@ -1,0 +1,134 @@
+{
+  "metadata": {
+    "session_start_iso": "2025-05-13T09:10:23+0000",
+    "session_start_unix": 1747127423.6263523,
+    "task_config_at_start": {
+      "task_id": "13",
+      "task_name": "set_uploadrate4torrent",
+      "description": "在qBittorrent中为指定种子设置上传速率限制。",
+      "application_info": {
+        "name": "Qbittorrent Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": []
+      },
+      "task_parameters": {
+        "upload_limit": 1024,
+        "torrent_name": "Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB"
+      },
+      "instruction_template": "请在qBittorrent中, 为种子${torrent_name}设置下载速率限制为${download_limit}KB/s。",
+      "evaluation_setup": {
+        "scripts": [
+          {
+            "role": "hook",
+            "path": "hooker.js"
+          },
+          {
+            "role": "handler",
+            "path": "handler.py"
+          }
+        ],
+        "timeout": 180,
+        "evaluate_on_completion": true
+      },
+      "total_key_steps": 2,
+      "preconditions": {
+        "qbittorrent_running": true,
+        "has_torrents": true
+      },
+      "success_conditions": [
+        "set_downloadrate_success"
+      ],
+      "events": {
+        "script_initialized": {
+          "description": "钩子脚本初始化",
+          "is_key_step": false
+        },
+        "function_found": {
+          "description": "找到目标函数",
+          "is_key_step": true,
+          "key_step_index": 1,
+          "key_step_name": "找到目标函数"
+        },
+        "set_downloadrate_called": {
+          "description": "拦截到设置种子下载速率函数调用",
+          "is_key_step": false
+        },
+        "set_downloadrate_success": {
+          "description": "设置种子下载速率成功",
+          "is_key_step": true,
+          "key_step_index": 2,
+          "key_step_name": "设置种子下载速率成功"
+        },
+        "error": {
+          "description": "错误事件",
+          "is_key_step": false
+        }
+      }
+    },
+    "app_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+    "app_process_pid": 2460580,
+    "session_end_iso": "2025-05-13T09:10:53+0000",
+    "session_end_unix": 1747127453.7296479,
+    "session_duration_seconds": 30.103
+  },
+  "raw_events": [
+    {
+      "event_type": "TASK_START",
+      "timestamp": 1747127423.6263523
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747127423.7247753,
+      "step_index": 1
+    },
+    {
+      "event_type": "TASK_END",
+      "status": "stopped",
+      "reason": "Evaluator stopped externally or timed out before handler completion",
+      "timestamp": 1747127453.7297313
+    }
+  ],
+  "computed_metrics": {
+    "total_duration_seconds": null,
+    "llm_call_count": 0,
+    "llm_token_usage": {
+      "total_prompt_tokens": 0,
+      "total_completion_tokens": 0,
+      "total_tokens": 0
+    },
+    "task_completion_status": {
+      "status": "unknown",
+      "reason": ""
+    },
+    "agent_reported_completion": {
+      "completed": false,
+      "reasoning": null
+    },
+    "tool_usage_stats": {
+      "total_tool_calls": 0,
+      "tools": {}
+    },
+    "error_summary": {
+      "total_error_count": 0,
+      "errors_by_source": {}
+    },
+    "key_step_tracker": {
+      "total_steps": 2,
+      "completed_steps_count": 1,
+      "highest_index_reached": 1,
+      "completion_rate_by_count": 0.5,
+      "completion_rate_by_progress": 0.5,
+      "final_step_reached": false,
+      "completed_indices_list": [
+        1
+      ],
+      "completion_timeline": [
+        {
+          "step_index": 1,
+          "step_name": "找到目标函数",
+          "timestamp": 1747127423.7247753
+        }
+      ]
+    }
+  }
+}
