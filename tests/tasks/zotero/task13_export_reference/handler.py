@@ -1,79 +1,28 @@
 import os
 import json
 import time
-from typing import Dict, Any, Optional, Set, Dict, Union, Tuple
+from typing import Dict, Any, Optional, Set, Dict, List
 import enum
 
 
-# 全局评估器实例，由message_handler使用
-_EVALUATOR = None
-_CONFIG = None
-_START_TIME = None
-
-def set_evaluator(evaluator):
-    """设置全局评估器实例"""
-    global _EVALUATOR, _CONFIG
-    _EVALUATOR = evaluator
-    
-    # 使用评估器的已更新配置，而不是重新读取文件
-    if hasattr(evaluator, 'config') and evaluator.config:
-        _CONFIG = evaluator.config
-        _EVALUATOR.logger.info("使用评估器中的更新配置")
-    else:
-        # 作为备份，如果评估器中没有配置，才从文件读取
-        try:
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            config_file = os.path.join(current_dir, "config.json")
-            
-            with open(config_file, 'r') as f:
-                _CONFIG = json.load(f)
-                _EVALUATOR.logger.info("从文件加载配置")
-        except Exception as e:
-            if _EVALUATOR:
-                _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
-
-def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
-    """
-    处理从钩子脚本接收的消息
-    
-    Args:
-        message: injector消息对象
-        data: 附加数据
-        
-    Returns:
-        str: 如果任务成功完成返回"success"，否则返回None
-    """
-    global _EVALUATOR, _CONFIG, _START_TIME
-    
-    # 初始化开始时间
-    if _START_TIME is None:
-        _START_TIME = time.time()
-    
-    # 检查评估器是否已设置
-    if _EVALUATOR is None:
-        print("警告: 评估器未设置，无法处理消息")
-        return None
-    # TODO:
+def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     event_type = message.get('event_type')
     if event_type == 'reference_exported':
         status = check_files_existence()
         if status == FileCheckStatus.ALL_EXIST:
-            _EVALUATOR.update_metric("success", True)
-            return "success"
+            return [
+                {"status": "key_step", "index": 1},
+                {"status": "success", "reason": "所有文件都存在"}
+            ]
         #TODO: 这里的update_metric方法需要根据实际情况进行调整
         elif status == FileCheckStatus.NOT_ALL_EXIST:
-            _EVALUATOR.update_metric("error", {"type": "file_not_found", "message": "文件不存在"})
-            return "error"
+            return None
         elif status == FileCheckStatus.INCREASING:
-            _EVALUATOR.update_metric("error", {"type": "file_increasing", "message": "文件数量增加"})
-            return "error"
+            return None
     else:
-        _EVALUATOR.update_metric("error", {"type": "unknown", "message": "未知错误"})
-        return "error"
-
-def register_handlers(evaluator):
-    set_evaluator(evaluator)
-    return message_handler
+        return [
+            {"status": "error", "type": "evaluate_on_completion", "message": "任务没有完成"}
+        ]
 
 # 定义状态枚举
 class FileCheckStatus(enum.Enum):
@@ -82,8 +31,9 @@ class FileCheckStatus(enum.Enum):
     ALL_EXIST = 2          # 所有文件都存在
 
 # 假设这是全局的文件路径集合
+# TODO: 可能需要修改为实际的文件路径
 global_file_paths: Set[str] = set(
-    ['/home/agent/test.rtf']
+    ['/home/agent/export-reference/Multi-Grained.rtf']
 )
 
 # 保存状态的字典
