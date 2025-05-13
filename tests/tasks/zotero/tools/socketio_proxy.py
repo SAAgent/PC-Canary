@@ -44,6 +44,14 @@ def ensure_socketio_connected():
                 transports=['websocket', 'polling'],
                 wait_timeout=5
             )
+            try:
+                # 发送数据
+                logger.info('正在发送app启动成功数据...')
+                sio.emit('send', {'event_type': 'start_success'})
+                logger.info('app启动成功数据发送成功')
+            except Exception as e:
+                logger.error(f'app启动成功发送数据失败: {e}')
+                return False
             return True
         except Exception as e:
             logger.error(f'连接到 Socket.IO 服务器失败: {e}')
