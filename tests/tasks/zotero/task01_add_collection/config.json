@@ -11,13 +11,13 @@
         ]
     },
     "task_parameters": {
-        "collection_name": "虚拟化"
+        "collection_name": "virtualization"
     },
-    "instruction": "在zotero`MyLibrary`中添加分类`virtualization`",
+    "instruction": "在已经打开的zotero窗口 `MyLibrary`中添加分类`virtualization`",
     "preconditions": {
         "zotero_running": true
     },
-    "instruction_template": "在zotero中添加分类为 `${collection_name}`",
+    "instruction_template": "在已经打开的zotero `MyLibrary` 中添加分类为 `${collection_name}`",
     "evaluation_setup": {
         "scripts": [
             {
@@ -33,7 +33,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "collection_added": "成功添加分类"
-    }
+        "collection_added": {
+            "description": "成功添加分类",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功添加分类"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task01_add_collection/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task01_add_collection/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task01_add_collection/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }
