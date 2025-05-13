@@ -11,9 +11,9 @@
         ]
     },
     "task_parameters": {
-        "pdf_reader_path": "TODO"
+        "pdf_reader_path": "/home/agent/pdf_reader"
     },
-    "instruction_template": "调整Zotero pdf 阅读器为 ${pdf_reader_path}",
+    "instruction_template": "在打开的Zotero中，调整Zotero pdf 阅读器为 `${pdf_reader_path}`",
     "evaluation_setup": {
         "scripts": [
             {
@@ -29,7 +29,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "pdf_reader_changed": "成功调整使得字体变大"
-    }
+        "pdf_reader_changed": {
+            "description": "成功调整pdf阅读器",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功调整pdf阅读器"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task09_change_pdf_reader/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task09_change_pdf_reader/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task09_change_pdf_reader/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }
