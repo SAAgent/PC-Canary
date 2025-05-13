@@ -1,5 +1,5 @@
 {
-    "task_id": "02",
+    "task_id": "task02_add_sub_collection",
     "task_name": "add_sub_collection",
     "description": "在Zotero分类中中添加子分类",
     "application_info": {
@@ -11,9 +11,13 @@
         ]
     },
     "task_parameters": {
-        "sub_collection_name": "Type-1虚拟化"
+        "sub_collection_name": "libos"
     },
-    "instruction_template": "在zotero中添加子分类为 ${sub_collection_name}",
+    "instruction": "在打开的zotero中的 `MyLibrary` 的 `virtualization`分类中添加子分类为 `Type-1 Hyperviso`，如果没有`virtualization`分类，则先添加`virtualization`分类",
+    "preconditions": {
+        "zotero_running": true
+    },
+    "instruction_template": "在打开的zotero中的 `MyLibrary` 的 `virtualization`分类中添加子分类为 `${sub_collection_name}`，如果没有`virtualization`分类，则先添加`virtualization`分类",
     "evaluation_setup": {
         "scripts": [
             {
@@ -29,7 +33,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "sub_collection_added": "成功添加子分类"
-    }
+        "sub_collection_added": {
+            "description": "成功添加子分类",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功添加子分类"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task02_add_sub_collection/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task02_add_sub_collection/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task02_add_sub_collection/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }
