@@ -11,7 +11,7 @@
         ]
     },
     "task_parameters": {},
-    "instruction_template": "调整Zotero字体，使字体变大",
+    "instruction_template": "调整已经打开的Zotero客户端字体，使字体变大",
     "evaluation_setup": {
         "scripts": [
             {
@@ -27,7 +27,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "font_size_changed_bigger": "成功调整使得字体变大"
-    }
+        "font_size_changed": {
+            "description": "成功调整字体",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功调整字体"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task08_change_font_size/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task08_change_font_size/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task08_change_font_size/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }
