@@ -11,10 +11,10 @@
         ]
     },
     "task_parameters": {
-        "collection_name": "TODO",
-        "item_url": "TODO"
+        "collection_name": "virtualization",
+        "item_url": "10.1109/TC.2024.3383966"
     },
-    "instruction_template": "在zotero中通过${item_url}向${collection_name}中添加条目",
+    "instruction_template": "在打开的zotero中通过doi `${item_url}` 向 `${collection_name}` 分组中添加条目, 如果分组不存在则创建",
     "evaluation_setup": {
         "scripts": [
             {
@@ -30,7 +30,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "item_added": "成功添加条目"
-    }
+        "item_added": {
+            "description": "成功添加条目",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功添加条目"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task03_add_item/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task03_add_item/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task03_add_item/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }
