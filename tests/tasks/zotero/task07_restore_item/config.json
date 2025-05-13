@@ -11,9 +11,9 @@
         ]
     },
     "task_parameters": {
-        "item_desc": "TODO"
+        "item_desc": "Multi-Grained"
     },
-    "instruction_template": "在zotero中将${item_desc}从Trash中恢复",
+    "instruction_template": "在已经打开的zotero中，从Trash中将标题中包含 `${item_desc}`的条目恢复",
     "evaluation_setup": {
         "scripts": [
             {
@@ -29,7 +29,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "item_restored": "成功将条目从Trash中恢复"
-    }
+        "item_restored": {
+            "description": "成功将条目从Trash中恢复",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功将条目从Trash中恢复"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task07_restore_item/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task07_restore_item/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task07_restore_item/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }

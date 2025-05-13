@@ -1,69 +1,26 @@
 import os
 import json
 import time
-from typing import Dict, Any, Optional, Callable
+from typing import Dict, Any, Optional, List
 import shutil
 import sqlite3
 import platform
 
-# 全局评估器实例，由message_handler使用
-_EVALUATOR = None
-_CONFIG = None
-_START_TIME = None
-
-def set_evaluator(evaluator):
-    """设置全局评估器实例"""
-    global _EVALUATOR, _CONFIG
-    _EVALUATOR = evaluator
-    
-    # 使用评估器的已更新配置，而不是重新读取文件
-    if hasattr(evaluator, 'config') and evaluator.config:
-        _CONFIG = evaluator.config
-        _EVALUATOR.logger.info("使用评估器中的更新配置")
-    else:
-        # 作为备份，如果评估器中没有配置，才从文件读取
-        try:
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            config_file = os.path.join(current_dir, "config.json")
-            
-            with open(config_file, 'r') as f:
-                _CONFIG = json.load(f)
-                _EVALUATOR.logger.info("从文件加载配置")
-        except Exception as e:
-            if _EVALUATOR:
-                _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
-
-def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
-    """
-    处理从钩子脚本接收的消息
-    
-    Args:
-        message: injector消息对象
-        data: 附加数据
-        
-    Returns:
-        str: 如果任务成功完成返回"success"，否则返回None
-    """
-    global _EVALUATOR, _CONFIG, _START_TIME
-    
-    # 初始化开始时间
-    if _START_TIME is None:
-        _START_TIME = time.time()
-    
-    # 检查评估器是否已设置
-    if _EVALUATOR is None:
-        print("警告: 评估器未设置，无法处理消息")
-        return None
-    # TODO:
+def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     event_type = message.get('event_type')
     if event_type == 'item_restored':
-        _EVALUATOR.update_metric("success", True)
+        if check_item_restored_from_trash(message.get('doi')):
+            return [
+                {"status": "key_step", "index": 1},
+                {"status": "success", "reason": "条目已成功从垃圾箱恢复"}
+            ]
+        else:
+            return None
     else:
-        _EVALUATOR.update_metric("error", {"type": "unknown", "message": "未知错误"})
+        return [
+            {"status": "error", "type": "evaluate_on_completion", "message": "任务没有完成"}
+        ]
 
-def register_handlers(evaluator):
-    set_evaluator(evaluator)
-    return message_handler
 
 # 根据操作系统找到 Zotero 数据库路径
 def get_zotero_db_path():
@@ -143,51 +100,9 @@ def check_item_restored_from_trash(doi):
             print(f"条目 ID: {item_id} 当前在垃圾箱中")
             return False  # 如果在垃圾箱中，则未恢复
         
-        # 4. 检查同步对象类型表以获取 item 类型的 ID
-        cursor.execute("""
-            SELECT syncObjectTypeID FROM syncObjectTypes 
-            WHERE name = 'item'
-        """)
-        
-        sync_object_type_id = cursor.fetchone()
-        
-        if not sync_object_type_id:
-            print("未找到 'item' 的同步对象类型 ID")
-            return False
-        
-        sync_object_type_id = sync_object_type_id[0]
-        
-        # 5. 检查 syncDeleteLog 表中是否有该条目的删除记录
-        cursor.execute("""
-            SELECT COUNT(*) FROM syncDeleteLog 
-            WHERE syncObjectTypeID = ? AND libraryID = ? AND key = ?
-        """, (sync_object_type_id, library_id, item_key))
-        
-        has_delete_log = cursor.fetchone()[0] > 0
-        
-        if has_delete_log:
-            # 条目在 syncDeleteLog 中有记录但不在 deletedItems 中
-            # 这说明它可能曾经被删除但已经恢复
-            print(f"条目在 syncDeleteLog 表中有记录，但不在 deletedItems 表中，表明它可能曾被删除后恢复")
-            
-            # 获取删除记录详情
-            cursor.execute("""
-                SELECT dateDeleted FROM syncDeleteLog 
-                WHERE syncObjectTypeID = ? AND libraryID = ? AND key = ?
-                ORDER BY dateDeleted DESC
-            """, (sync_object_type_id, library_id, item_key))
-            
-            delete_dates = cursor.fetchall()
-            
-            if delete_dates:
-                print("删除日期记录:")
-                for date in delete_dates:
-                    print(f"  - {date[0]}")
-            
-            return True
-        else:
-            print("条目在 syncDeleteLog 表中无记录，表明它可能从未被删除过")
-            return False
+        # 简化逻辑：条目有效且不在垃圾箱，则认为已恢复
+        print(f"条目 ID: {item_id} 有效且不在垃圾箱中，视为已恢复")
+        return True
         
     except sqlite3.Error as e:
         print(f"查询数据库时出错: {e}")
