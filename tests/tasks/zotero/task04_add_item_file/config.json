@@ -11,10 +11,10 @@
         ]
     },
     "task_parameters": {
-        "item_desc": "TODO",
-        "pdf_path": "TODO"
+        "item_desc": "10.1109/TC.2024.3383966",
+        "pdf_path": "/home/agent/multi-grained.pdf"
     },
-    "instruction_template": "在zotero向${item_desc}添加附件${pdf_path}",
+    "instruction_template": "在打开的zotero向 doi为 `${item_desc}` 的item 添加附件，附件路径为 `${pdf_path}`",
     "evaluation_setup": {
         "scripts": [
             {
@@ -30,7 +30,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "item_file_added": "成功添加条目附件"
-    }
+        "item_file_added": {
+            "description": "成功添加pdf附件",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功添加pdf附件"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task04_add_item_file/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task04_add_item_file/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task04_add_item_file/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }
