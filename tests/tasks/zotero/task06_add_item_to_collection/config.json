@@ -11,10 +11,10 @@
         ]
     },
     "task_parameters": {
-        "item_desc": "TODO",
-        "collection_desc": "测试"
+        "item_desc": "Multi-Grained",
+        "collection_desc": "Container"
     },
-    "instruction_template": "在zotero中将${item_desc}添加至分组${collection_desc}",
+    "instruction_template": "在打开的zotero `MyLibrary` 中将 `virtualization` 中的 标题包含 `${item_desc}` 的条目添加至分组 `${collection_desc}`, 如果分组不存在则在 `MyLibrary` 下创建",
     "evaluation_setup": {
         "scripts": [
             {
@@ -30,7 +30,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "item_to_collection_added": "成功将条目添加至其他分组"
-    }
+        "item_added": {
+            "description": "成功添加条目",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功添加条目"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task06_add_item_to_collection/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task06_add_item_to_collection/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task06_add_item_to_collection/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }
