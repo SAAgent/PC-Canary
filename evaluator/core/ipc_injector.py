@@ -229,8 +229,8 @@ class IpcInjector:
         
             try:
                 # 启动应用进程
-                log_file_path = os.path.join(self.logger.get_session_info()["session_dir"], "app_output.log")
-                log_file = open(log_file_path, "w")
+                log_file_path = os.path.join("/tmp", "app_output.log")
+                log_file = open(log_file_path, "w+")
                 
                 self.logger.info(f"正在启动应用: {self.app_path}")
                 self.app_process = subprocess.Popen(
