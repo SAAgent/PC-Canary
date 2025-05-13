@@ -11,11 +11,10 @@
         ]
     },
     "task_parameters": {
-        "tag": "TODO",
-        "export_path": "TODO"
+        "tag": "zotero-test",
+        "export_path": "/home/agent/export-items"
     },
-    "instruction_template": "将含有 ${tag} 的 所有条目导出至 ${export_path} 目录下，按item论文的标题命名导出文件",
-    "instruction_template_en": "Export all items with tag ${tag} to ${export_path} directory, named by Arabic numerals",
+    "instruction_template": "在打开的zotero中，将所有分类中的含有 `${tag}` 标签的所有条目，以rdf文件格式导出Note至 `${export_path}` 目录下，以论文的完整标题命名导出文件",
     "evaluation_setup": {
         "scripts": [
             {
@@ -31,8 +30,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "exporting_items_by_tag": "导出一个条目，后续条目正在导出中",
-        "exported_items_by_tag": "批量导出成功"
-    }
+        "exported_items_by_tag": {
+            "description": "批量导出成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "批量导出成功"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task11_batch_export_items_by_tag/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task11_batch_export_items_by_tag/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task11_batch_export_items_by_tag/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }
