@@ -11,10 +11,10 @@
         ]
     },
     "task_parameters": {
-        "collection_desc": "TODO",
-        "dois_file_path": "TODO"
+        "collection_desc": "import_dois",
+        "dois_file_path": "/home/agent/dois"
     },
-    "instruction_template": "读取 ${dois_file_path} 的json文件内容，并导入其中所有的doi url至 ${collection_desc}",
+    "instruction_template": "读取 `${dois_file_path}` 的文本文件内容，其格式为每行一个doi。在已经打开的Zotero中，导入其中所有的doi url至 `${collection_desc}` 分类中，如果不存在该分类，则先创建该分类",
     "evaluation_setup": {
         "scripts": [
             {
@@ -30,8 +30,42 @@
         "evaluator_type": "IpcInjector",
         "evaluate_on_completion": true
     },
+    "total_key_steps": 1,
     "events": {
-        "batch_dois_importing": "导入一个doi，剩余正在导入中",
-        "batch_dois_impoted": "成功导入所有doi"
-    }
+        "imported_items_by_dois": {
+            "description": "批量导入成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "批量导入成功"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task15_batch_import_items_by_dois/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task15_batch_import_items_by_dois/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task15_batch_import_items_by_dois/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
 }
