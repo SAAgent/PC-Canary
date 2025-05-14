@@ -1,0 +1,72 @@
+{
+    "task_id": "08",
+    "task_name": "create_new_project",
+    "description": "在QGIS中创建并保存一个新的项目",
+    "application_info": {
+        "name": "QGIS",
+        "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
+        "args": []
+    },
+    "mcp_servers": [
+        {
+            "command": "python",
+            "args": [
+                "/home/agent/agent-demo/PC-Canary/tests/context_data/QGIS/qgis_config/qgis_mcp/qgis_mcp_server.py"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/QGIS/qgis_sample_data",
+            "to": "/home/agent/testbed/QGIS"
+        },
+        {
+            "from": "tests/context_data/QGIS/qgis_config",
+            "to": "/home/agent/.local/share/QGIS"
+        }
+    ],
+    "task_parameters": {
+        "save_path": "/home/agent/testbed/QGIS/test.qgz"
+    },
+
+    "instruction_template": "在QGIS中创建并保存新项目,路径为${save_path}",
+
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "clear_function_found": {
+            "description": "找到创建新项目的函数",
+            "is_key_step": false
+        },
+        "newProject_created": {
+            "description": "新项目已创建",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "创建新项目成功"
+        },
+        "setPath_function_found": {
+            "description": "找到保存新项目的函数",
+            "is_key_step": false
+        },
+        "newProject_saved": {
+            "description": "新项目被保存",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "保存新项目成功"
+        },
+        "error": {
+            "description": "来自脚本的错误事件",
+            "is_key_step": false
+        }
+    }
+}
