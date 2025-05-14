@@ -1,0 +1,69 @@
+{
+    "task_id": "13",
+    "task_name": "config_vectorLayer_opacity",
+    "description": "在QGIS中设置指定矢量图层的不透明度",
+    "application_info": {
+        "name": "QGIS",
+        "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
+        "args": []
+    },
+    "mcp_servers": [
+        {
+            "command": "python",
+            "args": [
+                "/home/agent/agent-demo/PC-Canary/tests/context_data/QGIS/qgis_config/qgis_mcp/qgis_mcp_server.py"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/QGIS/qgis_sample_data",
+            "to": "/home/agent/testbed/QGIS"
+        },
+        {
+            "from": "tests/context_data/QGIS/qgis_config",
+            "to": "/home/agent/.local/share/QGIS"
+        }
+    ],
+    "task_parameters": {
+        "LayerName": "lakes",
+        "opacity":"85"
+    },
+
+    "instruction_template": "在QGIS中设置图层${LayerName}的不透明度为${opacity}%(0-100%)",
+
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "set_function_found": {
+            "description": "找到设置向量图层不透明度函数",
+            "is_key_step": false
+        },
+        "layer_set": {
+            "description": "检测到待设置颜色的图层名称",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "正在操作预期图层"
+        },
+        "opacity_set": {
+            "description": "预期不透明度已设置",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "设置了预期不透明度"
+        },
+        "error": {
+            "description": "来自脚本的错误事件",
+            "is_key_step": false
+        }
+    }
+}
