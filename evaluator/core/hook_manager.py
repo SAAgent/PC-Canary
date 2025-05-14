@@ -212,4 +212,4 @@ class HookManager:
     def trigger_evaluate_on_completion(self):
         self.eval_handler({
             "type": "send", "payload": { "event": "evaluate_on_completion" }
-        })
+        }, None)
