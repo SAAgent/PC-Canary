@@ -1,0 +1,53 @@
+{
+    "task_id": "06",
+    "task_name": "update_editor_type",
+    "description": "在Joplin中修改当前界面为富文本编辑器",
+
+    "application_info": {
+        "name": "joplin",
+        "executable_path": "/workspace/PC-Canary/apps/joplin/Joplin-3.3.12.AppImage",
+        "args": [
+            "--env", "dev",
+            "--profile", "/workspace/PC-Canary/apps/joplin/joplindev-desktop"
+        ]
+    },
+
+    "task_parameters": {
+        "editor_type": "richtext"
+    },
+
+    "instruction_template": "在Joplin中修改当前界面为富文本编辑器模式",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 15,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "joplin_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时判断编辑器类型是否为富文本编辑器",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "界面已成功切换为富文本编辑器"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "/home/user/.local/bin/uv",
+            "args": [
+                "--directory",
+                "/home/user/Desktop/joplin-mcp-server",
+                "run",
+                "src/mcp/joplin_mcp.py"
+            ]
+        }
+    ]
+}
