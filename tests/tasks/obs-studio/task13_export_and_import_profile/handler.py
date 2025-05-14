@@ -7,11 +7,14 @@ from typing import Dict, Any, Optional, List
 step = 0
 config_path = ""
 
-def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
+
+def message_handler(
+    message: Dict[str, Any], logger, task_parameter: Dict[str, Any]
+) -> Optional[List[Dict[str, Any]]]:
     global step, config_path
     print(message)
-    payload = message['payload']
-    event_type = payload['event']
+    payload = message["payload"]
+    event_type = payload["event"]
     logger.debug(f"Received event: {event_type}")
     if event_type == "export_success":
         export_path = task_parameter.get("export_path", "")
@@ -24,13 +27,19 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             ]
         else:
             return [
-                {"status": "error", "reason": "script_error", "message": "Cannot find the corresponding configuration file"},
+                {
+                    "status": "error",
+                    "reason": "script_error",
+                    "message": "Cannot find the corresponding configuration file",
+                },
             ]
-            
+
     elif event_type == "import_success":
         import_path = task_parameter.get("import_path", "")
         have_dir = os.path.exists(import_path)
-        success = (True if payload.get("import_success", "") == "True" else False) and have_dir
+        success = (
+            True if payload.get("import_success", "") == "True" else False
+        ) and have_dir
         found_import = False
         if config_path.endswith("/*"):
             config_path = config_path[:-2]
@@ -48,7 +57,10 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
         if success and step == 1 and found_import:
             return [
                 {"status": "key_step", "index": 2},
-                {"status": "success", "reason": "Successfully imported configuration file"},
+                {
+                    "status": "success",
+                    "reason": "Successfully imported configuration file",
+                },
             ]
 
     elif event_type == "get_config_path":
