@@ -1,9 +1,9 @@
 (function () {
-    // 脚本设置
-    const MESSAGE_script_initialized = "监控脚本已启动";
-    const MESSAGE_hook_installed = "监控钩子安装完成，等待操作...";
+    // Script settings
+    const MESSAGE_script_initialized = "Monitoring script has started";
+    const MESSAGE_hook_installed = "Monitoring hook installed, waiting for operation...";
 
-    // 向评估系统发送事件
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         console.log("[Event]", eventType, JSON.stringify(data, null, 2));
         const payload = {
@@ -14,23 +14,23 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName, symbolName) {
-        console.log(`[Debug] 尝试获取函数 ${functionName} (符号: ${symbolName}) 的地址`);
+        console.log(`[Debug] Attempting to get address of function ${functionName} (symbol: ${symbolName})`);
 
         const funcAddr = DebugSymbol.getFunctionByName(symbolName);
         if (!funcAddr) {
-            console.log(`[Error] 无法找到函数 ${functionName} (符号: ${symbolName})`);
+            console.log(`[Error] Unable to find function ${functionName} (symbol: ${symbolName})`);
             return null;
         }
 
-        console.log(`[Debug] 找到函数 ${functionName} (符号: ${symbolName}) 的实际地址: ${funcAddr.toString()}`);
+        console.log(`[Debug] Found actual address of function ${functionName} (symbol: ${symbolName}): ${funcAddr.toString()}`);
         return funcAddr;
     }
 
-    // 初始化转场配置钩子
+    // Initialize transition configuration hook
     function hookTransitionConfig() {
-        // 监控转场开始函数
+        // Monitor transition start function
         let startFunc = "obs_transition_start";
         let startSymbol = "obs_transition_start";
 
@@ -41,11 +41,11 @@
                     this.transition = args[0];
                     this.duration = args[2].toInt32();
                     this.dest = args[3];
-                    console.log(`[Debug] 转场开始函数被调用，持续时间：${this.duration}ms`);
+                    console.log(`[Debug] Transition start function called, duration: ${this.duration}ms`);
                 },
                 
                 onLeave(retval) {
-                    // 获取转场名称
+                    // Get transition name
                     const getSourceName = new NativeFunction(
                         DebugSymbol.getFunctionByName("obs_source_get_name"),
                         'pointer',
@@ -55,9 +55,9 @@
                     const transitionName = namePtr.readCString();
                     const destName = getSourceName(this.dest).readCString();
 
-                    console.log(`[Debug] 转场开始：类型=${transitionName}，持续时间=${this.duration}ms`);
+                    console.log(`[Debug] Transition started: type=${transitionName}, duration=${this.duration}ms`);
                     
-                    // 发送转场配置信息
+                    // Send transition configuration information
                     sendEvent("transition_executed", {
                         transition_name: transitionName,
                         duration_ms: this.duration,
@@ -69,24 +69,24 @@
         }
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
-        console.log("[Init] 开始初始化钩子");
+        console.log("[Init] Starting hook initialization");
         sendEvent("script_initialized", {
             message: MESSAGE_script_initialized
         });
 
-        // 初始化转场配置钩子
+        // Initialize transition configuration hook
         hookTransitionConfig();
         
-        console.log("[Init] 钩子初始化完成");
+        console.log("[Init] Hook initialization completed");
         sendEvent("hook_installed", {
             message: MESSAGE_hook_installed
         });
     }
 
-    // 启动脚本
-    console.log("[Start] 脚本开始执行");
+    // Start script
+    console.log("[Start] Script execution started");
     initHook();
-    console.log("[Start] 脚本执行完成，等待事件...");
-})(); 
+    console.log("[Start] Script execution completed, waiting for events...");
+})();

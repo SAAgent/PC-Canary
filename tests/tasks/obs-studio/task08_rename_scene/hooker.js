@@ -1,5 +1,5 @@
 (function () {
-    // 脚本设置
+    // Script settings
     const FUNCTION_NAME = "OBSBasic::Save";
     const FUNCTION_SYMBOL = "_ZN8OBSBasic4SaveEPKc";
     const FUNCTION_RENAME_SOURCES_NAME = "OBSBasic::RenameSources";
@@ -9,15 +9,15 @@
     const EVENT_ON_LEAVE = "function returned";
     const EVENT_ON_SUCCESS = "scene_json_path";
     const EVENT_RENAME_SUCCESS = "rename_success";
-    
-    const MESSAGE_called = "拦截到函数调用";
-    const MESSAGE_returned = "函数返回";
-    const MESSAGE_ON_SUCCESS = "写入配置文件操作完成";
-    const MESSAGE_RENAME_ON_SUCCESS = "重命名场景操作完成";
-    const MESSAGE_script_initialized = "监控脚本已启动";
-    const MESSAGE_hook_installed = "监控钩子安装完成，等待操作...";
 
-    // 向评估系统发送事件
+    const MESSAGE_called = "Intercepted function call";
+    const MESSAGE_returned = "Function returned";
+    const MESSAGE_ON_SUCCESS = "Configuration file write operation completed";
+    const MESSAGE_RENAME_ON_SUCCESS = "Scene rename operation completed";
+    const MESSAGE_script_initialized = "Monitoring script has started";
+    const MESSAGE_hook_installed = "Monitoring hook installed, waiting for operation...";
+
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -27,25 +27,25 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName) {
         const funcAddr = DebugSymbol.getFunctionByName(functionName);
         if (!funcAddr) {
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Cannot find function ${functionName}`
             });
             return null;
         }
 
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found the actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 初始化录制更新钩子
+    // Initialize recording update hooks
     function initHook_save() {
         const funcAddr = getFunctionAddress(FUNCTION_SYMBOL);
         if (!funcAddr) {
@@ -61,7 +61,7 @@
                 });
                 this.file_path = args[1];
             },
-            
+
             onLeave(retval) {
                 sendEvent(EVENT_ON_LEAVE, {
                     message: MESSAGE_returned,
@@ -74,7 +74,7 @@
                     path: val,
                 });
             }
-        })
+        });
     }
 
     function initHook_rename() {
@@ -93,7 +93,7 @@
                 this.prev_name = args[2];
                 this.new_name = args[1];
             },
-            
+
             onLeave(retval) {
                 sendEvent(EVENT_ON_LEAVE, {
                     message: MESSAGE_returned,
@@ -106,16 +106,16 @@
                     new_name: this.new_name,
                 });
             }
-        })
+        });
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
         sendEvent("script_initialized", {
             message: MESSAGE_script_initialized
         });
 
-        // 初始化各个钩子
+        // Initialize individual hooks
         initHook_save();
         initHook_rename();
         sendEvent("hook_installed", {
@@ -123,6 +123,6 @@
         });
     }
 
-    // 启动脚本
+    // Start script
     initHook();
-})(); 
+})();

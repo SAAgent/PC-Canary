@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import time
 from typing import Dict, Any, Optional, List
 
 step = 0
 
 def check_transition(transition_name: str, duration_ms: int, dest: str, logger, task_parameter) -> Optional[List[Dict[str, Any]]]:
-    """检查转场配置是否符合要求"""
+    """Check if the transition configuration meets the requirements"""
     global step
     expected_name = task_parameter["transition_name"]
     expected_duration = task_parameter["duration_ms"]
@@ -28,7 +27,7 @@ def check_transition(transition_name: str, duration_ms: int, dest: str, logger, 
     
     if dest_match and step == 2:
         key_step.append({"status": "key_step", "index":3})
-        key_step.append({"status": "success", "reason": "name and duration matched"})
+        key_step.append({"status": "success", "reason": "Name and duration matched"})
         
     return None if len(key_step) == 0 else key_step
 
@@ -37,9 +36,9 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
     payload = message['payload']
     print(payload)
     event_type = payload['event']
-    logger.debug(f"接收到事件: {event_type}")
+    logger.debug(f"Received event: {event_type}")
 
-    # 处理转场执行事件
+    # Handle transition execution event
     if event_type == "transition_executed":
         transition_name = payload.get("transition_name")
         duration_ms = payload.get("duration_ms")

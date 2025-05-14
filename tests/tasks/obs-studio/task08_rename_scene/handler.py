@@ -5,13 +5,12 @@ from typing import Dict, Any, Optional, List
 import json
 
 _EVENT_SUCCESS = "scene_json_path"
-_EVENT_RENAME_SUCCESS = "rename_success"
 _PAYLOAD_SUCCESS = "path"
 
 def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     payload = message['payload']
     event_type = payload['event']
-    logger.debug(f"接收到事件: {event_type}")
+    logger.debug(f"receive: {event_type}")
     if event_type == _EVENT_SUCCESS:
         logger.info(payload.get("message", ""))     
         old = task_parameter.get("old_scene_name", "")
@@ -32,7 +31,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             if (not flag_old and flag_new):
                 return [
                     {"status": "key_step", "index": 1},
-                    {"status": "success", "reason": "成功重命名场景"},
+                    {"status": "success", "reason": "rename scene success"},
                 ]
     return None
 

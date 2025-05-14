@@ -1,12 +1,12 @@
-// OBS录制更新监控钩子脚本
-// 用于监听OBS的录制更新操作
+// OBS recording update monitoring hook script
+// Used to monitor OBS recording update operations
 
 (function () {
-    // 脚本设置
+    // Script settings
     const FUNCTION_obs_output_stop = "obs_output_stop";
     const FUNCTION_obs_output_force_stop = "obs_output_force_stop";
 
-    // 向评估系统发送事件
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -16,25 +16,25 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName) {
         const funcAddr = DebugSymbol.getFunctionByName(functionName);
         if (!funcAddr) {
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Cannot find function ${functionName}`
             });
             return null;
         }
 
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found the actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 初始化录制更新钩子
+    // Initialize recording update hooks
     function initStopRecordingHook() {
 
         const obsOutputStopFuncAddr = getFunctionAddress(FUNCTION_obs_output_stop);
@@ -50,13 +50,13 @@
         Interceptor.attach(obsOutputStopFuncAddr, {
             onEnter: function(args) {
                 sendEvent("obs_output_stop_called", {
-                    message: "拦截到结束录制的函数调用"
+                    message: "Intercepted the function call to stop recording"
                 });
             },
 
             onLeave: function(retval) {
                 sendEvent("obs_output_stop_returned", {
-                    message: "结束录制函数返回"
+                    message: "Stop recording function returned"
                 });
             }
         });
@@ -64,31 +64,31 @@
         Interceptor.attach(obsOutputFroceStopFuncAddr, {
             onEnter: function(args) {
                 sendEvent("obs_output_force_stop_called", {
-                    message: "拦截到强制结束录制的函数调用"
+                    message: "Intercepted the function call to force stop recording"
                 });
             },
 
             onLeave: function(retval) {
                 sendEvent("obs_output_force_stop_returned", {
-                    message: "强制结束录制函数返回"
+                    message: "Force stop recording function returned"
                 });
             }
         });
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
         sendEvent("script_initialized", {
-            message: "OBS结束录制的监控脚本已启动"
+            message: "OBS stop recording monitoring script has started"
         });
 
-        // 初始化各个钩子
+        // Initialize each hook
         initStopRecordingHook();
         sendEvent("hook_installed", {
-            message: "结束录制的监控钩子安装完成，等待操作..."
+            message: "Stop recording monitoring hook installed, waiting for operation..."
         });
     }
 
-    // 启动脚本
+    // Start script
     initHook();
-})(); 
+})();

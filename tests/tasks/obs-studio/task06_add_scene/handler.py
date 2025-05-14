@@ -7,9 +7,12 @@ _EVENT_SUCCESS = "scene_json_path"
 _PAYLOAD_SUCCESS = "path"
 
 def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    payload = message['payload']
+    payload = message.get('payload')
+    if not payload or not isinstance(payload, dict):
+        logger.error(message)
+        return None
     event_type = payload['event']
-    logger.debug(f"接收到事件: {event_type}")
+    logger.debug(f"receive: {event_type}")
     if event_type == _EVENT_SUCCESS:
         logger.info(payload.get("message", ""))     
         expected = task_parameter.get("new_scene_name", "")
@@ -26,6 +29,6 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             if (flag):
                 return [
                     {"status": "key_step", "index": 1},
-                    {"status": "success", "reason": "成功创建场景"},
+                    {"status": "success", "reason": "create scene success"},
                 ]
     return None

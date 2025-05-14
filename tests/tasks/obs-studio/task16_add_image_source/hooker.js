@@ -1,16 +1,16 @@
-// 用于监控OBS Studio中添加图像源和设置不透明度的操作
+// Used to monitor the addition of image sources and setting opacity in OBS Studio
 
 (function () {
-    // 脚本设置
+    // Script settings
     const EVENT_ON_ENTER = "function called";
     const EVENT_ON_LEAVE = "function returned";
-    
-    const MESSAGE_source_created = "图像源创建成功";
-    const MESSAGE_opacity_set = "不透明度设置成功";
-    const MESSAGE_script_initialized = "监控脚本已启动";
-    const MESSAGE_hook_installed = "监控钩子安装完成，等待操作...";
 
-    // 向评估系统发送事件
+    const MESSAGE_source_created = "Image source created successfully";
+    const MESSAGE_opacity_set = "Opacity set successfully";
+    const MESSAGE_script_initialized = "Monitoring script has started";
+    const MESSAGE_hook_installed = "Monitoring hook installed, waiting for operation...";
+
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         console.log("[Event]", eventType, JSON.stringify(data, null, 2));
         const payload = {
@@ -21,33 +21,33 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName) {
-        console.log("[Debug] 正在查找函数:", functionName);
+        console.log("[Debug] Searching for function:", functionName);
         const funcAddr = DebugSymbol.getFunctionByName(functionName);
         if (!funcAddr) {
-            console.log("[Error] 未找到函数:", functionName);
+            console.log("[Error] Function not found:", functionName);
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Cannot find function ${functionName}`
             });
             return null;
         }
 
-        console.log("[Debug] 找到函数地址:", functionName, funcAddr);
+        console.log("[Debug] Found function address:", functionName, funcAddr);
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found the actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 存储已创建的图像源
+    // Store created image sources
     const imageSources = new Map();
 
-    // 监控图像源的创建
+    // Monitor image source creation
     function hookSourceCreate() {
-        console.log("[Hook] 开始设置obs_source_create钩子");
+        console.log("[Hook] Setting up obs_source_create hook");
         const funcAddr = getFunctionAddress("obs_source_create");
         if (!funcAddr) return;
 
@@ -55,32 +55,32 @@
             onEnter(args) {
                 this.source_id = args[0].readCString(-1);
                 console.log("[obs_source_create] onEnter - source_id:", this.source_id);
-                
+
                 if (this.source_id === "image_source") {
-                    console.log("[obs_source_create] 检测到图像源创建");
+                    console.log("[obs_source_create] Detected image source creation");
                     sendEvent(EVENT_ON_ENTER, {
                         function: "obs_source_create",
-                        message: "正在创建图像源"
+                        message: "Creating image source"
                     });
                 }
             },
             onLeave(retval) {
                 if (this.source_id === "image_source" && retval != 0) {
-                    console.log("[obs_source_create] 图像源创建完成，源指针:", retval);
-                    // 保存源指针以便后续使用
+                    console.log("[obs_source_create] Image source creation completed, source pointer:", retval);
+                    // Save source pointer for later use
                     imageSources.set(retval.toString(), {
                         ptr: retval,
                         properties: {}
                     });
-                    console.log("[Debug] 当前跟踪的图像源数量:", imageSources.size);
+                    console.log("[Debug] Current tracked image sources count:", imageSources.size);
                 }
             }
         });
     }
 
-    // 监控源属性更新
+    // Monitor source property updates
     function hookSourceUpdate() {
-        console.log("[Hook] 开始设置obs_source_update钩子");
+        console.log("[Hook] Setting up obs_source_update hook");
         const funcAddr = getFunctionAddress("obs_source_update");
         if (!funcAddr) return;
 
@@ -90,23 +90,23 @@
                 this.settings = args[1];
 
                 if (this.source && imageSources.has(this.source.toString())) {
-                    console.log("[obs_source_update] 检测到已跟踪的图像源更新");
+                    console.log("[obs_source_update] Detected tracked image source update");
                     try {
                         const settings = new OBSData(this.settings);
                         const source = new OBSSource(this.source);
                         const source_name = source.getName();
                         const image_path = settings.getString("file");
-                        
-                        console.log("[obs_source_update] 属性值 - source_name:", source_name);
-                        console.log("[obs_source_update] 属性值 - image_path:", image_path);
-                        
+
+                        console.log("[obs_source_update] Property values - source_name:", source_name);
+                        console.log("[obs_source_update] Property values - image_path:", image_path);
+
                         if (source_name && image_path) {
                             const sourceInfo = imageSources.get(this.source.toString());
                             sourceInfo.properties = {
                                 source_name: source_name,
                                 image_path: image_path
                             };
-                            
+
                             sendEvent("image_source_added", {
                                 source_name: source_name,
                                 image_path: image_path,
@@ -114,16 +114,16 @@
                             });
                         }
                     } catch (error) {
-                        console.log("[Error] obs_source_update处理失败:", error);
+                        console.log("[Error] Failed to process obs_source_update:", error);
                     }
                 }
             }
         });
     }
 
-    // 监控滤镜的添加
+    // Monitor filter addition
     function hookFilterAdd() {
-        console.log("[Hook] 开始设置obs_source_filter_add钩子");
+        console.log("[Hook] Setting up obs_source_filter_add hook");
         const funcAddr = getFunctionAddress("obs_source_filter_add");
         if (!funcAddr) return;
 
@@ -131,14 +131,14 @@
             onEnter(args) {
                 this.source = args[0];
                 this.filter = args[1];
-                
+
                 if (this.source && imageSources.has(this.source.toString())) {
                     try {
                         const source = new OBSSource(this.source);
                         const filter = new OBSSource(this.filter);
                         const source_name = source.getName();
                         const filter_id = filter.getId();
-                        
+
                         console.log("[obs_source_filter_add] source:", source_name);
                         console.log("[obs_source_filter_add] filter_id:", filter_id);
 
@@ -150,9 +150,9 @@
                         const settingsPtr = obs_source_get_settings(this.filter);
                         const settings = new OBSData(settingsPtr);
                         const opacity = settings.getDouble("opacity", 1.0);
-                        console.log("[obs_source_filter_add] 不透明度:", opacity);
-                        
-                        // 保存滤镜信息以便后续处理
+                        console.log("[obs_source_filter_add] Opacity:", opacity);
+
+                        // Save filter information for later processing
                         if (filter_id === "color_key_filter_v2" || filter_id === "chroma_key_filter_v2") {
                             const sourceInfo = imageSources.get(this.source.toString());
                             sourceInfo.filter = this.filter;
@@ -161,21 +161,21 @@
                             sendEvent("filter_added", {
                                 source_name: source_name,
                                 filter_id: filter_id,
-                                opacity: opacity * 100,  // 转换为百分比
-                                message: "滤镜添加成功"
+                                opacity: opacity * 100,  // Convert to percentage
+                                message: "Filter added successfully"
                             });
                         }
                     } catch (error) {
-                        console.log("[Error] 获取滤镜信息失败:", error);
+                        console.log("[Error] Failed to retrieve filter information:", error);
                     }
                 }
             }
         });
     }
 
-    // 监控滤镜属性更新
+    // Monitor filter property updates
     function hookFilterUpdate() {
-        console.log("[Hook] 开始设置obs_source_update钩子（用于滤镜）");
+        console.log("[Hook] Setting up obs_source_update hook (for filters)");
         const funcAddr = getFunctionAddress("obs_source_update");
         if (!funcAddr) return;
 
@@ -184,26 +184,26 @@
                 this.source = args[0];
                 this.settings = args[1];
 
-                // 检查所有图像源的滤镜
+                // Check all image sources' filters
                 for (const [_, sourceInfo] of imageSources) {
                     if (sourceInfo.filter && this.source.equals(sourceInfo.filter)) {
                         try {
                             const settings = new OBSData(this.settings);
                             const opacity = settings.getDouble("opacity", 1.0);
-                            // 使用图像源的指针而不是滤镜的指针
+                            // Use the image source's pointer instead of the filter's pointer
                             const source = new OBSSource(sourceInfo.ptr);
                             const source_name = source.getName();
 
-                            console.log("[Filter Update] 源:", source_name);
-                            console.log("[Filter Update] 不透明度:", opacity);
+                            console.log("[Filter Update] Source:", source_name);
+                            console.log("[Filter Update] Opacity:", opacity);
 
                             sendEvent("opacity_set", {
                                 source_name: source_name,
-                                opacity: opacity * 100,  // 转换为百分比
+                                opacity: opacity * 100,  // Convert to percentage
                                 message: MESSAGE_opacity_set
                             });
                         } catch (error) {
-                            console.log("[Error] 处理滤镜更新失败:", error);
+                            console.log("[Error] Failed to process filter update:", error);
                         }
                         break;
                     }
@@ -212,15 +212,15 @@
         });
     }
 
-    // OBSData类用于解析OBS的数据结构
+    // OBSData class for parsing OBS data structures
     class OBSData {
         constructor(ptr) {
-            console.log("[OBSData] 创建新实例，指针:", ptr);
+            console.log("[OBSData] Creating new instance, pointer:", ptr);
             this.ptr = ptr;
         }
-        
+
         getString(key) {
-            console.log("[OBSData] 获取字符串值，键:", key);
+            console.log("[OBSData] Retrieving string value, key:", key);
             const func = new NativeFunction(
                 getFunctionAddress("obs_data_get_string"),
                 'pointer',
@@ -229,12 +229,12 @@
             const keyPtr = Memory.allocUtf8String(key);
             const strPtr = func(this.ptr, keyPtr);
             const value = strPtr.readCString(-1);
-            console.log("[OBSData] 获取到的值:", value);
+            console.log("[OBSData] Retrieved value:", value);
             return value;
         }
 
         getDouble(key, defaultValue = 1.0) {
-            console.log("[OBSData] 获取浮点数值，键:", key);
+            console.log("[OBSData] Retrieving double value, key:", key);
             const func = new NativeFunction(
                 getFunctionAddress("obs_data_get_double"),
                 'double',
@@ -242,20 +242,20 @@
             );
             const keyPtr = Memory.allocUtf8String(key);
             const value = func(this.ptr, keyPtr, defaultValue);
-            console.log("[OBSData] 获取到的值:", value);
+            console.log("[OBSData] Retrieved value:", value);
             return value;
         }
     }
 
-    // OBSSource类用于操作OBS的源
+    // OBSSource class for manipulating OBS sources
     class OBSSource {
         constructor(ptr) {
-            console.log("[OBSSource] 创建新实例，指针:", ptr);
+            console.log("[OBSSource] Creating new instance, pointer:", ptr);
             this.ptr = ptr;
         }
-        
+
         getName() {
-            console.log("[OBSSource] 获取源名称");
+            console.log("[OBSSource] Retrieving source name");
             const func = new NativeFunction(
                 getFunctionAddress("obs_source_get_name"),
                 'pointer',
@@ -263,12 +263,12 @@
             );
             const namePtr = func(this.ptr);
             const name = namePtr.readCString(-1);
-            console.log("[OBSSource] 获取到的源名称:", name);
+            console.log("[OBSSource] Retrieved source name:", name);
             return name;
         }
 
         getId() {
-            console.log("[OBSSource] 获取源ID");
+            console.log("[OBSSource] Retrieving source ID");
             const func = new NativeFunction(
                 getFunctionAddress("obs_source_get_id"),
                 'pointer',
@@ -276,32 +276,32 @@
             );
             const idPtr = func(this.ptr);
             const id = idPtr.readCString(-1);
-            console.log("[OBSSource] 获取到的源ID:", id);
+            console.log("[OBSSource] Retrieved source ID:", id);
             return id;
         }
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
-        console.log("[Init] 开始初始化钩子");
+        console.log("[Init] Starting hook initialization");
         sendEvent("script_initialized", {
             message: MESSAGE_script_initialized
         });
 
-        // 初始化各个钩子
+        // Initialize individual hooks
         hookSourceCreate();
         hookSourceUpdate();
         hookFilterAdd();
         hookFilterUpdate();
 
-        console.log("[Init] 钩子初始化完成");
+        console.log("[Init] Hook initialization completed");
         sendEvent("hook_installed", {
             message: MESSAGE_hook_installed
         });
     }
 
-    // 启动脚本
-    console.log("[Start] 脚本开始执行");
+    // Start script
+    console.log("[Start] Script execution started");
     initHook();
-    console.log("[Start] 脚本执行完成，等待事件...");
-})(); 
+    console.log("[Start] Script execution completed, waiting for events...");
+})();

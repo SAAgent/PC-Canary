@@ -1,11 +1,11 @@
-// OBS录制更新监控钩子脚本
-// 用于监听OBS的录制更新操作
+// OBS Recording Update Monitor Hook Script
+// Used to monitor OBS recording update operations
 
 (function () {
-    // 脚本设置
+    // Script settings
     const FUNCTION_NAME_StartRecording = "_ZN12SimpleOutput14StartRecordingEv";
 
-    // 向评估系统发送事件
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -15,25 +15,25 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName) {
         const funcAddr = DebugSymbol.getFunctionByName(functionName);
         if (!funcAddr) {
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Unable to find function ${functionName}`
             });
             return null;
         }
 
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found the actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 初始化录制更新钩子
+    // Initialize recording update hook
     function initStartRecordingHook() {
         const startRecrodingFuncAddr = getFunctionAddress(FUNCTION_NAME_StartRecording);
         if (!startRecrodingFuncAddr) {
@@ -43,36 +43,36 @@
         Interceptor.attach(startRecrodingFuncAddr, {
             onEnter: function(args) {
                 sendEvent("start_recording_called", {
-                    message: "拦截到录制更新函数调用"
+                    message: "Intercepted call to recording update function"
                 });
             },
 
             onLeave: function(retval) {
                 sendEvent("start_recording_returned", {
-                    message: "录制更新函数返回"
+                    message: "Recording update function returned"
                 });
                 
                 sendEvent("is_recording_active", {
                     recording: retval,
-                    message: `当前录制状态: ${retval}`
+                    message: `Current recording status: ${retval}`
                 });
             }
         });
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
         sendEvent("script_initialized", {
-            message: "OBS录制更新监控脚本已启动"
+            message: "OBS recording update monitoring script started"
         });
 
-        // 初始化各个钩子
+        // Initialize individual hooks
         initStartRecordingHook();
         sendEvent("hook_installed", {
-            message: "录制更新监控钩子安装完成，等待操作..."
+            message: "Recording update monitoring hook installed, waiting for operations..."
         });
     }
 
-    // 启动脚本
+    // Start script
     initHook();
-})(); 
+})();

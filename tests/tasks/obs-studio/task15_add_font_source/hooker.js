@@ -1,14 +1,14 @@
 (function () {
-    // 脚本设置
+    // Script settings
     const EVENT_ON_ENTER = "function called";
     const EVENT_ON_LEAVE = "function returned";
-    
-    const MESSAGE_called = "拦截到函数调用";
-    const MESSAGE_returned = "函数返回";
-    const MESSAGE_script_initialized = "监控脚本已启动";
-    const MESSAGE_hook_installed = "监控钩子安装完成，等待操作...";
 
-    // 向评估系统发送事件
+    const MESSAGE_called = "Intercepted function call";
+    const MESSAGE_returned = "Function returned";
+    const MESSAGE_script_initialized = "Monitoring script has started";
+    const MESSAGE_hook_installed = "Monitoring hook installed, waiting for operation...";
+
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -18,25 +18,25 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName) {
         const funcAddr = DebugSymbol.getFunctionByName(functionName);
         if (!funcAddr) {
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Cannot find function ${functionName}`
             });
             return null;
         }
 
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found the actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 初始化录制更新钩子
+    // Initialize recording update hooks
     function hook() {
         let function_name = "OBSBasic::Save";
         let symbol_name = "_ZN8OBSBasic4SaveEPKc";
@@ -50,7 +50,7 @@
                 });
                 this.file = args[1].readCString(-1);
             },
-            
+
             onLeave(retval) {
                 sendEvent(EVENT_ON_LEAVE, {
                     message: MESSAGE_returned,
@@ -62,19 +62,19 @@
         });
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
         sendEvent("script_initialized", {
             message: MESSAGE_script_initialized
         });
 
-        // 初始化各个钩子
+        // Initialize individual hooks
         hook();
         sendEvent("hook_installed", {
             message: MESSAGE_hook_installed
         });
     }
 
-    // 启动脚本
+    // Start script
     initHook();
-})(); 
+})();

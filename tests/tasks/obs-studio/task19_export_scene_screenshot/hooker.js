@@ -1,5 +1,5 @@
 (function () {
-    // 脚本设置
+    // Script settings
     const FUNCTION_MUXANDFINISH = "ScreenshotObj::MuxAndFinish";
     const FUNCTION_SCREENSHOT = "OBSBasic::Screenshot";
     const FUNCTION_GETOUTPUTFILENAME = "GetOutputFilename";
@@ -13,16 +13,16 @@
     const EVENT_ON_SUCCESS = "screenshot_saved";
     const EVENT_ON_ERROR = "screenshot_error";
     
-    const MESSAGE_screenshot_called = "拦截到截图函数调用";
-    const MESSAGE_screenshot_returned = "截图函数返回";
-    const MESSAGE_getfilename_called = "拦截到获取文件名函数调用";
-    const MESSAGE_getfilename_returned = "获取文件名函数返回";
-    const MESSAGE_ON_SUCCESS = "截图保存成功";
-    const MESSAGE_ON_ERROR = "截图保存失败";
-    const MESSAGE_script_initialized = "监控脚本已启动";
-    const MESSAGE_hook_installed = "监控钩子安装完成，等待操作...";
+    const MESSAGE_screenshot_called = "Intercepted screenshot function call";
+    const MESSAGE_screenshot_returned = "Screenshot function returned";
+    const MESSAGE_getfilename_called = "Intercepted get filename function call";
+    const MESSAGE_getfilename_returned = "Get filename function returned";
+    const MESSAGE_ON_SUCCESS = "Screenshot saved successfully";
+    const MESSAGE_ON_ERROR = "Screenshot save failed";
+    const MESSAGE_script_initialized = "Monitoring script has started";
+    const MESSAGE_hook_installed = "Monitoring hook installed, waiting for operation...";
 
-    // 向评估系统发送事件
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -32,25 +32,25 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName) {
         const funcAddr = DebugSymbol.getFunctionByName(functionName);
         if (!funcAddr) {
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Unable to find function ${functionName}`
             });
             return null;
         }
 
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 初始化截图钩子
+    // Initialize screenshot hook
     function initHook_screenshot() {
         const funcAddr = getFunctionAddress(SYMBOL_SCREENSHOT);
         if (!funcAddr) {
@@ -66,11 +66,11 @@
                         symbol: SYMBOL_SCREENSHOT
                     });
                     
-                    // 保存source参数供后续使用
+                    // Save source parameter for later use
                     this.source = args[1];
                 } catch (error) {
                     sendEvent(EVENT_ON_ERROR, {
-                        message: "截图函数调用参数获取失败",
+                        message: "Failed to retrieve screenshot function call parameters",
                         error: error.toString()
                     });
                 }
@@ -86,7 +86,7 @@
                     });
                 } catch (error) {
                     sendEvent(EVENT_ON_ERROR, {
-                        message: "截图函数返回值获取失败",
+                        message: "Failed to retrieve screenshot function return value",
                         error: error.toString()
                     });
                 }
@@ -94,7 +94,7 @@
         });
     }
 
-    // 初始化获取文件名钩子
+    // Initialize get filename hook
     function initHook_getOutputFilename() {
         const funcAddr = getFunctionAddress(SYMBOL_GETOUTPUTFILENAME);
         if (!funcAddr) {
@@ -111,7 +111,7 @@
                         symbol: SYMBOL_GETOUTPUTFILENAME
                     });
                     
-                    // 保存参数供onLeave使用
+                    // Save parameters for onLeave use
                     this.path = args[0].readCString();
                     this.container = args[1].readCString();
                     this.noSpace = args[2].toInt32();
@@ -119,7 +119,7 @@
                     this.format = args[4].readCString();
                 } catch (error) {
                     sendEvent(EVENT_ON_ERROR, {
-                        message: "获取文件名函数参数获取失败",
+                        message: "Failed to retrieve get filename function parameters",
                         error: error.toString()
                     });
                 }
@@ -127,7 +127,7 @@
             
             onLeave(retval) {
                 try {
-                    // 获取返回的文件路径
+                    // Retrieve returned file path
                     const filePath = retval.readPointer().readCString();
                     console.log(filePath);
                     
@@ -143,14 +143,14 @@
                         filePath: filePath
                     });
                     
-                    // 发送截图保存路径事件
+                    // Send screenshot save path event
                     sendEvent(EVENT_GET_PATH, {
-                        message: "获得了保存的路径",
+                        message: "Obtained saved path",
                         save_path: filePath
                     });
                 } catch (error) {
                     sendEvent(EVENT_ON_ERROR, {
-                        message: "获取文件名函数返回值获取失败",
+                        message: "Failed to retrieve get filename function return value",
                         error: error.toString()
                     });
                 }
@@ -169,13 +169,13 @@
                 console.log("call muxandfinish");
                 try {
                     sendEvent(EVENT_ON_ENTER, {
-                        message: "muxAndFinish 调用",
+                        message: "muxAndFinish called",
                         function: FUNCTION_MUXANDFINISH,
                         symbol: SYMBOL_MUXANDFINISH
                     });
                 } catch (error) {
                     sendEvent(EVENT_ON_ERROR, {
-                        message: "muxAndFinish 函数调用失败",
+                        message: "muxAndFinish function call failed",
                         error: error.toString()
                     });
                 }
@@ -183,7 +183,7 @@
             onLeave(retval) {
                 try {
                     sendEvent(EVENT_ON_LEAVE, {
-                        message: "muxAndFinish 退出",
+                        message: "muxAndFinish exited",
                         function: FUNCTION_MUXANDFINISH,
                         symbol: SYMBOL_MUXANDFINISH
                     });
@@ -192,7 +192,7 @@
                     });
                 } catch (error) {
                     sendEvent(EVENT_ON_ERROR, {
-                        message: "muxAndFinish 函数返回处理失败",
+                        message: "muxAndFinish function return handling failed",
                         error: error.toString()
                     });
                 }
@@ -219,13 +219,13 @@
         });
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
         sendEvent("script_initialized", {
             message: MESSAGE_script_initialized
         });
 
-        // 初始化各个钩子
+        // Initialize hooks
         initHook_screenshot();
         initHook_getOutputFilename();
         initHook_muxAndFinish();
@@ -236,6 +236,6 @@
         });
     }
 
-    // 启动脚本
+    // Start script
     initHook();
-})(); 
+})();

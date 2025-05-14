@@ -1,13 +1,13 @@
 (function () {
-    // 脚本设置
-    const MESSAGE_script_initialized = "监控脚本已启动";
-    const MESSAGE_hook_installed = "监控钩子安装完成，等待操作...";
-    const MESSAGE_filter_created = "捕获到滤镜创建事件";
-    const MESSAGE_filter_enabled = "捕获到滤镜启用事件";
-    const MESSAGE_filter_disabled = "捕获到滤镜禁用事件";
-    const MESSAGE_filter_removed = "捕获到滤镜移除事件";
+    // Script settings
+    const MESSAGE_script_initialized = "Monitoring script has started";
+    const MESSAGE_hook_installed = "Monitoring hook installed, waiting for operation...";
+    const MESSAGE_filter_created = "Captured filter creation event";
+    const MESSAGE_filter_enabled = "Captured filter enabled event";
+    const MESSAGE_filter_disabled = "Captured filter disabled event";
+    const MESSAGE_filter_removed = "Captured filter removal event";
 
-    // 向评估系统发送事件
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -17,27 +17,27 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName) {
         const funcAddr = DebugSymbol.getFunctionByName(functionName);
         if (!funcAddr) {
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Unable to find function ${functionName}`
             });
             return null;
         }
 
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 创建钩子函数
+    // Create hook function
     function hookFilterCreate() {
-        // 函数：obs_source_filter_add，用于添加滤镜
+        // Function: obs_source_filter_add, used to add filters
         let symbol_name = "obs_source_filter_add";
 
         Interceptor.attach(getFunctionAddress(symbol_name), {
@@ -45,15 +45,15 @@
                 this.source = args[0];
                 this.filter = args[1];
                 
-                // 获取源和滤镜名称
+                // Get source and filter names
                 if (this.source && this.filter) {
                     try {
-                        // 调用obs_source_get_name获取源名称
+                        // Call obs_source_get_name to get source name
                         const obs_source_get_name = DebugSymbol.getFunctionByName("obs_source_get_name");
                         const sourceName = new NativeFunction(obs_source_get_name, "pointer", ["pointer"])(this.source).readUtf8String();
                         const filterName = new NativeFunction(obs_source_get_name, "pointer", ["pointer"])(this.filter).readUtf8String();
                         
-                        // 调用obs_source_get_unversioned_id获取滤镜类型
+                        // Call obs_source_get_unversioned_id to get filter type
                         const obs_source_get_id = DebugSymbol.getFunctionByName("obs_source_get_unversioned_id");
                         const filterId = new NativeFunction(obs_source_get_id, "pointer", ["pointer"])(this.filter).readUtf8String();
 
@@ -66,7 +66,7 @@
                     } catch (e) {
                         sendEvent("error", {
                             error_type: "get_source_info_error",
-                            message: `获取源信息时出错: ${e.toString()}`
+                            message: `Error occurred while getting source information: ${e.toString()}`
                         });
                     }
                 }
@@ -74,30 +74,30 @@
         });
     }
 
-    // 钩子：滤镜启用/禁用
+    // Hook: Enable/Disable filter
     function hookFilterEnable() {
-        // 函数：obs_source_set_enabled，用于启用或禁用滤镜
+        // Function: obs_source_set_enabled, used to enable or disable filters
         let symbol_name = "obs_source_set_enabled";
 
         Interceptor.attach(getFunctionAddress(symbol_name), {
             onEnter(args) {
                 this.source = args[0];
-                this.enabled = args[1].toInt32(); // 布尔值参数，1为启用，0为禁用
+                this.enabled = args[1].toInt32(); // Boolean parameter, 1 for enable, 0 for disable
                 
-                // 检查是否为滤镜
+                // Check if it is a filter
                 if (this.source) {
                     try {
-                        // 检查是否是过滤器
+                        // Check if it is a filter
                         const obs_source_get_type = DebugSymbol.getFunctionByName("obs_source_get_type");
                         const sourceType = new NativeFunction(obs_source_get_type, "int", ["pointer"])(this.source);
                         
                         // OBS_SOURCE_TYPE_FILTER = 1
                         if (sourceType === 1) {
-                            // 获取滤镜名称
+                            // Get filter name
                             const obs_source_get_name = DebugSymbol.getFunctionByName("obs_source_get_name");
                             const filterName = new NativeFunction(obs_source_get_name, "pointer", ["pointer"])(this.source).readUtf8String();
                             
-                            // 获取所属的源
+                            // Get parent source
                             const obs_filter_get_parent = DebugSymbol.getFunctionByName("obs_filter_get_parent");
                             const parent = new NativeFunction(obs_filter_get_parent, "pointer", ["pointer"])(this.source);
                             
@@ -123,7 +123,7 @@
                     } catch (e) {
                         sendEvent("error", {
                             error_type: "get_filter_enable_info_error",
-                            message: `获取滤镜启用信息时出错: ${e.toString()}`
+                            message: `Error occurred while getting filter enable information: ${e.toString()}`
                         });
                     }
                 }
@@ -131,9 +131,9 @@
         });
     }
 
-    // 钩子：滤镜移除
+    // Hook: Remove filter
     function hookFilterRemove() {
-        // 函数：obs_source_filter_remove，用于移除滤镜
+        // Function: obs_source_filter_remove, used to remove filters
         let symbol_name = "obs_source_filter_remove";
 
         Interceptor.attach(getFunctionAddress(symbol_name), {
@@ -141,10 +141,10 @@
                 this.source = args[0];
                 this.filter = args[1];
                 
-                // 获取源和滤镜名称
+                // Get source and filter names
                 if (this.source && this.filter) {
                     try {
-                        // 调用obs_source_get_name获取源名称
+                        // Call obs_source_get_name to get source name
                         const obs_source_get_name = DebugSymbol.getFunctionByName("obs_source_get_name");
                         const sourceName = new NativeFunction(obs_source_get_name, "pointer", ["pointer"])(this.source).readUtf8String();
                         const filterName = new NativeFunction(obs_source_get_name, "pointer", ["pointer"])(this.filter).readUtf8String();
@@ -157,7 +157,7 @@
                     } catch (e) {
                         sendEvent("error", {
                             error_type: "get_source_info_error",
-                            message: `获取源信息时出错: ${e.toString()}`
+                            message: `Error occurred while getting source information: ${e.toString()}`
                         });
                     }
                 }
@@ -165,13 +165,13 @@
         });
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
         sendEvent("script_initialized", {
             message: MESSAGE_script_initialized
         });
 
-        // 初始化各个钩子
+        // Initialize hooks
         hookFilterCreate();
         hookFilterEnable(); 
         hookFilterRemove();
@@ -181,6 +181,6 @@
         });
     }
 
-    // 启动脚本
+    // Start script
     initHook();
 })();

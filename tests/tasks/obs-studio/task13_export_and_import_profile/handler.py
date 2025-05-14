@@ -12,7 +12,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
     print(message)
     payload = message['payload']
     event_type = payload['event']
-    logger.debug(f"接收到事件: {event_type}")
+    logger.debug(f"Received event: {event_type}")
     if event_type == "export_success":
         export_path = task_parameter.get("export_path", "")
         profile_name = task_parameter.get("profile_name", "")
@@ -24,7 +24,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             ]
         else:
             return [
-                {"status": "error", "reason": "script_error", "message": "找不到对应配置文件"},
+                {"status": "error", "reason": "script_error", "message": "Cannot find the corresponding configuration file"},
             ]
             
     elif event_type == "import_success":
@@ -48,7 +48,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
         if success and step == 1 and found_import:
             return [
                 {"status": "key_step", "index": 2},
-                {"status": "success", "reason": "成功导入配置文件"},
+                {"status": "success", "reason": "Successfully imported configuration file"},
             ]
 
     elif event_type == "get_config_path":

@@ -1,13 +1,13 @@
 (function () {
-    // 脚本设置
+    // Script settings
     const EVENT_ON_ENTER = "function called";
     const EVENT_ON_LEAVE = "function returned";
     
-    const MESSAGE_source_deleted = "源已被删除";
-    const MESSAGE_script_initialized = "监控脚本已启动";
-    const MESSAGE_hook_installed = "监控钩子安装完成，等待操作...";
+    const MESSAGE_source_deleted = "Source has been deleted";
+    const MESSAGE_script_initialized = "Monitoring script has started";
+    const MESSAGE_hook_installed = "Monitoring hook installed, waiting for operation...";
 
-    // 向评估系统发送事件
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         console.log("[Event]", eventType, JSON.stringify(data, null, 2));
         const payload = {
@@ -18,28 +18,28 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName) {
-        console.log("[Debug] 正在查找函数:", functionName);
+        console.log("[Debug] Searching for function:", functionName);
         const funcAddr = DebugSymbol.getFunctionByName(functionName);
         if (!funcAddr) {
-            console.log("[Error] 未找到函数:", functionName);
+            console.log("[Error] Function not found:", functionName);
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Unable to find function ${functionName}`
             });
             return null;
         }
 
-        console.log("[Debug] 找到函数地址:", functionName, funcAddr);
+        console.log("[Debug] Found function address:", functionName, funcAddr);
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 获取场景项目的源
+    // Get source of scene item
     function obs_sceneitem_get_source(item) {
         const func = new NativeFunction(
             getFunctionAddress("obs_sceneitem_get_source"),
@@ -49,9 +49,9 @@
         return func(item);
     }
 
-    // 监控场景项目的删除
+    // Monitor deletion of scene items
     function hookSceneItemRemove() {
-        console.log("[Hook] 开始设置obs_sceneitem_remove钩子");
+        console.log("[Hook] Setting up hook for obs_sceneitem_remove");
         const funcAddr = getFunctionAddress("obs_sceneitem_remove");
         if (!funcAddr) return;
 
@@ -63,11 +63,11 @@
                         const source = new OBSSource(obs_sceneitem_get_source(this.item));
                         const source_name = source.getName();
                         const source_id = source.getId();
-                        
-                        console.log("[obs_sceneitem_remove] 源名称:", source_name);
-                        console.log("[obs_sceneitem_remove] 源类型:", source_id);
-                        
-                        // 只关注颜色源
+
+                        console.log("[obs_sceneitem_remove] Source name:", source_name);
+                        console.log("[obs_sceneitem_remove] Source type:", source_id);
+
+                        // Only focus on color sources
                         if (source_id === "color_source_v3") {
                             sendEvent("source_deleted", {
                                 source_name: source_name,
@@ -76,7 +76,7 @@
                             });
                         }
                     } catch (error) {
-                        console.log("[Error] 获取源信息失败:", error);
+                        console.log("[Error] Failed to get source information:", error);
                     }
                 }
             }
@@ -84,7 +84,7 @@
     }
 
     function hookSourceRemove() {
-        console.log("[Hook] 开始设置obs_source_remove钩子");
+        console.log("[Hook] Setting up hook for obs_source_remove");
         const funcAddr = getFunctionAddress("obs_source_remove");
         if (!funcAddr) return;
 
@@ -96,11 +96,11 @@
                         const source = new OBSSource(this.source);
                         const source_name = source.getName();
                         const source_id = source.getId();
-                        
-                        console.log("[obs_source_remove] 源名称:", source_name);
-                        console.log("[obs_source_remove] 源类型:", source_id);
-                        
-                        // 只关注颜色源
+
+                        console.log("[obs_source_remove] Source name:", source_name);
+                        console.log("[obs_source_remove] Source type:", source_id);
+
+                        // Only focus on color sources
                         if (source_id === "color_source_v3") {
                             sendEvent("source_deleted", {
                                 source_name: source_name,
@@ -109,22 +109,22 @@
                             });
                         }
                     } catch (error) {
-                        console.log("[Error] 获取源信息失败:", error);
+                        console.log("[Error] Failed to get source information:", error);
                     }
                 }
             }
         });
     }
 
-    // OBSSource类用于操作OBS的源
+    // OBSSource class for operating OBS sources
     class OBSSource {
         constructor(ptr) {
-            console.log("[OBSSource] 创建新实例，指针:", ptr);
+            console.log("[OBSSource] Creating new instance, pointer:", ptr);
             this.ptr = ptr;
         }
-        
+
         getName() {
-            console.log("[OBSSource] 获取源名称");
+            console.log("[OBSSource] Getting source name");
             const func = new NativeFunction(
                 getFunctionAddress("obs_source_get_name"),
                 'pointer',
@@ -132,12 +132,12 @@
             );
             const namePtr = func(this.ptr);
             const name = namePtr.readCString(-1);
-            console.log("[OBSSource] 获取到的源名称:", name);
+            console.log("[OBSSource] Retrieved source name:", name);
             return name;
         }
 
         getId() {
-            console.log("[OBSSource] 获取源ID");
+            console.log("[OBSSource] Getting source ID");
             const func = new NativeFunction(
                 getFunctionAddress("obs_source_get_id"),
                 'pointer',
@@ -145,30 +145,30 @@
             );
             const idPtr = func(this.ptr);
             const id = idPtr.readCString(-1);
-            console.log("[OBSSource] 获取到的源ID:", id);
+            console.log("[OBSSource] Retrieved source ID:", id);
             return id;
         }
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
-        console.log("[Init] 开始初始化钩子");
+        console.log("[Init] Starting hook initialization");
         sendEvent("script_initialized", {
             message: MESSAGE_script_initialized
         });
 
-        // 初始化各个钩子
+        // Initialize hooks
         hookSceneItemRemove();
         hookSourceRemove();
-        
-        console.log("[Init] 钩子初始化完成");
+
+        console.log("[Init] Hook initialization completed");
         sendEvent("hook_installed", {
             message: MESSAGE_hook_installed
         });
     }
 
-    // 启动脚本
-    console.log("[Start] 脚本开始执行");
+    // Start script
+    console.log("[Start] Script execution started");
     initHook();
-    console.log("[Start] 脚本执行完成，等待事件...");
-})(); 
+    console.log("[Start] Script execution completed, waiting for events...");
+})();

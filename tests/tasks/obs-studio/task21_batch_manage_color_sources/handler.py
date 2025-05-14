@@ -1,29 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
 import json
-import time
 from typing import Dict, Any, Optional, List
 
-_EVALUATOR = None
-_CONFIG = None
-_START_TIME = None
-
-_EVENT_FUNCTION_CALL = "function called"
-_EVENT_FUNCTION_RETURN = "function returned"
 _EVENT_SUCCESS = "scene_json_path"
 _PAYLOAD_SUCCESS = "path"
 
 key_steps = []
 
 def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    global key_step
+    global key_steps
     print(message)
     payload = message['payload']
     print(payload)
     event_type = payload['event']
-    logger.debug(f"接收到事件: {event_type}")
+    logger.debug(f"Received event: {event_type}")
     if event_type == _EVENT_SUCCESS:
         logger.info(payload.get("message", ""))
         scene_name = task_parameter.get("scene_name", "")
@@ -34,7 +26,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
         with open(current_file_path, 'r') as f:
             data = json.load(f)
 
-            # 检查场景中的纯色源顺序和删除情况
+            # Check the order and deletion status of color sources in the scene
             scene_items = data.get('sources', [])
             for scene_item in scene_items:
                 if scene_item.get('name') == scene_name:
@@ -58,11 +50,12 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                     if matched_items == expected_final:
                         return [
                             {"status":"key_step", "index":3},
-                            {"status":"success", "reason":"纯色源增加、重排、删除完成"}
+                            {"status":"success", "reason":"Color sources added, reordered, and deleted successfully"}
                         ]
     return None
 
 def dict_have_index(key_steps: List[Dict[str, Any]], index: int) -> bool:
+    # Check if the key step with the given index exists in the list
     for key_step in key_steps:
         if "index" in key_step and key_step["index"] == index:
             return True

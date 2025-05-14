@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-OBS Studio配置录制输出路径与格式并测试录制任务事件处理器
-负责处理钩子脚本产生的事件并更新评估指标
-"""
-
-import os
-import json
 import time
 from typing import Dict, Any, Optional, List
 
@@ -20,20 +13,20 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
     payload = message['payload']
     print(payload)
     event_type = payload['event']
-    logger.debug(f"接收到事件: {event_type}")
+    logger.debug(f"Received event: {event_type}")
     if event_type == "config_file_found":
         config_file_path = payload.get("path", "")
-        logger.info(f"找到配置文件路径: {config_file_path}")
+        logger.info(f"Found configuration file path: {config_file_path}")
         
-        # 等待一段时间以确保文件已经被写入
+        # Wait for a while to ensure the file has been written
         time.sleep(1)
         
-        # 读取配置文件内容
+        # Read the configuration file content
         try:
             with open(config_file_path, "r") as f:
                 config_content = f.read()
             
-            # 解析配置文件内容，查找[SimpleOutput]节中的RecFormat2的值
+            # Parse the configuration file content to find the value of RecFormat2 in the [SimpleOutput] section
             lines = config_content.split('\n')
             in_simple_output_section = False
             rec_format2_value = None
@@ -47,7 +40,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                     continue
                 
                 if in_simple_output_section and trimmed_line.startswith('['):
-                    # 已经离开[SimpleOutput]节
+                    # Already left the [SimpleOutput] section
                     break
                 
                 if in_simple_output_section and trimmed_line.startswith('RecFormat2='):
@@ -56,86 +49,87 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                 if in_simple_output_section and trimmed_line.startswith('FilePath='):
                     file_path_value = trimmed_line[len('FilePath='):]
             
-            # 检查FilePath值
+            # Check the FilePath value
             if file_path_value is not None:
-                logger.info(f"在配置文件中找到FilePath值: {file_path_value}")
+                logger.info(f"Found FilePath value in the configuration file: {file_path_value}")
                 expected_path = task_parameter.get("output_path", "")
                 
                 if expected_path in file_path_value:
                     key_steps.append({"status":"key_step","index":1})
-                    logger.info(f"录制输出路径已正确配置为: {file_path_value}")
+                    logger.info(f"Recording output path has been correctly configured as: {file_path_value}")
                 else:
-                    logger.warning(f"录制输出路径配置不匹配，期望: {expected_path}，实际: {file_path_value}")
+                    logger.warning(f"Recording output path configuration does not match, expected: {expected_path}, actual: {file_path_value}")
             else:
-                logger.warning("在配置文件中未找到FilePath设置")
+                logger.warning("FilePath setting not found in the configuration file")
             
-            # 检查RecFormat2值
+            # Check the RecFormat2 value
             if rec_format2_value is not None:
-                logger.info(f"在配置文件中找到RecFormat2值: {rec_format2_value}")
+                logger.info(f"Found RecFormat2 value in the configuration file: {rec_format2_value}")
                 expected_format = task_parameter.get("output_format", "")
                 
                 if rec_format2_value == expected_format:
                     key_steps.append({"status":"key_step","index":2})
-                    logger.info(f"录制输出格式已正确配置为: {rec_format2_value}")
+                    logger.info(f"Recording output format has been correctly configured as: {rec_format2_value}")
                 else:
-                    logger.warning(f"录制输出格式配置不匹配，期望: {expected_format}，实际: {rec_format2_value}")
+                    logger.warning(f"Recording output format configuration does not match, expected: {expected_format}, actual: {rec_format2_value}")
             else:
-                logger.warning("在配置文件中未找到RecFormat2设置")
+                logger.warning("RecFormat2 setting not found in the configuration file")
             
         except Exception as e:
-            logger.error(f"读取或解析配置文件失败: {str(e)}")
+            logger.error(f"Failed to read or parse the configuration file: {str(e)}")
 
         return key_steps
         
     elif event_type == "output_path_configured":
-        # 保留这个事件处理，以防直接从API获取路径
-        logger.info("通过API获取到录制输出路径")
+        # Retain this event handler in case the path is obtained directly from the API
+        logger.info("Recording output path obtained through API")
         configured_path = payload.get("path", "")
         expected_path = task_parameter.get("output_path", "")
         
         if expected_path in configured_path:
-            logger.info(f"录制输出路径已正确配置为: {configured_path}")
+            logger.info(f"Recording output path has been correctly configured as: {configured_path}")
             if not dict_have_index(key_steps, 1):
                 key_steps.append({"status":"key_step","index":1})
         else:
-            logger.warning(f"录制输出路径配置不匹配，期望: {expected_path}，实际: {configured_path}")
+            logger.warning(f"Recording output path configuration does not match, expected: {expected_path}, actual: {configured_path}")
         
         return key_steps
         
     elif event_type == "output_format_configured":
-        # 保留这个事件处理，以防直接从API获取格式
-        logger.info("通过API获取到录制输出格式")
+        # Retain this event handler in case the format is obtained directly from the API
+        logger.info("Recording output format obtained through API")
         configured_format = payload.get("format", "")
         expected_format = task_parameter.get("output_format", "")
         
         if configured_format == expected_format:
             if not dict_have_index(key_steps, 2):
                 key_steps.append({"status":"key_step","index":2})
-            logger.info(f"录制输出格式已正确配置为: {configured_format}")
+            logger.info(f"Recording output format has been correctly configured as: {configured_format}")
         else:
-            logger.warning(f"录制输出格式配置不匹配，期望: {expected_format}，实际: {configured_format}")
+            logger.warning(f"Recording output format configuration does not match, expected: {expected_format}, actual: {configured_format}")
         
         return key_steps
 
     elif event_type == "start_recording_called":
         start_recording = True
-        logger.info("录制开始")
+        logger.info("Recording started")
 
     elif event_type == "stop_recording_called":
-        # 如果开始录制和停止录制都被调用，则认为录制功能已测试
+        # If both start and stop recording are called, consider the recording functionality tested
         if start_recording:
             if not dict_have_index(key_steps, 3):
                 key_steps.append({"status":"key_step","index":3})
-            logger.info("录制功能已成功测试")
+            logger.info("Recording functionality successfully tested")
             print(key_steps)
-            # 检查所有成功条件是否都满足
+            # Check if all success conditions are met
             if len(key_steps) == 3:
-                key_steps.append({"status":"success", "reason": "输出路径和输出格式都匹配，并且录制测试完成"})
+                key_steps.append({"status":"success", "reason": "Output path and format both match, and recording test completed"})
                 return key_steps
     
     return None
 
-def dict_have_index(key_steps: Dict[str, Any], index: int) -> bool:
+def dict_have_index(key_steps: List[Dict[str, Any]], index: int) -> bool:
+    # Check if the key step with the given index exists in the list
     for key_step in key_steps:
         if "index" in key_step and key_step["index"] == index:
             return True

@@ -1,5 +1,5 @@
 (function () {
-    // 相关符号
+    // Related symbols
     const FUNC_CREATE = "obs_source_create";
     const FUNC_REMOVE = "obs_source_remove";
     const FUNC_SET_ORDER = "obs_sceneitem_set_order";
@@ -11,11 +11,11 @@
     const EVENT_ON_SUCCESS = "scene_json_path";
     const PAYLOAD_SUCCESS = "path";
 
-    const MESSAGE_SCRIPT_INITIALIZED = "监控脚本已启动";
-    const MESSAGE_HOOK_INSTALLED = "监控钩子安装完成，等待操作...";
-    const MESSAGE_ON_SUCCESS = "批量管理纯色源操作完成";
+    const MESSAGE_SCRIPT_INITIALIZED = "Monitoring script has started";
+    const MESSAGE_HOOK_INSTALLED = "Monitoring hook installed, waiting for operation...";
+    const MESSAGE_ON_SUCCESS = "Batch management of color sources operation completed";
 
-    // 记录操作
+    // Record operations
     let addCount = 0, removeCount = 0, reorderCount = 0;
     let lastScenePath = null;
 
@@ -33,18 +33,18 @@
         if (!funcAddr) {
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Unable to find function ${functionName}`
             });
             return null;
         }
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 钩子：添加纯色源
+    // Hook: Add color source
     function hookCreate() {
         const addr = getFunctionAddress(FUNC_CREATE);
         if (!addr) return;
@@ -63,7 +63,7 @@
         });
     }
 
-    // 钩子：删除纯色源
+    // Hook: Remove color source
     function hookRemove() {
         const addr = getFunctionAddress(FUNC_REMOVE);
         if (!addr) return;
@@ -78,7 +78,7 @@
         });
     }
 
-    // 钩子：重排sceneitem
+    // Hook: Reorder scene items
     function hookSetOrder() {
         const addr = getFunctionAddress(FUNC_SET_ORDER);
         if (!addr) return;
@@ -93,7 +93,7 @@
         });
     }
 
-    // 钩子：保存场景，获取json路径
+    // Hook: Save scene, get JSON path
     function hookSave() {
         const addr = getFunctionAddress(FUNC_SAVE_SYMBOL);
         if (!addr) return;
@@ -125,4 +125,4 @@
     }
 
     initHook();
-})(); 
+})();

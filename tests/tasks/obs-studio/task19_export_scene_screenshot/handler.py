@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import json
-import time
 from typing import Dict, Any, Optional, List
 from PIL import Image
 
@@ -12,36 +10,36 @@ screenshot_called = False
 screenshot_success = False
 
 def verify_screenshot_path(save_path: str, logger, task_parameter) -> List[Dict[str, Any]]:
-    """验证截图保存路径是否符合要求"""
+    """Verify if the screenshot save path meets the requirements"""
     try:
         expected_path = task_parameter["save_path"]
         print(os.path.dirname(save_path))
         print(expected_path)
-        # 检查路径是否匹配
+        # Check if the path matches
         if expected_path.rstrip("/") != os.path.dirname(save_path):
-            logger.error(f"截图保存路径不匹配: 期望 {expected_path}, 实际 {save_path}")
+            logger.error(f"Screenshot save path does not match: Expected {expected_path}, Actual {save_path}")
             return [
-                {"status": "error", "message": f"截图保存路径不匹配: 期望 {expected_path}, 实际 {save_path}"}
+                {"status": "error", "message": f"Screenshot save path does not match: Expected {expected_path}, Actual {save_path}"}
             ]
             
-        # 检查文件是否存在
+        # Check if the file exists
         if not os.path.exists(save_path):
-            logger.error(f"截图文件不存在: {save_path}")
+            logger.error(f"Screenshot file does not exist: {save_path}")
             return [
-                {"status": "error", "message": f"截图文件不存在: {save_path}"}
+                {"status": "error", "message": f"Screenshot file does not exist: {save_path}"}
             ]
             
         return [
             {"status": "key_step", "index": 1}
         ]
     except Exception as e:
-        logger.error(f"验证截图路径时发生错误: {e}")
+        logger.error(f"Error occurred while verifying screenshot path: {e}")
         return [
-            {"status": "error", "message": f"验证截图路径时发生错误: {e}"}
+            {"status": "error", "message": f"Error occurred while verifying screenshot path: {e}"}
         ]
 
 def verify_screenshot_size(save_path: str, logger, task_parameter) -> List[Dict[str, Any]]:
-    """验证截图尺寸是否符合要求"""
+    """Verify if the screenshot size meets the requirements"""
     try:
         with Image.open(save_path) as img:
             width, height = img.size
@@ -50,21 +48,21 @@ def verify_screenshot_size(save_path: str, logger, task_parameter) -> List[Dict[
             
             if width != expected_width or height != expected_height:
                 logger.error(
-                    f"截图尺寸不匹配: 期望 {expected_width}x{expected_height}, "
-                    f"实际 {width}x{height}"
+                    f"Screenshot size does not match: Expected {expected_width}x{expected_height}, "
+                    f"Actual {width}x{height}"
                 )
                 return [
-                    {"status": "error", "message": f"截图尺寸不匹配: 期望 {expected_width}x{expected_height}, 实际 {width}x{height}"}
+                    {"status": "error", "message": f"Screenshot size does not match: Expected {expected_width}x{expected_height}, Actual {width}x{height}"}
                 ]
                 
             return [
                 {"status": "key_step", "index": 2},
-                {"status": "success", "reason": "截图路径和尺寸都匹配成功"},
+                {"status": "success", "reason": "Screenshot path and size both match successfully"},
             ]
     except Exception as e:
-        logger.error(f"验证截图尺寸时发生错误: {e}")
+        logger.error(f"Error occurred while verifying screenshot size: {e}")
         return [
-            {"status": "error", "message": f"验证截图尺寸时发生错误: {e}"}
+            {"status": "error", "message": f"Error occurred while verifying screenshot size: {e}"}
         ]
 
 def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
@@ -72,74 +70,74 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
     payload = message['payload']
     print(payload)
     event = payload['event']
-    logger.debug(f"接收到事件: {event}")
+    logger.debug(f"Received event: {event}")
     key_step = []
     
-    # 处理函数调用事件
+    # Handle function call event
     if event == "function called" and payload.get("function") == "OBSBasic::Screenshot":
         screenshot_called = True
-        logger.info("检测到截图函数调用")
+        logger.info("Detected screenshot function call")
         return None
 
-    # 处理函数返回事件
+    # Handle function return event
     if event == "function returned" and payload.get("function") == "OBSBasic::Screenshot":
         screenshot_success = payload.get("success", False)
         if not screenshot_success:
-            logger.error("截图函数执行失败")
+            logger.error("Screenshot function execution failed")
         return None
 
-    # 处理获取保存路径事件
+    # Handle event to get save path
     if event == "screenshot_getpath":
         save_path = payload.get("save_path")
         if not save_path:
-            logger.error("未获取到截图保存路径")
+            logger.error("Failed to get screenshot save path")
             return None
-        logger.info(f"获取到截图保存路径: {save_path}")
+        logger.info(f"Screenshot save path obtained: {save_path}")
         
-    # 处理错误事件
+    # Handle error event
     if event == "screenshot_error":
-        error_msg = payload.get("message", "未知错误")
-        error_detail = payload.get("error", "无详细信息")
-        logger.error(f"截图过程发生错误: {error_msg}, 详细信息: {error_detail}")
+        error_msg = payload.get("message", "Unknown error")
+        error_detail = payload.get("error", "No detailed information")
+        logger.error(f"Error occurred during screenshot process: {error_msg}, Details: {error_detail}")
         return [
             {"status": "error", "message": f"{error_msg}"}
         ]
         
-    # 处理截图保存成功事件
+    # Handle screenshot save success event
     if event == "screenshot_saved":
         if not screenshot_called:
-            logger.error("未检测到截图函数调用")
+            logger.error("Screenshot function call not detected")
             return None
             
         if not screenshot_success:
-            logger.error("截图函数执行失败")
+            logger.error("Screenshot function execution failed")
             return None
             
         if not save_path:
-            logger.error("未获取到截图保存路径")
+            logger.error("Failed to get screenshot save path")
             return None
             
-        # 验证截图路径和尺寸
+        # Verify screenshot path and size
         key_step.extend(verify_screenshot_path(save_path, logger, task_parameter)) 
         key_step.extend(verify_screenshot_size(save_path, logger, task_parameter))
 
         return key_step
     
     if event == "RequestHandlerSaveScreenshot_returned":
-        # 检查 config.json 中设置的 save_path 文件夹下是否有符合条件的 .png 文件
+        # Check if there is a valid .png file in the save_path folder set in config.json
         config_save_path = task_parameter.get("save_path")
         if not config_save_path:
-            logger.error("未在配置中找到 save_path")
+            logger.error("Save path not found in configuration")
             return [
-            {"status": "error", "message": "未在配置中找到 save_path"}
+            {"status": "error", "message": "Save path not found in configuration"}
             ]
         
         try:
             file_path = config_save_path
             if not os.path.exists(file_path):
-                logger.error(f"文件 {file_path} 不存在")
+                logger.error(f"File {file_path} does not exist")
                 return [
-                    {"status": "error", "message": f"文件 {file_path} 不存在"}
+                    {"status": "error", "message": f"File {file_path} does not exist"}
                 ]
             
             with Image.open(file_path) as img:
@@ -149,23 +147,23 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                 
                 if width != expected_width or height != expected_height:
                     logger.error(
-                        f"文件 {file_path} 的分辨率不匹配: "
-                        f"期望 {expected_width}x{expected_height}, 实际 {width}x{height}"
+                        f"Resolution of file {file_path} does not match: "
+                        f"Expected {expected_width}x{expected_height}, Actual {width}x{height}"
                     )
                     return [
-                        {"status": "error", "message": f"文件 {file_path} 的分辨率不匹配: 期望 {expected_width}x{expected_height}, 实际 {width}x{height}"}
+                        {"status": "error", "message": f"Resolution of file {file_path} does not match: Expected {expected_width}x{expected_height}, Actual {width}x{height}"}
                     ]
             
-            logger.info(f"文件 {file_path} 验证成功")
+            logger.info(f"File {file_path} verified successfully")
             return [
                 {"status": "key_step", "index": 1},
                 {"status": "key_step", "index": 2},
-                {"status": "success", "message": f"文件 {file_path} 验证成功"}
+                {"status": "success", "message": f"File {file_path} verified successfully"}
             ]
         except Exception as e:
-            logger.error(f"检查文件时发生错误: {e}")
+            logger.error(f"Error occurred while checking file: {e}")
             return [
-                {"status": "error", "message": f"检查文件时发生错误: {e}"}
+                {"status": "error", "message": f"Error occurred while checking file: {e}"}
             ]
 
     return None

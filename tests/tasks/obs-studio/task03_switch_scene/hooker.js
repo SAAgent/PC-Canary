@@ -1,11 +1,11 @@
-// OBS切换场景钩子脚本
-// 用于监听OBS的切换场景操作
+// OBS scene switching hook script
+// Used to monitor OBS scene switching operations
 
 (function () {
-    // 脚本设置
+    // Script settings
     const FUNCTION_SetCurrentScene = "_ZN8OBSBasic15SetCurrentSceneE10OBSSafeRefIP10obs_sourceXadL_Z18obs_source_get_refEEXadL_Z18obs_source_releaseEEEb";
 
-    // 向评估系统发送事件
+    // Send events to the evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -15,25 +15,25 @@
         send(payload);
     }
 
-    // 获取函数地址
+    // Get function address
     function getFunctionAddress(functionName) {
         const funcAddr = DebugSymbol.getFunctionByName(functionName);
         if (!funcAddr) {
             sendEvent("error", {
                 error_type: "function_not_found",
-                message: `无法找到函数 ${functionName}`
+                message: `Cannot find function ${functionName}`
             });
             return null;
         }
 
         sendEvent("function_found", {
             address: funcAddr.toString(),
-            message: `找到函数 ${functionName} 的实际地址`
+            message: `Found the actual address of function ${functionName}`
         });
         return funcAddr;
     }
 
-    // 初始化录制更新钩子
+    // Initialize recording update hooks
     function initSetCurrentSceneHook() {
 
         const SetCurrentSceneFuncAddr = getFunctionAddress(FUNCTION_SetCurrentScene);
@@ -44,7 +44,7 @@
         Interceptor.attach(SetCurrentSceneFuncAddr, {
             onEnter: function(args) {
                 sendEvent("setCurrentScene_called", {
-                    message: "拦截到切换当前场景的函数调用"
+                    message: "Intercepted the function call to switch the current scene"
                 });
                 const scene = new NativePointer(args[1]);
                 console.log("scene pointer: ", scene);
@@ -60,31 +60,31 @@
 
             onLeave: function(retval) {
                 sendEvent("setCurrentScene_returned", {
-                    message: "切换当前场景函数返回"
+                    message: "Switch current scene function returned"
                 });
                 console.log("this.name: ", this.name);
                 console.log("this.force: ", this.force);
                 sendEvent("current_scene", {
                     scene: this.name,
-                    message: `当前场景名称: ${this.name}`
+                    message: `Current scene name: ${this.name}`
                 })
             }
         });
     }
 
-    // 初始化钩子
+    // Initialize hooks
     function initHook() {
         sendEvent("script_initialized", {
-            message: "OBS切换场景的监控脚本已启动"
+            message: "OBS scene switching monitoring script has started"
         });
 
-        // 初始化各个钩子
+        // Initialize each hook
         initSetCurrentSceneHook();
         sendEvent("hook_installed", {
-            message: "切换场景的监控钩子安装完成，等待操作..."
+            message: "Scene switching monitoring hook installed, waiting for operation..."
         });
     }
 
-    // 启动脚本
+    // Start script
     initHook();
-})(); 
+})();

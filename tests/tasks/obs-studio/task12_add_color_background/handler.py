@@ -9,7 +9,7 @@ _EVENT_SUCCESS = "config_save"
 def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     payload = message['payload']
     event_type = payload['event']
-    logger.debug(f"接收到事件: {event_type}")
+    logger.debug(f"Received event: {event_type}")
 
     if event_type == "create_success":
         expected_scene = task_parameter.get("new_scene_name", "")
@@ -26,12 +26,12 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                 {"status": "key_step", "index": 2},
                 {"status": "key_step", "index": 3}
             ]
-    
+
     elif event_type == _EVENT_SUCCESS:
         exp_width = task_parameter.get("width", 0)
         exp_height = task_parameter.get("height", 0)
         exp_name = task_parameter.get("source_name", "")
-        logger.info(payload.get("message", ""))     
+        logger.info(payload.get("message", ""))
         file_path = payload.get("path", "")
         with open(file_path, "r") as f:
             file_content = json.load(f)
@@ -44,8 +44,8 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
                     if width == exp_width and height == exp_height:
                         return [
                             {"status": "key_step", "index": 4},
-                            {"status": "success", "reason": "成功添加颜色背景源"},
+                            {"status": "success", "reason": "Successfully added color background source"},
                         ]
                     else:
-                        logger.info(f"分辨率不匹配: width={width}, height={height}")
+                        logger.info(f"Resolution mismatch: width={width}, height={height}")
     return None

@@ -1,24 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
 import json
-import time
 from typing import Dict, Any, Optional, List
 
-_EVALUATOR = None
-_CONFIG = None
-_START_TIME = None
-
-_EVENT_FUNCTION_CALL = "function called"
-_EVENT_FUNCTION_RETURN = "function returned"
 _EVENT_SUCCESS = "scene_json_path"
 _PAYLOAD_SUCCESS = "path"
 
 def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    payload = message['payload']
+    payload = message.get('payload')
+    if not payload or not isinstance(payload, dict):
+        logger.error(message)
+        return None
     event_type = payload['event']
-    logger.debug(f"接收到事件: {event_type}")
+    logger.debug(f"receive: {event_type}")
     if event_type == _EVENT_SUCCESS:
         logger.info(payload.get("message", ""))     
         expected = task_parameter.get("new_scene_name", "")
@@ -33,7 +28,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
             if (not flag):
                 return [
                     {"status": "key_step", "index": 1},
-                    {"status": "success", "reason": "删除场景成功"},
+                    {"status": "success", "reason": "delete scene success"},
                 ]
                 
     return None
