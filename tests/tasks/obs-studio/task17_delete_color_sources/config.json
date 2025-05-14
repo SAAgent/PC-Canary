@@ -1,0 +1,48 @@
+{
+    "task_id": "17",
+    "task_name": "delete_color_sources",
+    "description": "Batch delete three color sources",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "apps/obs-studio/bin/64bit/obs64",
+        "args": []
+    },
+    "task_parameters": {
+        "source_names": [
+            "color1",
+            "color2",
+            "color3"
+        ]
+    },
+    "instruction_template": "Delete multiple or single color sources named ${source_names} in obs-studio",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120
+    },
+    "total_steps": 1,
+    "events": {
+        "sources_deleted": {
+            "description": "Successfully deleted all specified color sources",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Color sources deleted successfully"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,75 @@
+{
+    "task_id": "21",
+    "task_name": "batch_manage_color_sources",
+    "description": "Batch add, reorder and delete color sources",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": []
+    },
+    "task_parameters": {
+        "scene_name": "Scene",
+        "add_color_sources": [
+            "c1",
+            "c2",
+            "c3",
+            "c4"
+        ],
+        "reorder_to": [
+            "c3",
+            "c1",
+            "c4",
+            "c2"
+        ],
+        "delete_sources": [
+            "c2",
+            "c4"
+        ]
+    },
+    "instruction_template": "Please batch add color sources ${add_color_sources} in ${scene_name} in obs-studio, then reorder them from bottom to top as ${reorder_to}, and finally delete ${delete_sources}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 600
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "total_key_steps": 3,
+    "events": {
+        "add_success": {
+            "description": "Color sources added successfully",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Color sources added successfully"
+        },
+        "reorder_success": {
+            "description": "Color sources reordered successfully",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Color sources reordered successfully"
+        },
+        "delete_success": {
+            "description": "Color sources deleted successfully",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "Color sources deleted successfully"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

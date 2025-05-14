@@ -1,0 +1,45 @@
+{
+    "task_id": "01", 
+	"task_name": "start_recording", 
+    "description": "Start recording in obs-studio", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "instruction_template": "Please start recording in obs-studio", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+    "total_key_steps": 1,
+    "events": {
+        "script_initialized": {             
+            "description": "Hook script initialized",             
+            "is_key_step": false     
+        },
+        "start_recording_called": {
+            "description": "Intercepted start recording function call",
+            "is_key_step": false
+        },
+        "is_recording_active": {             
+            "description": "Recording has started",             
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Recording in progress"     
+        },
+        "error": "Error event"
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": ["/home/agent/obs-mcp/build/index.js"]
+        }
+    ]
+}

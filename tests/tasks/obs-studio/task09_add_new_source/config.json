@@ -1,0 +1,48 @@
+{
+    "task_id": "09",
+    "task_name": "add_new_display_capture_source",
+    "description": "obs-studio add new display capture source",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": []
+    },
+    "task_parameters": {
+        "new_source_name": "test",
+        "new_source_id": "vlc_source"
+    },
+    "instruction_template": "Please add a new display capture source in obs-studio named ${new_source_name}, with type ${new_source_id}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "total_key_steps": 1,
+    "events": {
+        "source_added": {
+            "description": "Source added successfully",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Current source added successfully"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

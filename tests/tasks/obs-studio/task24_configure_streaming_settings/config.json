@@ -1,0 +1,71 @@
+{
+    "task_id": "24",
+    "task_name": "configure_streaming_settings",
+    "description": "Configure some settings in Output",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "apps/obs-studio/bin/64bit/obs",
+        "args": []
+    },
+    "task_parameters": {
+        "video_bitrate": "2000",
+        "audio_bitrate": "320",
+        "encoder_preset": "faster",
+        "replay_buffer_time": "30"
+    },
+    "instruction_template": "Use a profile in obs-studio, set the video bitrate to ${video_bitrate}Kbps, audio bitrate to ${audio_bitrate}, encoder preset to ${encoder_preset} in the output streming settings with output mode Simple, and enable Replay Buffer with maximum replay time of ${replay_buffer_time} seconds",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 5,
+    "events": {
+        "video_bitrate_set": {
+            "key_step_name": "Set video bitrate",
+            "description": "Set video bitrate to 2000Kbps",
+            "is_key_step": true,
+            "key_step_index": 1
+        },
+        "audio_bitrate_set": {
+            "key_step_name": "Set audio bitrate",
+            "description": "Set audio bitrate to 320",
+            "is_key_step": true,
+            "key_step_index": 2
+        },
+        "encoder_preset_set": {
+            "key_step_name": "Set encoder preset",
+            "description": "Set encoder preset to faster",
+            "is_key_step": true,
+            "key_step_index": 3
+        },
+        "replay_buffer_enabled": {
+            "key_step_name": "Enable replay buffer",
+            "description": "Enable replay buffer",
+            "is_key_step": true,
+            "key_step_index": 4
+        },
+        "replay_time_set": {
+            "key_step_name": "Set replay time",
+            "description": "Set maximum replay time to 30 seconds",
+            "is_key_step": true,
+            "key_step_index": 5
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

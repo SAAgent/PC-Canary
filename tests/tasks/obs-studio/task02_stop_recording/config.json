@@ -1,0 +1,52 @@
+{
+    "task_id": "02", 
+	"task_name": "stop_recording", 
+    "description": "Stop recording in obs-studio", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "instruction_template": "Please stop recording in obs-studio", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true,
+      "obs_studio_recording": true
+	},
+    "total_key_steps": 1,
+    "events": {
+        "obs_output_stop_called": {
+            "description": "Intercepted stop recording function call",
+            "is_key_step": false
+        },
+        "obs_output_force_stop_called" : {
+            "description": "Intercepted force stop recording function call",
+            "is_key_step": false
+        },
+        "obs_output_stop_returned": {
+            "description": "Successfully stopped recording",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Stop recording"
+        },
+        "obs_output_force_stop_returned": {
+            "description": "Successfully force stopped recording",
+            "is_key_step": false,
+            "key_step_index": 1,
+            "key_step_name": "Force stop recording"
+        },
+        "error": "Error event"
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": ["/home/agent/obs-mcp/build/index.js"]
+        }
+    ]
+}

@@ -1,0 +1,39 @@
+{
+    "task_id": "06", 
+	"task_name": "add_scene", 
+    "description": "obs-studio add scene", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "new_scene_name": "tmp_scene"
+    },
+    "instruction_template": "Please add a new scene in obs-studio named ${new_scene_name}", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+	"total_key_steps": 1,
+    "events": {
+        "scene_added": {
+            "description":"Scene added successfully", 
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Current scene added successfully"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": ["/home/agent/obs-mcp/build/index.js"]
+        }
+    ]
+}

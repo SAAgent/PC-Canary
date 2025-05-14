@@ -1,0 +1,39 @@
+{
+    "task_id": "05", 
+	"task_name": "set_stream_service", 
+    "description": "obs-studio set streaming service", 
+    "application_info": {
+        "name": "obs-studio", 
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": [] 
+    },
+    "task_parameters": {
+        "stream_service": "Twitch"
+    },
+    "instruction_template": "Please set the streaming service to ${stream_service} in obs-studio", 
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 
+    },
+	"preconditions": {
+	  "obs_studio_running": true
+	},
+    "total_key_steps": 1,
+    "events": {
+        "stream_service_match": {
+            "description":"Streaming service matched successfully", 
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Current streaming service matched successfully"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": ["/home/agent/obs-mcp/build/index.js"]
+        }
+    ]
+}

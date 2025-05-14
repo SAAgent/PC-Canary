@@ -1,0 +1,74 @@
+{
+    "task_id": "23",
+    "task_name": "batch_manage_text_source_filters",
+    "description": "Batch add, enable, disable and remove filters for text source",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": []
+    },
+    "task_parameters": {
+        "text_source_name": "text_src",
+        "filters": [
+            {
+                "name": "f1",
+                "type": "color_key_filter"
+            },
+            {
+                "name": "f2",
+                "type": "scroll_filter"
+            }
+        ]
+    },
+    "instruction_template": "Please add ${filters} filters to the text source named '${text_source_name}' in obs-studio, then disable, enable and remove them",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "success_conditions": [
+        "filters_added",
+        "filters_enabled_disabled",
+        "filters_removed"
+    ],
+    "total_key_steps": 3,
+    "key_steps": [
+        {
+            "name": "Add filters",
+            "description": "Add filters to text source",
+            "is_key_step": true,
+            "key_step_index": 1
+        },
+        {
+            "name": "Enable disable filters",
+            "description": "Enable and disable filters",
+            "is_key_step": true,
+            "key_step_index": 2
+        },
+        {
+            "name": "Remove filters",
+            "description": "Remove filters",
+            "is_key_step": true,
+            "key_step_index": 3
+        }
+    ],
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

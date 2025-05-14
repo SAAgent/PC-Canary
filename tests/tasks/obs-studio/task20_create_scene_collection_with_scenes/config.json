@@ -1,0 +1,57 @@
+{
+    "task_id": "20",
+    "task_name": "create_scene_collection_with_scenes",
+    "description": "Create a new scene collection and create scenes inside it",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": []
+    },
+    "task_parameters": {
+        "collection_name": "test_collection",
+        "scene_names": [
+            "a",
+            "b"
+        ]
+    },
+    "instruction_template": "Please create a new scene collection in obs-studio named ${collection_name}, and create scenes ${scene_names} inside it",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "total_key_steps": 2,
+    "events": {
+        "scene_collections_name_matches": {
+            "description": "Scene collection name matched successfully",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Scene collection name matched successfully"
+        },
+        "scenes_list_matches": {
+            "description": "Scene list matched successfully",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Scene list matched successfully"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}

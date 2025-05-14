@@ -1,0 +1,67 @@
+{
+    "task_id": "11",
+    "task_name": "add_new_video_source",
+    "description": "Add a new looped video source in obs-studio",
+    "application_info": {
+        "name": "obs-studio",
+        "executable_path": "/workspace/PC-Canary/apps/obs-studio/build_ubuntu/rundir/Debug/bin/obs",
+        "args": []
+    },
+    "task_parameters": {
+        "new_scene_name": "Scene3",
+        "source_name": "test",
+        "source_type": "ffmpeg_source"
+    },
+    "instruction_template": "Please create a new scene ${new_scene_name} in obs-studio, and add a new looped video source in the new scene, with name ${source_name} and type ${source_type}",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
+    },
+    "preconditions": {
+        "obs_studio_running": true
+    },
+    "total_key_steps": 4,
+    "events": {
+        "scene_name_matched": {
+            "description": "Scene name matched successfully",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Scene name matched successfully"
+        },
+        "source_name_matched": {
+            "description": "Source name matched successfully",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Source name matched successfully"
+        },
+        "source_type_matched": {
+            "description": "Source type matched successfully",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "Source type matched successfully"
+        },
+        "loop": {
+            "description": "Looped video source properties updated successfully",
+            "is_key_step": true,
+            "key_step_index": 4,
+            "key_step_name": "Set as looped video source"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "node",
+            "args": [
+                "/home/agent/obs-mcp/build/index.js"
+            ]
+        }
+    ]
+}
