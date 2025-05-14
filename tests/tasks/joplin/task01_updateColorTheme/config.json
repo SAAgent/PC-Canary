@@ -5,8 +5,11 @@
 
     "application_info": {
         "name": "joplin",
-        "executable_path": "/home/user/Desktop/agent-demo/PC-Canary/apps/joplin/packages/app-desktop",
-        "args": []
+        "executable_path": "/workspace/PC-Canary/apps/joplin/Joplin-3.3.12.AppImage",
+        "args": [
+            "--env", "dev",
+            "--profile", "/workspace/PC-Canary/apps/joplin/joplindev-desktop"
+        ]
     },
 
     "task_parameters": {

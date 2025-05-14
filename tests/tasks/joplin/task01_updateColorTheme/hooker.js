@@ -15,7 +15,7 @@ joplin.plugins.register({
             console.log('Task01_updateColorTheme---------------------------');
             try {
                 // 获取当前主题
-                const themeValue = await joplin.settings.globalValue('preferredLightTheme');
+                const themeValue = await joplin.settings.globalValue('theme');
                 const currentTheme = themeMap[themeValue] || 'Unknown';
                 console.log('Current theme value:', themeValue, 'mapped to:', currentTheme);
                 

@@ -5,8 +5,11 @@
 
     "application_info": {
         "name": "joplin",
-        "executable_path": "/home/user/Desktop/agent-demo/PC-Canary/apps/joplin/packages/app-desktop",
-        "args": []
+        "executable_path": "/workspace/PC-Canary/apps/joplin/Joplin-3.3.12.AppImage",
+        "args": [
+            "--env", "dev",
+            "--profile", "/workspace/PC-Canary/apps/joplin/joplindev-desktop"
+        ]
     },
 
     "task_parameters": {
@@ -14,7 +17,7 @@
         "due_date": "2025-05-20"
     },
 
-    "instruction_template": "在Joplin中为名为 ${todo_name} 的待办事项设置截止日期为 ${due_date}",
+    "instruction_template": "在Joplin中为名为 ${todo_name} 的待办事项设置提醒日期为 ${due_date}",
 
     "evaluation_setup": {
         "scripts": [

@@ -1,12 +1,15 @@
 {
     "task_id": "19",
     "task_name": "sort_notes_by_title_desc",
-    "description": "在Joplin中将当前笔记页面的排序方式修改为标题倒序",
+    "description": "在Joplin中将当前笔记页面的排序方式修改为标题倒序（Title Reverse sort order）",
 
     "application_info": {
         "name": "joplin",
-        "executable_path": "/home/user/Desktop/agent-demo/PC-Canary/apps/joplin/packages/app-desktop",
-        "args": []
+        "executable_path": "/workspace/PC-Canary/apps/joplin/Joplin-3.3.12.AppImage",
+        "args": [
+            "--env", "dev",
+            "--profile", "/workspace/PC-Canary/apps/joplin/joplindev-desktop"
+        ]
     },
 
     "task_parameters": {

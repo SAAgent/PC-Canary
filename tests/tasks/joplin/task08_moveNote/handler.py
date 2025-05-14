@@ -27,7 +27,7 @@ def message_handler(message: Dict[str, Any], logger, task_parameter: Dict[str, A
         # 获取指定笔记本下的所有笔记
         notebook_notes_in_target = [
             note for note in notebook_notes
-            if note["note_title"] == expected_note and note["parent_name"] == expected_notebook
+            if note.get("note_title") == expected_note and note.get("parent_name") == expected_notebook
         ]
         
         # 检查笔记是否在目标笔记本下

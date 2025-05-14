@@ -5,16 +5,20 @@
 
     "application_info": {
         "name": "joplin",
-        "executable_path": "/home/user/Desktop/agent-demo/PC-Canary/apps/joplin/packages/app-desktop",
-        "args": []
+        "executable_path": "/workspace/PC-Canary/apps/joplin/Joplin-3.3.12.AppImage",
+        "args": [
+            "--env", "dev",
+            "--profile", "/workspace/PC-Canary/apps/joplin/joplindev-desktop"
+        ]
     },
+
 
     "task_parameters": {
         "note_name": "test_note",
         "tag_names": ["tag1", "tag2", "tag3"]
     },
 
-    "instruction_template": "在Joplin中给名为 ${note_name} 的笔记添加以下标签：${tag_names}",
+    "instruction_template": "在Joplin中给名为 ${note_name} 的笔记分别添加以下标签：${tag_names}",
 
     "evaluation_setup": {
         "scripts": [
