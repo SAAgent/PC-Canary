@@ -1,0 +1,62 @@
+{
+    "task_id": "11",
+    "task_name": "set_layer_order",
+    "description": "在QGIS中调整图层次序",
+    "application_info": {
+        "name": "QGIS",
+        "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
+        "args": []
+    },
+    "mcp_servers": [
+        {
+            "command": "python",
+            "args": [
+                "/home/agent/agent-demo/PC-Canary/tests/context_data/QGIS/qgis_config/qgis_mcp/qgis_mcp_server.py"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/QGIS/qgis_sample_data",
+            "to": "/home/agent/testbed/QGIS"
+        },
+        {
+            "from": "tests/context_data/QGIS/qgis_config",
+            "to": "/home/agent/.local/share/QGIS"
+        }
+    ],
+    "task_parameters": {
+        "LayerOrder": " lake,landcover"
+    },
+
+    "instruction_template": "在QGIS中调整图层次序,次序为${LayerOrder}(自顶向下，由,分隔)",
+
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 1,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "setOrder_function_found": {
+            "description": "找到更改图层次序函数",
+            "is_key_step": false
+        },
+        "order_set": {
+            "description": "检测到新的图层次序",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "预期图层次序已设置"
+        },
+        "error": {
+            "description": "来自脚本的错误事件",
+            "is_key_step": false
+        }
+    }
+}
