@@ -1,7 +1,7 @@
 {
     "task_id": "09",
     "task_name": "create_polygon",
-    "description": "在FreeCAD中创建一个正多边形",
+    "description": "Create a regular polygon in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -16,7 +16,7 @@
         "radius": 20
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD中的part design中通过草图创建一个有${sides}条边、外接圆半径为${radius}mm的正多边形，并将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. Create a regular polygon in FreeCAD's part design using sketch with ${sides} sides and a circumscribed circle radius of ${radius}mm, then save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -31,27 +31,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Save document function found",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Save document function called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Save document"
         },
         "function_key_word_detected": {
-            "description": "检测到保存文档关键内容",
+            "description": "Save document key content detected",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建正多边形并保存成功"
+            "key_step_name": "Regular polygon created and saved successfully"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

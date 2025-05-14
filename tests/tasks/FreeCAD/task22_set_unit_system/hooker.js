@@ -1,11 +1,11 @@
-// FreeCAD单位系统设置监控钩子脚本
-// 用于监听FreeCAD的单位系统设置操作
+// FreeCAD Unit System Setting Monitoring Hook Script
+// Used to monitor unit system setting operations in FreeCAD
 
 (function() {
-  // 脚本常量设置
+  // Script constants
   const FUNCTION_NAME = "_ZN4Base8UnitsApi9setSchemaENS_10UnitSystemE"
   const ORIGIN_FUNCTION_NAME = "Base::UnitsApi::setSchema"
-  const FUNCTION_BEHAVIOR = "设置单位系统"
+  const FUNCTION_BEHAVIOR = "set unit system"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,13 +18,13 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variables
   let funcFound = false;
   let firstUnitSystemDetected = false;
-  let firstUnitSystem = 3;  // 预期的第一个单位系统值
-  let finalUnitSystem = 0;  // 预期的最终单位系统值
+  let firstUnitSystem = 3;  // Expected first unit system value
+  let finalUnitSystem = 0;  // Expected final unit system value
   
-  // 向评估系统发送事件
+  // Send event to evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -34,87 +34,87 @@
       send(payload);
   }
   
-  // 查找Base::UnitsApi::setSchema函数
+  // Find Base::UnitsApi::setSchema function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through exported symbol
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Cannot find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
       });
       
-      // 查找单位系统设置函数
+      // Find unit system setting function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装单位系统设置函数钩子
+      // Install unit system setting function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
-                  // args[0]是this指针，args[1]是单位系统的枚举值
+                  // args[0] is this pointer, args[1] is unit system enum value
                   this.unitSystem = parseInt(args[1]);
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
 
           onLeave: function(retval) {
               try {
-                  // 检测是否是第一次设置为3
+                  // Detect if this is the first setting to 3
                   if (this.unitSystem === firstUnitSystem && !firstUnitSystemDetected) {
                       firstUnitSystemDetected = true;
                       sendEvent(FIRST_UNIT_SYSTEM_SET, {
-                          message: `检测到第一次${FUNCTION_BEHAVIOR}操作`,
+                          message: `Detected first ${FUNCTION_BEHAVIOR} operation`,
                           unit_system: this.unitSystem
                       });
                   }
-                  // 检测是否是最终设置为0
+                  // Detect if this is the final setting to 0
                   else if (this.unitSystem === finalUnitSystem && firstUnitSystemDetected) {
                       sendEvent(FINAL_UNIT_SYSTEM_SET, {
-                          message: `检测到最终${FUNCTION_BEHAVIOR}操作`,
+                          message: `Detected final ${FUNCTION_BEHAVIOR} operation`,
                           unit_system: this.unitSystem
                       });
                   }
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installation complete, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   

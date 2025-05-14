@@ -1,7 +1,7 @@
 {
     "task_id": "23",
     "task_name": "set_user_edit_mode",
-    "description": "在FreeCAD中先设置用户编辑模式为3，再设置为0",
+    "description": "In FreeCAD, first set the user edit mode to 3, then set it back to 0",
 
     "application_info": {
         "name": "FreeCAD",
@@ -14,7 +14,7 @@
         "final_mode": 0
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD应用中先将用户编辑模式设置为${first_mode}，然后再设置为${final_mode}",
+    "instruction_template": "The application is already open. In the FreeCAD application, first set the user edit mode to ${first_mode}, then set it back to ${final_mode}",
 
     "evaluation_setup": {
         "scripts": [
@@ -29,31 +29,31 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialization",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到用户编辑模式设置函数",
+            "description": "Found user edit mode setting function",
             "is_key_step": false
         },
         "function_called": {
-            "description": "用户编辑模式设置函数被调用",
+            "description": "User edit mode setting function was called",
             "is_key_step": false
         },
         "first_mode_set": {
-            "description": "检测到第一次模式设置",
+            "description": "First mode setting detected",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "成功将用户编辑模式设置为3"
+            "key_step_name": "Successfully set user edit mode to 3"
         },
         "final_mode_set": {
-            "description": "检测到最终模式设置",
+            "description": "Final mode setting detected",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "成功将用户编辑模式设置回0"
+            "key_step_name": "Successfully set user edit mode back to 0"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

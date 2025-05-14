@@ -1,7 +1,7 @@
 {
     "task_id": "15",
     "task_name": "create_cylinder_with_rectangular_groove",
-    "description": "在FreeCAD中创建一个带有绕Y轴倾斜矩形凹槽的圆柱体",
+    "description": "Create a cylinder with a rectangular groove tilted around Y-axis in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -20,7 +20,7 @@
         "groove_angle": 30.0
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD中创建一个半径为${cylinder_radius}mm，高度为${cylinder_height}mm的圆柱体，然后在其侧面创建一个倾斜的矩形凹槽。凹槽宽度为${groove_width}mm，深度为${groove_depth}mm，高度为${groove_height}mm，绕Y轴倾斜角度为${groove_angle}度。圆柱体的创建方式应为create an additive cylinder，矩形凹槽的创建方式为create a subtractive box。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. Create a cylinder with radius ${cylinder_radius}mm and height ${cylinder_height}mm in FreeCAD, then create a tilted rectangular groove on its side. The groove should have width ${groove_width}mm, depth ${groove_depth}mm, height ${groove_height}mm, and be tilted around the Y-axis by ${groove_angle} degrees. The cylinder should be created as an additive cylinder (typeid), and the rectangular groove should be created as a subtractive box (typeid). Do not create the shapes separately and use Boolean subtraction or cut. Finally, save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -36,27 +36,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Document save function found",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Document save function called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Document saved"
         },
         "function_key_word_detected": {
-            "description": "检测到保存文档关键内容",
+            "description": "Detected key content in saved document",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建带倾斜矩形凹槽的圆柱体并保存成功"
+            "key_step_name": "Created cylinder with tilted rectangular groove and saved successfully"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

@@ -1,7 +1,7 @@
 {
     "task_id": "07",
     "task_name": "create_line",
-    "description": "在FreeCAD中创建直线",
+    "description": "Create a line in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -15,7 +15,7 @@
         "line_length": 50.0
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD的part design中通过草图创建一条长度为${line_length}的直线,并将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. In FreeCAD's part design, create a line with length ${line_length} through a sketch, and save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -30,27 +30,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Found document save function",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Document save function was called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Save document"
         },
         "function_key_word_detected": {
-            "description": "检测到保存文档关键内容",
+            "description": "Detected document save key content",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建直线并保存成功"
+            "key_step_name": "Successfully created line and saved"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

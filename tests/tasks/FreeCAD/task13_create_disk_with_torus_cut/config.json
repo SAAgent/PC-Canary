@@ -1,7 +1,7 @@
 {
     "task_id": "13",
     "task_name": "create_disk_with_torus_cut",
-    "description": "在FreeCAD中创建一个带有环形槽的圆盘",
+    "description": "Create a disk with a toroidal groove in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -21,7 +21,7 @@
         "torus_angle3": 360.0
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD中创建一个半径为${disk_radius}mm，高度为${disk_height}mm的圆盘，然后在其上部创建一个环形槽。环形槽的主半径(Radius1)为${torus_radius1}mm，次半径(Radius2)为${torus_radius2}mm，角度参数为Angle1=${torus_angle1}度，Angle2=${torus_angle2}度，Angle3=${torus_angle3}度，默认为整圆环形槽,盘上环形槽深度与次半径相等。圆盘的创建方式应为create an additive cylinder（typeid），环形槽的创建方式为create subtractive torus（typeid），不要分别创建形体后使用布尔减法。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. Create a disk in FreeCAD with radius ${disk_radius}mm and height ${disk_height}mm, then create a toroidal groove on its top surface. The toroidal groove's major radius (Radius1) is ${torus_radius1}mm, minor radius (Radius2) is ${torus_radius2}mm, with angle parameters Angle1=${torus_angle1} degrees, Angle2=${torus_angle2} degrees, and Angle3=${torus_angle3} degrees, defaulting to a complete toroidal groove. The groove depth on the disk equals the minor radius. The disk should be created using 'create an additive cylinder' (typeid), and the toroidal groove should be created using 'create subtractive torus' (typeid). Do not create the shapes separately and use boolean subtraction. Finally, save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -37,27 +37,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Save document function found",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Save document function called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Save document"
         },
         "function_key_word_detected": {
-            "description": "检测到保存文档关键内容",
+            "description": "Save document key content detected",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建带环形槽的圆盘并保存成功"
+            "key_step_name": "Disk with toroidal groove created and saved successfully"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

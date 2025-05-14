@@ -1,12 +1,12 @@
-// FreeCAD创建带镜像特征的四棱锥监控钩子脚本
-// 用于监听FreeCAD的创建带镜像特征的四棱锥操作并检测任务完成情况
-// 创建带镜像特征的四棱锥后保存文件，测试程序监听到保存后查询对应文档中是否存在符合要求的带镜像特征的四棱锥
+// FreeCAD Pyramid with Mirror Feature Monitoring Hook Script
+// Used to monitor FreeCAD operations for creating a pyramid with mirror feature and detect task completion
+// After creating a pyramid with mirror feature and saving the file, the test program detects the save operation and checks if the document contains a pyramid with mirror feature that meets the requirements
 
 (function() {
-  // 脚本常量设置
+  // Script constants setup
   const FUNCTION_NAME = "_ZNK3App8Document10saveToFileEPKc"
   const ORIGIN_FUNCTION_NAME = "Document::saveToFile"
-  const FUNCTION_BEHAVIOR = "保存文档"
+  const FUNCTION_BEHAVIOR = "Save document"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,10 +18,10 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variables
   let funcFound = false;
   
-  // 向评估系统发送事件
+  // Send events to the evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -31,16 +31,16 @@
       send(payload);
   }
   
-  // 查找Document::saveToFile函数
+  // Find Document::saveToFile function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through export symbols
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Could not find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
@@ -49,36 +49,36 @@
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
       });
       
-      // 查找搜索函数
+      // Find target function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装搜索函数钩子
+      // Install function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.filename = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
@@ -92,15 +92,15 @@ import FreeCAD
 import Part
 import math
 
-# 打开指定的文件
+# Open specified file
 file_path = '${this.filename}'
 doc = FreeCAD.open(file_path)
 
-# 获取活动文档
+# Get active document
 if doc is None:
     result = None
 else:
-    # 查找四棱锥和镜像特征
+    # Find pyramid and mirror feature
     pyramid = None
     mirror_feature = None
     has_mirror = False
@@ -160,9 +160,9 @@ else:
                     elif abs(axis.z) > 0.9 and abs(axis.x) < 0.1 and abs(axis.y) < 0.1:
                         mirror_plane = "XY"  # Z axis perpendicular to XY plane
     
-    # 如果没有找到四棱锥，尝试通过形状特征识别
+    # If no pyramid found, try to identify by shape characteristics
     if not pyramid:
-        # 遍历文档中的所有对象
+        # Iterate through all objects in the document
         for obj in doc.Objects:
             if hasattr(obj, "TypeId") and ("Wedge" in obj.TypeId or "Part::Wedge" in obj.TypeId):
                 pyramid = obj
@@ -186,23 +186,23 @@ else:
                         base_width = bbox.ZLength  # For wedges on XZ plane, Z is width
                         pyramid_height = bbox.YLength  # Y is height
     
-    # 如果没有找到镜像特征，尝试通过检测对称性来确定
+    # If no mirror feature found, try to determine by checking symmetry
     if not has_mirror:
-        # 检查文档中是否存在可能对称放置的相似对象
+        # Check if there are possibly symmetrically placed similar objects in the document
         all_solids = []
         for obj in doc.Objects:
             if hasattr(obj, "Shape") and obj.Shape.ShapeType == "Solid":
                 all_solids.append(obj)
         
-        # 如果有偶数个相似形状物体，可能存在镜像
+        # If there are an even number of similar objects, a mirror might exist
         if len(all_solids) >= 2 and len(all_solids) % 2 == 0:
-            # 尝试检查这些物体的关系
+            # Try to check the relationship between these objects
             has_mirror = True
             
-            # 假设任务要求的是XZ平面镜像
-            mirror_plane = "XZ"  # 因为提前知道底面在XZ平面，所以镜像平面也是XZ
+            # Assume the task requires XZ plane mirroring
+            mirror_plane = "XZ"  # Since we know the base is on the XZ plane, the mirror plane is also XZ
             
-            # 通过检查物体的位置分布来验证
+            # Verify by checking the distribution of objects' positions
             if len(all_solids) >= 2:
                 obj1 = all_solids[0]
                 obj2 = all_solids[1]
@@ -211,48 +211,48 @@ else:
                     com1 = obj1.Shape.CenterOfMass
                     com2 = obj2.Shape.CenterOfMass
                     
-                    # 根据质心的相对位置推测镜像平面
+                    # Infer mirror plane based on relative position of centers of mass
                     dx = abs(com1.x - com2.x)
                     dy = abs(com1.y - com2.y)
                     dz = abs(com1.z - com2.z)
                     
-                    # 对于楔形创建的金字塔，判断镜像平面
+                    # For pyramids created as wedges, determine mirror plane
                     if dx < 0.1 and dz < 0.1 and dy > 0:
-                        # 如果X和Z方向上差距很小，而Y方向显著，则是XZ平面镜像
-                        mirror_plane = "XZ"  # 沿Y方向镜像
+                        # If differences in X and Z directions are small, but Y is significant, it's XZ plane mirroring
+                        mirror_plane = "XZ"  # Mirrored along Y axis
                     elif dy < 0.1 and dz < 0.1 and dx > 0:
-                        mirror_plane = "YZ"  # 沿X方向镜像
+                        mirror_plane = "YZ"  # Mirrored along X axis
                     elif dx < 0.1 and dy < 0.1 and dz > 0:
-                        mirror_plane = "XY"  # 沿Z方向镜像
+                        mirror_plane = "XY"  # Mirrored along Z axis
     
-    # 返回结果 - 确保返回纯数字而不是带单位的值
-    # 处理可能带单位的值
+    # Return results - ensure pure numbers are returned instead of values with units
+    # Handle values that might have units
     def extract_value(val):
         if val is None:
             return None
         try:
-            # 如果是字符串形式的带单位数值（如 "10.0 mm"），提取数值部分
+            # If it's a string with units (like "10.0 mm"), extract the numerical part
             if isinstance(val, str) and ' ' in val:
                 return float(val.split()[0])
-            # 如果是 FreeCAD Quantity 对象，尝试转换为浮点数
+            # If it's a FreeCAD Quantity object, try to convert to float
             return float(val)
         except:
-            # 如果无法转换，返回原始值
+            # If conversion fails, return the original value
             return val
     
-    # 打印调试信息以便排查问题
-    print("调试信息: 实测金字塔尺寸 - 长:", base_length, "宽:", base_width, "高:", pyramid_height)
-    print("调试信息: 镜像特征 - 是否存在:", has_mirror, "镜像平面:", mirror_plane)
+    # Print debug information for troubleshooting
+    print("Debug info: Measured pyramid dimensions - Length:", base_length, "Width:", base_width, "Height:", pyramid_height)
+    print("Debug info: Mirror feature - Exists:", has_mirror, "Mirror plane:", mirror_plane)
     
-    # 因为楔形创建的金字塔底面在XZ平面，调整尺寸参数映射
+    # Because wedge-created pyramids have base on XZ plane, adjust dimension parameter mapping
     if pyramid and hasattr(pyramid.Shape, "BoundBox"):
         bbox = pyramid.Shape.BoundBox
-        # 调整参数解释
+        # Adjust parameter interpretation
         result = {
             'base_length': extract_value(base_length),
             'base_width': extract_value(base_width),
             'pyramid_height': extract_value(pyramid_height),
-            'mirror_plane': "XZ",  # 固定为XZ平面，因为任务要求底面在XZ平面
+            'mirror_plane': "XZ",  # Fixed to XZ plane because the task requires base on XZ plane
             'has_mirror': has_mirror
         }
     else:
@@ -265,26 +265,26 @@ else:
         }
                     `
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                        message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                        message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                         filename: this.filename,
                         code: pythonCode
                     });
                 }
-                // 检测关键字
+                // Detect keywords
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installation complete, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

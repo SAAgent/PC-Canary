@@ -1,11 +1,11 @@
-// FreeCAD用户编辑模式设置监控钩子脚本
-// 用于监听FreeCAD的用户编辑模式设置操作
+// FreeCAD User Edit Mode Setting Monitoring Hook Script
+// Used to monitor user edit mode setting operations in FreeCAD
 
 (function() {
-  // 脚本常量设置
+  // Script constants
   const FUNCTION_NAME = "_ZN3Gui11Application15setUserEditModeEi"
   const ORIGIN_FUNCTION_NAME = "Gui::Application::setUserEditMode"
-  const FUNCTION_BEHAVIOR = "设置用户编辑模式"
+  const FUNCTION_BEHAVIOR = "set user edit mode"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,13 +18,13 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variables
   let funcFound = false;
   let firstModeDetected = false;
-  let firstMode = 3;  // 预期的第一个模式值
-  let finalMode = 0;  // 预期的最终模式值
+  let firstMode = 3;  // Expected first mode value
+  let finalMode = 0;  // Expected final mode value
   
-  // 向评估系统发送事件
+  // Send event to evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -34,92 +34,92 @@
       send(payload);
   }
   
-  // 查找Gui::Application::setUserEditMode函数
+  // Find Gui::Application::setUserEditMode function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through exported symbol
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Cannot find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
       });
       
-      // 查找用户编辑模式设置函数
+      // Find user edit mode setting function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装用户编辑模式设置函数钩子
+      // Install user edit mode setting function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
-                  // args[0]是this指针，args[1]是用户编辑模式的值
+                  // args[0] is this pointer, args[1] is user edit mode value
                   this.userEditMode = parseInt(args[1]);
                   this.isFirstMode = this.userEditMode === firstMode && !firstModeDetected;
                   this.isFinalMode = this.userEditMode === finalMode && firstModeDetected;
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
 
           onLeave: function(retval) {
               try {
-                  // 检测是否是第一次设置预期的模式
+                  // Detect if this is the first setting of expected mode
                   if (this.isFirstMode) {
                       firstModeDetected = true;
                       sendEvent(FIRST_MODE_SET, {
-                          message: `检测到第一次${FUNCTION_BEHAVIOR}操作`,
+                          message: `Detected first ${FUNCTION_BEHAVIOR} operation`,
                           user_edit_mode: this.userEditMode
                       });
                   }
-                  // 检测是否是最终设置预期的模式
+                  // Detect if this is the final setting of expected mode
                   else if (this.isFinalMode) {
                       sendEvent(FINAL_MODE_SET, {
-                          message: `检测到最终${FUNCTION_BEHAVIOR}操作`,
+                          message: `Detected final ${FUNCTION_BEHAVIOR} operation`,
                           user_edit_mode: this.userEditMode
                       });
                   }
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installation complete, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

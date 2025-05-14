@@ -1,7 +1,7 @@
 {
     "task_id": "21",
     "task_name": "change_language",
-    "description": "在FreeCAD中先将显示语言改为中文简体，再改回英文",
+    "description": "Change the display language in FreeCAD to Chinese Simplified first, then change it back to English",
 
     "application_info": {
         "name": "FreeCAD",
@@ -14,7 +14,7 @@
         "final_language": "English"
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD应用中先将界面语言切换为${first_language}，然后再改回${final_language}",
+    "instruction_template": "The application is already open. In the FreeCAD application, using open first start setup, first change the interface language to ${first_language}, then change it back to ${final_language}",
 
     "evaluation_setup": {
         "scripts": [
@@ -29,31 +29,31 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialization",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到语言切换函数",
+            "description": "Found language switching function",
             "is_key_step": false
         },
         "function_called": {
-            "description": "语言切换函数被调用",
+            "description": "Language switching function was called",
             "is_key_step": false
         },
         "first_language_set": {
-            "description": "检测到第一次语言切换",
+            "description": "First language change detected",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "成功将语言切换为中文简体"
+            "key_step_name": "Successfully changed language to Chinese Simplified"
         },
         "final_language_set": {
-            "description": "检测到最终语言切换",
+            "description": "Final language change detected",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "成功将语言切换回英文"
+            "key_step_name": "Successfully changed language back to English"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

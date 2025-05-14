@@ -1,12 +1,12 @@
-// FreeCAD创建圆角矩形监控钩子脚本
-// 用于监听FreeCAD的创建圆角矩形操作并检测任务完成情况
-// 创建圆角矩形后保存文件，测试程序监听到保存后查询对应文档中是否存在符合要求的圆角矩形
+// FreeCAD create rounded rectangle monitoring hook script
+// Used to listen to FreeCAD's create rounded rectangle operation and detect task completion
+// After creating a rounded rectangle, save the file. The test program listens for the save and queries the corresponding document for a rounded rectangle that meets the requirements.
 
 (function() {
-  // 脚本常量设置
+  // Script constant settings
   const FUNCTION_NAME = "_ZNK3App8Document10saveToFileEPKc"
   const ORIGIN_FUNCTION_NAME = "Document::saveToFile"
-  const FUNCTION_BEHAVIOR = "保存文档"
+  const FUNCTION_BEHAVIOR = "Save Document"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,10 +18,10 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variable
   let funcFound = false;
   
-  // 向评估系统发送事件
+  // Send event to the evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -31,54 +31,54 @@
       send(payload);
   }
   
-  // 查找Document::saveToFile函数
+  // Find Document::saveToFile function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through exported symbols
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report an error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Cannot find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
       });
       
-      // 查找搜索函数
+      // Find search function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装搜索函数钩子
+      // Install search function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.filename = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
@@ -91,55 +91,55 @@ import freecad
 import FreeCAD
 import Part
 
-# 打开指定的文件
+# Open the specified file
 file_path = '${this.filename}'
 doc = FreeCAD.open(file_path)
 
-# 获取活动文档
+# Get active document
 if doc is None:
     result = None
 else:
-    # 查找文档中的形状
+    # Find shapes in the document
     rounded_rect = None
     
-    # 检查所有对象，寻找圆角矩形
-    # 在Sketch中圆角矩形通常由多个几何元素组成
+    # Check all objects, look for rounded rectangles
+    # In Sketch, rounded rectangles are usually composed of multiple geometric elements
     for obj in doc.Objects:
         if obj.TypeId == "Sketcher::SketchObject":
             sketch = obj
             
-            # 获取几何图形数量，圆角矩形通常由直线和圆弧组成
-            # 简单的圆角矩形通常有8个几何元素：4条直线和4个圆弧
+            # Get the number of geometric figures, rounded rectangles are usually composed of straight lines and arcs
+            # Simple rounded rectangles usually have 8 geometric elements: 4 straight lines and 4 arcs
             if hasattr(sketch, "Geometry") and len(sketch.Geometry) >= 8:
-                # 圆角矩形的基本属性
+                # Basic properties of a rounded rectangle
                 lines = [g for g in sketch.Geometry if g.TypeId == 'Part::GeomLineSegment']
                 arcs = [g for g in sketch.Geometry if g.TypeId == 'Part::GeomArcOfCircle']
                 
-                # 简单检查：圆角矩形通常有4条线和4个圆弧
+                # Simple check: rounded rectangles usually have 4 lines and 4 arcs
                 if len(lines) >= 4 and len(arcs) >= 4:
-                    # 简单估算矩形尺寸（计算边界框）
+                    # Simple estimation of rectangle size (calculate bounding box)
                     vertices = []
                     
-                    # 获取曲线的端点
+                    # Get endpoints of curves
                     for line in lines:
                         vertices.append((line.StartPoint.x, line.StartPoint.y))
                         vertices.append((line.EndPoint.x, line.EndPoint.y))
                     
-                    # 如果有足够的点来形成边界框
+                    # If there are enough points to form a bounding box
                     if len(vertices) >= 4:
                         xs = [v[0] for v in vertices]
                         ys = [v[1] for v in vertices]
                         
-                        # 计算边界框尺寸
+                        # Calculate bounding box dimensions
                         length = max(xs) - min(xs)
                         width = max(ys) - min(ys)
                         
-                        # 估算半径（取圆弧半径的平均值）
+                        # Estimate radius (take the average of arc radii)
                         radius = 0
                         if arcs:
                             radius = sum([arc.Radius for arc in arcs]) / len(arcs)
                         
-                        # 设置结果
+                        # Set result
                         rounded_rect = {
                             "length": abs(length),
                             "width": abs(width),
@@ -150,26 +150,26 @@ else:
     result = rounded_rect
                     `
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                        message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                        message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                         filename: this.filename,
                         code: pythonCode
                     });
                 }
-                // 检测关键字
+                // Detect keyword
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installed, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

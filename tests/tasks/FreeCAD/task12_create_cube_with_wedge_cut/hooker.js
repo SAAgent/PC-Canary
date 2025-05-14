@@ -1,12 +1,12 @@
-// FreeCAD创建带楔形切口长方体监控钩子脚本
-// 用于监听FreeCAD的创建带楔形切口长方体操作并检测任务完成情况
-// 创建带楔形切口长方体后保存文件，测试程序监听到保存后查询对应文档中是否存在符合要求的带楔形切口长方体
+// FreeCAD Cuboid with Wedge Cut Monitoring Hook Script
+// Used to monitor FreeCAD's cuboid with wedge cut creation operation and detect task completion
+// After creating a cuboid with wedge cut and saving the file, the test program listens for the save and checks if there is a cuboid with wedge cut meeting the requirements in the corresponding document
 
 (function() {
-  // 脚本常量设置
+  // Script constant settings
   const FUNCTION_NAME = "_ZNK3App8Document10saveToFileEPKc"
   const ORIGIN_FUNCTION_NAME = "Document::saveToFile"
-  const FUNCTION_BEHAVIOR = "保存文档"
+  const FUNCTION_BEHAVIOR = "Save Document"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,10 +18,10 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variable
   let funcFound = false;
   
-  // 向评估系统发送事件
+  // Send event to the evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -31,54 +31,54 @@
       send(payload);
   }
   
-  // 查找Document::saveToFile函数
+  // Find Document::saveToFile function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through exported symbols
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report an error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Cannot find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
       });
       
-      // 查找搜索函数
+      // Find search function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装搜索函数钩子
+      // Install search function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.filename = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
@@ -92,48 +92,48 @@ import FreeCAD
 import Part
 import math
 
-# 打开指定的文件
+# Open specified file
 file_path = '${this.filename}'
 doc = FreeCAD.open(file_path)
 
-# 获取活动文档
+# Get active document
 if doc is None:
     result = None
 else:
-    # 查找文档中的长方体和楔形切口
+    # Find cuboid and wedge cut in the document
     main_cube = None
     wedge_cut = None
     
-    # 检查所有对象，寻找长方体和楔形切口
+    # Check all objects, look for cuboid and wedge cut
     for obj in doc.Objects:
-        # 检查是否为实体对象
+        # Check if it's a solid object
         if hasattr(obj, "Shape"):
-            # 检查形状类型
+            # Check shape type
             if hasattr(obj.Shape, "ShapeType"):
-                # 对于Part设计方法创建的对象，我们需要检查子对象
+                # For objects created using Part Design method, we need to check sub-objects
                 if obj.TypeId == "PartDesign::Body":
-                    # 防止重复计数同一个对象
+                    # Prevent counting the same object multiple times
                     processed_objects = set()
                     
                     for subobj in obj.OutList:
                         if hasattr(subobj, "Shape") and hasattr(subobj.Shape, "ShapeType"):
-                            # 使用 TypeId 检查是否为增料长方体
+                            # Use TypeId to check if it's an additive box
                             if subobj.TypeId == 'PartDesign::AdditiveBox' or subobj.TypeId == 'Part::Box':
-                                # 使用对象ID作为唯一标识符
+                                # Use object ID as unique identifier
                                 obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
                                 
-                                # 如果这个对象已经处理过，跳过
+                                # Skip if this object has been processed
                                 if obj_id in processed_objects:
                                     continue
                                 processed_objects.add(obj_id)
                                 
                                 if subobj.Shape.ShapeType == "Solid" and hasattr(subobj.Shape, "Volume"):
-                                    # 获取长方体的尺寸
+                                    # Get cuboid dimensions
                                     cube_length = subobj.Length.Value if hasattr(subobj, "Length") else 0
                                     cube_width = subobj.Width.Value if hasattr(subobj, "Width") else 0
                                     cube_height = subobj.Height.Value if hasattr(subobj, "Height") else 0
                                     
-                                    # 获取位置信息
+                                    # Get position information
                                     cube_position = None
                                     if hasattr(subobj, "Placement") and hasattr(subobj.Placement, "Base"):
                                         cube_position = {
@@ -142,7 +142,7 @@ else:
                                             'z': subobj.Placement.Base.z
                                         }
                                     
-                                    # 存储长方体信息
+                                    # Store cuboid information
                                     main_cube = {
                                         'length': cube_length,
                                         'width': cube_width,
@@ -150,18 +150,18 @@ else:
                                         'position': cube_position
                                     }
                             
-                            # 使用 TypeId 检查是否为减料楔形
+                            # Use TypeId to check if it's a subtractive wedge
                             elif subobj.TypeId == 'PartDesign::SubtractiveWedge' or subobj.TypeId.endswith('::Wedge'):
-                                # 使用对象ID作为唯一标识符
+                                # Use object ID as unique identifier
                                 obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
                                 
-                                # 如果这个对象已经处理过，跳过
+                                # Skip if this object has been processed
                                 if obj_id in processed_objects:
                                     continue
                                 processed_objects.add(obj_id)
                                 
                                 if subobj.Shape.ShapeType == "Solid" and hasattr(subobj.Shape, "Volume"):
-                                    # 获取楔形的尺寸参数
+                                    # Get wedge parameters
                                     wedge_Xmin = subobj.Xmin.Value if hasattr(subobj, "Xmin") else 0.0
                                     wedge_Xmax = subobj.Xmax.Value if hasattr(subobj, "Xmax") else 0.0
                                     wedge_Ymin = subobj.Ymin.Value if hasattr(subobj, "Ymin") else 0.0
@@ -173,7 +173,7 @@ else:
                                     wedge_Z2min = subobj.Z2min.Value if hasattr(subobj, "Z2min") else 0.0
                                     wedge_Z2max = subobj.Z2max.Value if hasattr(subobj, "Z2max") else 0.0
                                     
-                                    # 获取位置信息
+                                    # Get position information
                                     wedge_position = None
                                     if hasattr(subobj, "Placement") and hasattr(subobj.Placement, "Base"):
                                         wedge_position = {
@@ -182,7 +182,7 @@ else:
                                             'z': subobj.Placement.Base.z
                                         }
                                     
-                                    # 存储楔形信息
+                                    # Store wedge information
                                     wedge_cut = {
                                         'Xmin': wedge_Xmin,
                                         'Xmax': wedge_Xmax,
@@ -197,21 +197,21 @@ else:
                                         'position': wedge_position
                                     }
     
-    # 处理可能带单位的值
+    # Handle values that might have units
     def extract_value(val):
         if val is None:
             return None
         try:
-            # 如果是字符串形式的带单位数值（如 "10.0 mm"），提取数值部分
+            # If it's a string with unit (like "10.0 mm"), extract the numeric part
             if isinstance(val, str) and ' ' in val:
                 return float(val.split()[0])
-            # 如果是 FreeCAD Quantity 对象，尝试转换为浮点数
+            # If it's a FreeCAD Quantity object, try converting to float
             return float(val)
         except:
-            # 如果无法转换，返回原始值
+            # If conversion fails, return original value
             return val
     
-    # 返回结果
+    # Return result
     result = {
         'cube_length': extract_value(main_cube['length']) if main_cube else None,
         'cube_width': extract_value(main_cube['width']) if main_cube else None,
@@ -230,26 +230,25 @@ else:
     }
                     `
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                        message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                        message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                         filename: this.filename,
                         code: pythonCode
                     });
                 }
-                // 检测关键字
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installed, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

@@ -1,7 +1,7 @@
 {
     "task_id": "24",
     "task_name": "create_circle",
-    "description": "在FreeCAD中绘制以原点为圆心的2D圆形",
+    "description": "Draw a 2D circle with center at the origin in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -15,7 +15,7 @@
         "radius": 10
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD的2D草图中创建一个以原点(0,0)为圆心、半径为${radius}的圆形，并将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. In FreeCAD's 2D draft, create a circle with center at origin (0,0) and radius of ${radius}, then save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -30,27 +30,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialization",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Found document save function",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Document save function was called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Save document"
         },
         "function_key_word_detected": {
-            "description": "检测到文档保存关键内容",
+            "description": "Detected key content in saved document",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建圆形并保存成功"
+            "key_step_name": "Successfully created circle and saved"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

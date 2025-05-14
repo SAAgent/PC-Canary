@@ -1,12 +1,12 @@
-// FreeCAD创建带倾斜矩形凹槽圆柱体监控钩子脚本
-// 用于监听FreeCAD的创建带倾斜矩形凹槽圆柱体操作并检测任务完成情况
-// 创建带倾斜矩形凹槽圆柱体后保存文件，测试程序监听到保存后查询对应文档中是否存在符合要求的带倾斜矩形凹槽圆柱体
+// FreeCAD Cylinder with Tilted Rectangular Groove Monitoring Hook Script
+// Used to monitor FreeCAD creation of a cylinder with tilted rectangular groove and detect task completion
+// After creating a cylinder with tilted rectangular groove and saving the file, the test program listens for the save and checks if the corresponding document contains the required cylinder with tilted rectangular groove
 
 (function() {
-  // 脚本常量设置
+  // Script constants setting
   const FUNCTION_NAME = "_ZNK3App8Document10saveToFileEPKc"
   const ORIGIN_FUNCTION_NAME = "Document::saveToFile"
-  const FUNCTION_BEHAVIOR = "保存文档"
+  const FUNCTION_BEHAVIOR = "Document Save"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,10 +18,10 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variables
   let funcFound = false;
   
-  // 向评估系统发送事件
+  // Send events to the evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -31,54 +31,54 @@
       send(payload);
   }
   
-  // 查找Document::saveToFile函数
+  // Find Document::saveToFile function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find the function directly through exported symbols
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Unable to find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script has started`
       });
       
-      // 查找搜索函数
+      // Find target function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装搜索函数钩子
+      // Install function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.filename = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
@@ -92,71 +92,71 @@ import FreeCAD
 import Part
 import math
 
-# 打开指定的文件
+# Open the specified file
 file_path = '${this.filename}'
 doc = FreeCAD.open(file_path)
 
-# 获取活动文档
+# Get the active document
 if doc is None:
     result = None
 else:
-    # 查找圆柱体和矩形凹槽
+    # Find cylinder and rectangular groove
     cylinder = None
     groove = None
     
-    # 检查所有对象，寻找圆柱体和矩形凹槽
+    # Check all objects, looking for cylinder and rectangular groove
     for obj in doc.Objects:
-        # 检查是否为实体对象
+        # Check if it's a solid object
         if hasattr(obj, "Shape"):
-            # 检查形状类型
+            # Check shape type
             if hasattr(obj.Shape, "ShapeType"):
-                # 对于Part设计方法创建的对象，我们需要检查子对象
+                # For objects created with Part Design method, we need to check sub-objects
                 if obj.TypeId == "PartDesign::Body":
-                    # 防止重复计数同一个对象
+                    # Prevent counting the same object multiple times
                     processed_objects = set()
                     
                     for subobj in obj.OutList:
                         if hasattr(subobj, "Shape") and hasattr(subobj.Shape, "ShapeType"):
-                            # 使用 TypeId 检查是否为增料圆柱体
+                            # Use TypeId to check if it's an additive cylinder
                             if subobj.TypeId == 'PartDesign::AdditiveCylinder':
-                                # 使用对象ID作为唯一标识符
+                                # Use object ID as a unique identifier
                                 obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
                                 
-                                # 如果这个对象已经处理过，跳过
+                                # If this object has already been processed, skip it
                                 if obj_id in processed_objects:
                                     continue
                                 processed_objects.add(obj_id)
                                 
                                 if subobj.Shape.ShapeType == "Solid":
-                                    # 检查是否是圆柱体，直接读取属性
+                                    # Check if it's a cylinder, read properties directly
                                     cylinder_radius = subobj.Radius.Value if hasattr(subobj, "Radius") else 0
                                     cylinder_height = subobj.Height.Value if hasattr(subobj, "Height") else 0
                                     
-                                    # 存储圆柱体信息
+                                    # Store cylinder information
                                     cylinder = {
                                         'radius': cylinder_radius,
                                         'height': cylinder_height
                                     }
                             
-                            # 使用 TypeId 检查是否为减料盒体（矩形凹槽）
+                            # Use TypeId to check if it's a subtractive box (rectangular groove)
                             elif subobj.TypeId == 'PartDesign::SubtractiveBox':
-                                # 使用对象ID作为唯一标识符
+                                # Use object ID as a unique identifier
                                 obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
                                 
-                                # 如果这个对象已经处理过，跳过
+                                # If this object has already been processed, skip it
                                 if obj_id in processed_objects:
                                     continue
                                 processed_objects.add(obj_id)
                                 
                                 if subobj.Shape.ShapeType == "Solid":
-                                    # 获取矩形凹槽的基本属性
-                                    # 矩形凹槽的高度、宽度和深度
+                                    # Get basic properties of the rectangular groove
+                                    # Height, width and depth of the rectangular groove
                                     groove_width = 0
                                     groove_height = 0
                                     groove_depth = 0
                                     groove_angle = 0
                                     
-                                    # 尝试从属性中提取
+                                    # Try to extract from properties
                                     if hasattr(subobj, "Length"):
                                         groove_width = subobj.Length.Value
                                     if hasattr(subobj, "Height"):
@@ -166,7 +166,7 @@ else:
                                     if hasattr(subobj, "Angle"):
                                         groove_angle = subobj.Angle
                                     
-                                    # 对于box，直接从边界盒获取尺寸（如果前面没有获得的话）
+                                    # For box, get dimensions directly from the bounding box (if not already obtained)
                                     if hasattr(subobj, "Shape") and hasattr(subobj.Shape, "BoundBox"):
                                         bounds = subobj.Shape.BoundBox
                                         if groove_width == 0:
@@ -176,27 +176,27 @@ else:
                                         if groove_depth == 0:
                                             groove_depth = bounds.YLength
                                     
-                                    # 通过放置位置和角度计算倾斜角度（如果尚未从属性获取）
+                                    # Calculate tilt angle from placement position and angle (if not already obtained from properties)
                                     if groove_angle == 0 and hasattr(subobj, "Placement"):
-                                        # 从旋转矩阵中提取角度
+                                        # Extract angle from rotation matrix
                                         if hasattr(subobj.Placement, "Rotation"):
-                                            # 获取旋转角度（以度为单位）
-                                            # 在FreeCAD中，旋转通常以弧度表示
+                                            # Get rotation angle (in degrees)
+                                            # In FreeCAD, rotation is usually expressed in radians
                                             rot_angle = subobj.Placement.Rotation.Angle * 180.0 / math.pi
                                             
-                                            # 提取绕y轴的旋转（通常是倾斜角度）
+                                            # Extract rotation around y-axis (usually the tilt angle)
                                             axis = subobj.Placement.Rotation.Axis
-                                            if abs(axis.y) > 0.7:  # 如果主要是绕Y轴旋转
+                                            if abs(axis.y) > 0.7:  # If rotation is mainly around Y axis
                                                 groove_angle = rot_angle
                                             else:
-                                                # 计算与Y轴的夹角
+                                                # Calculate angle with Y axis
                                                 import math
                                                 groove_angle = math.degrees(math.acos(axis.y))
                                                 
-                                    # 倾斜角度可能也从位置相对于圆柱体的偏移来确定
-                                    # 但我们已经尝试通过旋转来获取
+                                    # Tilt angle could also be determined from position relative to cylinder
+                                    # But we've already tried to get it from rotation
                                     
-                                    # 存储矩形凹槽信息
+                                    # Store rectangular groove information
                                     groove = {
                                         'width': groove_width,
                                         'depth': groove_depth,
@@ -204,19 +204,19 @@ else:
                                         'angle': groove_angle
                                     }
     
-    # 返回结果 - 确保返回纯数字而不是带单位的值
-    # 处理可能带单位的值
+    # Return results - ensure we return pure numbers without units
+    # Handle values that may have units
     def extract_value(val):
         if val is None:
             return None
         try:
-            # 如果是字符串形式的带单位数值（如 "10.0 mm"），提取数值部分
+            # If it's a string with unit (like "10.0 mm"), extract the numeric part
             if isinstance(val, str) and ' ' in val:
                 return float(val.split()[0])
-            # 如果是 FreeCAD Quantity 对象，尝试转换为浮点数
+            # If it's a FreeCAD Quantity object, try to convert to float
             return float(val)
         except:
-            # 如果无法转换，返回原始值
+            # If conversion fails, return the original value
             return val
     
     result = {
@@ -230,26 +230,26 @@ else:
     }
                     `
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                        message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                        message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                         filename: this.filename,
                         code: pythonCode
                     });
                 }
-                // 检测关键字
+                // Detect keywords
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installation complete, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

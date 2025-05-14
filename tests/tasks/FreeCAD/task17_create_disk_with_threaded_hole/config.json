@@ -1,7 +1,7 @@
 {
     "task_id": "17",
     "task_name": "create_disk_with_threaded_hole",
-    "description": "在FreeCAD中创建一个带有螺纹孔的圆盘",
+    "description": "Create a disk with a threaded hole in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -19,7 +19,7 @@
         "model_thread": true
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD中创建一个半径为${disk_radius}mm，高度为${disk_height}mm的圆盘，然后在其中心添加以下参数的螺纹孔：\n- Profile: ISO metric regular profile\n- Size: ${thread_size}\n- Clearance: Standard\n- Depth: ${thread_depth}mm\n- Threaded: 勾选\n- Model Thread: ${model_thread ? '勾选' : '不勾选'}\n圆盘的创建方式应为create an additive cylinder，螺纹孔的创建方式应为create a threaded hole。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. Create a disk in FreeCAD with radius ${disk_radius}mm and height ${disk_height}mm, then add a threaded hole in its center with the following parameters:\n- Profile: ISO metric regular profile\n- Size: ${thread_size}\n- Clearance: Standard\n- Depth: ${thread_depth}mm\n- Threaded: checked\n- Model Thread: ${model_thread ? 'checked' : 'unchecked'}\nThe disk should be created as an additive cylinder (typeid), and the threaded hole should be created using the create a threaded hole (typeid) method. Do not create the shapes separately and use boolean subtraction or cut. Finally, save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -35,27 +35,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Document save function found",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Document save function called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Document saved"
         },
         "function_key_word_detected": {
-            "description": "检测到保存文档关键内容",
+            "description": "Detected key content in saved document",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建带螺纹孔的圆盘并保存成功"
+            "key_step_name": "Created disk with threaded hole and saved successfully"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

@@ -1,7 +1,7 @@
 {
     "task_id": "03",
     "task_name": "open_doc",
-    "description": "在FreeCAD中打开已有文档",
+    "description": "Open an existing document in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -14,7 +14,7 @@
         "filename": "task03.FCStd"
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD应用中打开文档，文档名为${source_path}${filename},展示打开结果",
+    "instruction_template": "The application is already open. Open a document in FreeCAD application, the document name is ${source_path}${filename}, show the opening result",
 
     "evaluation_setup": {
         "scripts": [
@@ -29,29 +29,29 @@
     "total_key_steps": 1,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到打开文档函数",
+            "description": "Found document open function",
             "is_key_step": false
         },
         "function_called": {
-            "description": "打开文档函数被调用",
+            "description": "Document open function called",
             "is_key_step": false
         },
         "function_key_word_detected": {
-            "description": "检测到文档打开关键内容",
+            "description": "Detected document open key content",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "成功打开了指定文档"
+            "key_step_name": "Successfully opened the specified document"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         },
         "hook_installed": {
-            "description": "安装钩子成功",
+            "description": "Hook installed successfully",
             "is_key_step": false
         }
     },
