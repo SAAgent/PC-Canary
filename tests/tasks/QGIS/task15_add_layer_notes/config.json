@@ -1,0 +1,68 @@
+{
+    "task_id": "13",
+    "task_name": "add_layer_notes",
+    "description": "在QGIS中为指定图层添加标注",
+    "application_info": {
+        "name": "QGIS",
+        "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
+        "args": []
+    },
+    "mcp_servers": [
+        {
+            "command": "python",
+            "args": [
+                "/home/agent/agent-demo/PC-Canary/tests/context_data/QGIS/qgis_config/qgis_mcp/qgis_mcp_server.py"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/QGIS/qgis_sample_data",
+            "to": "/home/agent/testbed/QGIS"
+        },
+        {
+            "from": "tests/context_data/QGIS/qgis_config",
+            "to": "/home/agent/.local/share/QGIS"
+        }
+    ],
+    "task_parameters": {
+        "LayerName": "lakes",
+        "notes":"this is a test note"
+    },
+
+    "instruction_template": "在QGIS中为图层${LayerName}添加标注(add layer note)，内容为${notes}",
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "set_function_found": {
+            "description": "找到添加图层标注函数",
+            "is_key_step": false
+        },
+        "layer_set": {
+            "description": "检测到待添加标注的图层名称",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "正在操作预期图层"
+        },
+        "notes_set": {
+            "description": "预期标注已设置",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "设置了预期标注"
+        },
+        "error": {
+            "description": "来自脚本的错误事件",
+            "is_key_step": false
+        }
+    }
+}
