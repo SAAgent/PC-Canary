@@ -1,7 +1,7 @@
 {
     "task_id": "22",
     "task_name": "set_unit_system",
-    "description": "在FreeCAD中先将单位系统设置为3，再设置回0",
+    "description": "In FreeCAD, first set the unit system to 3, then set it back to 0",
 
     "application_info": {
         "name": "FreeCAD",
@@ -11,10 +11,12 @@
 
     "task_parameters": {
         "first_unit_system": 3,
-        "final_unit_system": 0
+        "final_unit_system": 0,
+        "first_unit_system_name": "Imperial decimal",
+        "final_unit_system_name": "Standard"
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD应用中先将单位系统设置为${first_unit_system}，再设置回${final_unit_system}",
+    "instruction_template": "The application is already open. In the FreeCAD application, using open first start setup, first set the unit system to no.${first_unit_system} which called ${final_unit_system_name}, then set it back to no.${final_unit_system} which called ${final_unit_system_name}",
 
     "evaluation_setup": {
         "scripts": [
@@ -29,31 +31,31 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialization",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到单位系统设置函数",
+            "description": "Found unit system setting function",
             "is_key_step": false
         },
         "function_called": {
-            "description": "单位系统设置函数被调用",
+            "description": "Unit system setting function was called",
             "is_key_step": false
         },
         "first_unit_system_set": {
-            "description": "检测到第一次单位系统设置",
+            "description": "First unit system setting detected",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "成功将单位系统设置为3"
+            "key_step_name": "Successfully set unit system to 3"
         },
         "final_unit_system_set": {
-            "description": "检测到最终单位系统设置",
+            "description": "Final unit system setting detected",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "成功将单位系统设置回0"
+            "key_step_name": "Successfully set unit system back to 0"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

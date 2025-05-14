@@ -1,12 +1,12 @@
-// FreeCAD创建带螺纹孔圆盘监控钩子脚本
-// 用于监听FreeCAD的创建带螺纹孔圆盘操作并检测任务完成情况
-// 创建带螺纹孔圆盘后保存文件，测试程序监听到保存后查询对应文档中是否存在符合要求的带螺纹孔圆盘
+// FreeCAD Disk with Threaded Hole Monitoring Hook Script
+// Used to monitor FreeCAD operations for creating a disk with threaded hole and detect task completion
+// After creating a disk with threaded hole and saving the file, the test program detects the save and checks if the document contains a disk with threaded hole that meets requirements
 
 (function() {
-  // 脚本常量设置
+  // Script constants setup
   const FUNCTION_NAME = "_ZNK3App8Document10saveToFileEPKc"
   const ORIGIN_FUNCTION_NAME = "Document::saveToFile"
-  const FUNCTION_BEHAVIOR = "保存文档"
+  const FUNCTION_BEHAVIOR = "Save document"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,10 +18,10 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variables
   let funcFound = false;
   
-  // 向评估系统发送事件
+  // Send event to evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -31,54 +31,54 @@
       send(payload);
   }
   
-  // 查找Document::saveToFile函数
+  // Find Document::saveToFile function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through exported symbol
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Cannot find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
       });
       
-      // 查找搜索函数
+      // Find search function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装搜索函数钩子
+      // Install search function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.filename = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
@@ -93,27 +93,27 @@ import Part
 import math
 from FreeCAD import Vector
 
-# 打开指定的文件
+# Open the specified file
 file_path = '${this.filename}'
 doc = FreeCAD.open(file_path)
 
-# 获取活动文档
+# Get active document
 if doc is None:
     result = None
 else:
-    # 初始化结果参数
+    # Initialize result parameters
     disk_radius = 0.0
     disk_height = 0.0
     hole_radius = 0.0
     has_thread = False
     is_centered = False
     
-    # 初始化螺纹孔参数
+    # Initialize threaded hole parameters
     thread_size = ''
     thread_depth = 0.0
     model_thread = False
     
-    # 查找圆盘和螺纹孔
+    # Find disk and threaded hole
     cylinder_found = False
     hole_found = False
     disk_center = Vector(0, 0, 0)
@@ -128,9 +128,9 @@ else:
                 if obj.TypeId == "PartDesign::Body":
                     for subobj in obj.OutList:
                         if hasattr(subobj, "Shape") and hasattr(subobj.Shape, "ShapeType"):
-                            # 检查圆柱体/圆盘
+                            # Check cylinder/disk
                             if subobj.TypeId == 'PartDesign::AdditiveCylinder' or subobj.TypeId == 'Part::Cylinder':
-                                if not cylinder_found:  # 只处理第一个找到的圆盘
+                                if not cylinder_found:  # Only process the first disk found
                                     cylinder_found = True
                                     if hasattr(subobj, "Radius"):
                                         disk_radius = subobj.Radius.Value
@@ -142,32 +142,32 @@ else:
                                     elif hasattr(subobj.Shape, "Height"):
                                         disk_height = subobj.Shape.Height
                                     
-                                    # 记录圆盘中心位置
+                                    # Record disk center position
                                     if hasattr(subobj, "Placement"):
                                         disk_center = subobj.Placement.Base
                             
-                            # 检查螺纹孔
+                            # Check threaded hole
                             if 'Hole' in subobj.TypeId or 'Thread' in subobj.TypeId:
                                 hole_found = True
                                 has_thread = True
                                 
-                                # 只获取需要验证的关键参数
+                                # Only get key parameters that need to be verified
                                 
-                                # 螺纹Size
+                                # Thread Size
                                 if hasattr(subobj, "ThreadSize") or hasattr(subobj, "Size"):
                                     size = getattr(subobj, "ThreadSize", None) or getattr(subobj, "Size", None)
                                     if size:
                                         if isinstance(size, str):
                                             thread_size = size
                                         else:
-                                            # 如果是尺寸对象，尝试获取值并转换为字符串
+                                            # If it's a dimension object, try to get the value and convert to string
                                             try:
                                                 thread_size = 'M' + str(int(size.Value))
                                             except:
-                                                # 如果无法解析，保持为空
+                                                # If parsing fails, keep empty
                                                 pass
                                 
-                                # 获取孔半径（用于检查是否居中）
+                                # Get hole radius (to check if centered)
                                 if hasattr(subobj, "Diameter"):
                                     hole_radius = subobj.Diameter.Value / 2.0
                                 elif hasattr(subobj, "ThreadSize") and not isinstance(subobj.ThreadSize, str):
@@ -175,31 +175,31 @@ else:
                                 elif hasattr(subobj, "Radius"):
                                     hole_radius = subobj.Radius.Value
                                 
-                                # 深度
+                                # Depth
                                 if hasattr(subobj, "Depth"):
                                     thread_depth = subobj.Depth.Value
                                 
-                                # 模型螺纹
+                                # Model thread
                                 if hasattr(subobj, "ModelThread"):
                                     model_thread = bool(subobj.ModelThread)
                                 
-                                # 检查是否有螺纹特征
+                                # Check if there are thread features
                                 has_thread = ('Threaded' in subobj.TypeId or 
                                              (hasattr(subobj, "Threaded") and subobj.Threaded) or
                                              model_thread)
                                 
-                                # 检查孔是否在圆盘中心
+                                # Check if the hole is in the center of the disk
                                 if hasattr(subobj, "Placement"):
                                     hole_center = subobj.Placement.Base
-                                    # 计算孔中心与圆盘中心的距离
+                                    # Calculate distance between hole center and disk center
                                     distance = math.sqrt((hole_center.x - disk_center.x)**2 + 
                                                          (hole_center.y - disk_center.y)**2)
-                                    # 如果距离小于孔半径的10%，认为是居中的
+                                    # If distance is less than 10% of hole radius, consider it centered
                                     is_centered = distance < hole_radius * 0.1
                 
-                # 直接使用Part模块创建的对象
+                # Objects created directly using the Part module
                 elif obj.TypeId == 'Part::Cylinder':
-                    if not cylinder_found:  # 只处理第一个找到的圆盘
+                    if not cylinder_found:  # Only process the first disk found
                         cylinder_found = True
                         if hasattr(obj, "Radius"):
                             disk_radius = obj.Radius.Value
@@ -211,24 +211,24 @@ else:
                         elif hasattr(obj.Shape, "Height"):
                             disk_height = obj.Shape.Height
                         
-                        # 记录圆盘中心位置
+                        # Record disk center position
                         if hasattr(obj, "Placement"):
                             disk_center = obj.Placement.Base
     
-    # 如果没有找到明确的螺纹特征，尝试通过几何分析检测
+    # If no explicit thread features are found, try to detect through geometric analysis
     if not has_thread and hole_found:
         for obj in doc.Objects:
             if hasattr(obj, "Shape") and hasattr(obj.Shape, "Edges"):
-                # 检查是否有螺旋边缘，这可能表示螺纹
+                # Check for helical edges, which might indicate threads
                 for edge in obj.Shape.Edges:
                     if hasattr(edge, "Curve") and hasattr(edge.Curve, "isHelical") and edge.Curve.isHelical():
                         has_thread = True
-                        # 尝试从螺旋线获取螺距
+                        # Try to get pitch from helix
                         if hasattr(edge.Curve, "Pitch"):
                             thread_pitch = edge.Curve.Pitch
                         break
     
-    # 返回结果
+    # Return result
     def extract_value(val):
         if val is None:
             return None
@@ -250,26 +250,26 @@ else:
     }
                     `
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                        message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                        message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                         filename: this.filename,
                         code: pythonCode
                     });
                 }
-                // 检测关键字
+                // Detect keywords
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installation completed, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

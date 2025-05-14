@@ -1,11 +1,11 @@
-// FreeCAD创建直线监控钩子脚本
-// 用于监听FreeCAD的创建直线操作
+// FreeCAD Line Creation Monitoring Hook Script
+// Used to monitor FreeCAD's line creation operations
 
 (function() {
-  // 脚本常量设置
+  // Script constant settings
   const FUNCTION_NAME = "_ZNK3App8Document10saveToFileEPKc"
   const ORIGIN_FUNCTION_NAME = "Document::saveToFile"
-  const FUNCTION_BEHAVIOR = "保存文档"
+  const FUNCTION_BEHAVIOR = "document saving"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -17,10 +17,10 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variables
   let funcFound = false;
   
-  // 向评估系统发送事件
+  // Send events to the evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -30,54 +30,54 @@
       send(payload);
   }
   
-  // 查找Document::saveToFile函数
+  // Find Document::saveToFile function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through exported symbols
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Could not find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}创建直线监控脚本已启动`
+          message: `${APP_NAME} line creation monitoring script started`
       });
       
-      // 查找搜索函数
+      // Find search function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装搜索函数钩子
+      // Install search function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.filename = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
@@ -90,36 +90,36 @@ import freecad
 import FreeCAD
 import math
 
-# 打开指定的文件
+# Open the specified file
 file_path = '/FreeCAD/task07.FCStd'
 doc = FreeCAD.open(file_path)
 
-# 获取活动文档
+# Get active document
 if doc is None:
     result = None
 else:
     for obj in doc.Objects:
-        # 查找草图对象
+        # Find sketch object
         sketch = None
         if obj.TypeId == "Sketcher::SketchObject":
             sketch = obj
         if sketch is None:
             result = {
                 "found": False,
-                "message": "未找到草图对象"
+                "message": "Sketch object not found"
             }
         else:
-            # 检查草图中是否有直线
+            # Check if sketch contains a line
             has_line = False
             line_length = 0.0
             
-            # 遍历草图中的几何体
+            # Iterate through geometries in the sketch
             for i in range(sketch.GeometryCount):
                 geo = sketch.Geometry[i]
                 if geo.TypeId == "Part::GeomLineSegment":
-                    # 找到直线
+                    # Found a line
                     has_line = True
-                    # 计算直线长度
+                    # Calculate line length
                     start = geo.StartPoint
                     end = geo.EndPoint
                     dx = end.x - start.x
@@ -138,14 +138,14 @@ else:
                 result = {
                     "found": True,
                     "has_line": False,
-                    "message": "草图中未找到直线"
+                    "message": "No line found in sketch"
             }
 
     print(result)
 `
-                    // 发送包含Python代码的关键字事件
+                    // Send keyword event containing Python code
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                        message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                        message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                         filename: this.filename,
                         code: pythonCode
                     });
@@ -154,17 +154,17 @@ else:
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: "钩子安装完成，等待创建直线操作..."
+          message: "Hook installation complete, waiting for line creation operation..."
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

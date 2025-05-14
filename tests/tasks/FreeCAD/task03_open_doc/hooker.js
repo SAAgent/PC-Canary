@@ -1,11 +1,11 @@
-// FreeCAD打开文档监控钩子脚本
-// 用于监听FreeCAD的打开文档操作并检测任何查询
+// FreeCAD Open Document Monitoring Hook Script
+// Used to monitor document open operations in FreeCAD and detect any queries
 
 (function() {
-    // 脚本常量设置
+    // Script constants
     const FUNCTION_NAME = "_ZN3App11Application12openDocumentEPKcb"
     const ORIGIN_FUNCTION_NAME = "Application::openDocument"
-    const FUNCTION_BEHAVIOR = "打开文档"
+    const FUNCTION_BEHAVIOR = "open document"
 
     const SCRIPT_INITIALIZED = "script_initialized"
     const FUNCTION_NOT_FOUND = "function_not_found"
@@ -17,10 +17,10 @@
 
     const APP_NAME = "FreeCAD"
     
-    // 全局变量
+    // Global variables
     let funcFound = false;
     
-    // 向评估系统发送事件
+    // Send event to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -30,54 +30,54 @@
         send(payload);
     }
     
-    // 查找Application::open函数
+    // Find Application::open function
     function getFunction() {
-        // 尝试直接通过导出符号查找
+        // Try to find directly through exported symbol
         let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
         
-        // 如果没找到，报错
+        // If not found, report error
         if (!FuncAddr) {
             sendEvent(ERROR, {
                 error_type: FUNCTION_NOT_FOUND,
-                message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+                message: `Cannot find ${ORIGIN_FUNCTION_NAME} function`
             });
             return null;
         }
         
-        // 报告找到函数
+        // Report function found
         funcFound = true;
         sendEvent(FUNCTION_FOUND, {
             address: FuncAddr.toString(),
-            message: `找到${ORIGIN_FUNCTION_NAME}函数`
+            message: `Found ${ORIGIN_FUNCTION_NAME} function`
         });
         
         return FuncAddr;
     }
     
-    // 初始化钩子并立即执行
+    // Initialize hook and execute immediately
     function initHook() {
         sendEvent(SCRIPT_INITIALIZED, {
-            message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+            message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
         });
         
-        // 查找打开文档函数
+        // Find open document function
         const funcAddr = getFunction();
         if (!funcAddr) {
             return;
         }
         
-        // 安装打开文档函数钩子
+        // Install hook on open document function
         Interceptor.attach(funcAddr, {
             onEnter: function(args) {
                 try {
                     sendEvent(FUNCTION_CALLED, {
-                        message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                        message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                     });
                     this.filename = args[1].readCString();
                 } catch (error) {
                     sendEvent(ERROR, {
                         error_type: "general_error",
-                        message: `执行错误: ${error.message}`
+                        message: `Execution error: ${error.message}`
                     });
                 }
             },
@@ -86,24 +86,24 @@
                 try {
                     if (retval) {
                         sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                            message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                            message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                             filename: this.filename
                         });
                     }
                 } catch (error) {
                     sendEvent(ERROR, {
                         error_type: "general_error",
-                        message: `执行错误: ${error.message}`
+                        message: `Execution error: ${error.message}`
                     });
                 }
             }
         });
         
         sendEvent(HOOK_INSTALLED, {
-            message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+            message: `Hook installation complete, waiting for ${FUNCTION_BEHAVIOR} operation...`
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

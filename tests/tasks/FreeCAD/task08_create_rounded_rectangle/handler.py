@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-FreeCAD圆角矩形事件处理器
-负责处理钩子脚本产生的事件并更新评估指标
+FreeCAD rounded rectangle event handler
+Handles events sent from the hook script and updates evaluation metrics
 """
 
 from typing import Dict, Any, Optional, List
 
-# 事件类型常量
+# Event type constants
 SCRIPT_INITIALIZED = "script_initialized"
 FUNCTION_NOT_FOUND = "function_not_found"
 FUNCTION_FOUND = "function_found"
@@ -17,54 +17,54 @@ FUNCTION_KEY_WORD_DETECTED = "function_key_word_detected"
 ERROR = "error"
 HOOK_INSTALLED = "hook_installed"
 
-# 关键字相关常量
+# Keyword-related constants
 LENGTH = "length"
 WIDTH = "width"
 RADIUS = "radius"
 
 def execute_python_code(code: str, logger: Any) -> Dict[str, Any]:
     """
-    执行Python代码并返回结果
+    Execute Python code and return result
     
     Args:
-        code: 要执行的Python代码
-        logger: 日志记录器
+        code: Python code to execute
+        logger: Logger instance
         
     Returns:
-        Dict[str, Any]: 执行结果
+        Dict[str, Any]: Execution result
     """
     try:
-        # 创建一个新的命名空间来执行代码
+        # Create a new namespace to execute the code
         namespace = {}
         exec(code, namespace)
         result = namespace.get('result', None)
         
         if result is None:
-            logger.warning("未找到圆角矩形对象")
+            logger.warning("Rounded rectangle object not found")
             return None
             
-        # 验证结果格式
+        # Validate result format
         required_keys = [LENGTH, WIDTH, RADIUS]
         if not all(key in result for key in required_keys):
-            logger.error(f"结果缺少必要的键: {required_keys}")
+            logger.error(f"Result is missing required keys: {required_keys}")
             return None
             
         return result
     except Exception as e:
-        logger.error(f"执行Python代码时出错: {str(e)}")
+        logger.error(f"Error while executing Python code: {str(e)}")
         return None
 
 def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     """
-    处理从钩子脚本接收的消息
+    Process messages received from the hook script
     
     Args:
-        message: Frida消息对象
-        logger: 日志记录器
-        task_parameter: 任务参数
+        message: Frida message object
+        logger: Logger instance
+        task_parameter: Task parameters
         
     Returns:
-        Optional[List[Dict[str, Any]]]: 状态更新列表，如果没有更新则为None
+        Optional[List[Dict[str, Any]]]: Status update list, None if no updates
     """
     updates = []
     
@@ -73,34 +73,34 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
         
         if 'event' in payload:
             event_type = payload['event']
-            logger.debug(f"接收到事件: {event_type}")
+            logger.debug(f"Received event: {event_type}")
             
             if event_type == SCRIPT_INITIALIZED:
-                logger.info(f"钩子脚本初始化: {payload.get('message', '')}")
+                logger.info(f"Hook script initialized: {payload.get('message', '')}")
                 
             elif event_type == FUNCTION_FOUND:
-                logger.info(f"找到函数: {payload.get('address', '')}")
+                logger.info(f"Function found: {payload.get('address', '')}")
                 
             elif event_type == FUNCTION_CALLED:
-                logger.info(f"函数被调用: {payload.get('message', '')}")
-                # 更新第一个关键步骤状态
+                logger.info(f"Function called: {payload.get('message', '')}")
+                # Update first key step status
                 updates.append({
                     'status': 'key_step',
                     'index': 1,
-                    'name': '保存文档'
+                    'name': 'Save document'
                 })
                 
             elif event_type == FUNCTION_KEY_WORD_DETECTED:
-                # 执行Python代码并获取结果
+                # Execute Python code and get result
                 code = payload.get('code', '')
                 filename = payload.get('filename', '')
                 expected_path = task_parameter.get("source_path", "") + task_parameter.get("filename", "")
-                logger.info(f"检测到关键字，文档路径: {filename}, 预期文档路径: {expected_path}")
+                logger.info(f"Detected keyword, document path: {filename}, expected document path: {expected_path}")
                 
                 if filename == expected_path:
                     result = execute_python_code(code, logger)
                     if result:
-                        # 检查圆角矩形尺寸是否符合预期
+                        # Check if rounded rectangle dimensions meet expectations
                         expected_length = task_parameter.get(LENGTH, 30)
                         expected_width = task_parameter.get(WIDTH, 20)
                         expected_radius = task_parameter.get(RADIUS, 5)
@@ -109,37 +109,37 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
                         actual_width = result[WIDTH]
                         actual_radius = result[RADIUS]
 
-                        logger.info(f"预期尺寸: 长={expected_length}, 宽={expected_width}, 圆角半径={expected_radius}")
-                        logger.info(f"实际尺寸: 长={actual_length}, 宽={actual_width}, 圆角半径={actual_radius}")
+                        logger.info(f"Expected dimensions: length={expected_length}, width={expected_width}, corner radius={expected_radius}")
+                        logger.info(f"Actual dimensions: length={actual_length}, width={actual_width}, corner radius={actual_radius}")
 
-                        # 允许一定的误差范围（0.01%）
+                        # Allow a certain margin of error (0.01%)
                         length_error = abs((actual_length - expected_length) / expected_length) <= 0.0001
                         width_error = abs((actual_width - expected_width) / expected_width) <= 0.0001
                         radius_error = abs((actual_radius - expected_radius) / expected_radius) <= 0.0001
                         
                         if length_error and width_error and radius_error:
-                            # 更新第二个关键步骤状态
+                            # Update second key step status
                             updates.append({
                                 'status': 'key_step',
                                 'index': 2,
-                                'name': '创建圆角矩形并保存成功'
+                                'name': 'Successfully created and saved rounded rectangle'
                             })
                             
-                            # 任务成功完成
+                            # Task successfully completed
                             updates.append({
                                 'status': 'success',
-                                'reason': '成功创建了符合尺寸要求的圆角矩形并保存'
+                                'reason': 'Successfully created a rounded rectangle with required dimensions and saved'
                             })
                         else:
-                            logger.warning(f"圆角矩形尺寸不符合要求: 长度正确: {length_error}, 宽度正确: {width_error}, 圆角半径正确: {radius_error}")
+                            logger.warning(f"Rounded rectangle dimensions do not meet requirements: length correct: {length_error}, width correct: {width_error}, corner radius correct: {radius_error}")
                 
             elif event_type == ERROR:
                 error_type = payload.get("error_type", "unknown")
-                error_message = payload.get("message", "未知错误")
+                error_message = payload.get("message", "Unknown error")
                 
-                logger.error(f"钩子脚本错误 ({error_type}): {error_message}")
+                logger.error(f"Hook script error ({error_type}): {error_message}")
                 
-                # 记录错误事件
+                # Record error event
                 updates.append({
                     'status': 'error',
                     'type': error_type,
@@ -147,13 +147,13 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
                 })
                 
     elif message.get('type') == 'error':
-        logger.error(f"钩子脚本错误: {message.get('stack', '')}")
+        logger.error(f"Hook script error: {message.get('stack', '')}")
         
-        # 记录错误事件
+        # Record error event
         updates.append({
             'status': 'error',
             'type': 'script_error',
-            'message': message.get('stack', '未知错误')
+            'message': message.get('stack', 'Unknown error')
         })
     
     return updates if updates else None

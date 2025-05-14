@@ -1,11 +1,11 @@
-// FreeCAD语言切换监控钩子脚本
-// 用于监听FreeCAD的语言切换操作
+// FreeCAD Language Switching Monitoring Hook Script
+// Used to monitor language switching operations in FreeCAD
 
 (function() {
-  // 脚本常量设置
+  // Script constants setup
   const FUNCTION_NAME = "_ZN3Gui10Translator16activateLanguageEPKc"
   const ORIGIN_FUNCTION_NAME = "Translator::activateLanguage"
-  const FUNCTION_BEHAVIOR = "切换语言"
+  const FUNCTION_BEHAVIOR = "language switch"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,13 +18,13 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variables
   let funcFound = false;
   let firstLanguageDetected = false;
-  let firstLanguage = "Chinese Simplified";  // 预期的第一个语言
-  let finalLanguage = "English";  // 预期的最终语言
+  let firstLanguage = "Chinese Simplified";  // Expected first language
+  let finalLanguage = "English";  // Expected final language
   
-  // 向评估系统发送事件
+  // Send events to the evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -34,89 +34,89 @@
       send(payload);
   }
   
-  // 查找Translator::activateLanguage函数
+  // Find Translator::activateLanguage function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through export symbols
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Could not find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
       });
       
-      // 查找语言切换函数
+      // Find language switching function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装语言切换函数钩子
+      // Install language switching function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.language = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
 
           onLeave: function(retval) {
               try {
-                  // 检测是否是第一次设置为中文
+                  // Check if this is the first time setting to Chinese
                   if (this.language === firstLanguage && !firstLanguageDetected) {
                       firstLanguageDetected = true;
                       sendEvent(FIRST_LANGUAGE_SET, {
-                          message: `检测到第一次${FUNCTION_BEHAVIOR}操作`,
+                          message: `Detected first ${FUNCTION_BEHAVIOR} operation`,
                           language: this.language
                       });
                   }
-                  // 检测是否是最终设置为英文
+                  // Check if this is the final setting to English
                   else if (this.language === finalLanguage && firstLanguageDetected) {
                       sendEvent(FINAL_LANGUAGE_SET, {
-                          message: `检测到最终${FUNCTION_BEHAVIOR}操作`,
+                          message: `Detected final ${FUNCTION_BEHAVIOR} operation`,
                           language: this.language
                       });
                   }
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installation complete, waiting for ${FUNCTION_BEHAVIOR} operations...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

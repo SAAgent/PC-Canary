@@ -1,7 +1,7 @@
 {
     "task_id": "19",
     "task_name": "create_pyramid_with_mirror",
-    "description": "在FreeCAD中创建一个带镜像特征的四棱锥",
+    "description": "Create a pyramid with mirror feature in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -34,27 +34,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Document save function found",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Document save function called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Document saved"
         },
         "function_key_word_detected": {
-            "description": "检测到保存文档关键内容",
+            "description": "Detected key content in saved document",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建带镜像特征的四棱锥并保存成功"
+            "key_step_name": "Created pyramid with mirror feature and saved successfully"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

@@ -1,7 +1,7 @@
 {
     "task_id": "11",
     "task_name": "create_cylinder_with_holes",
-    "description": "在FreeCAD中创建一个带孔的圆柱体",
+    "description": "Create a cylinder with holes in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -18,7 +18,7 @@
         "hole_count": 2
     },
 
-    "instruction_template": "应用已经打开。创建一个半径为${cylinder_radius}，高度为${cylinder_height}的圆柱体，并在其侧面均匀分布${hole_count}个半径为${hole_radius}的孔。这些孔的中心沿圆柱体的高度方向均匀排列，且每个孔的中心与圆柱体的轴线保持相同的水平距离。圆柱体的创建方式应为create an additive cylinder，孔的创建方式为create subtractive cylinder。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. Create a cylinder with radius ${cylinder_radius} and height ${cylinder_height}, and create ${hole_count} holes with radius ${hole_radius} evenly distributed on its side. These holes should be evenly spaced along the height of the cylinder, and the center of each hole should maintain the same horizontal distance from the cylinder's axis. The cylinder should be created using 'create an additive cylinder', and the holes should be created using 'create subtractive cylinder'. Finally, save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -33,27 +33,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Save document function found",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Save document function called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Save document"
         },
         "function_key_word_detected": {
-            "description": "检测到保存文档关键内容",
+            "description": "Save document key content detected",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建带孔圆柱体并保存成功"
+            "key_step_name": "Cylinder with holes created and saved successfully"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

@@ -1,12 +1,12 @@
-// FreeCAD创建带倒角立方体监控钩子脚本
-// 用于监听FreeCAD的创建带倒角立方体操作并检测任务完成情况
-// 创建带倒角立方体后保存文件，测试程序监听到保存后查询对应文档中是否存在符合要求的带倒角立方体
+// FreeCAD Cube with Fillets Monitoring Hook Script
+// Used to monitor FreeCAD creation of a cube with fillets and detect task completion
+// After creating a cube with fillets and saving the file, the test program listens for the save and checks if the corresponding document contains the required cube with fillets
 
 (function() {
-  // 脚本常量设置
+  // Script constants setting
   const FUNCTION_NAME = "_ZNK3App8Document10saveToFileEPKc"
   const ORIGIN_FUNCTION_NAME = "Document::saveToFile"
-  const FUNCTION_BEHAVIOR = "保存文档"
+  const FUNCTION_BEHAVIOR = "Document Save"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,10 +18,10 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variables
   let funcFound = false;
   
-  // 向评估系统发送事件
+  // Send events to the evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -31,54 +31,54 @@
       send(payload);
   }
   
-  // 查找Document::saveToFile函数
+  // Find Document::saveToFile function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find the function directly through exported symbols
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Unable to find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script has started`
       });
       
-      // 查找搜索函数
+      // Find target function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装搜索函数钩子
+      // Install function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.filename = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
@@ -92,15 +92,15 @@ import FreeCAD
 import Part
 import math
 
-# 打开指定的文件
+# Open the specified file
 file_path = '${this.filename}'
 doc = FreeCAD.open(file_path)
 
-# 获取活动文档
+# Get the active document
 if doc is None:
     result = None
 else:
-    # 查找立方体和倒角
+    # Find cube and fillets
     cube = None
     fillet = None
     has_fillet = False
@@ -157,19 +157,19 @@ else:
                 elif hasattr(subobj, "FilletRadius"):
                     fillet_radius = float(subobj.FilletRadius)
     
-    # 返回结果 - 确保返回纯数字而不是带单位的值
-    # 处理可能带单位的值
+    # Return results - ensure we return pure numbers without units
+    # Handle values that may have units
     def extract_value(val):
         if val is None:
             return None
         try:
-            # 如果是字符串形式的带单位数值（如 "10.0 mm"），提取数值部分
+            # If it's a string with unit (like "10.0 mm"), extract the numeric part
             if isinstance(val, str) and ' ' in val:
                 return float(val.split()[0])
-            # 如果是 FreeCAD Quantity 对象，尝试转换为浮点数
+            # If it's a FreeCAD Quantity object, try to convert to float
             return float(val)
         except:
-            # 如果无法转换，返回原始值
+            # If conversion fails, return the original value
             return val
     
     result = {
@@ -181,26 +181,26 @@ else:
     }
                     `
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                        message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                        message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                         filename: this.filename,
                         code: pythonCode
                     });
                 }
-                // 检测关键字
+                // Detect keywords
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installation complete, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-FreeCAD圆柱体创建任务事件处理器
-负责处理钩子脚本产生的事件并返回状态更新
+FreeCAD Cylinder Creation Task Event Handler
+Responsible for processing events from the hook script and returning status updates
 """
 
 from typing import Dict, Any, Optional, List
 
-# 事件类型常量
+# Event type constants
 SCRIPT_INITIALIZED = "script_initialized"
 FUNCTION_NOT_FOUND = "function_not_found"
 FUNCTION_FOUND = "function_found"
@@ -17,53 +17,53 @@ FUNCTION_KEY_WORD_DETECTED = "function_key_word_detected"
 ERROR = "error"
 HOOK_INSTALLED = "hook_installed"
 
-# 关键字相关常量
+# Keyword related constants
 RADIUS = "radius"
 HEIGHT = "height"
 
 def execute_python_code(code: str, logger: Any) -> Dict[str, Any]:
     """
-    执行Python代码并返回结果
+    Execute Python code and return the results
     
     Args:
-        code: 要执行的Python代码
-        logger: 日志记录器
+        code: Python code to execute
+        logger: Logger
         
     Returns:
-        Dict[str, Any]: 执行结果
+        Dict[str, Any]: Execution results
     """
     try:
-        # 创建一个新的命名空间来执行代码
+        # Create a new namespace to execute the code
         namespace = {}
         exec(code, namespace)
         result = namespace.get('result', None)
         
         if result is None:
-            logger.warning("未找到圆柱体对象")
+            logger.warning("Cylinder object not found")
             return None
             
-        # 验证结果格式
+        # Validate result format
         required_keys = [RADIUS, HEIGHT]
         if not all(key in result for key in required_keys):
-            logger.error(f"结果缺少必要的键: {required_keys}")
+            logger.error(f"Result missing required keys: {required_keys}")
             return None
             
         return result
     except Exception as e:
-        logger.error(f"执行Python代码时出错: {str(e)}")
+        logger.error(f"Error executing Python code: {str(e)}")
         return None
 
 def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     """
-    处理从钩子脚本接收的消息
+    Process messages received from the hook script
     
     Args:
-        message: Frida消息对象
-        logger: 日志记录器
-        task_parameter: 任务参数
+        message: Frida message object
+        logger: Logger
+        task_parameter: Task parameters
         
     Returns:
-        Optional[List[Dict[str, Any]]]: 状态更新列表，如果没有更新则为None
+        Optional[List[Dict[str, Any]]]: List of status updates, or None if no updates
     """
     updates = []
     
@@ -72,65 +72,65 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
         
         if 'event' in payload:
             event_type = payload['event']
-            logger.debug(f"接收到事件: {event_type}")
+            logger.debug(f"Received event: {event_type}")
             
             if event_type == SCRIPT_INITIALIZED:
-                logger.info(f"钩子脚本初始化: {payload.get('message', '')}")
+                logger.info(f"Hook script initialized: {payload.get('message', '')}")
                 
             elif event_type == FUNCTION_FOUND:
-                logger.info(f"找到函数: {payload.get('address', '')}")
+                logger.info(f"Function found: {payload.get('address', '')}")
                 
             elif event_type == FUNCTION_CALLED:
-                logger.info(f"函数被调用: {payload.get('message', '')}")
-                # 更新第一个关键步骤状态
+                logger.info(f"Function called: {payload.get('message', '')}")
+                # Update first key step status
                 updates.append({
                     'status': 'key_step',
                     'index': 1,
-                    'name': '保存文档'
+                    'name': 'Save document'
                 })
                 
             elif event_type == FUNCTION_KEY_WORD_DETECTED:
-                # 执行Python代码并获取结果
+                # Execute Python code and get results
                 code = payload.get('code', '')
                 filename = payload.get('filename', '')
                 expected_path = task_parameter.get("source_path", "") + task_parameter.get("filename", "")
-                logger.info(f"检测到关键字，文档路径: {filename}, 预期文档路径: {expected_path}")
+                logger.info(f"Keyword detected, document path: {filename}, expected path: {expected_path}")
                 
                 if filename == expected_path:
                     result = execute_python_code(code, logger)
                     if result:
-                        # 检查圆柱体尺寸是否符合预期
+                        # Check if the cylinder dimensions match the expected values
                         expected_radius = task_parameter.get(RADIUS, 5)
                         expected_height = task_parameter.get(HEIGHT, 10)
 
                         actual_radius = result[RADIUS]
                         actual_height = result[HEIGHT]
 
-                        logger.debug(f"预期尺寸: 半径={expected_radius}, 高度={expected_height}, 实际尺寸: 半径={actual_radius}, 高度={actual_height}")
+                        logger.debug(f"Expected dimensions: radius={expected_radius}, height={expected_height}, Actual dimensions: radius={actual_radius}, height={actual_height}")
 
                         if (actual_radius == expected_radius and 
                             actual_height == expected_height):
                             
-                            # 更新第二个关键步骤状态
+                            # Update second key step status
                             updates.append({
                                 'status': 'key_step',
                                 'index': 2,
-                                'name': '创建圆柱体并保存成功'
+                                'name': 'Successfully created cylinder and saved'
                             })
                             
-                            # 任务成功完成
+                            # Task completed successfully
                             updates.append({
                                 'status': 'success',
-                                'reason': f'成功创建了符合尺寸要求的圆柱体(半径:{actual_radius}, 高度:{actual_height})并保存'
+                                'reason': f'Successfully created a cylinder with the required dimensions (radius:{actual_radius}, height:{actual_height}) and saved it'
                             })
                 
             elif event_type == ERROR:
                 error_type = payload.get("error_type", "unknown")
-                error_message = payload.get("message", "未知错误")
+                error_message = payload.get("message", "Unknown error")
                 
-                logger.error(f"钩子脚本错误 ({error_type}): {error_message}")
+                logger.error(f"Hook script error ({error_type}): {error_message}")
                 
-                # 记录错误事件
+                # Record error event
                 updates.append({
                     'status': 'error',
                     'type': error_type,
@@ -138,13 +138,13 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
                 })
                 
     elif message.get('type') == 'error':
-        logger.error(f"钩子脚本错误: {message.get('stack', '')}")
+        logger.error(f"Hook script error: {message.get('stack', '')}")
         
-        # 记录错误事件
+        # Record error event
         updates.append({
             'status': 'error',
             'type': 'script_error',
-            'message': message.get('stack', '未知错误')
+            'message': message.get('stack', 'Unknown error')
         })
     
     return updates if updates else None

@@ -1,7 +1,7 @@
 {
     "task_id": "04",
     "task_name": "create_cube",
-    "description": "在FreeCAD中添加加法立方体",
+    "description": "Create an additive cube in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -17,7 +17,7 @@
         "height": 10
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD中添加一个长${length}、宽${width}、高${height}的加法立方体,创建方式为create an additive Box,并将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. In FreeCAD, add an additive cube with length ${length}, width ${width}, height ${height}. Create it using 'create an additive Box', and save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -32,27 +32,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Found document save function",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Document save function was called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Save document"
         },
         "function_key_word_detected": {
-            "description": "检测到文档保存关键内容",
+            "description": "Detected document save key content",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建立方体并保存成功"
+            "key_step_name": "Successfully created cube and saved"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

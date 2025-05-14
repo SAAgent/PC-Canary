@@ -1,7 +1,7 @@
 {
     "task_id": "20",
     "task_name": "create_prism_with_stepped_hole",
-    "description": "在FreeCAD中创建一个带有阶梯孔的三棱柱",
+    "description": "Create a triangular prism with a stepped hole in FreeCAD",
 
     "application_info": {
         "name": "FreeCAD",
@@ -20,7 +20,7 @@
         "inner_hole_through": true
     },
 
-    "instruction_template": "应用已经打开。在FreeCAD中创建一个三棱柱，底面是等边三角形，外接圆半径为${prism_circumradius}mm，高度为${prism_height}mm。然后在其顶面中心添加一个阶梯孔，阶梯孔由两部分组成：内部小孔的半径为${hole_inner_radius}mm，贯穿整个三棱柱；外部大孔的半径为${hole_outer_radius}mm，从顶面向下的深度为${hole_depth}mm。三棱柱的创建方式可以是挤出多边形或者通过基础形状工具，阶梯孔应通过减法圆柱体（subtractive cylinder）创建。最后将文件保存到${source_path}${filename}",
+    "instruction_template": "The application is already open. In FreeCAD, create a triangular prism with an equilateral triangle as its base, with a circumradius of ${prism_circumradius}mm and a height of ${prism_height}mm. Then add a stepped hole in the center of its top face. The stepped hole consists of two parts: an inner small hole with a radius of ${hole_inner_radius}mm that goes through the entire prism, and an outer larger hole with a radius of ${hole_outer_radius}mm that extends from the top face to a depth of ${hole_depth}mm. The triangular prism can be created by 'create an additive prism' (typeid), and the stepped hole should be created using subtractive cylinders (typeid). Do not create the shapes separately and use boolean subtraction or cut. Finally, save the file to ${source_path}${filename}",
 
     "evaluation_setup": {
         "scripts": [
@@ -36,27 +36,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "function_found": {
-            "description": "找到保存文档函数",
+            "description": "Document save function found",
             "is_key_step": false
         },
         "function_called": {
-            "description": "保存文档函数被调用",
+            "description": "Document save function called",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "保存文档"
+            "key_step_name": "Document saved"
         },
         "function_key_word_detected": {
-            "description": "检测到保存文档关键内容",
+            "description": "Detected key content in saved document",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "创建带阶梯孔的三棱柱并保存成功"
+            "key_step_name": "Created triangular prism with stepped hole and saved successfully"
         },
         "error": {
-            "description": "错误事件",
+            "description": "Error event",
             "is_key_step": false
         }
     },

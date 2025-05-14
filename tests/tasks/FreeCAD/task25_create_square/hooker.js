@@ -1,12 +1,12 @@
-// FreeCAD创建正方形监控钩子脚本
-// 用于监听FreeCAD的创建正方形操作并检测任何查询
-// 创建正方形后保存文件，测试程序监听到保存后查询对应文档中是否存在正方形
+// FreeCAD Square Creation Monitoring Hook Script
+// Used to monitor square creation operations in FreeCAD and detect any queries
+// After creating the square and saving the file, the test program detects whether a square exists in the saved document
 
 (function() {
-  // 脚本常量设置
+  // Script constants
   const FUNCTION_NAME = "_ZNK3App8Document10saveToFileEPKc"
   const ORIGIN_FUNCTION_NAME = "Document::saveToFile"
-  const FUNCTION_BEHAVIOR = "保存文档"
+  const FUNCTION_BEHAVIOR = "save document"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,10 +18,10 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variables
   let funcFound = false;
   
-  // 向评估系统发送事件
+  // Send event to evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -31,54 +31,54 @@
       send(payload);
   }
   
-  // 查找Document::saveToFile函数
+  // Find Document::saveToFile function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through exported symbol
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Cannot find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
       });
       
-      // 查找目标函数
+      // Find target function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装搜索函数钩子
+      // Install search function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.filename = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
@@ -100,18 +100,18 @@ result = {
 }
 
 try:
-    # 打开文档
+    # Open document
     if os.path.exists("${this.filename}"):
         doc = FreeCAD.openDocument("${this.filename}")
         
-        # 查找正方形对象
+        # Find square object
         square_found = False
         for obj in doc.Objects:
-            # 检查对象是否是正方形
+            # Check if object is a square
             if hasattr(obj, "Shape") and hasattr(obj.Shape, "Edges"):
                 edges = obj.Shape.Edges
                 if len(edges) == 4:
-                    # 检查是否为正方形
+                    # Check if it's a square
                     lengths = [edge.Length for edge in edges]
                     if all(abs(length - lengths[0]) < 0.01 for length in lengths):
                         square_found = True
@@ -124,15 +124,15 @@ try:
                 if square_found:
                     break
     
-        # 关闭文档
+        # Close document
         FreeCAD.closeDocument(doc.Name)
 except Exception as e:
     print(f"Error: {str(e)}")
                     `;
                     
-                    // 发送关键字检测事件
+                    // Send keyword detection event
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                        message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                        message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                         code: pythonCode,
                         filename: this.filename
                     });
@@ -140,17 +140,17 @@ except Exception as e:
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installation complete, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();

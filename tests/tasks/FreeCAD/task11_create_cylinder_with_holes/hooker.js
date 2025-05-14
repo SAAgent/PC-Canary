@@ -1,12 +1,12 @@
-// FreeCAD创建带孔圆柱体监控钩子脚本
-// 用于监听FreeCAD的创建带孔圆柱体操作并检测任务完成情况
-// 创建带孔圆柱体后保存文件，测试程序监听到保存后查询对应文档中是否存在符合要求的带孔圆柱体
+// FreeCAD Cylinder with Holes Monitoring Hook Script
+// Used to monitor FreeCAD's cylinder with holes creation operation and detect task completion
+// After creating a cylinder with holes and saving the file, the test program listens for the save and checks if there is a cylinder with holes meeting the requirements in the corresponding document
 
 (function() {
-  // 脚本常量设置
+  // Script constant settings
   const FUNCTION_NAME = "_ZNK3App8Document10saveToFileEPKc"
   const ORIGIN_FUNCTION_NAME = "Document::saveToFile"
-  const FUNCTION_BEHAVIOR = "保存文档"
+  const FUNCTION_BEHAVIOR = "Save Document"
 
   const SCRIPT_INITIALIZED = "script_initialized"
   const FUNCTION_NOT_FOUND = "function_not_found"
@@ -18,10 +18,10 @@
 
   const APP_NAME = "FreeCAD"
   
-  // 全局变量
+  // Global variable
   let funcFound = false;
   
-  // 向评估系统发送事件
+  // Send event to the evaluation system
   function sendEvent(eventType, data = {}) {
       const payload = {
           event: eventType,
@@ -31,54 +31,54 @@
       send(payload);
   }
   
-  // 查找Document::saveToFile函数
+  // Find Document::saveToFile function
   function getFunction() {
-      // 尝试直接通过导出符号查找
+      // Try to find directly through exported symbols
       let FuncAddr = DebugSymbol.getFunctionByName(FUNCTION_NAME);
       
-      // 如果没找到，报错
+      // If not found, report an error
       if (!FuncAddr) {
           sendEvent(ERROR, {
               error_type: FUNCTION_NOT_FOUND,
-              message: `无法找到${ORIGIN_FUNCTION_NAME}函数`
+              message: `Cannot find ${ORIGIN_FUNCTION_NAME} function`
           });
           return null;
       }
       
-      // 报告找到函数
+      // Report function found
       funcFound = true;
       sendEvent(FUNCTION_FOUND, {
           address: FuncAddr.toString(),
-          message: `找到${ORIGIN_FUNCTION_NAME}函数`
+          message: `Found ${ORIGIN_FUNCTION_NAME} function`
       });
       
       return FuncAddr;
   }
   
-  // 初始化钩子并立即执行
+  // Initialize hook and execute immediately
   function initHook() {
       sendEvent(SCRIPT_INITIALIZED, {
-          message: `${APP_NAME}${FUNCTION_BEHAVIOR}监控脚本已启动`
+          message: `${APP_NAME} ${FUNCTION_BEHAVIOR} monitoring script started`
       });
       
-      // 查找搜索函数
+      // Find search function
       const funcAddr = getFunction();
       if (!funcAddr) {
           return;
       }
       
-      // 安装搜索函数钩子
+      // Install search function hook
       Interceptor.attach(funcAddr, {
           onEnter: function(args) {
               try {
                   sendEvent(FUNCTION_CALLED, {
-                      message: `拦截到${FUNCTION_BEHAVIOR}函数调用`
+                      message: `Intercepted ${FUNCTION_BEHAVIOR} function call`
                   });
                   this.filename = args[1].readCString();
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           },
@@ -92,46 +92,47 @@ import FreeCAD
 import Part
 import math
 
-# 打开指定的文件
+# Open specified file
 file_path = '${this.filename}'
 doc = FreeCAD.open(file_path)
 
-# 获取活动文档
+# Get active document
 if doc is None:
     result = None
-else:                    # 查找文档中的圆柱体和孔
+else:
+    # Find cylinder and holes in the document
     main_cylinder = None
     holes = []
     
-    # 检查所有对象，寻找圆柱体和孔
+    # Check all objects, look for cylinder and holes
     for obj in doc.Objects:
-        # 检查是否为实体对象
+        # Check if it's a solid object
         if hasattr(obj, "Shape"):
-            # 检查形状类型
+            # Check shape type
             if hasattr(obj.Shape, "ShapeType"):
-                # 对于Part设计方法创建的对象，我们需要检查子对象
+                # For objects created using Part Design method, we need to check sub-objects
                 if obj.TypeId == "PartDesign::Body":
-                    # 防止重复计数同一个对象
+                    # Prevent counting the same object multiple times
                     processed_objects = set()
                     
                     for subobj in obj.OutList:
                         if hasattr(subobj, "Shape") and hasattr(subobj.Shape, "ShapeType"):
-                            # 使用 TypeId 检查是否为增料圆柱体
+                            # Use TypeId to check if it's an additive cylinder
                             if subobj.TypeId == 'PartDesign::AdditiveCylinder':
-                                # 使用对象ID作为唯一标识符
+                                # Use object ID as unique identifier
                                 obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
                                 
-                                # 如果这个对象已经处理过，跳过
+                                # Skip if this object has been processed
                                 if obj_id in processed_objects:
                                     continue
                                 processed_objects.add(obj_id)
                                 
                                 if subobj.Shape.ShapeType == "Solid" and hasattr(subobj.Shape, "Volume"):
-                                    # 检查是否是圆柱体，直接读取属性
+                                    # Check if it's a cylinder, read properties directly
                                     cylinder_radius = subobj.Radius.Value if hasattr(subobj, "Radius") else 0
                                     cylinder_height = subobj.Height.Value if hasattr(subobj, "Height") else 0
                                     
-                                    # 获取位置信息
+                                    # Get position information
                                     cylinder_position = None
                                     if hasattr(subobj, "Placement") and hasattr(subobj.Placement, "Base"):
                                         cylinder_position = {
@@ -140,10 +141,10 @@ else:                    # 查找文档中的圆柱体和孔
                                             'z': subobj.Placement.Base.z
                                         }
                                     
-                                    # 如果没有直接的属性，尝试从形状计算
+                                    # If no direct properties, try calculating from shape
                                     if cylinder_radius == 0 or cylinder_height == 0:
-                                        if len(subobj.Shape.Faces) == 3:  # 圆柱体通常有三个面（两个底面和一个侧面）
-                                            # 检查是否有圆形面
+                                        if len(subobj.Shape.Faces) == 3:  # Cylinder typically has three faces (two bases and one side)
+                                            # Check for circular faces
                                             circular_faces = []
                                             cylindrical_face = None
                                             
@@ -151,11 +152,11 @@ else:                    # 查找文档中的圆柱体和孔
                                                 if face.Surface.TypeId == 'Part::GeomCylinder':
                                                     cylindrical_face = face
                                                 elif face.Surface.TypeId == 'Part::GeomPlane':
-                                                    # 检查边缘是否为圆形
+                                                    # Check if edges form a circle
                                                     if len(face.Edges) == 1 and face.Edges[0].Curve.TypeId == 'Part::GeomCircle':
                                                         circular_faces.append(face)
                                             
-                                            # 如果找到了一个圆柱面和两个圆面，可以计算半径和高度
+                                            # If found one cylindrical face and two circular faces, can calculate radius and height
                                             if cylindrical_face and len(circular_faces) == 2:
                                                 if cylinder_radius == 0:
                                                     cylinder_radius = circular_faces[0].Edges[0].Curve.Radius.Value if hasattr(circular_faces[0].Edges[0].Curve.Radius, "Value") else circular_faces[0].Edges[0].Curve.Radius
@@ -169,28 +170,28 @@ else:                    # 查找文档中的圆柱体和孔
                                                         (center1.z - center2.z)**2
                                                     )
                                     
-                                    # 存储圆柱体信息
+                                    # Store cylinder information
                                     main_cylinder = {
                                         'radius': cylinder_radius,
                                         'height': cylinder_height,
                                         'position': cylinder_position
                                     }
                             
-                            # 使用 TypeId 检查是否为减料圆柱体（孔）
+                            # Use TypeId to check if it's a subtractive cylinder (hole)
                             elif subobj.TypeId == 'PartDesign::SubtractiveCylinder':
-                                # 使用对象ID作为唯一标识符
+                                # Use object ID as unique identifier
                                 obj_id = subobj.ID if hasattr(subobj, "ID") else subobj.Name
                                 
-                                # 如果这个对象已经处理过，跳过
+                                # Skip if this object has been processed
                                 if obj_id in processed_objects:
                                     continue
                                 processed_objects.add(obj_id)
                                 
                                 if subobj.Shape.ShapeType == "Solid" and hasattr(subobj.Shape, "Volume"):
-                                    # 直接从对象获取半径属性
+                                    # Get radius directly from object
                                     hole_radius = subobj.Radius.Value if hasattr(subobj, "Radius") else 0
                                     
-                                    # 获取位置信息
+                                    # Get position information
                                     position = None
                                     if hasattr(subobj, "Placement") and hasattr(subobj.Placement, "Base"):
                                         position = {
@@ -199,32 +200,32 @@ else:                    # 查找文档中的圆柱体和孔
                                             'z': subobj.Placement.Base.z
                                         }
                                     
-                                    # 所有减料圆柱体都记录为孔，无需检查可见性
+                                    # Record all subtractive cylinders as holes, no need to check visibility
                                     holes.append({
                                         'radius': hole_radius,
                                         'position': position
                                     })
     
-    # 返回结果 - 确保返回纯数字而不是带单位的值
-    # 处理可能带单位的值
+    # Return result - ensure returning pure numbers instead of values with units
+    # Handle values that might have units
     def extract_value(val):
         if val is None:
             return None
         try:
-            # 如果是字符串形式的带单位数值（如 "10.0 mm"），提取数值部分
+            # If it's a string with unit (like "10.0 mm"), extract the numeric part
             if isinstance(val, str) and ' ' in val:
                 return float(val.split()[0])
-            # 如果是 FreeCAD Quantity 对象，尝试转换为浮点数
+            # If it's a FreeCAD Quantity object, try converting to float
             return float(val)
         except:
-            # 如果无法转换，返回原始值
+            # If conversion fails, return original value
             return val
     
-    # 提取圆柱体中心轴的位置
+    # Extract cylinder center axis position
     cylinder_center_x = main_cylinder['position']['x'] if main_cylinder and main_cylinder['position'] else 0
     cylinder_center_y = main_cylinder['position']['y'] if main_cylinder and main_cylinder['position'] else 0
     
-    # 准备孔位信息
+    # Prepare hole position information
     hole_positions = []
     for hole in holes:
         if hole['position']:
@@ -234,7 +235,7 @@ else:                    # 查找文档中的圆柱体和孔
                 'z': hole['position']['z']
             })
     
-    # 对孔位进行排序 - 按照Z坐标排序
+    # Sort hole positions - by Z coordinate
     sorted_hole_positions = sorted(hole_positions, key=lambda p: p['z']) if hole_positions else []
     
     result = {
@@ -247,26 +248,25 @@ else:                    # 查找文档中的圆柱体和孔
     }
                     `
                     sendEvent(FUNCTION_KEY_WORD_DETECTED, {
-                        message: `检测到${FUNCTION_BEHAVIOR}操作`,
+                        message: `Detected ${FUNCTION_BEHAVIOR} operation`,
                         filename: this.filename,
                         code: pythonCode
                     });
                 }
-                // 检测关键字
               } catch (error) {
                   sendEvent(ERROR, {
                       error_type: "general_error",
-                      message: `执行错误: ${error.message}`
+                      message: `Execution error: ${error.message}`
                   });
               }
           }
       });
       
       sendEvent(HOOK_INSTALLED, {
-          message: `钩子安装完成，等待${FUNCTION_BEHAVIOR}操作...`
+          message: `Hook installed, waiting for ${FUNCTION_BEHAVIOR} operation...`
       });
   }
   
-  // 立即执行钩子初始化
+  // Execute hook initialization immediately
   initHook();
 })();
