@@ -1,0 +1,68 @@
+{
+    "task_id": "17",
+    "task_name": "create_disk_with_threaded_hole",
+    "description": "Create a disk with a threaded hole in FreeCAD",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task17.FCStd",
+        "disk_radius": 50.0,
+        "disk_height": 10.0,
+        "thread_size": "M10",
+        "thread_depth": 10.0,
+        "model_thread": true
+    },
+
+    "instruction_template": "The application is already open. Create a disk in FreeCAD with radius ${disk_radius}mm and height ${disk_height}mm, then add a threaded hole in its center with the following parameters:\n- Profile: ISO metric regular profile\n- Size: ${thread_size}\n- Clearance: Standard\n- Depth: ${thread_depth}mm\n- Threaded: checked\n- Model Thread: ${model_thread ? 'checked' : 'unchecked'}\nThe disk should be created as an additive cylinder (typeid), and the threaded hole should be created using the create a threaded hole (typeid) method. Do not create the shapes separately and use boolean subtraction or cut. Finally, save the file to ${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Document save function found",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Document save function called",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Document saved"
+        },
+        "function_key_word_detected": {
+            "description": "Detected key content in saved document",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Created disk with threaded hole and saved successfully"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

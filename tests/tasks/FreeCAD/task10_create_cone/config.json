@@ -1,0 +1,64 @@
+{
+    "task_id": "10",
+    "task_name": "create_cone",
+    "description": "Create a cone in FreeCAD",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task10.FCStd",
+        "radius": 10,
+        "height": 30
+    },
+
+    "instruction_template": "The application is already open. Create a cone in FreeCAD using 'create an additive cone' with base radius ${radius}mm and height ${height}mm, then save the file to ${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 240
+    },
+    "preconditions": {
+        "FreeCAD_running": true
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Save document function found",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Save document function called",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Save document"
+        },
+        "function_key_word_detected": {
+            "description": "Save document key content detected",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Cone created and saved successfully"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "task_id": "16",
+    "task_name": "create_cube_with_fillet",
+    "description": "Create a cube with fillets in FreeCAD",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task16.FCStd",
+        "cube_length": 30.0,
+        "cube_width": 30.0,
+        "cube_height": 30.0,
+        "fillet_radius": 5.0
+    },
+
+    "instruction_template": "The application is already open. Create a cube in FreeCAD with length ${cube_length}mm, width ${cube_width}mm, and height ${cube_height}mm, then add fillets with a radius of ${fillet_radius}mm to all its edges. The cube should be created as an additive cube (typeid), and the fillets should be created using the create a fillet feature on cube. Do not create the shapes separately and use Boolean subtraction or cut. Finally, save the file to ${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Document save function found",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Document save function called",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Document saved"
+        },
+        "function_key_word_detected": {
+            "description": "Detected key content in saved document",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Created cube with fillets and saved successfully"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

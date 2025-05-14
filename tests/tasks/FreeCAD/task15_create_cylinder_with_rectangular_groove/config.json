@@ -1,0 +1,69 @@
+{
+    "task_id": "15",
+    "task_name": "create_cylinder_with_rectangular_groove",
+    "description": "Create a cylinder with a rectangular groove tilted around Y-axis in FreeCAD",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task15.FCStd",
+        "cylinder_radius": 20.0,
+        "cylinder_height": 40.0,
+        "groove_width": 10.0,
+        "groove_depth": 5.0,
+        "groove_height": 30.0,
+        "groove_angle": 30.0
+    },
+
+    "instruction_template": "The application is already open. Create a cylinder with radius ${cylinder_radius}mm and height ${cylinder_height}mm in FreeCAD, then create a tilted rectangular groove on its side. The groove should have width ${groove_width}mm, depth ${groove_depth}mm, height ${groove_height}mm, and be tilted around the Y-axis by ${groove_angle} degrees. The cylinder should be created as an additive cylinder (typeid), and the rectangular groove should be created as a subtractive box (typeid). Do not create the shapes separately and use Boolean subtraction or cut. Finally, save the file to ${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Document save function found",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Document save function called",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Document saved"
+        },
+        "function_key_word_detected": {
+            "description": "Detected key content in saved document",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Created cylinder with tilted rectangular groove and saved successfully"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

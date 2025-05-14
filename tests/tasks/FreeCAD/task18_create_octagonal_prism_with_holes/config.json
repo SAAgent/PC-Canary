@@ -1,0 +1,67 @@
+{
+    "task_id": "18",
+    "task_name": "create_octagonal_prism_with_holes",
+    "description": "Create an octagonal prism with a central circular hole in FreeCAD",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task18.FCStd",
+        "prism_radius": 50.0,
+        "prism_height": 20.0,
+        "hole_radius": 15.0,
+        "sides_count": 8
+    },
+
+    "instruction_template": "The application is already open. Create an octagonal prism in FreeCAD with a circumscribed circle radius of ${prism_radius}mm and height of ${prism_height}mm, then add a circular through-hole with radius ${hole_radius}mm in the center of the prism. The prism can be created using 'create a additive prism'(typeid), and the circular hole should be created using 'create a subtractive cylinder'(typeid). Do not create the shapes separately and use Boolean subtraction or cut. Finally, save the file to ${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Document save function found",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Document save function called",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Document saved"
+        },
+        "function_key_word_detected": {
+            "description": "Detected key content in saved document",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Created octagonal prism with central circular hole and saved successfully"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

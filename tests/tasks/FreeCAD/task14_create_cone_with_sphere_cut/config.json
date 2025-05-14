@@ -1,0 +1,70 @@
+{
+    "task_id": "14",
+    "task_name": "create_cone_with_sphere_cut",
+    "description": "Create a cone with a hemispherical cutout in FreeCAD",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task14.FCStd",
+        "cone_radius1": 25.0,
+        "cone_radius2": 10.0,
+        "cone_height": 40.0,
+        "sphere_radius": 8.0,
+        "sphere_position_x": 0.0,
+        "sphere_position_y": 0.0,
+        "sphere_position_z": 40.0
+    },
+
+    "instruction_template": "The application is already open. In FreeCAD, create a cone with a bottom radius of ${cone_radius1}mm, a top radius of ${cone_radius2}mm, and a height of ${cone_height}mm. Then, create a hemispherical cutout at the center of its top surface. The radius of the cutting sphere is ${sphere_radius}mm, and its center should be positioned at the cone's top surface center (${sphere_position_x}, ${sphere_position_y}, ${sphere_position_z})mm. The cone should be created using the 'create an additive cone' method (typeid), and the hemispherical cutout should be created using the 'create subtractive sphere' method (typeid). Do not create the shapes separately and use Boolean subtraction or cut. Finally, save the file to ${source_path}${filename}.",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Save document function found",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Save document function called",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Save document"
+        },
+        "function_key_word_detected": {
+            "description": "Detected key content for saving document",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Successfully created a cone with a hemispherical cutout and saved"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

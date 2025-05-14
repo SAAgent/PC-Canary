@@ -1,0 +1,66 @@
+{
+    "task_id": "21",
+    "task_name": "change_language",
+    "description": "Change the display language in FreeCAD to Chinese Simplified first, then change it back to English",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "first_language": "Chinese Simplified",
+        "final_language": "English"
+    },
+
+    "instruction_template": "The application is already open. In the FreeCAD application, using open first start setup, first change the interface language to ${first_language}, then change it back to ${final_language}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "FreeCAD_running": true
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialization",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Found language switching function",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Language switching function was called",
+            "is_key_step": false
+        },
+        "first_language_set": {
+            "description": "First language change detected",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Successfully changed language to Chinese Simplified"
+        },
+        "final_language_set": {
+            "description": "Final language change detected",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Successfully changed language back to English"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

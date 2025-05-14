@@ -1,0 +1,68 @@
+{
+    "task_id": "22",
+    "task_name": "set_unit_system",
+    "description": "In FreeCAD, first set the unit system to 3, then set it back to 0",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "first_unit_system": 3,
+        "final_unit_system": 0,
+        "first_unit_system_name": "Imperial decimal",
+        "final_unit_system_name": "Standard"
+    },
+
+    "instruction_template": "The application is already open. In the FreeCAD application, using open first start setup, first set the unit system to no.${first_unit_system} which called ${final_unit_system_name}, then set it back to no.${final_unit_system} which called ${final_unit_system_name}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "FreeCAD_running": true
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialization",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Found unit system setting function",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Unit system setting function was called",
+            "is_key_step": false
+        },
+        "first_unit_system_set": {
+            "description": "First unit system setting detected",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Successfully set unit system to 3"
+        },
+        "final_unit_system_set": {
+            "description": "Final unit system setting detected",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Successfully set unit system back to 0"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

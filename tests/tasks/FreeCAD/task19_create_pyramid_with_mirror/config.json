@@ -1,0 +1,67 @@
+{
+    "task_id": "19",
+    "task_name": "create_pyramid_with_mirror",
+    "description": "Create a pyramid with mirror feature in FreeCAD",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task19.FCStd",
+        "base_length": 50.0,
+        "base_width": 50.0,
+        "pyramid_height": 30.0,
+        "mirror_plane": "XZ"
+    },
+
+    "instruction_template": "The application is already open. Create a pyramid in FreeCAD with a rectangular base that has length ${base_length}mm and width ${base_width}mm, and a height of ${pyramid_height}mm. The base should be positioned on the XZ plane. Then add a mirror feature to this pyramid using the ${mirror_plane} plane. The pyramid can be created using 'create a addtive wedge'. The mirror feature should be created using 'apply a pattern -> mirror'. Finally, save the file to ${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Document save function found",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Document save function called",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Document saved"
+        },
+        "function_key_word_detected": {
+            "description": "Detected key content in saved document",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Created pyramid with mirror feature and saved successfully"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

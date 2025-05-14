@@ -1,0 +1,63 @@
+{
+    "task_id": "07",
+    "task_name": "create_line",
+    "description": "Create a line in FreeCAD",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task07.FCStd",
+        "line_length": 50.0
+    },
+
+    "instruction_template": "The application is already open. In FreeCAD's part design, create a line with length ${line_length} through a sketch, and save the file to ${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120
+    },
+    "preconditions": {
+        "FreeCAD_running": true
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Found document save function",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Document save function was called",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Save document"
+        },
+        "function_key_word_detected": {
+            "description": "Detected document save key content",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Successfully created line and saved"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}

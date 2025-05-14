@@ -1,0 +1,76 @@
+{
+    "task_id": "12",
+    "task_name": "create_cube_with_wedge_cut",
+    "description": "Create a cuboid with a wedge-shaped cut in FreeCAD",
+
+    "application_info": {
+        "name": "FreeCAD",
+        "executable_path": "/usr/local/bin/FreeCAD",
+        "args": []
+    },
+
+    "task_parameters": {
+        "source_path": "/FreeCAD/",
+        "filename": "task12.FCStd",
+        "cube_length": 30,
+        "cube_width": 20,
+        "cube_height": 15,
+        "wedge_Xmin": 0.0,
+        "wedge_Xmax": 20.0,
+        "wedge_Ymin": 0.0,
+        "wedge_Ymax": 10.0,
+        "wedge_Zmin": 0.0,
+        "wedge_Zmax": 10.0,
+        "wedge_X2min": 10.0,
+        "wedge_X2max": 10.0,
+        "wedge_Z2min": 5.0,
+        "wedge_Z2max": 5.0
+    },
+
+    "instruction_template": "The application is already open. Create a cuboid in FreeCAD with length ${cube_length}, width ${cube_width}, and height ${cube_height}, then create a wedge-shaped cut on its top with parameters: Xmin=${wedge_Xmin}, Xmax=${wedge_Xmax}, Ymin=${wedge_Ymin}, Ymax=${wedge_Ymax}, Zmin=${wedge_Zmin}, Zmax=${wedge_Zmax}, X2min=${wedge_X2min}, X2max=${wedge_X2max}, Z2min=${wedge_Z2min}, Z2max=${wedge_Z2max}. The cuboid should be created using 'create an additive cube', and the wedge cut should be created using 'create subtractive wedge'. Finally, save the file to ${source_path}${filename}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook", "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 300,
+        "evaluator_type": "HookManager"
+    },
+    "preconditions": {
+        "freecad_running": false
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "Save document function found",
+            "is_key_step": false
+        },
+        "function_called": {
+            "description": "Save document function called",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Save document"
+        },
+        "function_key_word_detected": {
+            "description": "Save document key content detected",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Cuboid with wedge cut created and saved successfully"
+        },
+        "error": {
+            "description": "Error event",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "python3",
+            "args": ["/home/agent/.local/share/FreeCAD/Mod/freecad_mcp/src/freecad_bridge.py"]
+        }
+    ]
+}
