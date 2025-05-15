@@ -1,0 +1,59 @@
+{
+    "task_id": "16",
+    "task_name": "create_new_file",
+    "description": "在vscode当前工作区中某个目录下创建新文件",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "file": "doc/js/hello_world.js"
+    },
+
+    "instruction_template": "在vscode当前工作区中创建新的空文件 ${file}, 如果没有目录, 同时创建目录",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时检查任务是否完成",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "任务成功完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

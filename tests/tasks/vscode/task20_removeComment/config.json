@@ -1,0 +1,66 @@
+{
+    "task_id": "20",
+    "task_name": "removeComment",
+    "description": "在vscode中打开文件, 并且移除文件中所有的注释",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "file": "get_size_of_linked_list.cpp",
+        "expected_file_path": "/root/C-Plus-Plus/operations_on_datastructures/get_size_of_linked_list.cpp"
+    },
+
+    "instruction_template": "在当前vscode打开的工作区中打开 ${file} 文件, 删除文件中所有的注释, 其他内容保持不变",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "open_file": {
+            "description": "成功打开目标文件",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "打开文件"
+        },
+        "evaluate_on_completion": {
+            "description": "在任务完成时检查文件状态",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "任务成功完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

@@ -1,0 +1,62 @@
+{
+    "task_id": "19",
+    "task_name": "compare_files",
+    "description": "在vscode中对比两个文件有什么不同",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "file_name1": "quick_sort.cpp",
+        "file_name2": "quick_sort_3.cpp",
+        "file1": "/root/C-Plus-Plus/sorting/quick_sort.cpp",
+        "file2": "/root/C-Plus-Plus/sorting/quick_sort_3.cpp"
+    },
+
+    "instruction_template": "使用vscode中的找到文件 ${file_name1} 和 ${file_name2}, 并且使用比较文件内容的功能对比两个文件",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时检查任务是否完成",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "任务成功完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

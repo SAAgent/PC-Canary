@@ -1,0 +1,61 @@
+{
+    "task_id": "25",
+    "task_name": "sort_import",
+    "description": "在vscode中打开文件, 并且按照字母表顺序对所有的import库进行排序",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "filename": "sort_import.py",
+        "expected_file_content": "importargparseimportcollectionsimportdatetimeimportfunctoolsimportjsonimportloggingimportmathimportnumpyimportosimportpandasimportpathlibimportrandomimportreimportrequestsimportsqlite3importsysimporttimelogging.basicConfig(level=logging.INFO,format='%(asctime)s-%(levelname)s-%(message)s')@functools.lru_cache(maxsize=128)deffetch_data(url):try:logging.info(f'Fetchingdatafrom{url}')response=requests.get(url)response.raise_for_status()returnresponse.json()exceptrequests.RequestExceptionase:logging.error(f'Requestfailed:{e}')sys.exit(1)defclean_and_transform(data):df=pandas.DataFrame(data)df=df.dropna()df['timestamp']=pandas.to_datetime(df['created_at'],errors='coerce')df['word_count']=df['text'].apply(lambdax:len(str(x).split()))returndfdefanalyze(df):logging.info('Analyzingdata...')avg_words=df['word_count'].mean()top_words=collections.Counter(''.join(df['text']).split()).most_common(5)returnavg_words,top_wordsdefsave_to_sqlite(df,db_path='data.db'):conn=sqlite3.connect(db_path)df.to_sql('api_data',conn,if_exists='replace',index=False)conn.close()logging.info('DatasavedtoSQLite')defsave_to_file(df,out_dir='output'):os.makedirs(out_dir,exist_ok=True)out_path=os.path.join(out_dir,f'data_{datetime.date.today()}.json')df.to_json(out_path,orient='records',indent=2)logging.info(f'Datasavedto{out_path}')defmain():parser=argparse.ArgumentParser(description='ProcessAPIdata')parser.add_argument('--url',type=str,required=False,default='https://jsonplaceholder.typicode.com/posts',help='APIURLtofetchJSONdatafrom')args=parser.parse_args()json_data=fetch_data(args.url)ifisinstance(json_data,dict):json_data=[json_data]df=clean_and_transform(json_data)avg,top=analyze(df)logging.info(f'Averagewordsperentry:{avg}')logging.info(f'Top5words:{top}')save_to_sqlite(df)save_to_file(df)logging.info('Scriptfinished.')if__name__=='__main__':main()",
+        "expected_file_path": "/root/C-Plus-Plus/python_test/sort_import.py"
+    },
+
+    "instruction_template": "在vscode当前打开的工作区中打开名为 ${filename} 的文件, 并且按照字母表顺序对所有的import库进行排序",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时检查任务是否完成",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "任务成功完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}

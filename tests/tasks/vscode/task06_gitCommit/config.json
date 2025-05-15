@@ -1,0 +1,59 @@
+{
+    "task_id": "06",
+    "task_name": "gitCommit",
+    "description": "在vscode的工作区将所有的修改",
+
+    "application_info": {
+        "name": "vscode",
+        "executable_path": "/usr/share/code/code",
+        "args": ["--no-sandbox", "--user-data-dir=/root/vscode_user_data_dir/"]
+    },
+
+    "task_parameters": {
+        "commit_message": "fix bugs"
+    },
+
+    "instruction_template": "在vscode当前打开的工作区中提交所有未提交的修改, 并且commit的信息是 ${commit_message}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+    "preconditions": {
+        "vscode_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时判断是否所有的修改已经提交",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "在任务结束时检查任务是否完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "mcp-proxy",
+            "args": ["http://127.0.0.1:6010/sse"]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/vscode/user_data",
+            "to": "/root/vscode_user_data_dir"
+        },
+        {
+            "from": "tests/context_data/vscode/extensions",
+            "to": "/root/.vscode/"
+        },
+        {
+            "from": "tests/context_data/vscode/C-Plus-Plus",
+            "to": "/root/C-Plus-Plus"
+        }
+    ]
+}
