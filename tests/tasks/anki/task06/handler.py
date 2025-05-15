@@ -8,7 +8,7 @@ import re
 
 def check_first_field(s) -> bool:
     s = s.replace("&nbsp","")
-    red_pattern1 = r'color.*rgb(255, 0, 0)'
+    red_pattern1 = r'color.*rgb(255'
     red_pattern2 = r'color.*red'
     if not re.findall(red_pattern1,s) and not re.findall(red_pattern2,s):
         return False
@@ -30,6 +30,7 @@ def handle_storage_add_card(context: Context,message) -> Status:
 
     second_field = "x=1"
 
+    print(check_first_field(note.fields[0]))
     if check_first_field(note.fields[0]) and note.fields[1] == second_field:
         status.emit(EventCorrectField())
         status.emit(EventCorrectFormat())

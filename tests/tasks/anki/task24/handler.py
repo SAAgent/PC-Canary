@@ -25,8 +25,8 @@ def handle_storage_update_notetypes(context: Context,message) -> Status:
 
     if len(notetype.fields) == 3 and  notetype.fields[2] == "Note":
         status.emit(EventNotetypeFieldCorrect())
-    front_side_pattern = r'\{\{#Note\}\}.*color:blue.*\{\{/Note\}\}.*\{\{正面\}\}.*\{\{#Note\}\}.*</span>.*\{\{/Note\}\}'
-    back_side_pattern = r'.*\{\{背面\}\}.*\{\{#Note\}\}.*</span>.*\{\{/Note\}\}'
+    front_side_pattern = r'\{\{#Note\}\}.*color:blue.*\{\{/Note\}\}.*\{\{正面\}\}.*\{\{#Note\}\}.*\{\{/Note\}\}'
+    back_side_pattern = r'.\{\{FrontSide\}\}.*\{\{背面\}\}.*<br>.*\{\{#Note\}\}.*Note:\s*\{\{Note\}\}.*\{\{/Note\}\}'
     if  len(notetype.templates) == 2:
         if re.findall(front_side_pattern,notetype.templates[0],re.DOTALL):
             print("Front side pattern matched") 
@@ -44,7 +44,6 @@ def handle_storage_update_notetypes(context: Context,message) -> Status:
 
 def handle_storage_add_card(context: Context,message) -> Status:
     status = Status()
-    print("ok!")
     if not context.monitor.is_event_triggered(EventNotetypeTemplateCorrect()):
         return None
     context.update_database()

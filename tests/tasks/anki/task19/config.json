@@ -1,7 +1,7 @@
 {
     "task_id": "19",
-    "task_name": "设置所有标签为suspend的卡片删除",
-    "description": "设置所有标签为suspend的卡片删除",
+    "task_name": "将所有标签为suspend的卡片删除",
+    "description": "将所有标签为suspend的卡片删除",
     "application_info": {
         "name": "anki",
         "executable_path": "/home/agent/anki/out/pyenv/bin/python",
@@ -13,7 +13,7 @@
     "task_parameters": {
         "tag_name": "suspend"
     },
-    "instruction_template": "设置所有标签为${tag_name}的卡片删除",
+    "instruction_template": "将所有标签为${tag_name}的卡片删除",
     "evaluation_setup": {
         "scripts": [
             {

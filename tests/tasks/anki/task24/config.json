@@ -16,7 +16,7 @@
         "second_field": "test",
         "third_field": "note"
     },
-    "instruction_template": "创建一个叫${name}的模板，复制问答题的模板。添加一个新字段叫Note,并放在第三个字段的位置。在正面使用条件替换语法，例如这样的：{{#Tags}}\n标签：{{Tags}}\n{{/Tags}}。使用条件替换语法，如果存在Note字段，则将正面标蓝，并把Note放到反面答案的后面。如果没有Note字段，则不需要标蓝。添加一张卡片，卡片的正面写上\"${first_field}\"，反面写上\"${second_field}\",Note写上\"${thrid_field}\"",
+    "instruction_template": "创建一个叫${name}的模板，复制问答题的模板。添加一个新字段叫Note,并放在第三个字段的位置。在正面使用条件替换语法，例如这样的：{{#Tags}}\n标签：{{Tags}}\n{{/Tags}}。使用条件替换语法，如果存在Note字段，则将正面标蓝，并把Note放到反面答案的后面，用<br>隔开，并且用Note:{{Note}}展示，如果没有Note的情况，不必显示Note这一行。添加一张卡片，卡片的正面写上\"${first_field}\"，反面写上\"${second_field}\",Note写上\"${thrid_field}\"",
     "evaluation_setup": {
         "scripts": [
             {
@@ -66,7 +66,7 @@
         }
     },
     "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
-    "total_key_steps": 2,
+    "total_key_steps": 4,
     "mcp_servers": [
         {
             "command": "/home/agent/anki-mcp-server/.venv/bin/python",

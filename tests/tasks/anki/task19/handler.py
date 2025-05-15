@@ -35,8 +35,9 @@ def handle_done(context: Context,message):
         return handle_service_remove_notes(context,None)
 
 TRACE_HANDLERS = {
-    "storage_remove_notes": handle_service_remove_notes,
+    "service_remove_notes": handle_service_remove_notes,
 }   
+
 dependency_graph = {
    remove_note_ : [],
     remove_all_notes_ : [remove_note_]    
