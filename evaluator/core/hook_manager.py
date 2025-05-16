@@ -72,11 +72,12 @@ class HookManager:
             for (script_path, dep_script_list) in self.scripts:
                 try:
                     scripts = []
-                    with open(script_path, 'r', encoding="UTF8") as f:
-                        scripts.append(f.read())
                     for script in dep_script_list:
                         with open(script, 'r', encoding="UTF8") as f:
                             scripts.append(f.read())
+                    with open(script_path, 'r', encoding="UTF8") as f:
+                        scripts.append(f.read())
+                    
                     script_content = "\n".join(scripts)
                     
                     script = self.frida_session.create_script(script_content)
@@ -212,4 +213,4 @@ class HookManager:
     def trigger_evaluate_on_completion(self):
         self.eval_handler({
             "type": "send", "payload": { "event": "evaluate_on_completion" }
-        }, None)
+        },None)

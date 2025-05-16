@@ -1,0 +1,1 @@
+MCP server: https://github.com/ruiqurm/anki-mcp-server

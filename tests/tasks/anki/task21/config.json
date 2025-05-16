@@ -1,0 +1,73 @@
+{
+    "task_id": "21",
+    "task_name": "添加带有颜色卡片",
+    "description": "添加一张复杂的问答题卡片到系统默认",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {},
+    "instruction_template": "添加一张问答题卡片到系统默认，正面为To be or not to be，其中be和not to be设置为红色，背面为that's a question，设置标签为quote",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": {
+            "description": "数据库中出现卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "数据库中出现卡片"
+        },
+        "correct_field": {
+            "description": "卡片数据匹配",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "卡片数据匹配"
+        },
+        "wrong_field": {
+            "description": "卡片数据不匹配",
+            "is_key_step": false
+        },
+        "correct_format": {
+            "description": "卡片格式匹配",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "卡片数据匹配"
+        },
+        "wrong_format": {
+            "description": "卡片格式不匹配",
+            "is_key_step": false
+        },
+        "wrong_quote": {
+            "description": "标签错误",
+            "is_key_step": false
+        }
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 3,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
+}

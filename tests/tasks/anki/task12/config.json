@@ -1,0 +1,63 @@
+{
+    "task_id": "12",
+    "task_name": "添加一张卡片，正面为what is this? 附带一张狗的照片，背面为dog",
+    "description": "添加一张卡片，正面为what is this? 附带一张狗的照片，背面为dog",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "path": "/home/agent/agent-demo/PC-Canary/tests/tasks/anki/task12/dog.jpg"
+    },
+    "instruction_template": "添加一张卡片，正面为what is this?？附带一张狗的图片，图片路径为${path}，背面为dog",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": {
+            "description": "添加了卡片",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "添加了卡片"
+        },
+        "image_added": {
+            "description": "添加了图片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "添加了图片"
+        },
+        "card_format_correct": {
+            "description": "卡片格式匹配",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "卡片格式匹配"
+        }
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 3,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
+}

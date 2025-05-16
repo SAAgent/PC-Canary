@@ -1,0 +1,63 @@
+{
+    "task_id": "25",
+    "task_name": "插件:Enhanced Cloze",
+    "description": "使用插件enhanced cloze来创建卡片",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {},
+    "instruction_template": "使用enhanced cloze插件提供的模板创建一个卡片（https://ankiweb.net/shared/info/1990296174）。我已经替你安装好了。你需要配置一下插件,设置show Hints For Pseudo Clozes为False，然后添加一个用这个模板的卡片，正面内容为\"The quick brown fox jumps over the lazy dog.\",分别对brown(c1),fox(c2)和dog(c3)挖空。对lazy挖空，但是lazy设置为始终显示模式。下面有一段说明：Improved Mechanism of Displaying Clozes.\nTake card1 for example.All c1 clozes (called \"genuine clozes\") will be red.All other clozes (called \"pseudo clozes\" for this card), eg. c2, c3 will be blue.On the front of the card, all clozes (genuine or pseudo) will be shown as their hint (if one exists) or empty.You can show the answer of every cloze (genuine or pseudo) by clicking it.This means you can think about a genuize cloze and check the answer one by one without getting hints from pseudo-clozes and genuine clozes after it.Handy Keyboard And Touchscreen Shortcut You can...uncover genuine clozes one by one using the keyboard shortcut [J] (conifgurable) or by touching the left border of the card.uncover pseudo clozes one by one using the keyboard shortcut [N] (conifgurable) or by touching the right border of the cardtoggle all genuine clozes using the keyboard shortcut [Shift+J] (conifgurable) border.toggle all pseudo clozes using the keyboard shortcut [Shift+N] (conifgurable) border.This makes uncovering clozes super convenient, no matter whether it's on a computer using the keyboard or on a mobile phone.You can edit the shortcut keys in the config (Tools -> Enhanced Cloze -> Config)Auto Scroll To The Relevant ClozeThe card will scroll to the first genuine cloze at the very beginning.When you use shortcut to uncover clozes one by one, if the next cloze is out of view (common situation on mobile phones with small screen), the card will automatically scroll to it. This makes for a super fluent experience of answering cards. The behaviour can be turned off (Tools -> Enhanced Cloze -> Config).Can Be Used In No-Cloze Basic ModeIt is also Ok to go without clozes using this note type. (Note: Creating such notes only works on Anki Desktop, not on mobile!) Just type the question in the Content field and the answer in the Note field. The Note field will be hidden on the front of the card and shown on the back of the card, just like with the Basic note type.Anki won't warn you that no clozes are found.\"Normal\" clozesIf you want a cloze to alway be displayed when it's a pseudo cloze, prepend the answer with a #-sign like this: {{c1::#some text}}.",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "add_card": {
+            "description": "添加卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "添加卡片"
+        },
+        "card_info_correct": {
+            "description": "卡片信息正确",
+            "is_key_step": false
+        },
+        "card_format_correct": {
+            "description": "卡片数据正确",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "卡片数据正确"
+        },
+        "setting_correct": {
+            "description": "插件设置正确",
+            "is_key_step": false
+        }
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "task_id": "01",
+    "task_name": "添加简单卡片",
+    "description": "添加一张问答题卡片，正面为Hello，背面为World，添加到系统默认中",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "first_field": "Hello",
+        "second_field": "World"
+    },
+    "instruction_template": "添加一张问答题卡片，正面为${first_field}，背面为${second_field}，添加到系统默认中",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": {
+            "description": "数据库中出现卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "数据库中出现卡片"
+        },
+        "correct_field": {
+            "description": "卡片数据匹配",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "卡片数据匹配"
+        },
+        "wrong_field": {
+            "description": "卡片数据不匹配",
+            "is_key_step": false
+        },
+        "correct_deck": {
+            "description": "卡片Deck正确",
+            "is_key_step": false
+        },
+        "wrong_deck": {
+            "description": "卡片Deck不匹配",
+            "is_key_step": false
+        }
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
+}

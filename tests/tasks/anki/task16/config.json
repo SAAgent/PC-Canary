@@ -1,0 +1,55 @@
+{
+    "task_id": "16",
+    "task_name": "设置次日起点（每日轮换卡片的时间）为1时",
+    "description": "设置次日起点（每日轮换卡片的时间）为1时",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {
+        "time": "1"
+    },
+    "instruction_template": "设置次日起点（每日轮换卡片的时间）为${time}时",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "set_sucess": {
+            "description": "设置成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "设置成功"
+        },
+        "set_wrong": {
+            "description": "设置错误",
+            "is_key_step": false
+        }
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 1,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
+}

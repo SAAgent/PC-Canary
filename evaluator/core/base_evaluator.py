@@ -108,8 +108,11 @@ class BaseEvaluator:
                     self.instruction = raw_template
                 self.logger.info(f"加载任务指令: {self.instruction}")
         else:
-            self.logger.warning(f"配置文件不存在: {config_path}")
+            raise ValueError(f"配置文件不存在：{config_path}")
 
+        if app_path is None:
+            app_path = self.config["application_info"]["executable_path"] # should panic if app_path is not set
+            
         # 初始化关键步骤信息 (总数即可，名称映射由 ResultCollector 处理)
         self.total_key_steps = self.config.get('total_key_steps', 0)
 

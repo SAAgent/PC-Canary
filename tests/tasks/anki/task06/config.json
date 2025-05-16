@@ -1,0 +1,67 @@
+{
+    "task_id": "06",
+    "task_name": "添加带有上标卡片",
+    "description": "添加一张问答题卡片到系统默认，正面为x^2-2x+1=0，需使用上标完成,x^2字体为红色，背面为x=1",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "task_parameters": {},
+    "instruction_template": "添加一张问答题卡片到系统默认，正面为x^2-2x+1=0，需使用上标完成。并且x^2需要标记字体为红色，背面为x=1",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": {
+            "description": "数据库中出现卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "数据库中出现卡片"
+        },
+        "correct_field": {
+            "description": "卡片数据匹配",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "卡片数据匹配"
+        },
+        "wrong_field": {
+            "description": "卡片数据不匹配",
+            "is_key_step": false
+        },
+        "correct_format": {
+            "description": "卡片格式匹配",
+            "is_key_step": false
+        },
+        "wrong_format": {
+            "description": "卡片格式不匹配",
+            "is_key_step": false
+        }
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
+}

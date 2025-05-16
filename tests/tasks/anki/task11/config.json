@@ -1,0 +1,58 @@
+{
+    "task_id": "11",
+    "task_name": "添加带有有序列表卡片",
+    "description": "添加一个问答题卡片，问题为Three largest countries in the world,其中对largest加粗, 答案使用有序列表，分别填入Russia,Canada, China",
+    "application_info": {
+        "name": "anki",
+        "executable_path": "/home/agent/anki/out/pyenv/bin/python",
+        "args": [
+            "/home/agent/anki/tools/run.py"
+        ],
+        "cwd": "/home/agent/anki"
+    },
+    "instruction_template": "添加一个问答题卡片，问题为Three largest countries in the world,其中对largest加粗,答案使用有序列表，分别填入Russia,Canada, China",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js",
+                "dependency": [
+                    "../common/hooker_common.js"
+                ]
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 60
+    },
+    "events": {
+        "card_added": {
+            "description": "添加了卡片",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "添加了卡片"
+        },
+        "card_format_correct": {
+            "description": "卡片格式匹配",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "卡片格式匹配"
+        },
+        "card_format_wrong": {
+            "description": "卡片格式不匹配",
+            "is_key_step": false
+        }
+    },
+    "sql_path": "/home/agent/.local/share/Anki2/sam/collection.anki2",
+    "total_key_steps": 2,
+    "mcp_servers": [
+        {
+            "command": "/home/agent/anki-mcp-server/.venv/bin/python",
+            "args": [
+                "/home/agent/anki-mcp-server/run_server.py"
+            ]
+        }
+    ]
+}
