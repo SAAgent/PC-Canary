@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "05",
+    "task_name": "invite",
+    "description": "在zulip中向特定邮箱发送邀请",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,11 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "email": "xxxyyy@example.com",
+        "role": "guest"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "在zulip中向邮箱为 ${email} 的用户发送组织邀请, 该用户加入组织的角色是 ${role}, 并且邀请永不过期",
 
     "evaluation_setup": {
         "scripts": [
@@ -26,16 +25,16 @@
         "evaluator_type": "StateInspector",
         "evaluate_on_completion": true
     },
-    "total_key_steps": 2,
+    "total_key_steps": 3,
     "preconditions": {
         "zulip_running": true
     },
     "events": {
         "evaluate_on_completion": {
-            "description": "在任务结束时检测消息是否发送成功",
+            "description": "在任务结束时检测任务是否成功",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "消息发送成功"
+            "key_step_name": "成功发送邀请信息"
         }
     },
     "mcp_servers": [

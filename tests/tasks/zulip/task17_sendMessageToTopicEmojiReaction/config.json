@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "17",
+    "task_name": "send_message_to_topic_and_emoji_reaction",
+    "description": "在zulip中，向general Channel下的emoji topic（没有这个topic则先创建这个topic）发送\"enjoy emoji function\"消息，然后在此信息中增加octopus的emoji reaction",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,13 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "target_message":"enjoy emoji function",
+        "target_channel":"general",
+        "target_topic":"emoji_function",
+        "target_emoji":"octopus"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "在zulip中在general Channel下的${target_topic} topic（如果没有这个topic则先创建这个topic）下最新信息中增加${target_emoji}的emoji reaction",
 
     "evaluation_setup": {
         "scripts": [
@@ -26,7 +27,7 @@
         "evaluator_type": "StateInspector",
         "evaluate_on_completion": true
     },
-    "total_key_steps": 2,
+    "total_key_steps": 5,
     "preconditions": {
         "zulip_running": true
     },

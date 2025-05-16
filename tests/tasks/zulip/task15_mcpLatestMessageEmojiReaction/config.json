@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "15",
+    "task_name": "emoji_reaction",
+    "description": "在zulip中在自己发送的最新的信息中增加octopus的emoji reaction",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,10 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "emoji":"octopus"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "在zulip中在自己发送的最新的信息中增加${emoji}的emoji reaction",
 
     "evaluation_setup": {
         "scripts": [

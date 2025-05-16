@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "12",
+    "task_name": "check_and_subscribe_channel",
+    "description": "查看我在zulip中有没有订阅名为'bug report' Channel,如果没有的话，订阅当前组织的这个Channel",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,10 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "channel_name": "bug report"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "查看我在zulip中有没有订阅名为'${channel_name}' Channel,如果没有的话，订阅当前组织的这个Channel",
 
     "evaluation_setup": {
         "scripts": [

@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "07",
+    "task_name": "visible",
+    "description": "在zulip中设置用户的在线状态为invisible mode",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,10 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "online_status": "offline"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "在zulip中将用户在线状态设置为${online_status}",
 
     "evaluation_setup": {
         "scripts": [
@@ -32,10 +30,10 @@
     },
     "events": {
         "evaluate_on_completion": {
-            "description": "在任务结束时检测消息是否发送成功",
+            "description": "在任务结束时检测任务是否成功",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "消息发送成功"
+            "key_step_name": "成功设置用户状态"
         }
     },
     "mcp_servers": [

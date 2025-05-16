@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "18",
+    "task_name": "forward_message",
+    "description": "获取zulip中general Channel中的test topic下最新的一条信息，并将此消息发送到test Channel下的test topic中",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,13 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "source_channel": "general",
+        "source_topic": "test",
+        "target_channel": "test", 
+        "target_topic": "test"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "获取zulip中${source_channel} Channel中的${source_topic} topic下最新的一条信息，并将此消息发送到${target_channel} Channel下的${target_topic} topic中",
 
     "evaluation_setup": {
         "scripts": [
