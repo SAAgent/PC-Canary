@@ -45,7 +45,8 @@
                 "zotero-mcp"
             ],
             "env": {
-                "ZOTERO_LOCAL": "true"
+                "ZOTERO_API_KEY": "JEUcZl2TqzxxABn7vXnAWhaY",
+                "ZOTERO_LIBRARY_ID": "17159576"
             }
         }
     ],
@@ -57,11 +58,11 @@
     },
     "context_data": [
         {
-            "from": "tests/context_data/zotero/task08_change_font_size/Zotero",
+            "from": "tests/context_data/zotero/task08_change_font_size_local/Zotero",
             "to": "/home/agent/Zotero"
         },
         {
-            "from": "tests/context_data/zotero/task08_change_font_size/.zotero",
+            "from": "tests/context_data/zotero/task08_change_font_size_local/.zotero",
             "to": "/home/agent/.zotero"
         }
     ]
