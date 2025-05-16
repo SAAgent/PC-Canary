@@ -1,7 +1,7 @@
 {
     "task_id": "06",
     "task_name": "render_map_image",
-    "description": "在QGIS中导出地图图片",
+    "description": "Export map as an image in QGIS",
     "application_info": {
         "name": "QGIS",
         "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
@@ -32,7 +32,7 @@
         "height": "600"
     },
 
-    "instruction_template": "在QGIS中以图片格式导出地图,图片的宽为${width}px,高为${height}px,图片的保存路径为${save_path},类型为${type}",
+    "instruction_template": "Export map as an image in QGIS with width ${width}px, height ${height}px, save path ${save_path}, and type ${type}",
 
     "evaluation_setup": {
         "scripts": [
@@ -44,31 +44,31 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "setPathandType_function_found": {
-            "description": "找到设置导出图片路径和类型的函数",
+            "description": "Found image path and type setting function",
             "is_key_step": false
         },
         "PathandType_set": {
-            "description": "导出图片路径和类型被正确设置",
+            "description": "Image export path and type correctly set",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "图片路径和类型正确"
+            "key_step_name": "Image path and type are correct"
         },
         "setSize_function_found": {
-            "description": "找到设置导出图片尺寸的函数",
+            "description": "Found image size setting function",
             "is_key_step": false
         },
         "Size_set": {
-            "description": "导出图片尺寸被正确设置",
+            "description": "Image export size correctly set",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "图片尺寸正确"
+            "key_step_name": "Image size is correct"
         },
         "error": {
-            "description": "来自脚本的错误事件",
+            "description": "Error event from script",
             "is_key_step": false
         }
     }

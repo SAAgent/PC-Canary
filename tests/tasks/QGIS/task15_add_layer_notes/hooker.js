@@ -1,12 +1,11 @@
-
-// QGIS添加图层注解钩子脚本
-// 用于监听QGIS的添加图层注解操作并检测相关参数
+// QGIS Layer Notes Addition Hook Script
+// Used to monitor QGIS layer notes addition operations and detect related parameters
 
 (function () {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZN18QgsLayerNotesUtils13setLayerNotesEP11QgsMapLayerRK7QString"; // QgsLayerNotesUtils::setLayerNotes函数的符号
+    // Script constants setup
+    const SYMBOL_NAME = "_ZN18QgsLayerNotesUtils13setLayerNotesEP11QgsMapLayerRK7QString"; // QgsLayerNotesUtils::setLayerNotes function symbol
 
-    // 向评估系统发送事件
+    // Send event to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -26,49 +25,49 @@
             const data = d.add(HEADER_SIZE);                      // first UTF‑16 char
             return Memory.readUtf16String(data, len);
         } catch (error) {
-            console.log("解析QString失败:", error);
+            console.log("Failed to parse QString:", error);
             return "";
         }
     }
     
-    // 从HTML中提取纯文本内容
+    // Extract plain text content from HTML
     function extractTextFromHtml(html) {
         try {
-            // 提取<p>标签中的内容
+            // Extract content from <p> tags
             const matches = html.match(/<p[^>]*>(.*?)<\/p>/g);
             if (matches && matches.length > 0) {
-                // 提取所有<p>标签中的文本并合并
+                // Extract text from all <p> tags and merge
                 const textContents = matches.map(p => {
-                    // 移除所有HTML标签
+                    // Remove all HTML tags
                     return p.replace(/<[^>]*>/g, '');
                 });
                 return textContents.join("\n");
             }
             
-            // 如果没有找到<p>标签，则移除所有标签返回纯文本
+            // If no <p> tags found, remove all tags and return plain text
             return html.replace(/<[^>]*>/g, '');
         } catch (error) {
-            console.log("提取文本失败:", error);
+            console.log("Failed to extract text:", error);
             return html;
         }
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hook and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS图层注解监控脚本已启动"
+            message: "QGIS layer notes monitoring script has started"
         });
 
-        // 查找setLayerNotes函数
+        // Find setLayerNotes function
         let setNotesAddr = Module.findExportByName(null, SYMBOL_NAME);
 
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!setNotesAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsLayerNotesUtils::setLayerNotes函数..."
+                message: "Searching for QgsLayerNotesUtils::setLayerNotes function..."
             });
 
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function (module) {
                     if (module.name.includes("qgis_core")) {
@@ -77,7 +76,7 @@
                             base_address: module.base.toString()
                         });
 
-                        // 在qgis_core模块中查找符号
+                        // Find symbol in qgis_core module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             setNotesAddr = symbol;
@@ -87,64 +86,64 @@
                 onComplete: function () { }
             });
 
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!setNotesAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsLayerNotesUtils::setLayerNotes函数"
+                    message: "Unable to find QgsLayerNotesUtils::setLayerNotes function"
                 });
                 return;
             }
         }
 
-        // 报告找到函数
+        // Report function found
         sendEvent("set_function_found", {
             address: setNotesAddr.toString(),
-            message: "找到QgsLayerNotesUtils::setLayerNotes函数"
+            message: "Found QgsLayerNotesUtils::setLayerNotes function"
         });
         
-        // 安装钩子
+        // Install hook
         Interceptor.attach(setNotesAddr, {
             onEnter: function(args) {
                 try {
-                    // 获取参数：layer和notes(由于是类调用吗，不存在this指针)
-                    // args[0]是QgsLayer的指针，args[1]是QString的指针
+                    // Get parameters: layer and notes (no this pointer as it's a class call)
+                    // args[0] is QgsLayer pointer, args[1] is QString pointer
                     const layerPtr = args[0];  
                     const notesQString = args[1];
-                    console.log("添加图层注解,参数为:", layerPtr);
+                    console.log("Adding layer notes, parameters:", layerPtr);
                     if (!layerPtr.isNull()) {
-                        // 获取图层名称
+                        // Get layer name
                         const nameQString = layerPtr.add(0x20);
-                        console.log("图层名称指针:", nameQString);
+                        console.log("Layer name pointer:", nameQString);
                         const layerName = qstringToString(nameQString);
 
-                        console.log("添加图层注解,图层名称为:", layerName);
+                        console.log("Adding layer notes, layer name:", layerName);
 
-                        // 发送图层名称事件
+                        // Send layer name event
                         sendEvent("layer_set", {
                             name: layerName,
-                            message: `检测到添加注解的图层,名称为:${layerName}`
+                            message: `Detected layer for notes addition, name: ${layerName}`
                         });
                         
-                        // 获取注解内容
+                        // Get notes content
                         const notesHtml = qstringToString(notesQString);
                         const notesText = extractTextFromHtml(notesHtml);
                         
-                        console.log("添加的注解内容为:", notesText);
-                        console.log("原始HTML:", notesHtml);
+                        console.log("Added notes content:", notesText);
+                        console.log("Original HTML:", notesHtml);
 
-                        // 发送注解内容事件
+                        // Send notes content event
                         sendEvent("notes_set", {
                             layer: layerName,
                             notes: notesText,
                             notes_html: notesHtml,
-                            message: `检测到为图层 ${layerName} 添加注解: ${notesText}`
+                            message: `Detected notes addition for layer ${layerName}: ${notesText}`
                         });
                     }
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `执行钩子时出错: ${error.message}`,
+                        message: `Error executing hook: ${error.message}`,
                         stack: error.stack
                     });
                 }
@@ -152,10 +151,10 @@
         });
 
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待添加图层注解操作..."
+            message: "Hook installation completed, waiting for layer notes addition operations..."
         });
     }
 
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

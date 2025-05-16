@@ -1,7 +1,7 @@
 {
     "task_id": "11",
     "task_name": "set_layer_order",
-    "description": "在QGIS中调整图层次序",
+    "description": "Adjust layer order in QGIS",
     "application_info": {
         "name": "QGIS",
         "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
@@ -29,7 +29,7 @@
         "LayerOrder": " lake,landcover"
     },
 
-    "instruction_template": "在QGIS中调整图层次序,次序为${LayerOrder}(自顶向下，由,分隔)",
+    "instruction_template": "Adjust layer order in QGIS, order is ${LayerOrder} (top to bottom, separated by commas)",
 
     "evaluation_setup": {
         "scripts": [
@@ -41,21 +41,21 @@
     "total_key_steps": 1,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "setOrder_function_found": {
-            "description": "找到更改图层次序函数",
+            "description": "Found layer order change function",
             "is_key_step": false
         },
         "order_set": {
-            "description": "检测到新的图层次序",
+            "description": "Detected new layer order",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "预期图层次序已设置"
+            "key_step_name": "Expected layer order set"
         },
         "error": {
-            "description": "来自脚本的错误事件",
+            "description": "Error event from script",
             "is_key_step": false
         }
     }

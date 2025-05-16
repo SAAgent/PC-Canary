@@ -1,7 +1,7 @@
 {
     "task_id": "06",
     "task_name": "render_map_pdf",
-    "description": "在QGIS中导出地图pdf",
+    "description": "Export map as PDF in QGIS",
     "application_info": {
         "name": "QGIS",
         "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
@@ -31,7 +31,7 @@
         "height": "600"
     },
 
-    "instruction_template": "在QGIS中以pdf格式导出地图,图片的宽为${width}px,高为${height}px,pdf的保存路径为${save_path}",
+    "instruction_template": "Export map as PDF in QGIS with width ${width}px, height ${height}px, and save path ${save_path}",
 
     "evaluation_setup": {
         "scripts": [
@@ -43,31 +43,31 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "setPath_function_found": {
-            "description": "找到设置导出pdf路径的函数",
+            "description": "Found PDF export path setting function",
             "is_key_step": false
         },
         "PathandType_set": {
-            "description": "导出pdf路径被正确设置",
+            "description": "PDF export path correctly set",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "pdf路径正确"
+            "key_step_name": "PDF path is correct"
         },
         "setSize_function_found": {
-            "description": "找到设置导出pdf尺寸的函数",
+            "description": "Found PDF export size setting function",
             "is_key_step": false
         },
         "Size_set": {
-            "description": "导出pdf尺寸被正确设置",
+            "description": "PDF export size correctly set",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "pdf尺寸正确"
+            "key_step_name": "PDF size is correct"
         },
         "error": {
-            "description": "来自脚本的错误事件",
+            "description": "Error event from script",
             "is_key_step": false
         }
     }

@@ -1,7 +1,7 @@
 {
     "task_id": "12",
     "task_name": "config_vectorLayer_color",
-    "description": "在QGIS中设置指定矢量图层的颜色",
+    "description": "Configure color for a specified vector layer in QGIS",
     "application_info": {
         "name": "QGIS",
         "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
@@ -30,7 +30,7 @@
         "color":"#1392e8"
     },
 
-    "instruction_template": "在QGIS中设置图层${LayerName}的颜色为${color}(RGB hex)",
+    "instruction_template": "Set the color of layer ${LayerName} to ${color} (RGB hex) in QGIS",
 
     "evaluation_setup": {
         "scripts": [
@@ -42,27 +42,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "set_function_found": {
-            "description": "找到设置向量图层颜色函数",
+            "description": "Found vector layer color setting function",
             "is_key_step": false
         },
         "layer_set": {
-            "description": "检测到待设置颜色的图层名称",
+            "description": "Detected layer name for color configuration",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "正在操作预期图层"
+            "key_step_name": "Operating on expected layer"
         },
         "color_set": {
-            "description": "预期颜色已设置",
+            "description": "Expected color has been set",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "设置了预期颜色"
+            "key_step_name": "Expected color set"
         },
         "error": {
-            "description": "来自脚本的错误事件",
+            "description": "Error event from script",
             "is_key_step": false
         }
     }

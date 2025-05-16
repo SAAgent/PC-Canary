@@ -1,11 +1,11 @@
-// QGIS加载项目钩子脚本
-// 用于监听QGIS加载项目操作并检测相关参数
+// QGIS Project Loading Hook Script
+// Used to monitor QGIS project loading operations and detect related parameters
 
 (function() {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZN10QgsProject4readERK7QString6QFlagsIN4Qgis15ProjectReadFlagEE"; // QgsProject::read(QString, Qgis::ProjectReadFlags)的符号
+    // Script constants
+    const SYMBOL_NAME = "_ZN10QgsProject4readERK7QString6QFlagsIN4Qgis15ProjectReadFlagEE"; // QgsProject::read(QString, Qgis::ProjectReadFlags) symbol
     
-    // 向评估系统发送事件
+    // Send events to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -25,27 +25,27 @@
             const data = d.add(HEADER_SIZE);                      // first UTF‑16 char
             return Memory.readUtf16String(data, len);
         } catch (error) {
-            console.log("解析QString失败:", error);
+            console.log("Failed to parse QString:", error);
             return "";
         }
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hooks and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS加载项目监控脚本已启动"
+            message: "QGIS project loading monitoring script started"
         });
         
-        // 查找加载项目函数
+        // Find project load function
         let loadProjectAddr = Module.findExportByName(null, SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!loadProjectAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsProject::read函数..."
+                message: "Searching for QgsProject::read function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_core")) {
@@ -54,7 +54,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis模块中查找符号
+                        // Search for symbol in qgis module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             loadProjectAddr = symbol;
@@ -64,41 +64,41 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!loadProjectAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsProject::read函数"
+                    message: "Cannot find QgsProject::read function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("load_function_found", {
             address: loadProjectAddr.toString(),
-            message: "找到QgsProject::read函数"
+            message: "Found QgsProject::read function"
         });
         
-        // 安装钩子
+        // Install hook
         Interceptor.attach(loadProjectAddr, {
             onEnter: function(args) {
                 try {
-                    // 获取第二个参数（const QString &filename），第一个是this指针
+                    // Get second parameter (const QString &filename), first is this pointer
                     const pathQString = args[1];
                     const filePath = qstringToString(pathQString);
                     
-                    console.log("加载项目路径:", filePath);
+                    console.log("Project loading path:", filePath);
                     
-                    // 发送事件通知
+                    // Send event notification
                     sendEvent("project_loaded", {
                         path: filePath,
-                        message: `检测到加载项目: 路径=${filePath}`
+                        message: `Project loading detected: Path=${filePath}`
                     });
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `执行钩子时出错: ${error.message}`,
+                        message: `Error during hook execution: ${error.message}`,
                         stack: error.stack
                     });
                 }
@@ -106,10 +106,10 @@
         });
         
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待加载项目操作..."
+            message: "Hook installation complete, waiting for project loading operations..."
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

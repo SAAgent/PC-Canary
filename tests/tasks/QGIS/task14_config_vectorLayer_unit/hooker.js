@@ -1,11 +1,11 @@
-// QGIS设置向量图层单位钩子脚本
-// 用于监听QGIS的设置向量图层单位操作并检测相关参数
+// QGIS Vector Layer Unit Configuration Hook Script
+// Used to monitor QGIS vector layer unit setting operations and detect related parameters
 
 (function () {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZNK9QgsSymbol13setOutputUnitEN4Qgis10RenderUnitE"; // QgsSymbol::setOutputUnit函数的符号
+    // Script constants setup
+    const SYMBOL_NAME = "_ZNK9QgsSymbol13setOutputUnitEN4Qgis10RenderUnitE"; // QgsSymbol::setOutputUnit function symbol
 
-    // 向评估系统发送事件
+    // Send event to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -25,12 +25,12 @@
             const data = d.add(HEADER_SIZE);                      // first UTF‑16 char
             return Memory.readUtf16String(data, len);
         } catch (error) {
-            console.log("解析QString失败:", error);
+            console.log("Failed to parse QString:", error);
             return "";
         }
     }
     
-    // 单位枚举值映射到名称
+    // Unit enum value mapping to names
     const unitNames = {
         0: "Millimeters",
         1: "MapUnits",
@@ -40,22 +40,22 @@
         5: "Inches"
     };
 
-    // 初始化钩子并立即执行
+    // Initialize hook and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS向量图层单位设置监控脚本已启动"
+            message: "QGIS vector layer unit configuration monitoring script has started"
         });
 
-        // 查找setOutputUnit函数
+        // Find setOutputUnit function
         let setUnitAddr = Module.findExportByName(null, SYMBOL_NAME);
 
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!setUnitAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsSymbol::setOutputUnit函数..."
+                message: "Searching for QgsSymbol::setOutputUnit function..."
             });
 
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function (module) {
                     if (module.name.includes("qgis_core")) {
@@ -64,7 +64,7 @@
                             base_address: module.base.toString()
                         });
 
-                        // 在qgis_core模块中查找符号
+                        // Find symbol in qgis_core module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             setUnitAddr = symbol;
@@ -74,60 +74,60 @@
                 onComplete: function () { }
             });
 
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!setUnitAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsSymbol::setOutputUnit函数"
+                    message: "Unable to find QgsSymbol::setOutputUnit function"
                 });
                 return;
             }
         }
 
-        // 报告找到函数
+        // Report function found
         sendEvent("set_function_found", {
             address: setUnitAddr.toString(),
-            message: "找到QgsSymbol::setOutputUnit函数"
+            message: "Found QgsSymbol::setOutputUnit function"
         });
         
-        // 安装钩子
+        // Install hook
         Interceptor.attach(setUnitAddr, {
             onEnter: function(args) {
                 try {
-                    // 获取this指针和枚举参数
+                    // Get this pointer and enum parameter
                     const thisPtr = args[0];
                     const unitValue = parseInt(args[1].toString());
                     
-                    // 获取图层名称
+                    // Get layer name
                     const layerPtr = thisPtr.add(0x58).readPointer();
                     if (!layerPtr.isNull()) {
                         const nameQString = layerPtr.add(0x20);
                         const layerName = qstringToString(nameQString);
 
-                        console.log("设置图层单位,图层名称为:", layerName);
+                        console.log("Setting layer unit, layer name:", layerName);
 
-                        // 发送图层名称事件
+                        // Send layer name event
                         sendEvent("layer_set", {
                             name: layerName,
-                            message: `检测到设置单位的图层,名称为:${layerName}`
+                            message: `Detected layer for unit setting, name: ${layerName}`
                         });
 
-                        // 将枚举值转换为单位名称
-                        const unitName = unitNames[unitValue] || `未知单位(${unitValue})`;
-                        console.log("设置单位为:", unitName, "原始枚举值:", unitValue);
+                        // Convert enum value to unit name
+                        const unitName = unitNames[unitValue] || `Unknown unit(${unitValue})`;
+                        console.log("Setting unit to:", unitName, "Original enum value:", unitValue);
 
-                        // 发送单位事件
+                        // Send unit event
                         sendEvent("unit_set", {
                             layer: layerName,
                             unit: unitName,
                             unit_value: unitValue,
-                            message: `检测到设置图层 ${layerName} 的单位为: ${unitName}`
+                            message: `Detected unit setting for layer ${layerName}: ${unitName}`
                         });
                     }
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `执行钩子时出错: ${error.message}`,
+                        message: `Error executing hook: ${error.message}`,
                         stack: error.stack
                     });
                 }
@@ -135,10 +135,10 @@
         });
 
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待设置图层单位操作..."
+            message: "Hook installation completed, waiting for layer unit setting operations..."
         });
     }
 
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

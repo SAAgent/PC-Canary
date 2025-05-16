@@ -1,7 +1,7 @@
 {
     "task_id": "10",
     "task_name": "config_layer_crs",
-    "description": "在QGIS中为图层配置坐标参考系统(CRS)",
+    "description": "Configure coordinate reference system (CRS) for a layer in QGIS",
     "application_info": {
         "name": "QGIS",
         "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
@@ -30,7 +30,7 @@
         "crs": "6666"
     },
 
-    "instruction_template": "在QGIS中设置图层${layer_name}的crs为${crs}",
+    "instruction_template": "Set the CRS of layer ${layer_name} to ${crs} in QGIS",
 
     "evaluation_setup": {
         "scripts": [
@@ -42,29 +42,29 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
 
         "modifyCrs_function_found": {
-            "description": "找到更改Crs函数",
+            "description": "Found CRS change function",
             "is_key_step": false
         },
         "layerName_found": {
-            "description": "找到预期图层名称",
+            "description": "Found expected layer name",
             "is_key_step": false,
             "key_step_index": 1,
-            "key_step_name": "操作预期图层"
+            "key_step_name": "Operating on expected layer"
         },
         "newCrs_detected": {
-            "description": "检测到新的Crs",
+            "description": "Detected new CRS",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "CRS已成功设置"
+            "key_step_name": "CRS successfully set"
         },
         "error": {
-            "description": "来自脚本的错误事件",
+            "description": "Error event from script",
             "is_key_step": false
         }
     }
-} 
+}

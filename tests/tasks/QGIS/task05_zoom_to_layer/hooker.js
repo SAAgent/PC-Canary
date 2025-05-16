@@ -1,11 +1,11 @@
-// QGIS缩放到图层钩子脚本
-// 用于监听QGIS的缩放到图层操作并检测相关参数
+// QGIS Zoom to Layer Hook Script
+// Used to monitor QGIS zoom to layer operations and detect related parameters
 
 (function() {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZN30QgsLayerTreeViewDefaultActions12zoomToLayersEP12QgsMapCanvasRK5QListIP11QgsMapLayerE"; // QgsLayerTreeViewDefaultActions::zoomToLayers 函数的符号
+    // Script constants
+    const SYMBOL_NAME = "_ZN30QgsLayerTreeViewDefaultActions12zoomToLayersEP12QgsMapCanvasRK5QListIP11QgsMapLayerE"; // QgsLayerTreeViewDefaultActions::zoomToLayers function symbol
     
-    // 向评估系统发送事件
+    // Send events to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -25,22 +25,22 @@
         return Memory.readUtf16String(data, len);
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hooks and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS图层缩放监控脚本已启动"
+            message: "QGIS layer zoom monitoring script started"
         });
         
-        // 查找zoomToLayers函数
+        // Find zoomToLayers function
         let zoomToLayersAddr = Module.findExportByName(null, SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!zoomToLayersAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsLayerTreeViewDefaultActions::zoomToLayers函数..."
+                message: "Searching for QgsLayerTreeViewDefaultActions::zoomToLayers function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_gui")) {
@@ -49,7 +49,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis模块中查找符号
+                        // Search for symbol in qgis module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             zoomToLayersAddr = symbol;
@@ -59,39 +59,39 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!zoomToLayersAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsLayerTreeViewDefaultActions::zoomToLayers函数"
+                    message: "Cannot find QgsLayerTreeViewDefaultActions::zoomToLayers function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("zoom_function_found", {
             address: zoomToLayersAddr.toString(),
-            message: "找到QgsLayerTreeViewDefaultActions::zoomToLayers函数"
+            message: "Found QgsLayerTreeViewDefaultActions::zoomToLayers function"
         });
         
-        // 安装钩子
+        // Install hook
         Interceptor.attach(zoomToLayersAddr, {
             onEnter: function(args) {
                 try {
                     const layerPointer = args[2];
-                    const nameQString = layerPointer.readPointer().add(0x10).readPointer().add(0x20); // 获取QString指针
+                    const nameQString = layerPointer.readPointer().add(0x10).readPointer().add(0x20); // Get QString pointer
                     const name = qstringToString(nameQString);
-                    console.log("缩放图层,名称为:", name);
-                    // 发送事件通知
+                    console.log("Zooming to layer, name:", name);
+                    // Send event notification
                     sendEvent("layer_zoomed", {
                         name: name,
-                        message: `检测到待缩放显示的图层,名称为:${name}`
+                        message: `Layer to zoom detected, name: ${name}`
                     });
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `执行钩子时出错: ${error.message}`,
+                        message: `Error during hook execution: ${error.message}`,
                         stack: error.stack
                     });
                 }
@@ -99,10 +99,10 @@
         });
         
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待缩放图层操作..."
+            message: "Hook installation complete, waiting for layer zoom operations..."
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

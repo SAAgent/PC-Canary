@@ -1,11 +1,11 @@
-// QGIS图层添加钩子脚本
-// 用于监听QGIS的添加向量图层操作并检测相关参数
+// QGIS Vector Layer Addition Hook Script
+// Used to monitor QGIS vector layer addition operations and detect related parameters
 
 (function() {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZN10QgsProject11addMapLayerEP11QgsMapLayerbb"; // QgsProject::addMapLayer函数的符号
+    // Script constants
+    const SYMBOL_NAME = "_ZN10QgsProject11addMapLayerEP11QgsMapLayerbb"; // QgsProject::addMapLayer function symbol
     
-    // 向评估系统发送事件
+    // Send events to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -25,22 +25,22 @@
         return Memory.readUtf16String(data, len);
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hooks and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS向量图层添加监控脚本已启动"
+            message: "QGIS vector layer addition monitoring script started"
         });
         
-        // 查找addVectorLayer函数
+        // Find addVectorLayer function
         let addVectorLayerAddr = Module.findExportByName(null, SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!addVectorLayerAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsProject::addMapLayer函数..."
+                message: "Searching for QgsProject::addMapLayer function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_app") ) {
@@ -49,7 +49,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis_app模块中查找符号
+                        // Search for symbol in qgis_app module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             addVectorLayerAddr = symbol;
@@ -59,39 +59,39 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!addVectorLayerAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsProject::addMapLayer函数"
+                    message: "Cannot find QgsProject::addMapLayer function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("addvectorLayer_function_found", {
             address: addVectorLayerAddr.toString(),
-            message: "找到QgsProject::addMapLayer函数"
+            message: "Found QgsProject::addMapLayer function"
         });
         
-        // 安装钩子
+        // Install hook
         Interceptor.attach(addVectorLayerAddr, {
             onEnter: function(args) {
                 try {
                     const layerPointer = args[1];
                     const uriQString = layerPointer.add(0x18); 
                     const uri = qstringToString(uriQString);
-                    console.log("添加向量图层,路径为:", uri);
-                    // 发送事件通知
+                    console.log("Adding vector layer, path:", uri);
+                    // Send event notification
                     sendEvent("vector_layer_added", {
                         uri: uri,
-                        message: `检测到添加向量图层,路径为:${uri}`
+                        message: `Vector layer addition detected, path: ${uri}`
                     });
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `执行钩子时出错: ${error.message}`,
+                        message: `Error during hook execution: ${error.message}`,
                     });
                 }
             }
@@ -99,10 +99,10 @@
         });
         
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待添加向量图层操作..."
+            message: "Hook installation complete, waiting for vector layer addition operations..."
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

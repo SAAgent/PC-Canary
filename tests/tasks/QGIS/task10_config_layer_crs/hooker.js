@@ -1,11 +1,11 @@
-// QGIS配置Crs钩子脚本
-// 用于监听QGIS的配置CRS操作并检测是否更新
+// QGIS CRS Configuration Hook Script
+// Used to monitor QGIS CRS configuration operations and detect updates
 
 (function() {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZN11QgsMapLayer6setCrsERK28QgsCoordinateReferenceSystemb"; // setCrs函数的符号
+    // Script constants setup
+    const SYMBOL_NAME = "_ZN11QgsMapLayer6setCrsERK28QgsCoordinateReferenceSystemb"; // setCrs function symbol
     
-    // 向评估系统发送事件
+    // Send event to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -25,27 +25,27 @@
             const data = d.add(HEADER_SIZE);                      // first UTF‑16 char
             return Memory.readUtf16String(data, len);
         } catch (error) {
-            console.log("解析QString失败:", error);
+            console.log("Failed to parse QString:", error);
             return "";
         }
     }
     
-    // 初始化钩子并立即执行
+    // Initialize hook and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS CRS监控脚本已启动"
+            message: "QGIS CRS monitoring script has started"
         });
         
-        // 查找setCrs函数
+        // Find setCrs function
         let setCrsFuncAddr = Module.findExportByName(null, SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!setCrsFuncAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsMapLayer::setCrs函数..."
+                message: "Searching for QgsMapLayer::setCrs function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_core")) {
@@ -54,7 +54,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis_core模块中查找符号
+                        // Find symbol in qgis_core module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             setCrsFuncAddr = symbol;
@@ -64,58 +64,58 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!setCrsFuncAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsMapLayer::setCrs函数"
+                    message: "Unable to find QgsMapLayer::setCrs function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("modifyCrs_function_found", {
             address: setCrsFuncAddr.toString(),
-            message: "找到QgsMapLayer::setCrs函数"
+            message: "Found QgsMapLayer::setCrs function"
         });
         
-        // 安装钩子
+        // Install hook
         Interceptor.attach(setCrsFuncAddr, {
             onEnter: function(args) {
                 try {
-                    // 获取图层名称 (this指针)
+                    // Get layer name (this pointer)
                     const thisPtr = args[0];
-                    // 图层名称在this+0x20位置
+                    // Layer name is at this+0x20 position
                     const nameQString = thisPtr.add(0x20);
                     const layerName = qstringToString(nameQString);
-                    console.log("图层名称:", layerName);
+                    console.log("Layer name:", layerName);
                     
-                    // 首先发送图层名称事件
+                    // First send layer name event
                     sendEvent("layerName_found", {
                         name: layerName,
-                        message: `检测到操作图层: ${layerName}`
+                        message: `Detected operation on layer: ${layerName}`
                     });
                     
-                    // 获取CRS参数
+                    // Get CRS parameter
                     const crsPtr = args[1];
-                    // 获取d指针
+                    // Get d pointer
                     const dPtr = crsPtr.readPointer();
                     
-                    // 逆向确定mSRID的偏移量
+                    // Determine mSRID offset through reverse engineering
                     const mSRID = dPtr.add(56).readInt();
                     console.log("mSRID:", mSRID);
                     
-                    // 发送CRS变更事件
+                    // Send CRS change event
                     sendEvent("newCrs_detected", {
                         layer: layerName,
                         crs: mSRID,
-                        message: `检测到图层 ${layerName} CRS更改为: ${mSRID}`
+                        message: `Detected CRS change for layer ${layerName} to: ${mSRID}`
                     });
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `执行钩子时出错: ${error.message}`,
+                        message: `Error executing hook: ${error.message}`,
                         stack: error.stack
                     });
                 }
@@ -123,10 +123,10 @@
         });
         
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待CRS变更操作..."
+            message: "Hook installation completed, waiting for CRS change operations..."
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

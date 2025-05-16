@@ -1,11 +1,11 @@
-// QGIS图层添加钩子脚本
-// 用于监听QGIS的添加栅格图层操作并检测相关参数
+// QGIS Layer Addition Hook Script
+// Used to monitor QGIS raster layer addition operations and detect related parameters
 
 (function() {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZN10QgsProject11addMapLayerEP11QgsMapLayerbb"; // QgsProject::addMapLayer函数的符号
+    // Script constants setup
+    const SYMBOL_NAME = "_ZN10QgsProject11addMapLayerEP11QgsMapLayerbb"; // QgsProject::addMapLayer function symbol
     
-    // 向评估系统发送事件
+    // Send event to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -25,22 +25,22 @@
         return Memory.readUtf16String(data, len);
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hook and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS栅格图层添加监控脚本已启动"
+            message: "QGIS raster layer monitoring script has started"
         });
         
-        // 查找addRasterLayer函数
+        // Find addRasterLayer function
         let addRasterLayerAddr = Module.findExportByName(null, SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!addRasterLayerAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsProject::addMapLayer函数..."
+                message: "Searching for QgsProject::addMapLayer function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_core") ) {
@@ -49,7 +49,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis_app模块中查找符号
+                        // Find symbol in qgis_app module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             addRasterLayerAddr = symbol;
@@ -59,40 +59,40 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!addRasterLayerAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsAppLayerHandling::addRasterLayer函数"
+                    message: "Unable to find QgsAppLayerHandling::addRasterLayer function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("addrasterLayer_function_found", {
             address: addRasterLayerAddr.toString(),
-            message: "找到QgsProject::addMapLayer函数"
+            message: "QgsProject::addMapLayer function found"
         });
         
-        // 安装钩子
+        // Install hook
         Interceptor.attach(addRasterLayerAddr, {
             onEnter: function(args) {
                 try {
                     const layerPointer = args[1];
                     const uriQString = layerPointer.add(0x18); 
                     const uri = qstringToString(uriQString);
-                    console.log("添加栅格图层,路径为:", uri);
+                    console.log("Adding raster layer, path:", uri);
                     
-                    // 发送事件通知
+                    // Send notification event
                     sendEvent("raster_layer_added", {
                         uri: uri,
-                        message: `检测到添加栅格图层,路径为:${uri}`
+                        message: `Detected raster layer addition, path: ${uri}`
                     });
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `执行钩子时出错: ${error.message}`,
+                        message: `Error executing hook: ${error.message}`,
                     });
                 }
             }
@@ -100,10 +100,10 @@
         });
         
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待添加栅格图层操作..."
+            message: "Hook installation completed, waiting for raster layer addition operations..."
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

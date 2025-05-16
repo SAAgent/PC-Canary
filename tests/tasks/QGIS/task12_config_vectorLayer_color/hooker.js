@@ -1,11 +1,11 @@
-// QGIS设置向量图层颜色钩子脚本
-// 用于监听QGIS的设置向量图层颜色操作并检测相关参数
+// QGIS Vector Layer Color Configuration Hook Script
+// Used to monitor QGIS vector layer color setting operations and detect related parameters
 
 (function() {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZN20QgsSymbolsListWidget14setSymbolColorERK6QColor"; // QgsSymbolsListWidget::setSymbolColor函数的符号
+    // Script constants setup
+    const SYMBOL_NAME = "_ZN20QgsSymbolsListWidget14setSymbolColorERK6QColor"; // QgsSymbolsListWidget::setSymbolColor function symbol
     
-    // 向评估系统发送事件
+    // Send event to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -25,11 +25,11 @@
             const data = d.add(HEADER_SIZE);                      // first UTF‑16 char
             return Memory.readUtf16String(data, len);
         } catch (error) {
-            console.log("解析QString失败:", error);
+            console.log("Failed to parse QString:", error);
             return "";
         }
     }
-    // 将QColor转换为十六进制字符串
+    // Convert QColor to hex string
     function qColorToHex(r, g, b) {
         const toHex = (val) => 
             Math.round( (val/65535)*255 )
@@ -40,22 +40,22 @@
         return `#${toHex(r)}${toHex(g)}${toHex(b)}`
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hook and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS向量图层颜色设置监控脚本已启动"
+            message: "QGIS vector layer color configuration monitoring script has started"
         });
         
-        // 查找setSymbolColor函数
+        // Find setSymbolColor function
         let setColorAddr = Module.findExportByName(null, SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!setColorAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsSymbolsListWidget::setSymbolColor函数..."
+                message: "Searching for QgsSymbolsListWidget::setSymbolColor function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_gui")) {
@@ -64,7 +64,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis_gui模块中查找符号
+                        // Find symbol in qgis_gui module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             setColorAddr = symbol;
@@ -74,55 +74,55 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!setColorAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsSymbolsListWidget::setSymbolColor函数"
+                    message: "Unable to find QgsSymbolsListWidget::setSymbolColor function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("set_function_found", {
             address: setColorAddr.toString(),
-            message: "找到QgsSymbolsListWidget::setSymbolColor函数"
+            message: "Found QgsSymbolsListWidget::setSymbolColor function"
         });
         
-        // 安装钩子
+        // Install hook
         Interceptor.attach(setColorAddr, {
             onEnter: function(args) {
                 try {
-                    // 获取this指针，读取图层名称
+                    // Get this pointer, read layer name
                     const thisPtr = args[0];
-                    // 图层名称在this+0x1f0处readpointer之后再+0x20
+                    // Layer name is at this+0x1f0 readpointer then +0x20
                     const layerPtr = thisPtr.add(0x1f0).readPointer();
                     const nameQString = layerPtr.add(0x20);
                     const layerName = qstringToString(nameQString);
                     
-                    console.log("设置图层颜色,图层名称为:", layerName);
+                    console.log("Setting layer color, layer name:", layerName);
                     
-                    // 发送图层名称事件
+                    // Send layer name event
                     sendEvent("layer_set", {
                         name: layerName,
-                        message: `检测到设置颜色的图层,名称为:${layerName}`
+                        message: `Detected layer for color setting, name: ${layerName}`
                     });
                     
-                    // 获取颜色参数(QColor)
+                    // Get color parameters (QColor)
                     const colorPtr = args[1];
-                    // 读取RGBA值
+                    // Read RGBA values
                     const alpha = colorPtr.add(0x4).readU16();
                     const red = colorPtr.add(0x6).readU16();
                     const green = colorPtr.add(0x8).readU16();
                     const blue = colorPtr.add(0xa).readU16();
                     
-                    // 转换为十六进制表示
+                    // Convert to hex representation
                     const hexColor = qColorToHex(red, green, blue);
                     
-                    console.log("设置颜色为:", hexColor, "RGBA:", red, green, blue, alpha);
+                    console.log("Setting color to:", hexColor, "RGBA:", red, green, blue, alpha);
                     
-                    // 发送颜色事件
+                    // Send color event
                     sendEvent("color_set", {
                         layer: layerName,
                         color: hexColor,
@@ -132,13 +132,13 @@
                             blue: blue,
                             alpha: alpha
                         },
-                        message: `检测到设置图层 ${layerName} 的颜色为: ${hexColor}`
+                        message: `Detected color setting for layer ${layerName}: ${hexColor}`
                     });
                     
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `执行钩子时出错: ${error.message}`,
+                        message: `Error executing hook: ${error.message}`,
                         stack: error.stack
                     });
                 }
@@ -146,10 +146,10 @@
         });
         
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待设置图层颜色操作..."
+            message: "Hook installation completed, waiting for layer color setting operations..."
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

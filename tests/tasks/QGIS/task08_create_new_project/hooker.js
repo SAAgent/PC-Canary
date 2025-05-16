@@ -1,15 +1,15 @@
-// QGIS创建新项目钩子脚本
-// 用于监听QGIS创建和保存新项目的操作并检测参数
+// QGIS New Project Creation Hook Script
+// Used to monitor QGIS new project creation and saving operations and detect parameters
 
 (function() {
-    // 脚本常量设置
-    const clearProject_SYMBOL_NAME="_ZN10QgsProject5clearEv" // QgsProject::clear 函数的符号
-    const setPath_SYMBOL_NAME="_ZN10QgsProject11setFileNameERK7QString" // QgsProject::setFileName 函数的符号
+    // Script constants
+    const clearProject_SYMBOL_NAME="_ZN10QgsProject5clearEv" // QgsProject::clear function symbol
+    const setPath_SYMBOL_NAME="_ZN10QgsProject11setFileNameERK7QString" // QgsProject::setFileName function symbol
     
-    // 计数器和时间戳，用于过滤启动时的自动调用
+    // Counter and timestamp for filtering automatic calls during startup
     let clearCounter = 0;
         
-    // 向评估系统发送事件
+    // Send events to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -29,27 +29,27 @@
             const data = d.add(HEADER_SIZE);                      // first UTF‑16 char
             return Memory.readUtf16String(data, len);
         } catch (error) {
-            console.log("解析QString失败:", error);
+            console.log("Failed to parse QString:", error);
             return "";
         }
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hooks and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS创建新项目监控脚本已启动"
+            message: "QGIS new project creation monitoring script started"
         });
         
-        // 查找创建新项目的函数 QgsProject::clear
+        // Find new project creation function QgsProject::clear
         let clearProjectAddr = Module.findExportByName(null, clearProject_SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!clearProjectAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsProject::clear函数..."
+                message: "Searching for QgsProject::clear function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_core")) {
@@ -58,7 +58,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis_core模块中查找符号
+                        // Search for symbol in qgis_core module
                         const symbol = module.findExportByName(clearProject_SYMBOL_NAME);
                         if (symbol) {
                             clearProjectAddr = symbol;
@@ -68,32 +68,32 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!clearProjectAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsProject::clear函数"
+                    message: "Cannot find QgsProject::clear function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("clear_function_found", {
             address: clearProjectAddr.toString(),
-            message: "找到QgsProject::clear函数"
+            message: "Found QgsProject::clear function"
         });
         
-        // 查找保存项目的函数 QgsProject::setFileName
+        // Find project save function QgsProject::setFileName
         let setFileNameAddr = Module.findExportByName(null, setPath_SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!setFileNameAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsProject::setFileName函数..."
+                message: "Searching for QgsProject::setFileName function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_core")) {
@@ -102,7 +102,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis_core模块中查找符号
+                        // Search for symbol in qgis_core module
                         const symbol = module.findExportByName(setPath_SYMBOL_NAME);
                         if (symbol) {
                             setFileNameAddr = symbol;
@@ -112,69 +112,69 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!setFileNameAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsProject::setFileName函数"
+                    message: "Cannot find QgsProject::setFileName function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("setPath_function_found", {
             address: setFileNameAddr.toString(),
-            message: "找到QgsProject::setFileName函数"
+            message: "Found QgsProject::setFileName function"
         });
         
-        // 安装钩子 - 创建新项目
+        // Install hook - Create new project
         Interceptor.attach(clearProjectAddr, {
             onEnter: function(args) {
                 try {
                     clearCounter++;
                     
                     
-                    // 忽略启动时期的自动调用（计数器为1时的调用）
+                    // Ignore automatic calls during startup (when counter is 1)
                     if (clearCounter > 1 ) {
-                        console.log("检测到用户创建新项目");
+                        console.log("Detected user creating new project");
                         
-                        // 发送事件通知
+                        // Send event notification
                         sendEvent("newProject_created", {
-                            message: "检测到创建新项目"
+                            message: "New project creation detected"
                         });
                     } else {
-                        console.log("忽略应用启动时的项目初始化");
+                        console.log("Ignoring project initialization during application startup");
                     }
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `监控创建新项目时出错: ${error.message}`,
+                        message: `Error monitoring new project creation: ${error.message}`,
                         stack: error.stack
                     });
                 }
             }
         });
         
-        // 安装钩子 - 保存项目
+        // Install hook - Save project
         Interceptor.attach(setFileNameAddr, {
             onEnter: function(args) {
                 try {
-                    // 获取函数的第二个参数（const QString &name），第一个是this指针
+                    // Get second parameter of function (const QString &name), first is this pointer
                     const pathQString = args[1];
                     const filePath = qstringToString(pathQString);
                     
-                    console.log("检测到保存项目路径:", filePath);
+                    console.log("Project save path detected:", filePath);
                     
-                    // 发送事件通知
+                    // Send event notification
                     sendEvent("newProject_saved", {
                         path: filePath,
-                        message: `检测到保存项目设置: 路径=${filePath}`
+                        message: `Project save settings detected: Path=${filePath}`
                     });
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `监控保存项目时出错: ${error.message}`,
+                        message: `Error monitoring project saving: ${error.message}`,
                         stack: error.stack
                     });
                 }
@@ -182,10 +182,10 @@
         });
         
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待创建和保存新项目操作..."
+            message: "Hook installation complete, waiting for new project creation and saving operations..."
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

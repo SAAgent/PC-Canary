@@ -1,12 +1,12 @@
-// QGIS导出地图图像钩子脚本
-// 用于监听QGIS导出地图为图片的相关操作并检测参数
+// QGIS Map Image Export Hook Script
+// Used to monitor QGIS map image export operations and detect related parameters
 
 (function() {
-    // 脚本常量设置
-    const setPathandType_SYMBOL_NAME="_ZN11QgsGuiUtils18getSaveAsImageNameEP7QWidgetRK7QStringS4_" // QgsGuiUtils::getSaveAsImageName 函数的符号
-    const setPathandType_SYMBOL_NAME2="_ZNK6QImage4saveERK7QStringPKci" // QImage::save 函数的符号
-    const setSize_SYMBOL_NAME="_ZN14QgsMapSettings13setOutputSizeE5QSize" // QgsMapSettings::setOutputSize 函数的符号    
-    // 向评估系统发送事件
+    // Script constants
+    const setPathandType_SYMBOL_NAME="_ZN11QgsGuiUtils18getSaveAsImageNameEP7QWidgetRK7QStringS4_" // QgsGuiUtils::getSaveAsImageName function symbol
+    const setPathandType_SYMBOL_NAME2="_ZNK6QImage4saveERK7QStringPKci" // QImage::save function symbol
+    const setSize_SYMBOL_NAME="_ZN14QgsMapSettings13setOutputSizeE5QSize" // QgsMapSettings::setOutputSize function symbol    
+    // Send events to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -26,27 +26,27 @@
             const data = d.add(HEADER_SIZE);                      // first UTF‑16 char
             return Memory.readUtf16String(data, len);
         } catch (error) {
-            console.log("解析QString失败:", error);
+            console.log("Failed to parse QString:", error);
             return "";
         }
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hooks and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS导出地图图像监控脚本已启动"
+            message: "QGIS map image export monitoring script started"
         });
         
-        // 查找设置路径和类型的函数
+        // Find path and type setting function
         let setPathandTypeAddr = Module.findExportByName(null, setPathandType_SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!setPathandTypeAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsGuiUtils::getSaveAsImageName函数..."
+                message: "Searching for QgsGuiUtils::getSaveAsImageName function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_gui")) {
@@ -55,7 +55,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis模块中查找符号
+                        // Search for symbol in qgis module
                         const symbol = module.findExportByName(setPathandType_SYMBOL_NAME);
                         if (symbol) {
                             setPathandTypeAddr = symbol;
@@ -65,50 +65,50 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!setPathandTypeAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsGuiUtils::getSaveAsImageName函数"
+                    message: "Cannot find QgsGuiUtils::getSaveAsImageName function"
                 });
             }
         }
         
-        // 如果找到了第一个函数，报告并安装钩子
+        // If first function found, report and install hook
         if (setPathandTypeAddr) {
-            // 报告找到函数
+            // Report function found
             sendEvent("setPathandType_function_found", {
                 address: setPathandTypeAddr.toString(),
-                message: "找到QgsGuiUtils::getSaveAsImageName函数"
+                message: "Found QgsGuiUtils::getSaveAsImageName function"
             });
             
-            // 安装钩子 - 设置路径和类型
+            // Install hook - Set path and type
             Interceptor.attach(setPathandTypeAddr, {
                 onLeave: function(retval) {
                     try {
-                        // 获取QPair<QString, QString>的返回值
+                        // Get QPair<QString, QString> return value
                         const pairPtr = retval;
                         
-                        // 读取第一个QString - 文件路径
+                        // Read first QString - file path
                         const pathQString = pairPtr;
                         const filePath = qstringToString(pathQString);
                         
-                        // 读取第二个QString - 文件类型
-                        const typeQString = pairPtr.add(Process.pointerSize); // QString的大小通常是指针大小的4倍
+                        // Read second QString - file type
+                        const typeQString = pairPtr.add(Process.pointerSize); // QString size is typically 4x pointer size
                         const fileType = qstringToString(typeQString);
                         
-                        console.log("导出图片路径:", filePath, "类型:", fileType);
+                        console.log("Image export path:", filePath, "type:", fileType);
                         
-                        // 发送事件通知
+                        // Send event notification
                         sendEvent("PathandType_set", {
                             path: filePath,
                             type: fileType,
-                            message: `检测到导出图片设置: 路径=${filePath}, 类型=${fileType}`
+                            message: `Image export settings detected: Path=${filePath}, Type=${fileType}`
                         });
                     } catch (error) {
                         sendEvent("error", {
                             error_type: "hook_execution_error",
-                            message: `获取路径和类型时出错: ${error.message}`,
+                            message: `Error getting path and type: ${error.message}`,
                             stack: error.stack
                         });
                     }
@@ -116,16 +116,16 @@
             });
         }
         
-        // 查找QImage::save函数
+        // Find QImage::save function
         let imageSaveAddr = Module.findExportByName(null, setPathandType_SYMBOL_NAME2);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!imageSaveAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QImage::save函数..."
+                message: "Searching for QImage::save function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("Qt5")) {
@@ -134,7 +134,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在Qt5模块中查找符号
+                        // Search for symbol in Qt5 module
                         const symbol = module.findExportByName(setPathandType_SYMBOL_NAME2);
                         if (symbol) {
                             imageSaveAddr = symbol;
@@ -144,51 +144,51 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!imageSaveAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QImage::save函数"
+                    message: "Cannot find QImage::save function"
                 });
 
             }
         }
         
-        // 如果找到了QImage::save函数，报告并安装钩子
+        // If QImage::save function found, report and install hook
         if (imageSaveAddr) {
-            // 报告找到函数
+            // Report function found
             sendEvent("image_save_function_found", {
                 address: imageSaveAddr.toString(),
-                message: "找到QImage::save函数"
+                message: "Found QImage::save function"
             });
             
-            // 安装钩子 - QImage::save
+            // Install hook - QImage::save
             Interceptor.attach(imageSaveAddr, {
                 onEnter: function(args) {
                     try {
-                        // 获取第一个参数 - 文件路径（const QString &fileName）
-                        const pathQString = args[1]; // 
+                        // Get first parameter - file path (const QString &fileName)
+                        const pathQString = args[1];
                         const filePath = qstringToString(pathQString);
                         
-                        // 从文件路径获取扩展名作为类型
+                        // Get extension from file path as type
                         let fileType = "";
                         const lastDotIndex = filePath.lastIndexOf('.');
                         if (lastDotIndex !== -1 && lastDotIndex < filePath.length - 1) {
                             fileType = filePath.substring(lastDotIndex + 1).toLowerCase();
                         }
                         
-                        console.log("QImage保存图片路径:", filePath, "类型:", fileType);
+                        console.log("QImage saving image path:", filePath, "type:", fileType);
                         
-                        // 发送事件通知
+                        // Send event notification
                         sendEvent("PathandType_set", {
                             path: filePath,
                             type: fileType,
-                            message: `检测到QImage保存图片: 路径=${filePath}, 类型=${fileType}`
+                            message: `QImage save image detected: Path=${filePath}, Type=${fileType}`
                         });
                     } catch (error) {
                         sendEvent("error", {
                             error_type: "hook_execution_error",
-                            message: `获取QImage::save路径和类型时出错: ${error.message}`,
+                            message: `Error getting QImage::save path and type: ${error.message}`,
                             stack: error.stack
                         });
                     }
@@ -196,16 +196,16 @@
             });
         }
         
-        // 查找设置尺寸的函数
+        // Find size setting function
         let setSizeAddr = Module.findExportByName(null, setSize_SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!setSizeAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsMapSettings::setOutputSize函数..."
+                message: "Searching for QgsMapSettings::setOutputSize function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_core")) {
@@ -214,7 +214,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis模块中查找符号
+                        // Search for symbol in qgis module
                         const symbol = module.findExportByName(setSize_SYMBOL_NAME);
                         if (symbol) {
                             setSizeAddr = symbol;
@@ -224,55 +224,56 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!setSizeAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsMapSettings::setOutputSize函数"
+                    message: "Cannot find QgsMapSettings::setOutputSize function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("setSize_function_found", {
             address: setSizeAddr.toString(),
-            message: "找到QgsMapSettings::setOutputSize函数"
+            message: "Found QgsMapSettings::setOutputSize function"
         });
         
-        // 安装钩子 - 设置尺寸
+        // Install hook - Set size
         Interceptor.attach(setSizeAddr, {
             onEnter: function(args) {
                 try {
-                    //按照 System V AMD64 ABI 的第 3.2.3 节，对于小于或等于 16 字节的结构体，如果结构体所有字段均属于整型或指针，
-                    //则整个结构体被划分为一个或多个 8 字节块，每块均归入 INTEGER 类，通过整数寄存器传递。
-                    // 先把 NativePointer 转为无符号 64 位 BigInt
-                    // 1. 拿到十六进制字符串，去掉前缀 "0x"
+                    //According to System V AMD64 ABI section 3.2.3, for structures less than or equal to 16 bytes,
+                    //if all fields are integers or pointers, the entire structure is divided into one or more 8-byte blocks,
+                    //each in the INTEGER class, passed through integer registers.
+                    // First convert NativePointer to unsigned 64-bit BigInt
+                    // 1. Get hex string, remove "0x" prefix
                     let hex = args[1].toString(16);
                     if (hex.startsWith("0x")) { hex = hex.slice(2); }
 
-                    // 2. 补全到 16 位（8 字节）长度
+                    // 2. Pad to 16 digits (8 bytes) length
                     hex = hex.padStart(16, "0");
 
-                    // 3. 高 8 字节 = height，低 8 字节 = width
+                    // 3. High 8 bytes = height, low 8 bytes = width
                     const hi = hex.slice(0, 8);
                     const lo = hex.slice(8);
 
                     const height = parseInt(hi, 16);
                     const width  = parseInt(lo, 16);
                     
-                    console.log("导出图片尺寸: 宽=", width, "高=", height);
+                    console.log("Image export size: Width=", width, "Height=", height);
                     
-                    // 发送事件通知
+                    // Send event notification
                     sendEvent("Size_set", {
                         width: width,
                         height: height,
-                        message: `检测到图片尺寸设置: 宽=${width}px, 高=${height}px`
+                        message: `Image size settings detected: Width=${width}px, Height=${height}px`
                     });
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `获取尺寸时出错: ${error.message}`,
+                        message: `Error getting size: ${error.message}`,
                         stack: error.stack
                     });
                 }
@@ -280,10 +281,10 @@
         });
         
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待导出地图操作..."
+            message: "Hook installation complete, waiting for map export operations..."
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

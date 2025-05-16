@@ -1,11 +1,11 @@
-// QGIS设置向量图层不透明度钩子脚本
-// 用于监听QGIS的设置向量图层不透明度操作并检测相关参数
+// QGIS Vector Layer Opacity Configuration Hook Script
+// Used to monitor QGIS vector layer opacity setting operations and detect related parameters
 
 (function () {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZN9QgsSymbol10setOpacityEd"; // QgsSymbol::setOpacity函数的符号
+    // Script constants setup
+    const SYMBOL_NAME = "_ZN9QgsSymbol10setOpacityEd"; // QgsSymbol::setOpacity function symbol
 
-    // 向评估系统发送事件
+    // Send event to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -25,27 +25,27 @@
             const data = d.add(HEADER_SIZE);                      // first UTF‑16 char
             return Memory.readUtf16String(data, len);
         } catch (error) {
-            console.log("解析QString失败:", error);
+            console.log("Failed to parse QString:", error);
             return "";
         }
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hook and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS向量图层不透明度设置监控脚本已启动"
+            message: "QGIS vector layer opacity configuration monitoring script has started"
         });
 
-        // 查找setOpacity函数
+        // Find setOpacity function
         let setOpacityAddr = Module.findExportByName(null, SYMBOL_NAME);
 
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!setOpacityAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsSymbol::setOpacity函数..."
+                message: "Searching for QgsSymbol::setOpacity function..."
             });
 
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function (module) {
                     if (module.name.includes("qgis_core")) {
@@ -54,7 +54,7 @@
                             base_address: module.base.toString()
                         });
 
-                        // 在qgis_core模块中查找符号
+                        // Find symbol in qgis_core module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             setOpacityAddr = symbol;
@@ -64,72 +64,72 @@
                 onComplete: function () { }
             });
 
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!setOpacityAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsSymbol::setOpacity函数"
+                    message: "Unable to find QgsSymbol::setOpacity function"
                 });
                 return;
             }
         }
 
-        // 报告找到函数
+        // Report function found
         sendEvent("set_function_found", {
             address: setOpacityAddr.toString(),
-            message: "找到QgsSymbol::setOpacity函数"
+            message: "Found QgsSymbol::setOpacity function"
         });
 
-        // 保存原始函数
+        // Save original function
         const originalFunction = new NativeFunction(setOpacityAddr, 'void', ['pointer', 'double']);
 
-        // 使用replace替代attach，并明确指定函数签名
+        // Use replace instead of attach, and explicitly specify function signature
         Interceptor.replace(setOpacityAddr, new NativeCallback(function (thisPtr, opacity) {
             try {
-                // 获取图层名称
+                // Get layer name
                 const layerPtr = thisPtr.add(0x58).readPointer();
                 if (!layerPtr.isNull()) {
                     const nameQString = layerPtr.add(0x20);
                     const layerName = qstringToString(nameQString);
 
-                    console.log("设置图层不透明度,图层名称为:", layerName);
+                    console.log("Setting layer opacity, layer name:", layerName);
 
-                    // 发送图层名称事件
+                    // Send layer name event
                     sendEvent("layer_set", {
                         name: layerName,
-                        message: `检测到设置不透明度的图层,名称为:${layerName}`
+                        message: `Detected layer for opacity setting, name: ${layerName}`
                     });
 
-                    // 现在opacity是正确传递的浮点数值
-                    // 将0-1范围的不透明度转换为0-100%
+                    // Now opacity is correctly passed as float value
+                    // Convert 0-1 range opacity to 0-100%
                     const opacityPercent = (opacity * 100).toFixed(1);
-                    console.log("设置不透明度为:", opacityPercent, "%", "原始值:", opacity);
+                    console.log("Setting opacity to:", opacityPercent, "%", "Original value:", opacity);
 
-                    // 发送不透明度事件
+                    // Send opacity event
                     sendEvent("opacity_set", {
                         layer: layerName,
                         opacity: opacityPercent,
                         opacity_raw: opacity,
-                        message: `检测到设置图层 ${layerName} 的不透明度为: ${opacityPercent}%`
+                        message: `Detected opacity setting for layer ${layerName}: ${opacityPercent}%`
                     });
                 }
             } catch (error) {
                 sendEvent("error", {
                     error_type: "hook_execution_error",
-                    message: `执行钩子时出错: ${error.message}`,
+                    message: `Error executing hook: ${error.message}`,
                     stack: error.stack
                 });
             }
 
-            // 调用原始函数，保持原有功能
+            // Call original function to maintain functionality
             return originalFunction(thisPtr, opacity);
         }, 'void', ['pointer', 'double']));
 
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待设置图层不透明度操作..."
+            message: "Hook installation completed, waiting for layer opacity setting operations..."
         });
     }
 
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

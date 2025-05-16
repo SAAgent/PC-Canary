@@ -1,11 +1,11 @@
-// QGIS图层删除钩子脚本
-// 用于监听QGIS的删除图层操作并检测相关参数
+// QGIS Layer Removal Hook Script
+// Used to monitor QGIS layer removal operations and detect related parameters
 
 (function() {
-    // 脚本常量设置
-    const SYMBOL_NAME = "_ZN16QgsMapLayerStore15removeMapLayersERK5QListIP11QgsMapLayerE"; // QgsMapLayerStore::removeMapLayers函数的符号
+    // Script constants
+    const SYMBOL_NAME = "_ZN16QgsMapLayerStore15removeMapLayersERK5QListIP11QgsMapLayerE"; // QgsMapLayerStore::removeMapLayers function symbol
     
-    // 向评估系统发送事件
+    // Send events to evaluation system
     function sendEvent(eventType, data = {}) {
         const payload = {
             event: eventType,
@@ -25,22 +25,22 @@
         return Memory.readUtf16String(data, len);
     }
 
-    // 初始化钩子并立即执行
+    // Initialize hooks and execute immediately
     function initHook() {
         sendEvent("script_initialized", {
-            message: "QGIS图层删除监控脚本已启动"
+            message: "QGIS layer removal monitoring script started"
         });
         
-        // 查找addVectorLayer函数
+        // Find addVectorLayer function
         let removeLayersAddr = Module.findExportByName(null, SYMBOL_NAME);
         
-        // 如果没找到，尝试扫描所有加载的模块
+        // If not found, try scanning all loaded modules
         if (!removeLayersAddr) {
             sendEvent("function_search_start", {
-                message: "正在查找QgsMapLayerStore::removeMapLayers函数..."
+                message: "Searching for QgsMapLayerStore::removeMapLayers function..."
             });
             
-            // 遍历模块
+            // Enumerate modules
             Process.enumerateModules({
                 onMatch: function(module) {
                     if (module.name.includes("qgis_app") ) {
@@ -49,7 +49,7 @@
                             base_address: module.base.toString()
                         });
                         
-                        // 在qgis_app模块中查找符号
+                        // Search for symbol in qgis_app module
                         const symbol = module.findExportByName(SYMBOL_NAME);
                         if (symbol) {
                             removeLayersAddr = symbol;
@@ -59,39 +59,39 @@
                 onComplete: function() {}
             });
             
-            // 如果仍未找到，报告错误
+            // If still not found, report error
             if (!removeLayersAddr) {
                 sendEvent("error", {
                     error_type: "function_not_found",
-                    message: "无法找到QgsMapLayerStore::removeMapLayers函数"
+                    message: "Cannot find QgsMapLayerStore::removeMapLayers function"
                 });
                 return;
             }
         }
         
-        // 报告找到函数
+        // Report function found
         sendEvent("removeLayer_function_found", {
             address: removeLayersAddr.toString(),
-            message: "找到QgsMapLayerStore::removeMapLayers函数"
+            message: "Found QgsMapLayerStore::removeMapLayers function"
         });
         
-        // 安装钩子
+        // Install hook
         Interceptor.attach(removeLayersAddr, {
             onEnter: function(args) {
                 try {
                     const layerPointer = args[1];
-                    const nameQString = layerPointer.readPointer().add(0x10).readPointer().add(0x20); // 获取QString指针
+                    const nameQString = layerPointer.readPointer().add(0x10).readPointer().add(0x20); // Get QString pointer
                     const name = qstringToString(nameQString);
-                    console.log("删除图层,名称为:", name);
-                    // 发送事件通知
+                    console.log("Removing layer, name:", name);
+                    // Send event notification
                     sendEvent("layer_removed", {
                         name: name,
-                        message: `检测到删除图层,名称为:${name}`
+                        message: `Layer removal detected, name: ${name}`
                     });
                 } catch (error) {
                     sendEvent("error", {
                         error_type: "hook_execution_error",
-                        message: `执行钩子时出错: ${error.message}`,
+                        message: `Error during hook execution: ${error.message}`,
                     });
                 }
             }
@@ -99,10 +99,10 @@
         });
         
         sendEvent("hook_installed", {
-            message: "钩子安装完成，等待删除图层操作..."
+            message: "Hook installation complete, waiting for layer removal operations..."
         });
     }
     
-    // 立即执行钩子初始化
+    // Execute hook initialization immediately
     initHook();
 })();

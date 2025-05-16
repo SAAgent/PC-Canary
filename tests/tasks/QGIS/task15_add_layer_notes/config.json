@@ -1,7 +1,7 @@
 {
-    "task_id": "13",
+    "task_id": "15",
     "task_name": "add_layer_notes",
-    "description": "在QGIS中为指定图层添加标注",
+    "description": "Add notes to a specified layer in QGIS",
     "application_info": {
         "name": "QGIS",
         "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
@@ -30,7 +30,7 @@
         "notes":"this is a test note"
     },
 
-    "instruction_template": "在QGIS中为图层${LayerName}添加标注(add layer note)，内容为${notes}",
+    "instruction_template": "Add layer notes to the layer ${LayerName} in QGIS, with content ${notes}",
     "evaluation_setup": {
         "scripts": [
           { "role": "hook",    "path": "hooker.js" },
@@ -41,27 +41,27 @@
     "total_key_steps": 2,
     "events": {
         "script_initialized": {
-            "description": "钩子脚本初始化",
+            "description": "Hook script initialized",
             "is_key_step": false
         },
         "set_function_found": {
-            "description": "找到添加图层标注函数",
+            "description": "Found add layer notes function",
             "is_key_step": false
         },
         "layer_set": {
-            "description": "检测到待添加标注的图层名称",
+            "description": "Detected layer name for notes addition",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "正在操作预期图层"
+            "key_step_name": "Operating on expected layer"
         },
         "notes_set": {
-            "description": "预期标注已设置",
+            "description": "Expected notes set",
             "is_key_step": true,
             "key_step_index": 2,
-            "key_step_name": "设置了预期标注"
+            "key_step_name": "Expected notes set"
         },
         "error": {
-            "description": "来自脚本的错误事件",
+            "description": "Error event from script",
             "is_key_step": false
         }
     }
