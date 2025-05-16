@@ -11,8 +11,8 @@
         ]
     },
     "task_parameters": {
-        "tag": "agent-test",
-        "move_collection_desc": "agent-test"
+        "tag": "zotero-test",
+        "move_collection_desc": "zotero-test"
     },
     "instruction_template": "在Zotero中，将所有分类中含有 `${tag}` 标签的条目添加至 `${move_collection_desc}` 分类，如果不存在该分类，则先创建该分类",
     "evaluation_setup": {
@@ -48,7 +48,8 @@
                 "zotero-mcp"
             ],
             "env": {
-                "ZOTERO_LOCAL": "true"
+                "ZOTERO_API_KEY": "JEUcZl2TqzxxABn7vXnAWhaY",
+                "ZOTERO_LIBRARY_ID": "17159576"
             }
         }
     ],
@@ -60,11 +61,11 @@
     },
     "context_data": [
         {
-            "from": "tests/context_data/zotero/task12_move_items_by_tag/Zotero",
+            "from": "tests/context_data/zotero/task12_move_items_by_tag_local/Zotero",
             "to": "/home/agent/Zotero"
         },
         {
-            "from": "tests/context_data/zotero/task12_move_items_by_tag/.zotero",
+            "from": "tests/context_data/zotero/task12_move_items_by_tag_local/.zotero",
             "to": "/home/agent/.zotero"
         }
     ]
