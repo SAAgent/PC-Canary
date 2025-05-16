@@ -66,6 +66,7 @@ class HookManager:
         try:
             # 连接到目标进程
             self.logger.info(f"连接到进程: {self.app_process.pid}")
+            time.sleep(1)
             self.frida_session = frida.attach(self.app_process.pid)
             
             # 加载所有脚本

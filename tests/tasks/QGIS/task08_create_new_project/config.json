@@ -1,0 +1,72 @@
+{
+    "task_id": "08",
+    "task_name": "create_new_project",
+    "description": "Create and save a new project in QGIS",
+    "application_info": {
+        "name": "QGIS",
+        "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
+        "args": []
+    },
+    "mcp_servers": [
+        {
+            "command": "python",
+            "args": [
+                "/home/agent/agent-demo/PC-Canary/tests/context_data/QGIS/qgis_config/qgis_mcp/qgis_mcp_server.py"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/QGIS/qgis_sample_data",
+            "to": "/home/agent/testbed/QGIS"
+        },
+        {
+            "from": "tests/context_data/QGIS/qgis_config",
+            "to": "/home/agent/.local/share/QGIS"
+        }
+    ],
+    "task_parameters": {
+        "save_path": "/home/agent/testbed/QGIS/test.qgz"
+    },
+
+    "instruction_template": "Create and save a new project in QGIS with path ${save_path}",
+
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "clear_function_found": {
+            "description": "Found new project creation function",
+            "is_key_step": false
+        },
+        "newProject_created": {
+            "description": "New project created",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "New project creation successful"
+        },
+        "setPath_function_found": {
+            "description": "Found new project save function",
+            "is_key_step": false
+        },
+        "newProject_saved": {
+            "description": "New project saved",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "New project save successful"
+        },
+        "error": {
+            "description": "Error event from script",
+            "is_key_step": false
+        }
+    }
+}

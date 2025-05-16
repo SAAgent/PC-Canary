@@ -19,3 +19,6 @@
 [submodule "apps/vscode"]
 	path = apps/vscode
 	url = https://github.com/SAAgent/vscode.git
+[submodule "apps/QGIS"]
+	path = apps/QGIS
+	url = https://github.com/SAAgent/QGIS.git

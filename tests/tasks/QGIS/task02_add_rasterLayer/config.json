@@ -1,0 +1,62 @@
+{
+    "task_id": "02",
+    "task_name": "add_rasterLayer",
+    "description": "Add raster layer in QGIS",
+    "application_info": {
+        "name": "QGIS",
+        "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
+        "args": []
+    },
+    "mcp_servers": [
+        {
+            "command": "python",
+            "args": [
+                "/home/agent/agent-demo/PC-Canary/tests/context_data/QGIS/qgis_config/qgis_mcp/qgis_mcp_server.py"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/QGIS/qgis_sample_data",
+            "to": "/home/agent/testbed/QGIS"
+        },
+        {
+            "from": "tests/context_data/QGIS/qgis_config",
+            "to": "/home/agent/.local/share/QGIS"
+        }
+    ],
+    "task_parameters": {
+        "rasterLayerPath": "/home/agent/testbed/QGIS/qgis_sample_data/raster/landcover.img"
+    },
+
+    "instruction_template": "Add a raster layer in QGIS with the absolute path ${rasterLayerPath}",
+
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 1,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "addrasterLayer_function_found": {
+            "description": "Add raster layer function found",
+            "is_key_step": false
+        },
+        "raster_layer_added": {
+            "description": "Detected raster layer path to be added",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Expected raster layer added"
+        },
+        "error": {
+            "description": "Error event from script",
+            "is_key_step": false
+        }
+    }
+}

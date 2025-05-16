@@ -1,0 +1,69 @@
+{
+    "task_id": "13",
+    "task_name": "config_vectorLayer_opacity",
+    "description": "Configure opacity for a specified vector layer in QGIS",
+    "application_info": {
+        "name": "QGIS",
+        "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
+        "args": []
+    },
+    "mcp_servers": [
+        {
+            "command": "python",
+            "args": [
+                "/home/agent/agent-demo/PC-Canary/tests/context_data/QGIS/qgis_config/qgis_mcp/qgis_mcp_server.py"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/QGIS/qgis_sample_data",
+            "to": "/home/agent/testbed/QGIS"
+        },
+        {
+            "from": "tests/context_data/QGIS/qgis_config",
+            "to": "/home/agent/.local/share/QGIS"
+        }
+    ],
+    "task_parameters": {
+        "LayerName": "lakes",
+        "opacity":"85"
+    },
+
+    "instruction_template": "Set the opacity of layer ${LayerName} to ${opacity}% (0-100%) in QGIS",
+
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "set_function_found": {
+            "description": "Found vector layer opacity setting function",
+            "is_key_step": false
+        },
+        "layer_set": {
+            "description": "Detected layer name for color configuration",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Operating on expected layer"
+        },
+        "opacity_set": {
+            "description": "Expected opacity has been set",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Expected opacity set"
+        },
+        "error": {
+            "description": "Error event from script",
+            "is_key_step": false
+        }
+    }
+}

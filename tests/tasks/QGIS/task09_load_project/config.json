@@ -1,0 +1,62 @@
+{
+    "task_id": "09",
+    "task_name": "load_project",
+    "description": "Load a project in QGIS",
+    "application_info": {
+        "name": "QGIS",
+        "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
+        "args": []
+    },
+    "mcp_servers": [
+        {
+            "command": "python",
+            "args": [
+                "/home/agent/agent-demo/PC-Canary/tests/context_data/QGIS/qgis_config/qgis_mcp/qgis_mcp_server.py"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/QGIS/qgis_sample_data",
+            "to": "/home/agent/testbed/QGIS"
+        },
+        {
+            "from": "tests/context_data/QGIS/qgis_config",
+            "to": "/home/agent/.local/share/QGIS"
+        }
+    ],
+    "task_parameters": {
+        "load_path": "/home/agent/testbed/QGIS/testbed.qgz"
+    },
+
+    "instruction_template": "Load a project in QGIS with path ${load_path}",
+
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 1,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "load_function_found": {
+            "description": "Found project loading function",
+            "is_key_step": false
+        },
+        "layer_zoomed": {
+            "description": "Detected path of project to be loaded",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Project loaded"
+        },
+        "error": {
+            "description": "Error event from script",
+            "is_key_step": false
+        }
+    }
+}

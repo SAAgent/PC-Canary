@@ -1,0 +1,68 @@
+{
+    "task_id": "15",
+    "task_name": "add_layer_notes",
+    "description": "Add notes to a specified layer in QGIS",
+    "application_info": {
+        "name": "QGIS",
+        "executable_path": "/home/agent/qgis/QGIS/build-master/output/bin/qgis",
+        "args": []
+    },
+    "mcp_servers": [
+        {
+            "command": "python",
+            "args": [
+                "/home/agent/agent-demo/PC-Canary/tests/context_data/QGIS/qgis_config/qgis_mcp/qgis_mcp_server.py"
+            ]
+        }
+    ],
+    "context_data": [
+        {
+            "from": "tests/context_data/QGIS/qgis_sample_data",
+            "to": "/home/agent/testbed/QGIS"
+        },
+        {
+            "from": "tests/context_data/QGIS/qgis_config",
+            "to": "/home/agent/.local/share/QGIS"
+        }
+    ],
+    "task_parameters": {
+        "LayerName": "lakes",
+        "notes":"this is a test note"
+    },
+
+    "instruction_template": "Add layer notes to the layer ${LayerName} in QGIS, with content ${notes}",
+    "evaluation_setup": {
+        "scripts": [
+          { "role": "hook",    "path": "hooker.js" },
+          { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 2,
+    "events": {
+        "script_initialized": {
+            "description": "Hook script initialized",
+            "is_key_step": false
+        },
+        "set_function_found": {
+            "description": "Found add layer notes function",
+            "is_key_step": false
+        },
+        "layer_set": {
+            "description": "Detected layer name for notes addition",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "Operating on expected layer"
+        },
+        "notes_set": {
+            "description": "Expected notes set",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "Expected notes set"
+        },
+        "error": {
+            "description": "Error event from script",
+            "is_key_step": false
+        }
+    }
+}
