@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "03",
+    "task_name": "create_new_topic_in_channel",
+    "description": "在zulip中的channel中创建一个新的topic",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,13 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "channel_name": "feedback",
+        "topic_name": "Incomplete documentation2",
+        "topic_message": "The introduction to various scripts is not comprehensive.",
+        "expected_content": "<p>The introduction to various scripts is not comprehensive.</p>"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "在zulip中名为 ${channel_name} 的channel中创建新的话题, 话题的名称为 ${topic_name}, 话题的内容为 ${topic_message}",
 
     "evaluation_setup": {
         "scripts": [
@@ -26,16 +27,16 @@
         "evaluator_type": "StateInspector",
         "evaluate_on_completion": true
     },
-    "total_key_steps": 2,
+    "total_key_steps": 3,
     "preconditions": {
         "zulip_running": true
     },
     "events": {
         "evaluate_on_completion": {
-            "description": "在任务结束时检测消息是否发送成功",
+            "description": "在任务结束时检测任务是否成功",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "消息发送成功"
+            "key_step_name": "话题创建成功"
         }
     },
     "mcp_servers": [

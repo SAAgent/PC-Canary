@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "14",
+    "task_name": "send_direct_message_channel",
+    "description": "在zulip中向jiaxianqing（邮箱为jxq@bupt.edu.cn）发送一条direct message,信息内容为'have a nice day'.",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,11 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "email": "jxq@bupt.edu.cn",
+        "message": "have a nice day"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "在zulip中向${email}发送一条direct message,信息内容为'have a nice day'.",
 
     "evaluation_setup": {
         "scripts": [

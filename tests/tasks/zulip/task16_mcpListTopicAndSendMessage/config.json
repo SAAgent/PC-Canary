@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "16",
+    "task_name": "get_channel_topic_list_and_send_message",
+    "description": "检查general Channel下所有的topic，并将topic name 用\" \"连接起来成一条信息，发送到test Channel下的test topic中",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,12 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "source_channel": "general",
+        "target_channel": "test",
+        "target_topic": "test"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "检查${source_channel} Channel下所有的topic，并将topic name 用\" \"连接起来成一条信息，发送到${target_channel} Channel下的${target_topic} topic中",
 
     "evaluation_setup": {
         "scripts": [
@@ -26,7 +26,7 @@
         "evaluator_type": "StateInspector",
         "evaluate_on_completion": true
     },
-    "total_key_steps": 2,
+    "total_key_steps": 3,
     "preconditions": {
         "zulip_running": true
     },

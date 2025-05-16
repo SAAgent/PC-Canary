@@ -1,7 +1,7 @@
 {
-    "task_id": "01",
-    "task_name": "send_message",
-    "description": "在zulip中发送消息",
+    "task_id": "04",
+    "task_name": "subscribe_channel",
+    "description": "在zulip中订阅频道中的消息",
 
     "application_info": {
         "name": "zulip",
@@ -10,12 +10,10 @@
     },
 
     "task_parameters": {
-        "user_name": "David",
-        "message": "Nice to meet you!",
-        "expected_content": "<p>Nice to meet you!</p>"
+        "channel_name": "new_world"
     },
 
-    "instruction_template": "在zulip中以direct message的方式向 ${user_name} 发送简单的文本消息: ${message}",
+    "instruction_template": "在zulip中订阅名为 ${channel_name} 的channel中的消息",
 
     "evaluation_setup": {
         "scripts": [
@@ -32,10 +30,10 @@
     },
     "events": {
         "evaluate_on_completion": {
-            "description": "在任务结束时检测消息是否发送成功",
+            "description": "在任务结束时检测任务是否成功",
             "is_key_step": true,
             "key_step_index": 1,
-            "key_step_name": "消息发送成功"
+            "key_step_name": "订阅频道成功"
         }
     },
     "mcp_servers": [
