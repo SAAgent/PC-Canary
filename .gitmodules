@@ -19,3 +19,6 @@
 [submodule "apps/vscode"]
 	path = apps/vscode
 	url = https://github.com/SAAgent/vscode.git
+[submodule "apps/zotero"]
+	path = apps/zotero
+	url = https://github.com/zotero/zotero.git

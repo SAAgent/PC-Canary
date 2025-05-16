@@ -1,0 +1,72 @@
+{
+    "task_id": "06",
+    "task_name": "add_item_to_collection",
+    "description": "将Zotero条目添加至其他分类",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "Multi-Grained",
+        "collection_desc": "Container"
+    },
+    "instruction_template": "在打开的zotero `MyLibrary` 中将 `virtualization` 中的 标题包含 `${item_desc}` 的条目添加至分组 `${collection_desc}`, 如果分组不存在则在 `MyLibrary` 下创建",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "events": {
+        "item_added": {
+            "description": "成功添加条目",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功添加条目"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_API_KEY": "JEUcZl2TqzxxABn7vXnAWhaY",
+                "ZOTERO_LIBRARY_ID": "17159576"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task06_add_item_to_collection/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task06_add_item_to_collection_local/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task06_add_item_to_collection_local/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
+}

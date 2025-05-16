@@ -1,0 +1,74 @@
+{
+    "task_id": "16",
+    "task_name": "generate_github_url_to_note",
+    "description": "根据条目pdf文件生成论文开源仓库github链接笔记",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "Multi-Grained"
+    },
+    "instruction_template": "在Zotero中，读取标题包含 `${item_desc}` 的条目的pdf文件内容，搜索其中的开源仓库github url，并导入该条目的Note中",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "success_conditions": [
+        "github_url_note_added"
+    ],
+    "total_key_steps": 1,
+    "events": {
+        "github_url_note_added": {
+            "description": "成功添加github url笔记",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功添加github url笔记"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_API_KEY": "JEUcZl2TqzxxABn7vXnAWhaY",
+                "ZOTERO_LIBRARY_ID": "17159576"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task16_generate_github_url_to_note/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task16_generate_github_url_to_note_local/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task16_generate_github_url_to_note_local/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
+}

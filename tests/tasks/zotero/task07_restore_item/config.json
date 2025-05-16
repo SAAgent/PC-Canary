@@ -1,0 +1,71 @@
+{
+    "task_id": "07",
+    "task_name": "restore_item",
+    "description": "将Zotero Trash中的条目恢复",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "Multi-Grained"
+    },
+    "instruction_template": "在已经打开的zotero中，从Trash中将标题中包含 `${item_desc}`的条目恢复",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "events": {
+        "item_restored": {
+            "description": "成功将条目从Trash中恢复",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功将条目从Trash中恢复"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_API_KEY": "JEUcZl2TqzxxABn7vXnAWhaY",
+                "ZOTERO_LIBRARY_ID": "17159576"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task07_restore_item/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task07_restore_item_local/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task07_restore_item_local/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
+}

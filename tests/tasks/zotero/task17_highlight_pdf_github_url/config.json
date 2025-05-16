@@ -1,0 +1,72 @@
+{
+    "task_id": "17",
+    "task_name": "highlight_pdf_github_url",
+    "description": "高亮选中条目的pdf文件中的github链接",
+    "application_info": {
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "10.1109/TC.2024.3383966"
+    },
+    "instruction_template": "读取 doi为 `${item_desc}` 的pdf文件内容，并编辑该pdf文件，高亮其中的开源仓库github url",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "success_conditions": [
+        "highlighted"
+    ],
+    "total_key_steps": 1,
+    "key_steps": [
+        {
+            "name": "highlighted",
+            "description": "成功高亮github url链接",
+            "is_key_step": true,
+            "key_step_index": 1
+        }
+    ],
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_LOCAL": "true"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task17_highlight_pdf_github_url/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task17_highlight_pdf_github_url/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task17_highlight_pdf_github_url/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
+}

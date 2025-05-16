@@ -1,0 +1,71 @@
+{
+    "task_id": "10",
+    "task_name": "add_related_item",
+    "description": "添加相关文献",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "target_item_desc": "Multi-Grained"
+    },
+    "instruction_template": "向标题中包含 `${target_item_desc}` 的条目添加相关条目，其doi号为 `10.1145/3616871`，其标题中包含`Self Adaptive`",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "events": {
+        "related_item_added": {
+            "description": "成功添加相关条目",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功添加相关条目"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_API_KEY": "JEUcZl2TqzxxABn7vXnAWhaY",
+                "ZOTERO_LIBRARY_ID": "17159576"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task10_add_related_item/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task10_add_related_item_local/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task10_add_related_item_local/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
+}

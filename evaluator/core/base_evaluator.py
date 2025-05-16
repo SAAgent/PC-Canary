@@ -9,6 +9,7 @@ import subprocess
 import time
 import logging
 from string import Template
+import atexit
 
 from evaluator.core.hook_manager import HookManager
 from evaluator.core.ipc_injector import IpcInjector
@@ -48,6 +49,14 @@ class BaseEvaluator:
         self.log_dir = log_dir
         self.session_id = time.strftime("%Y%m%d_%H%M%S")
         self.session_dir = os.path.join(log_dir, self.session_id)
+        self.child_processes = []
+        
+        # 注册清理函数
+        atexit.register(self.cleanup_all)
+        
+        # 注册信号处理器
+        signal.signal(signal.SIGINT, self.signal_handler)
+        signal.signal(signal.SIGTERM, self.signal_handler)
 
         # 保存自定义参数
         self.custom_params = custom_params or {}
@@ -380,6 +389,35 @@ class BaseEvaluator:
             self.logger.warning("评估器已经在运行")
             return False
 
+        # TODO: 读取config.json在这里添加pre-start的启动 => 需要一个Config类
+        # 1. 解决启动python proxy的问题
+        # 2. 解决启动不同hook的问题
+        # 也能为其他程序的hook带来更多的灵活性
+        config_path = os.path.join(self.task_path, "config.json")
+        if os.path.exists(config_path):
+            with open(config_path, 'r', encoding='utf-8') as config_file:
+                config = json.load(config_file)
+                # 读取pre-start配置
+                pre_start_config = self.config.get("pre_process", {})
+                if pre_start_config:
+                    # pre_start_config为command和args的dict:
+                    # e.g.: {"command": "python", "args": ["-m", "frida_tools"]}
+                    command = pre_start_config.get("command")
+                    args = pre_start_config.get("args", [])
+                    if command:
+                        # 启动子进程
+                        try:
+                            process = subprocess.Popen([command] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                            self.child_processes.append(process)
+                            self.logger.info(f"启动子进程: {command} {' '.join(args)}")
+                        except Exception as e:
+                            self.logger.error(f"启动子进程失败: {str(e)}")
+                            return False
+                    else:
+                        self.logger.warning("pre_start配置中缺少command")
+        else:
+            self.logger.warning(f"配置文件不存在: {config_path}")
+                
         if not self.hook_manager.app_started:
             # 恢复用户数据
             try:
@@ -394,10 +432,10 @@ class BaseEvaluator:
                 return False
             self.logger.info("用户数据成功恢复")
             self.start_app()
-
+        
         try:
             self.is_running = True
-
+            
             # 1. 准备 session_data (包含配置快照)
             session_data = {
                 # "config": self.config, # 移除，task_config 单独传递
@@ -414,6 +452,8 @@ class BaseEvaluator:
             self.hook_manager.load_scripts(self._on_message)
 
             self.logger.info("评估器启动成功")
+            
+            # TODO: post-start 处理
 
             return True
         except Exception as e:
@@ -533,3 +573,28 @@ class BaseEvaluator:
              return "" # 返回空字符串表示失败
 
         return report_path
+    
+    def cleanup_all(self):
+        """清理所有子进程"""
+        for process in self.child_processes:
+            try:
+                # 尝试优雅关闭
+                process.terminate()
+                process.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                # 强制关闭
+                process.kill()
+            except Exception as e:
+                self.logger.error(f"清理子进程失败: {e}")
+        
+        self.child_processes.clear()
+        
+    def signal_handler(self, signum, frame):
+        """处理系统信号"""
+        self.logger.info(f"收到信号 {signum}，正在清理...")
+        self.cleanup_all()
+        sys.exit(0)
+        
+    def __del__(self):
+        """析构函数"""
+        self.cleanup_all()

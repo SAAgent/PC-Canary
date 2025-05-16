@@ -130,12 +130,15 @@ class HookManager:
         
             try:
                 # 启动应用进程
+                log_file_path = os.path.join(self.logger.get_session_info()["session_dir"], "app_output.log")
+                log_file = open(log_file_path, "w")
+                
                 self.logger.info(f"正在启动应用: {self.app_path}")
                 self.app_process = subprocess.Popen(
                     cmd,
                     cwd=self.app_working_cwd,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE
+                    stdout=log_file,
+                    stderr=subprocess.STDOUT
                 )
 
                 self.logger.info(f"应用启动成功，进程ID: {self.app_process.pid}")

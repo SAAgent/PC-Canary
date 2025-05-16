@@ -1,0 +1,72 @@
+{
+    "task_id": "13",
+    "task_name": "export_reference",
+    "description": "导出所选条目参考文献表",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "item_desc": "Multi-Grained",
+        "export_path": "/home/agent/export-reference/Multi-Grained.rtf"
+    },
+    "instruction_template": "在打开的Zotero中，创建标题包含 `${item_desc}` 的条目的参考文献表/bibliography/citation，导出路径为 `${export_path}`，导出格式为 `RTF`",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "events": {
+        "reference_exported": {
+            "description": "成功导出参考文献表",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功导出参考文献表"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_API_KEY": "JEUcZl2TqzxxABn7vXnAWhaY",
+                "ZOTERO_LIBRARY_ID": "17159576"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task13_export_reference/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task13_export_reference_local/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task13_export_reference_local/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
+}

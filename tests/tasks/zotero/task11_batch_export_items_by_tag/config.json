@@ -1,0 +1,72 @@
+{
+    "task_id": "11",
+    "task_name": "batch_export_items_by_tag",
+    "description": "根据tag批量导出条目",
+    "application_info": {
+        "type": "electron",
+        "name": "zotero",
+        "executable_path": "apps/zotero/app/scripts/build_and_run",
+        "args": [
+            "-r"
+        ]
+    },
+    "task_parameters": {
+        "tag": "zotero-test",
+        "export_path": "/home/agent/export-items"
+    },
+    "instruction_template": "在打开的zotero中，将所有分类中的含有 `${tag}` 标签的所有条目，以rdf文件格式导出Note至 `${export_path}` 目录下，以论文的完整标题命名导出文件",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "events": {
+        "exported_items_by_tag": {
+            "description": "批量导出成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "批量导出成功"
+        }
+    },
+    "mcp_servers": [
+        {
+            "cwd": "/home/agent/zotero-mcp",
+            "command": "uv",
+            "args": [
+                "run",
+                "zotero-mcp"
+            ],
+            "env": {
+                "ZOTERO_API_KEY": "JEUcZl2TqzxxABn7vXnAWhaY",
+                "ZOTERO_LIBRARY_ID": "17159576"
+            }
+        }
+    ],
+    "pre_process": {
+        "command": "python",
+        "args": [
+            "/home/agent/agent-demo/PC-Canary/tests/tasks/zotero/task11_batch_export_items_by_tag/pre_process.py"
+        ]
+    },
+    "context_data": [
+        {
+            "from": "tests/context_data/zotero/task11_batch_export_items_by_tag_local/Zotero",
+            "to": "/home/agent/Zotero"
+        },
+        {
+            "from": "tests/context_data/zotero/task11_batch_export_items_by_tag_local/.zotero",
+            "to": "/home/agent/.zotero"
+        }
+    ]
+}
