@@ -1,0 +1,54 @@
+{
+    "task_id": "13",
+    "task_name": "add_todo_due_date",
+    "description": "在Joplin中为指定待办事项添加截止日期",
+
+    "application_info": {
+        "name": "joplin",
+        "executable_path": "/workspace/PC-Canary/apps/joplin/Joplin-3.3.12.AppImage",
+        "args": [
+            "--env", "dev",
+            "--profile", "/workspace/PC-Canary/apps/joplin/joplindev-desktop"
+        ]
+    },
+
+    "task_parameters": {
+        "todo_name": "test_todo",
+        "due_date": "2025-05-20"
+    },
+
+    "instruction_template": "在Joplin中为名为 ${todo_name} 的待办事项设置提醒日期为 ${due_date}",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "joplin_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时判断指定待办事项是否已设置截止日期",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "待办事项截止日期设置完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "/home/user/.local/bin/uv",
+            "args": [
+                "--directory",
+                "/home/user/Desktop/joplin-mcp-server",
+                "run",
+                "src/mcp/joplin_mcp.py"
+            ]
+        }
+    ]
+} 

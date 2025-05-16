@@ -1,0 +1,54 @@
+{
+    "task_id": "04",
+    "task_name": "create_note",
+    "description": "检查Joplin中指定笔记本是否存在名为hi的笔记",
+
+    "application_info": {
+        "name": "joplin",
+        "executable_path": "/workspace/PC-Canary/apps/joplin/Joplin-3.3.12.AppImage",
+        "args": [
+            "--env", "dev",
+            "--profile", "/workspace/PC-Canary/apps/joplin/joplindev-desktop"
+        ]
+    },
+
+    "task_parameters": {
+        "notebook_name": "hello",
+        "note_name": "hi"
+    },
+
+    "instruction_template": "在Joplin名为 ${notebook_name} 的笔记本中创建名为 ${note_name} 的笔记",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "joplin_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时判断指定笔记本中是否存在指定名称的笔记",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "笔记检查完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "/home/user/.local/bin/uv",
+            "args": [
+                "--directory",
+                "/home/user/Desktop/joplin-mcp-server",
+                "run",
+                "src/mcp/joplin_mcp.py"
+            ]
+        }
+    ]
+} 

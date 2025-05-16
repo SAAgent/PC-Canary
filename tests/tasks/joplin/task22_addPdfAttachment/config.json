@@ -1,0 +1,55 @@
+{
+    "task_id": "22",
+    "task_name": "add_pdf_attachment",
+    "description": "在Joplin中给指定笔记添加PDF附件",
+
+    "application_info": {
+        "name": "joplin",
+        "executable_path": "/workspace/PC-Canary/apps/joplin/Joplin-3.3.12.AppImage",
+        "args": [
+            "--env", "dev",
+            "--profile", "/workspace/PC-Canary/apps/joplin/joplindev-desktop"
+        ]
+    },
+
+    "task_parameters": {
+        "notebook_name": "TestNotebook",
+        "note_title": "TestNote",
+        "pdf_file_path": "/workspace/PC-Canary/apps/joplin/joplindev-desktop/mcptest-files/task22/test.pdf"
+    },
+
+    "instruction_template": "在Joplin中将PDF文件 ${pdf_file_path} 添加到笔记本 ${notebook_name} 下的笔记 ${note_title} 中",
+
+    "evaluation_setup": {
+        "scripts": [
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,
+        "evaluator_type": "IpcInjector",
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "joplin_running": true
+    },
+    "events": {
+        "evaluate_on_completion": {
+            "description": "在任务结束时判断PDF是否已成功添加到指定笔记中",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "PDF附件添加完成"
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "/home/user/.local/bin/uv",
+            "args": [
+                "--directory",
+                "/home/user/Desktop/joplin-mcp-server",
+                "run",
+                "src/mcp/joplin_mcp.py"
+            ]
+        }
+    ]
+} 
