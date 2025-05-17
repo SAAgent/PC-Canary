@@ -1,0 +1,80 @@
+{
+    "task_id": "02",
+    "task_name": "send_message",
+    "description": "在Telegram中向指定用户发送指定消息。",
+    "application_info": {
+        "name": "Telegram Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/tdesktop/out/Debug/Telegram",
+        "args": []
+    },
+    "task_parameters": {
+        "recipient_name": "Erica Ruiz",
+        "message_content": "Hello, this is a test message."
+    },
+    "instruction_template": "请在Telegram中向 '${recipient_name}' 发送消息：'${message_content}'。",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "telegram_running": true,
+        "user_logged_in": true
+    },
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化完成。",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到关键函数地址。",
+            "is_key_step": false
+        },
+        "send_hook_installed": {
+            "description": "消息发送钩子安装完成。",
+            "is_key_step": false
+        },
+        "hook_installed": {
+            "description": "所有监控钩子安装完成。",
+            "is_key_step": false
+        },
+        "send_function_called": {
+            "description": "拦截到消息发送函数调用（任务开始）。",
+            "is_key_step": false 
+        },
+        "message_detected": {
+            "description": "检测到发送的消息内容和接收者信息（用于校验）。",
+            "is_key_step": false 
+        },
+        "message_send_completed": {
+            "description": "消息发送函数成功返回，内容和接收者已验证。",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功发送消息并验证内容和接收者"
+        },
+        "error": {
+            "description": "来自钩子脚本的错误事件。",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "PC-Canary/apps/tdesktop/telegram-mcp",
+                "run",
+                "main.py"
+            ]
+        }
+    ]
+} 

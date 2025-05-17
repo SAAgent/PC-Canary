@@ -1,0 +1,85 @@
+{
+    "task_id": "03",
+    "task_name": "toggle_dark_mode",
+    "description": "切换Telegram的暗黑模式并验证模式状态。",
+    "application_info": {
+        "name": "Telegram Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/tdesktop/out/Debug/Telegram",
+        "args": []
+    },
+    "task_parameters": {
+        "target_mode": "dark"
+    },
+    "instruction_template": "请调整 Telegram 应用的主题显示为 ${target_mode}模式。",
+    "evaluation_setup": {
+        "scripts": [
+            {
+                "role": "hook",
+                "path": "hooker.js"
+            },
+            {
+                "role": "handler",
+                "path": "handler.py"
+            }
+        ],
+        "timeout": 180
+    },
+    "total_key_steps": 2,
+    "preconditions": {
+        "telegram_running": true,
+        "user_logged_in": true
+    },
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化完成。",
+            "is_key_step": false
+        },
+        "hook_installed": {
+            "description": "暗黑模式监控钩子安装完成。",
+            "is_key_step": false
+        },
+        "night_mode_status_checked": {
+            "description": "主动检查夜间模式状态完成。",
+            "is_key_step": false
+        },
+        "write_settings_called": {
+            "description": "拦截到主题写入函数调用 (表明用户可能在切换模式)。",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "尝试切换模式"
+        },
+        "night_mode_setting_detected": {
+            "description": "设置写入的主题模式。",
+            "is_key_step": false
+        },
+        "settings_write_allowed": {
+            "description": "检测到设置项将被保存。",
+            "is_key_step": false
+        },
+        "write_settings_returned": {
+            "description": "写入设置函数正确返回。",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "确认新设置中主题切换"
+        },
+        "function_found": {
+            "description": "找到关键函数地址。",
+            "is_key_step": false
+        },
+        "error": {
+            "description": "来自钩子脚本的错误事件。",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "PC-Canary/apps/tdesktop/telegram-mcp",
+                "run",
+                "main.py"
+            ]
+        }
+    ]
+}

@@ -285,6 +285,7 @@ def main():
                 print(f"\n评估超时 ({timeout_seconds}秒)...")
                 evaluator.stop()
                 time.sleep(10)
+                break
 
         # 如果评估器仍在运行，则停止它
         if evaluator.is_running:

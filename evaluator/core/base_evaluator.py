@@ -434,9 +434,6 @@ class BaseEvaluator:
             # 卸载钩子脚本
             self.hook_manager.unload_scripts()
 
-            # 结束会话并计算最终指标
-            self.result_collector.end_session(self.task_id)
-
             # 如果最终的回调（成功/失败）尚未被触发，则记录 TASK_END 事件
             if not self._final_callback_triggered:
                 stop_message = "Evaluator stopped externally or timed out before handler completion"
@@ -444,6 +441,8 @@ class BaseEvaluator:
                 self.record_event(AgentEvent.TASK_END, {"status": "stopped", "reason": stop_message})
                 # Optionally trigger an "evaluator_stopped" callback if needed for external logic
                 # self._trigger_completion_callbacks(CallbackEventData("evaluator_stopped", stop_message))
+            # 结束会话并计算最终指标
+            self.result_collector.end_session(self.task_id)
 
             # 保存结果（现在包含计算好的指标）
             self.save_results() # <- MOVED here, ensures save happens once at the end
