@@ -1,0 +1,72 @@
+{
+    "task_id": "16", 
+	"task_name": "add_trackers", 
+    "description": "为qBittorrent中的指定种子添加Tracker服务器地址。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "torrent_name": "Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB",
+        "tracker_url": "https://tracker.opentrackr.org:1337/announce"
+    },
+
+    "instruction_template": "请在qBittorrent中，为种子${torrent_name}添加Tracker地址：${tracker_url}，qbittorrent 的软件我已打开,在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23 host是10.161.28.28。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 ,
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+	"preconditions": {
+	  "qbittorrent_running": true,
+      "has_torrents": true
+	},
+	"success_conditions": [
+	  "add_tracker_url_result"
+	],
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到目标函数",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标函数"
+        },
+        "add_torrent_url_called":  {
+            "description": "拦截到添加tracker函数调用",
+            "is_key_step": false
+        },
+		"add_tracker_url_result": {
+            "description": "添加tracker成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "添加tracker成功"
+        },
+        "error":  {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/workspace/PC-Canary/apps/qBittorrent/qbittorrent_mcp",
+                "run",
+                "qbittorrent.py"
+            ]
+        }
+    ]
+}

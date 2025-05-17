@@ -1,0 +1,72 @@
+{
+    "task_id": "17", 
+	"task_name": "connect_via_agent", 
+    "description": "在qBittorrent中设置代理服务器连接。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "proxy_type": "SOCKS5",
+        "proxy_host": "127.0.0.1",
+        "proxy_port": 1080
+    },
+
+    "instruction_template": "请在qBittorrent中，设置${proxy_type}代理服务器，地址为${proxy_host}，端口为${proxy_port}，qbittorrent 的软件我已打开,在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23 host是10.161.28.28。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 ,
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+	"preconditions": {
+	  "qbittorrent_running": true
+	},
+	"success_conditions": [
+	  "agent_connect_result"
+	],
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到目标函数",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标函数"
+        },
+        "agent_connect_called":  {
+            "description": "拦截到设置代理函数调用",
+            "is_key_step": false
+        },
+		"agent_connect_result": {
+            "description": "设置代理成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "设置代理成功"
+        },
+        "error":  {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/workspace/PC-Canary/apps/qBittorrent/qbittorrent_mcp",
+                "run",
+                "qbittorrent.py"
+            ]
+        }
+    ]
+}

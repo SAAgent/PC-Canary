@@ -1,0 +1,28 @@
+2025-04-26 16:53:22,083 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task01_add_torrent_file/hooker.js
+2025-04-26 16:53:22,083 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 尝试导入回调函数模块: tests.tasks.qbittorrent.task01_add_torrent_file.handler
+2025-04-26 16:53:22,085 - qbittorrent_task01_add_torrent_file_evaluator - ERROR - 导入回调函数模块失败: invalid syntax (handler.py, line 67)
+2025-04-26 16:53:22,085 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 加载任务指令: 
+2025-04-26 16:53:22,085 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器初始化完成: task01_add_torrent_file
+2025-04-26 16:53:22,085 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 注册了新的完成回调函数
+2025-04-26 16:53:22,085 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-04-26 16:53:22,086 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 应用启动成功，进程ID: 76135
+2025-04-26 16:53:22,086 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 等待应用窗口加载完成...
+2025-04-26 16:53:22,097 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 启动前窗口行数: 256
+2025-04-26 16:53:28,768 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 检测到新窗口，当前窗口行数: 259
+2025-04-26 16:53:30,768 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 连接到进程: 76135
+2025-04-26 16:53:30,780 - qbittorrent_task01_add_torrent_file_evaluator - ERROR - 连接到进程失败: unable to access process with pid 76135
+2025-04-26 16:53:30,781 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务会话开始: task01_add_torrent_file
+2025-04-26 16:53:30,781 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器启动成功
+2025-04-26 16:58:30,856 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 脚本卸载完成
+2025-04-26 16:58:30,856 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 更新指标: duration = 300.08806324005127
+2025-04-26 16:58:30,856 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务会话结束: task01_add_torrent_file
+2025-04-26 16:58:30,856 - qbittorrent_task01_add_torrent_file_evaluator - INFO - Event: evaluator_stopped - evaluator stopped
+2025-04-26 16:58:30,857 - qbittorrent_task01_add_torrent_file_evaluator - ERROR - Error executing callback: handle_evaluator_event() missing 1 required positional argument: 'evaluator'
+2025-04-26 16:58:30,857 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务结果已保存: logs/20250426_165322/task01_add_torrent_file_20250426_165830.json
+2025-04-26 16:58:30,858 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估结果已保存: logs/20250426_165322/task01_add_torrent_file_20250426_165830.json
+2025-04-26 16:58:30,858 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器已停止，总耗时: 300.09秒
+2025-04-26 16:58:31,859 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务结果已保存: logs/20250426_165322/task01_add_torrent_file_20250426_165831.json
+2025-04-26 16:58:31,859 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估结果已保存: logs/20250426_165322/task01_add_torrent_file_20250426_165831.json
+2025-04-26 16:58:31,859 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 76135)
+2025-04-26 16:58:31,859 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-04-26 16:58:31,859 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 应用进程已自行关闭

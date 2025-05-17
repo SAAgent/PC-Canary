@@ -1,0 +1,70 @@
+2025-05-13 09:34:37,615 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 加载任务指令: 请在qBittorrent中将种子Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB的保存路径修改为/home/agent/Downloads。
+2025-05-13 09:34:37,615 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_093437
+2025-05-13 09:34:37,615 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task14_change_torrent_path/hooker.js
+2025-05-13 09:34:37,616 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task14_change_torrent_path/handler.py.message_handler
+2025-05-13 09:34:37,616 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 评估器初始化完成: task14_change_torrent_path
+2025-05-13 09:34:37,616 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 09:34:37,616 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 用户数据成功恢复
+2025-05-13 09:34:37,616 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 09:34:37,618 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 应用启动成功，进程ID: 2475029
+2025-05-13 09:34:37,618 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 09:34:37,633 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 启动前窗口行数: 328
+2025-05-13 09:34:38,179 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-13 09:34:40,180 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 开始为任务 task14_change_torrent_path 注册指标...
+2025-05-13 09:34:40,180 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task14_change_torrent_path
+2025-05-13 09:34:40,181 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 注册标准指标: llm_call_count for task task14_change_torrent_path
+2025-05-13 09:34:40,181 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task14_change_torrent_path
+2025-05-13 09:34:40,181 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 注册标准指标: task_completion_status for task task14_change_torrent_path
+2025-05-13 09:34:40,181 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task14_change_torrent_path
+2025-05-13 09:34:40,181 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task14_change_torrent_path
+2025-05-13 09:34:40,182 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 注册标准指标: error_summary for task task14_change_torrent_path
+2025-05-13 09:34:40,182 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task14_change_torrent_path (Total Steps: 2, Names: {1: '找到目标函数', 2: '修改种子路径成功'})
+2025-05-13 09:34:40,182 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 任务 task14_change_torrent_path 的指标注册完成，共 8 个指标。
+2025-05-13 09:34:40,182 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 正在重置任务 task14_change_torrent_path 的指标状态...
+2025-05-13 09:34:40,182 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 任务 task14_change_torrent_path 的 8 个指标已重置。
+2025-05-13 09:34:40,182 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 任务会话开始: task14_change_torrent_path
+2025-05-13 09:34:40,183 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 记录原始事件: task14_change_torrent_path - TASK_START - {'timestamp': 1747128880.1829267}
+2025-05-13 09:34:40,183 - qbittorrent_task14_change_torrent_path_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747128880.1829267
+2025-05-13 09:34:40,183 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 连接到进程: 2475029
+2025-05-13 09:34:40,290 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 修改种子路径监控脚本已启动', 'timestamp': 1747128880289}
+2025-05-13 09:34:40,290 - qbittorrent_task14_change_torrent_path_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 修改种子路径监控脚本已启动
+2025-05-13 09:34:40,291 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10BitTorrent11TorrentImpl11setSavePathERK4Path', 'address': '0x56abcfc268a4', 'message': '找到函数 _ZN10BitTorrent11TorrentImpl11setSavePathERK4Path 的实际地址', 'timestamp': 1747128880290}
+2025-05-13 09:34:40,291 - qbittorrent_task14_change_torrent_path_evaluator - INFO - Handler: 找到函数地址: 0x56abcfc268a4
+2025-05-13 09:34:40,291 - qbittorrent_task14_change_torrent_path_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 09:34:40,291 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 记录原始事件: task14_change_torrent_path - KEY_STEP_COMPLETED - {'timestamp': 1747128880.2911453, 'step_index': 1}
+2025-05-13 09:34:40,291 - qbittorrent_task14_change_torrent_path_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-13 09:34:40,291 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待修改种子路径操作...', 'timestamp': 1747128880290}
+2025-05-13 09:34:40,291 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task14_change_torrent_path/hooker.js
+2025-05-13 09:34:40,291 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 评估器启动成功
+2025-05-13 09:34:48,325 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - Handler: 接收到脚本事件: change_torrent_path_called, Payload: {'event': 'change_torrent_path_called', 'message': '拦截到修改种子路径函数调用', 'name': 'Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB', 'save_path_before': '/home/agent/Downloads', 'timestamp': 1747128888317}
+2025-05-13 09:34:48,429 - qbittorrent_task14_change_torrent_path_evaluator - INFO - Handler: 拦截到修改路径函数调用，种子名称: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB, 原路径: /home/agent/Downloads
+2025-05-13 09:34:48,445 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - Handler: 接收到脚本事件: change_torrent_path_success, Payload: {'event': 'change_torrent_path_success', 'message': '修改种子路径函数正确返回', 'name': 'Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB', 'save_path_after': '/home/agent/Downloads', 'timestamp': 1747128888318}
+2025-05-13 09:34:48,462 - qbittorrent_task14_change_torrent_path_evaluator - INFO - Handler: 种子: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB, 新路径: /home/agent/Downloads
+2025-05-13 09:34:48,472 - qbittorrent_task14_change_torrent_path_evaluator - INFO - Handler: 成功修改种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 的保存路径为 /home/agent/Downloads
+2025-05-13 09:34:48,483 - qbittorrent_task14_change_torrent_path_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 09:34:48,489 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 记录原始事件: task14_change_torrent_path - KEY_STEP_COMPLETED - {'timestamp': 1747128888.4832494, 'step_index': 2}
+2025-05-13 09:34:48,500 - qbittorrent_task14_change_torrent_path_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=2, Name='修改种子路径成功'
+2025-05-13 09:34:48,511 - qbittorrent_task14_change_torrent_path_evaluator - INFO - Handler reported success: 成功修改种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 的保存路径为 /home/agent/Downloads
+2025-05-13 09:34:48,521 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 记录原始事件: task14_change_torrent_path - TASK_END - {'timestamp': 1747128888.4832494, 'status': 'success', 'reason': '成功修改种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 的保存路径为 /home/agent/Downloads'}
+2025-05-13 09:34:48,532 - qbittorrent_task14_change_torrent_path_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747128888.4832494
+2025-05-13 09:34:48,542 - qbittorrent_task14_change_torrent_path_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: success, 原因: 成功修改种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 的保存路径为 /home/agent/Downloads
+2025-05-13 09:34:48,553 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 触发回调: task_completed - 成功修改种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 的保存路径为 /home/agent/Downloads
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 脚本卸载完成
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 开始为任务 task14_change_torrent_path 计算最终指标...
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 指标计算完成 (task14_change_torrent_path): total_duration_seconds = 8.3
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 指标计算完成 (task14_change_torrent_path): llm_call_count = 0
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 指标计算完成 (task14_change_torrent_path): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 指标计算完成 (task14_change_torrent_path): task_completion_status = {'status': 'success', 'reason': '成功修改种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 的保存路径为 /home/agent/Downloads'}
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 指标计算完成 (task14_change_torrent_path): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 指标计算完成 (task14_change_torrent_path): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 指标计算完成 (task14_change_torrent_path): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - DEBUG - 指标计算完成 (task14_change_torrent_path): key_step_tracker = {'total_steps': 2, 'completed_steps_count': 2, 'highest_index_reached': 2, 'completion_rate_by_count': 1.0, 'completion_rate_by_progress': 1.0, 'final_step_reached': True, 'completed_indices_list': [1, 2], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747128880.2911453}, {'step_index': 2, 'step_name': '修改种子路径成功', 'timestamp': 1747128888.4832494}]}
+2025-05-13 09:34:48,586 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 任务 task14_change_torrent_path 的最终指标计算完成。
+2025-05-13 09:34:48,587 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 任务会话结束: task14_change_torrent_path. 总时长: 8.404 秒
+2025-05-13 09:34:48,587 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 任务 task14_change_torrent_path 结果已保存: logs/20250513_093437/result_task14_change_torrent_path_20250513_093448.json
+2025-05-13 09:34:48,587 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 评估结果已保存: logs/20250513_093437/result_task14_change_torrent_path_20250513_093448.json
+2025-05-13 09:34:49,589 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 任务 task14_change_torrent_path 结果已保存: logs/20250513_093437/result_task14_change_torrent_path_20250513_093449.json
+2025-05-13 09:34:49,589 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 评估结果已保存: logs/20250513_093437/result_task14_change_torrent_path_20250513_093449.json
+2025-05-13 09:34:49,590 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2475029)
+2025-05-13 09:34:49,590 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-13 09:34:51,161 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 应用进程已自行关闭

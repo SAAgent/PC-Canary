@@ -1,0 +1,11 @@
+2025-05-13 08:23:13,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 加载任务指令: 请在qBittorrent中，选择性下载种子Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB中的文件['2011_HARRY_POTTER_7_PART_2.iso']。
+2025-05-13 08:23:13,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_082313
+2025-05-13 08:23:13,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/hooker.js
+2025-05-13 08:23:13,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/handler.py.message_handler
+2025-05-13 08:23:13,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估器初始化完成: task12_download_seleted_torrent
+2025-05-13 08:23:13,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 08:23:13,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 用户数据成功恢复
+2025-05-13 08:23:13,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 08:23:13,783 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 应用启动成功，进程ID: 2449004
+2025-05-13 08:23:13,783 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 08:23:13,791 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 启动前窗口行数: 350

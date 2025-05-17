@@ -1,0 +1,52 @@
+2025-05-13 09:11:09,959 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 加载任务指令: 请在qBittorrent中, 为种子Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB设置下载速率限制为${download_limit}KB/s。
+2025-05-13 09:11:09,959 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_091109
+2025-05-13 09:11:09,959 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task13_set_downloadrate4torrent/hooker.js
+2025-05-13 09:11:09,960 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task13_set_downloadrate4torrent/handler.py.message_handler
+2025-05-13 09:11:09,960 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 评估器初始化完成: task13_set_downloadrate4torrent
+2025-05-13 09:11:09,960 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 09:11:09,960 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 用户数据成功恢复
+2025-05-13 09:11:09,960 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 09:11:09,961 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 应用启动成功，进程ID: 2461166
+2025-05-13 09:11:09,961 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 09:11:09,972 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 启动前窗口行数: 333
+2025-05-13 09:11:10,494 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 检测到新窗口，当前窗口行数: 334
+2025-05-13 09:11:12,494 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 开始为任务 task13_set_downloadrate4torrent 注册指标...
+2025-05-13 09:11:12,495 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task13_set_downloadrate4torrent
+2025-05-13 09:11:12,495 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 注册标准指标: llm_call_count for task task13_set_downloadrate4torrent
+2025-05-13 09:11:12,495 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task13_set_downloadrate4torrent
+2025-05-13 09:11:12,495 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 注册标准指标: task_completion_status for task task13_set_downloadrate4torrent
+2025-05-13 09:11:12,495 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task13_set_downloadrate4torrent
+2025-05-13 09:11:12,495 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task13_set_downloadrate4torrent
+2025-05-13 09:11:12,495 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 注册标准指标: error_summary for task task13_set_downloadrate4torrent
+2025-05-13 09:11:12,496 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task13_set_downloadrate4torrent (Total Steps: 2, Names: {1: '找到目标函数', 2: '设置种子下载速率成功'})
+2025-05-13 09:11:12,496 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 任务 task13_set_downloadrate4torrent 的指标注册完成，共 8 个指标。
+2025-05-13 09:11:12,496 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 正在重置任务 task13_set_downloadrate4torrent 的指标状态...
+2025-05-13 09:11:12,496 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 任务 task13_set_downloadrate4torrent 的 8 个指标已重置。
+2025-05-13 09:11:12,496 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 任务会话开始: task13_set_downloadrate4torrent
+2025-05-13 09:11:12,496 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 记录原始事件: task13_set_downloadrate4torrent - TASK_START - {'timestamp': 1747127472.496608}
+2025-05-13 09:11:12,496 - qbittorrent_task13_set_downloadrate4torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747127472.496608
+2025-05-13 09:11:12,497 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 连接到进程: 2461166
+2025-05-13 09:11:12,508 - qbittorrent_task13_set_downloadrate4torrent_evaluator - ERROR - 连接到进程失败: unable to access process with pid 2461166
+2025-05-13 09:11:12,508 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 评估器启动成功
+2025-05-13 09:11:18,849 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 脚本卸载完成
+2025-05-13 09:11:18,849 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 开始为任务 task13_set_downloadrate4torrent 计算最终指标...
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator.TotalTimeMetric - WARNING - 无法计算总时长，开始: 1747127472.496608, 结束: None
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 指标计算完成 (task13_set_downloadrate4torrent): total_duration_seconds = None
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 指标计算完成 (task13_set_downloadrate4torrent): llm_call_count = 0
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 指标计算完成 (task13_set_downloadrate4torrent): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 指标计算完成 (task13_set_downloadrate4torrent): task_completion_status = {'status': 'unknown', 'reason': ''}
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 指标计算完成 (task13_set_downloadrate4torrent): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 指标计算完成 (task13_set_downloadrate4torrent): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 指标计算完成 (task13_set_downloadrate4torrent): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 指标计算完成 (task13_set_downloadrate4torrent): key_step_tracker = {'total_steps': 2, 'completed_steps_count': 0, 'highest_index_reached': 0, 'completion_rate_by_count': 0.0, 'completion_rate_by_progress': 0.0, 'final_step_reached': False, 'completed_indices_list': [], 'completion_timeline': []}
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 任务 task13_set_downloadrate4torrent 的最终指标计算完成。
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 任务会话结束: task13_set_downloadrate4torrent. 总时长: 6.354 秒
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - WARNING - Evaluator stopped externally or timed out before handler completion
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator - DEBUG - 记录原始事件: task13_set_downloadrate4torrent - TASK_END - {'status': 'stopped', 'reason': 'Evaluator stopped externally or timed out before handler completion', 'timestamp': 1747127478.850852}
+2025-05-13 09:11:18,850 - qbittorrent_task13_set_downloadrate4torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747127478.850852
+2025-05-13 09:11:18,851 - qbittorrent_task13_set_downloadrate4torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: stopped, 原因: Evaluator stopped externally or timed out before handler completion
+2025-05-13 09:11:18,851 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 任务 task13_set_downloadrate4torrent 结果已保存: logs/20250513_091109/result_task13_set_downloadrate4torrent_20250513_091118.json
+2025-05-13 09:11:18,851 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 评估结果已保存: logs/20250513_091109/result_task13_set_downloadrate4torrent_20250513_091118.json
+2025-05-13 09:11:18,851 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2461166)
+2025-05-13 09:11:18,851 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-13 09:11:18,852 - qbittorrent_task13_set_downloadrate4torrent_evaluator - INFO - 应用进程已自行关闭

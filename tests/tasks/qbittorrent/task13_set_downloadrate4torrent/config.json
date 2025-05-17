@@ -1,0 +1,72 @@
+{
+    "task_id": "13", 
+	"task_name": "set_downloadrate4torrent", 
+    "description": "在qBittorrent中为指定种子设置下载速率限制。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "download_limit": 1024,
+        "torrent_name": "Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB"
+    },
+
+    "instruction_template": "请在qBittorrent中, 仅为种子${torrent_name}设置下载速率限制为${download_limit}KB/s，qbittorrent 的软件我已打开,在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23 host是10.161.28.28。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 ,
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+	"preconditions": {
+	  "qbittorrent_running": true,
+      "has_torrents": true
+	},
+	"success_conditions": [
+	  "set_downloadrate_success"
+	],
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到目标函数",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标函数"
+        },
+        "set_downloadrate_called":  {
+            "description": "拦截到设置种子下载速率函数调用",
+            "is_key_step": false
+        },
+		"set_downloadrate_success": {
+            "description": "设置种子下载速率成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "设置种子下载速率成功"
+        },
+        "error":  {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/workspace/PC-Canary/apps/qBittorrent/qbittorrent_mcp",
+                "run",
+                "qbittorrent.py"
+            ]
+        }
+    ]
+}

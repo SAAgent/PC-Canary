@@ -1,0 +1,83 @@
+2025-05-13 05:57:30,659 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 加载任务指令: 请在qBittorrent中，将种子Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB中的文件2011_HARRY_POTTER_7_PART_2.iso的优先级设置为High（高优先级）
+2025-05-13 05:57:30,659 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_055730
+2025-05-13 05:57:30,659 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task11_set_torrent_priority/hooker.js
+2025-05-13 05:57:30,660 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task11_set_torrent_priority/handler.py.message_handler
+2025-05-13 05:57:30,660 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 评估器初始化完成: task11_set_torrent_priority
+2025-05-13 05:57:30,660 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 05:57:30,660 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 用户数据成功恢复
+2025-05-13 05:57:30,660 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 05:57:30,661 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 应用启动成功，进程ID: 2429368
+2025-05-13 05:57:30,661 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 05:57:30,675 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 启动前窗口行数: 328
+2025-05-13 05:57:31,209 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-13 05:57:33,209 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 开始为任务 task11_set_torrent_priority 注册指标...
+2025-05-13 05:57:33,210 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task11_set_torrent_priority
+2025-05-13 05:57:33,210 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 注册标准指标: llm_call_count for task task11_set_torrent_priority
+2025-05-13 05:57:33,210 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task11_set_torrent_priority
+2025-05-13 05:57:33,210 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 注册标准指标: task_completion_status for task task11_set_torrent_priority
+2025-05-13 05:57:33,210 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task11_set_torrent_priority
+2025-05-13 05:57:33,211 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task11_set_torrent_priority
+2025-05-13 05:57:33,211 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 注册标准指标: error_summary for task task11_set_torrent_priority
+2025-05-13 05:57:33,211 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task11_set_torrent_priority (Total Steps: 3, Names: {1: '找到目标函数', 2: '拦截到设置种子优先级的函数调用', 3: '成功设置种子优先级'})
+2025-05-13 05:57:33,211 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 任务 task11_set_torrent_priority 的指标注册完成，共 8 个指标。
+2025-05-13 05:57:33,211 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 正在重置任务 task11_set_torrent_priority 的指标状态...
+2025-05-13 05:57:33,211 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 任务 task11_set_torrent_priority 的 8 个指标已重置。
+2025-05-13 05:57:33,211 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 任务会话开始: task11_set_torrent_priority
+2025-05-13 05:57:33,212 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 记录原始事件: task11_set_torrent_priority - TASK_START - {'timestamp': 1747115853.2119303}
+2025-05-13 05:57:33,212 - qbittorrent_task11_set_torrent_priority_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747115853.2119303
+2025-05-13 05:57:33,212 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 连接到进程: 2429368
+2025-05-13 05:57:33,328 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 种子添加监控脚本已启动', 'timestamp': 1747115853327}
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 种子添加监控脚本已启动
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN19TorrentContentModel15setItemPriorityERK11QModelIndexN10BitTorrent16DownloadPriorityE', 'address': '0x5f93f881d12e', 'message': '找到函数 _ZN19TorrentContentModel15setItemPriorityERK11QModelIndexN10BitTorrent16DownloadPriorityE 的实际地址', 'timestamp': 1747115853328}
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler: 找到函数地址: 0x5f93f881d12e
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 记录原始事件: task11_set_torrent_priority - KEY_STEP_COMPLETED - {'timestamp': 1747115853.3292766, 'step_index': 1}
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN23TorrentContentModelFile11setPriorityEN10BitTorrent16DownloadPriorityEb', 'address': '0x5f93f8828b92', 'message': '找到函数 _ZN23TorrentContentModelFile11setPriorityEN10BitTorrent16DownloadPriorityEb 的实际地址', 'timestamp': 1747115853328}
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler: 找到函数地址: 0x5f93f8828b92
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 记录原始事件: task11_set_torrent_priority - KEY_STEP_COMPLETED - {'timestamp': 1747115853.3296986, 'step_index': 1}
+2025-05-13 05:57:33,329 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待添加种子操作...', 'timestamp': 1747115853328}
+2025-05-13 05:57:33,330 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task11_set_torrent_priority/hooker.js
+2025-05-13 05:57:33,330 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 评估器启动成功
+2025-05-13 05:57:38,618 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - Handler: 接收到脚本事件: set_torrent_priority_before, Payload: {'event': 'set_torrent_priority_before', 'message': '拦截到设置种子文件优先级函数', 'torrent_name': '2011_HARRY_POTTER_7_PART_2.iso', 'torrent_priority': 'Normal', 'timestamp': 1747115858601}
+2025-05-13 05:57:38,629 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler: 拦截到设置种子优先级函数
+2025-05-13 05:57:38,629 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 05:57:38,639 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 记录原始事件: task11_set_torrent_priority - KEY_STEP_COMPLETED - {'timestamp': 1747115858.6294165, 'step_index': 2}
+2025-05-13 05:57:38,650 - qbittorrent_task11_set_torrent_priority_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=2, Name='拦截到设置种子优先级的函数调用'
+2025-05-13 05:57:38,660 - qbittorrent_task11_set_torrent_priority_evaluator - WARNING - Handler 返回列表中包含无法识别的状态: 'current_torrent_priority' in {'status': 'current_torrent_priority', 'reason': '当前种子名称: 2011_HARRY_POTTER_7_PART_2.iso, 当前种子优先级: Normal'}
+2025-05-13 05:57:38,696 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - Handler: 接收到脚本事件: set_torrent_priority_after, Payload: {'event': 'set_torrent_priority_after', 'message': '成功设置种子文件优先级', 'torrent_name': '2011_HARRY_POTTER_7_PART_2.iso', 'torrent_priority': 'High', 'timestamp': 1747115858601}
+2025-05-13 05:57:38,707 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler: 成功设置种子优先级
+2025-05-13 05:57:38,717 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler: 种子名称: 2011_HARRY_POTTER_7_PART_2.iso, 设置优先级: High
+2025-05-13 05:57:38,727 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler: 成功将种子 '2011_HARRY_POTTER_7_PART_2.iso' 的优先级设置为 High
+2025-05-13 05:57:38,738 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 05:57:38,748 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 记录原始事件: task11_set_torrent_priority - KEY_STEP_COMPLETED - {'timestamp': 1747115858.738036, 'step_index': 3}
+2025-05-13 05:57:38,758 - qbittorrent_task11_set_torrent_priority_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=3, Name='成功设置种子优先级'
+2025-05-13 05:57:38,769 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-13 05:57:38,779 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 记录原始事件: task11_set_torrent_priority - KEY_STEP_COMPLETED - {'timestamp': 1747115858.738036, 'step_index': 3}
+2025-05-13 05:57:38,789 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - Handler reported success: 成功将种子 '2011_HARRY_POTTER_7_PART_2.iso' 的优先级设置为 High
+2025-05-13 05:57:38,800 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 记录原始事件: task11_set_torrent_priority - TASK_END - {'timestamp': 1747115858.738036, 'status': 'success', 'reason': "成功将种子 '2011_HARRY_POTTER_7_PART_2.iso' 的优先级设置为 High"}
+2025-05-13 05:57:38,810 - qbittorrent_task11_set_torrent_priority_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747115858.738036
+2025-05-13 05:57:38,820 - qbittorrent_task11_set_torrent_priority_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: success, 原因: 成功将种子 '2011_HARRY_POTTER_7_PART_2.iso' 的优先级设置为 High
+2025-05-13 05:57:38,830 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 触发回调: task_completed - 成功将种子 '2011_HARRY_POTTER_7_PART_2.iso' 的优先级设置为 High
+2025-05-13 05:57:38,856 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - Handler reported app event: set_torrent_priority_result, Data: {}
+2025-05-13 05:57:38,856 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 记录原始事件: task11_set_torrent_priority - APP_SPECIFIC_EVENT - {'timestamp': 1747115858.738036, 'name': 'set_torrent_priority_result', 'payload': {}}
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 脚本卸载完成
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 开始为任务 task11_set_torrent_priority 计算最终指标...
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 指标计算完成 (task11_set_torrent_priority): total_duration_seconds = 5.526
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 指标计算完成 (task11_set_torrent_priority): llm_call_count = 0
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 指标计算完成 (task11_set_torrent_priority): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 指标计算完成 (task11_set_torrent_priority): task_completion_status = {'status': 'success', 'reason': "成功将种子 '2011_HARRY_POTTER_7_PART_2.iso' 的优先级设置为 High"}
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 指标计算完成 (task11_set_torrent_priority): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 指标计算完成 (task11_set_torrent_priority): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 指标计算完成 (task11_set_torrent_priority): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - DEBUG - 指标计算完成 (task11_set_torrent_priority): key_step_tracker = {'total_steps': 3, 'completed_steps_count': 3, 'highest_index_reached': 3, 'completion_rate_by_count': 1.0, 'completion_rate_by_progress': 1.0, 'final_step_reached': True, 'completed_indices_list': [1, 2, 3], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747115853.3292766}, {'step_index': 2, 'step_name': '拦截到设置种子优先级的函数调用', 'timestamp': 1747115858.6294165}, {'step_index': 3, 'step_name': '成功设置种子优先级', 'timestamp': 1747115858.738036}]}
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 任务 task11_set_torrent_priority 的最终指标计算完成。
+2025-05-13 05:57:38,861 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 任务会话结束: task11_set_torrent_priority. 总时长: 5.65 秒
+2025-05-13 05:57:38,862 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 任务 task11_set_torrent_priority 结果已保存: logs/20250513_055730/result_task11_set_torrent_priority_20250513_055738.json
+2025-05-13 05:57:38,862 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 评估结果已保存: logs/20250513_055730/result_task11_set_torrent_priority_20250513_055738.json
+2025-05-13 05:57:39,863 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 任务 task11_set_torrent_priority 结果已保存: logs/20250513_055730/result_task11_set_torrent_priority_20250513_055739.json
+2025-05-13 05:57:39,864 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 评估结果已保存: logs/20250513_055730/result_task11_set_torrent_priority_20250513_055739.json
+2025-05-13 05:57:39,864 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2429368)
+2025-05-13 05:57:39,864 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-13 05:57:41,081 - qbittorrent_task11_set_torrent_priority_evaluator - INFO - 应用进程已自行关闭

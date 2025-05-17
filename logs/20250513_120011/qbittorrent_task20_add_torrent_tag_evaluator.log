@@ -1,0 +1,70 @@
+2025-05-13 12:00:11,890 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 加载任务指令: 请在qBittorrent中，为种子Harry Potter Collection添加标签Movies。
+2025-05-13 12:00:11,890 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_120011
+2025-05-13 12:00:11,890 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task20_add_torrent_tag/hooker.js
+2025-05-13 12:00:11,894 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task20_add_torrent_tag/handler.py.message_handler
+2025-05-13 12:00:11,894 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 评估器初始化完成: task20_add_torrent_tag
+2025-05-13 12:00:11,894 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 12:00:11,894 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 用户数据成功恢复
+2025-05-13 12:00:11,894 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 12:00:11,895 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 应用启动成功，进程ID: 2495989
+2025-05-13 12:00:11,895 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 12:00:11,908 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 启动前窗口行数: 328
+2025-05-13 12:00:12,430 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-13 12:00:14,431 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 开始为任务 task20_add_torrent_tag 注册指标...
+2025-05-13 12:00:14,432 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task20_add_torrent_tag
+2025-05-13 12:00:14,432 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 注册标准指标: llm_call_count for task task20_add_torrent_tag
+2025-05-13 12:00:14,432 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task20_add_torrent_tag
+2025-05-13 12:00:14,432 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 注册标准指标: task_completion_status for task task20_add_torrent_tag
+2025-05-13 12:00:14,432 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task20_add_torrent_tag
+2025-05-13 12:00:14,433 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task20_add_torrent_tag
+2025-05-13 12:00:14,433 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 注册标准指标: error_summary for task task20_add_torrent_tag
+2025-05-13 12:00:14,433 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task20_add_torrent_tag (Total Steps: 2, Names: {1: '找到目标函数', 2: '为种子添加标签成功'})
+2025-05-13 12:00:14,433 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 任务 task20_add_torrent_tag 的指标注册完成，共 8 个指标。
+2025-05-13 12:00:14,433 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 正在重置任务 task20_add_torrent_tag 的指标状态...
+2025-05-13 12:00:14,433 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 任务 task20_add_torrent_tag 的 8 个指标已重置。
+2025-05-13 12:00:14,433 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 任务会话开始: task20_add_torrent_tag
+2025-05-13 12:00:14,434 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 记录原始事件: task20_add_torrent_tag - TASK_START - {'timestamp': 1747137614.433938}
+2025-05-13 12:00:14,434 - qbittorrent_task20_add_torrent_tag_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747137614.433938
+2025-05-13 12:00:14,434 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 连接到进程: 2495989
+2025-05-13 12:00:14,538 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 添加标签监控脚本已启动', 'timestamp': 1747137614537}
+2025-05-13 12:00:14,538 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 添加标签监控脚本已启动
+2025-05-13 12:00:14,538 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10BitTorrent11TorrentImpl6addTagERK3Tag', 'address': '0x577a4d4f71e2', 'message': '找到函数 _ZN10BitTorrent11TorrentImpl6addTagERK3Tag 的实际地址', 'timestamp': 1747137614537}
+2025-05-13 12:00:14,538 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - Handler: 找到函数地址: 0x577a4d4f71e2
+2025-05-13 12:00:14,538 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 12:00:14,538 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 记录原始事件: task20_add_torrent_tag - KEY_STEP_COMPLETED - {'timestamp': 1747137614.5386822, 'step_index': 1}
+2025-05-13 12:00:14,538 - qbittorrent_task20_add_torrent_tag_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-13 12:00:14,538 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待添加标签操作...', 'timestamp': 1747137614538}
+2025-05-13 12:00:14,539 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task20_add_torrent_tag/hooker.js
+2025-05-13 12:00:14,539 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 评估器启动成功
+2025-05-13 12:00:34,299 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - Handler: 接收到脚本事件: add_tag_called, Payload: {'event': 'add_tag_called', 'message': '拦截到添加标签函数调用', 'torrent_name': 'Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB', 'tag_name': 'Movies', 'timestamp': 1747137634271}
+2025-05-13 12:00:34,299 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - Handler: 拦截到添加标签函数调用，种子名称: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB, 标签名称: Movies
+2025-05-13 12:00:34,336 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - Handler: 接收到脚本事件: add_tag_result, Payload: {'event': 'add_tag_result', 'message': '为种子添加标签成功', 'torrent_data': 'Movies', 'timestamp': 1747137634271}
+2025-05-13 12:00:34,347 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - Handler: 添加标签，标签名称: Movies
+2025-05-13 12:00:34,357 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - Handler: 成功为种子添加标签: Movies
+2025-05-13 12:00:34,368 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 12:00:34,379 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 记录原始事件: task20_add_torrent_tag - KEY_STEP_COMPLETED - {'timestamp': 1747137634.3683836, 'step_index': 2}
+2025-05-13 12:00:34,389 - qbittorrent_task20_add_torrent_tag_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=2, Name='为种子添加标签成功'
+2025-05-13 12:00:34,395 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - Handler reported success: 成功为种子添加标签: Movies
+2025-05-13 12:00:34,405 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 记录原始事件: task20_add_torrent_tag - TASK_END - {'timestamp': 1747137634.3683836, 'status': 'success', 'reason': '成功为种子添加标签: Movies'}
+2025-05-13 12:00:34,415 - qbittorrent_task20_add_torrent_tag_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747137634.3683836
+2025-05-13 12:00:34,415 - qbittorrent_task20_add_torrent_tag_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: success, 原因: 成功为种子添加标签: Movies
+2025-05-13 12:00:34,426 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 触发回调: task_completed - 成功为种子添加标签: Movies
+2025-05-13 12:00:34,451 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 脚本卸载完成
+2025-05-13 12:00:34,451 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 开始为任务 task20_add_torrent_tag 计算最终指标...
+2025-05-13 12:00:34,451 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 指标计算完成 (task20_add_torrent_tag): total_duration_seconds = 19.934
+2025-05-13 12:00:34,451 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 指标计算完成 (task20_add_torrent_tag): llm_call_count = 0
+2025-05-13 12:00:34,451 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 指标计算完成 (task20_add_torrent_tag): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-13 12:00:34,451 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 指标计算完成 (task20_add_torrent_tag): task_completion_status = {'status': 'success', 'reason': '成功为种子添加标签: Movies'}
+2025-05-13 12:00:34,451 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 指标计算完成 (task20_add_torrent_tag): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-13 12:00:34,451 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 指标计算完成 (task20_add_torrent_tag): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-13 12:00:34,452 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 指标计算完成 (task20_add_torrent_tag): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-13 12:00:34,452 - qbittorrent_task20_add_torrent_tag_evaluator - DEBUG - 指标计算完成 (task20_add_torrent_tag): key_step_tracker = {'total_steps': 2, 'completed_steps_count': 2, 'highest_index_reached': 2, 'completion_rate_by_count': 1.0, 'completion_rate_by_progress': 1.0, 'final_step_reached': True, 'completed_indices_list': [1, 2], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747137614.5386822}, {'step_index': 2, 'step_name': '为种子添加标签成功', 'timestamp': 1747137634.3683836}]}
+2025-05-13 12:00:34,452 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 任务 task20_add_torrent_tag 的最终指标计算完成。
+2025-05-13 12:00:34,452 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 任务会话结束: task20_add_torrent_tag. 总时长: 20.018 秒
+2025-05-13 12:00:34,453 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 任务 task20_add_torrent_tag 结果已保存: logs/20250513_120011/result_task20_add_torrent_tag_20250513_120034.json
+2025-05-13 12:00:34,453 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 评估结果已保存: logs/20250513_120011/result_task20_add_torrent_tag_20250513_120034.json
+2025-05-13 12:00:35,454 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 任务 task20_add_torrent_tag 结果已保存: logs/20250513_120011/result_task20_add_torrent_tag_20250513_120035.json
+2025-05-13 12:00:35,454 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 评估结果已保存: logs/20250513_120011/result_task20_add_torrent_tag_20250513_120035.json
+2025-05-13 12:00:35,454 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2495989)
+2025-05-13 12:00:35,454 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-13 12:00:36,722 - qbittorrent_task20_add_torrent_tag_evaluator - INFO - 应用进程已自行关闭

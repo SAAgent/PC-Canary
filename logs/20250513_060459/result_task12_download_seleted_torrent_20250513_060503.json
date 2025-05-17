@@ -1,0 +1,182 @@
+{
+  "metadata": {
+    "session_start_iso": "2025-05-13T06:05:02+0000",
+    "session_start_unix": 1747116302.29755,
+    "task_config_at_start": {
+      "task_id": "12",
+      "task_name": "download_seleted_torrent",
+      "description": "在qBittorrent中选择性下载种子中的特定文件。",
+      "application_info": {
+        "name": "Qbittorrent Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": []
+      },
+      "task_parameters": {
+        "torrent_name": "Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB",
+        "file_names": [
+          "2011_HARRY_POTTER_7_PART_2.iso"
+        ]
+      },
+      "instruction_template": "请在qBittorrent中，选择性下载种子${torrent_name}中的文件${file_names}。",
+      "evaluation_setup": {
+        "scripts": [
+          {
+            "role": "hook",
+            "path": "hooker.js"
+          },
+          {
+            "role": "handler",
+            "path": "handler.py"
+          }
+        ],
+        "timeout": 180,
+        "evaluate_on_completion": true
+      },
+      "total_key_steps": 3,
+      "preconditions": {
+        "qbittorrent_running": true,
+        "has_torrents": true
+      },
+      "success_conditions": [
+        "file_download_started"
+      ],
+      "events": {
+        "script_initialized": {
+          "description": "钩子脚本初始化",
+          "is_key_step": false
+        },
+        "function_found": {
+          "description": "找到目标函数",
+          "is_key_step": true,
+          "key_step_index": 1,
+          "key_step_name": "找到目标函数"
+        },
+        "file_selection_detected": {
+          "description": "检测到文件选择操作",
+          "is_key_step": true,
+          "key_step_index": 2,
+          "key_step_name": "检测到文件选择操作"
+        },
+        "file_download_started": {
+          "description": "文件开始下载",
+          "is_key_step": true,
+          "key_step_index": 3,
+          "key_step_name": "文件开始下载"
+        },
+        "error": {
+          "description": "错误事件",
+          "is_key_step": false
+        }
+      }
+    },
+    "app_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+    "app_process_pid": 2430896,
+    "session_end_iso": "2025-05-13T06:05:02+0000",
+    "session_end_unix": 1747116302.4367597,
+    "session_duration_seconds": 0.139
+  },
+  "raw_events": [
+    {
+      "event_type": "TASK_START",
+      "timestamp": 1747116302.29755
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747116302.4296842,
+      "step_index": 1
+    },
+    {
+      "event_type": "AGENT_ERROR_OCCURRED",
+      "timestamp": 1747116302.430236,
+      "error": "function_not_found",
+      "message": "无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b"
+    },
+    {
+      "event_type": "TASK_END",
+      "timestamp": 1747116302.430236,
+      "status": "failure",
+      "reason": "function_not_found: 无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b"
+    },
+    {
+      "event_type": "AGENT_ERROR_OCCURRED",
+      "timestamp": 1747116302.4310362,
+      "error": "Frida Error",
+      "message": "Error: expected a pointer",
+      "stack_trace": "Error: expected a pointer\n    at value (frida/runtime/core.js:419)\n    at initFileSelectionHook (/script1.js:152)\n    at initHook (/script1.js:162)\n    at <anonymous> (/script1.js:169)\n    at <eval> (/script1.js:170)"
+    },
+    {
+      "event_type": "TASK_END",
+      "timestamp": 1747116302.4310362,
+      "status": "failure",
+      "reason": "Frida Error: Error: expected a pointer"
+    }
+  ],
+  "computed_metrics": {
+    "total_duration_seconds": 0.133,
+    "llm_call_count": 0,
+    "llm_token_usage": {
+      "total_prompt_tokens": 0,
+      "total_completion_tokens": 0,
+      "total_tokens": 0
+    },
+    "task_completion_status": {
+      "status": "failure",
+      "reason": "Frida Error: Error: expected a pointer"
+    },
+    "agent_reported_completion": {
+      "completed": false,
+      "reasoning": null
+    },
+    "tool_usage_stats": {
+      "total_tool_calls": 0,
+      "tools": {}
+    },
+    "error_summary": {
+      "total_error_count": 3,
+      "errors_by_source": {
+        "Agent": {
+          "count": 2,
+          "errors": [
+            {
+              "timestamp": 1747116302.430236,
+              "details": "function_not_found"
+            },
+            {
+              "timestamp": 1747116302.4310362,
+              "details": "Frida Error"
+            }
+          ]
+        },
+        "Evaluator": {
+          "count": 1,
+          "errors": [
+            {
+              "timestamp": 1747116302.430236,
+              "details": {
+                "reason": "function_not_found: 无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "key_step_tracker": {
+      "total_steps": 3,
+      "completed_steps_count": 1,
+      "highest_index_reached": 1,
+      "completion_rate_by_count": 0.33,
+      "completion_rate_by_progress": 0.33,
+      "final_step_reached": false,
+      "completed_indices_list": [
+        1
+      ],
+      "completion_timeline": [
+        {
+          "step_index": 1,
+          "step_name": "找到目标函数",
+          "timestamp": 1747116302.4296842
+        }
+      ]
+    }
+  }
+}

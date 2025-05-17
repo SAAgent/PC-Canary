@@ -1,0 +1,70 @@
+2025-05-13 09:47:03,465 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 加载任务指令: 请在qBittorrent中，为种子Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB设置上传速率限制为1024KB/s。
+2025-05-13 09:47:03,465 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_094703
+2025-05-13 09:47:03,465 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task15_set_upload_rate4torrent/hooker.js
+2025-05-13 09:47:03,480 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task15_set_upload_rate4torrent/handler.py.message_handler
+2025-05-13 09:47:03,480 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 评估器初始化完成: task15_set_upload_rate4torrent
+2025-05-13 09:47:03,480 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 09:47:03,480 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 用户数据成功恢复
+2025-05-13 09:47:03,481 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 09:47:03,481 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 应用启动成功，进程ID: 2476949
+2025-05-13 09:47:03,481 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 09:47:03,490 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 启动前窗口行数: 328
+2025-05-13 09:47:04,016 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-13 09:47:06,016 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 开始为任务 task15_set_upload_rate4torrent 注册指标...
+2025-05-13 09:47:06,016 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task15_set_upload_rate4torrent
+2025-05-13 09:47:06,017 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 注册标准指标: llm_call_count for task task15_set_upload_rate4torrent
+2025-05-13 09:47:06,017 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task15_set_upload_rate4torrent
+2025-05-13 09:47:06,017 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 注册标准指标: task_completion_status for task task15_set_upload_rate4torrent
+2025-05-13 09:47:06,017 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task15_set_upload_rate4torrent
+2025-05-13 09:47:06,017 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task15_set_upload_rate4torrent
+2025-05-13 09:47:06,017 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 注册标准指标: error_summary for task task15_set_upload_rate4torrent
+2025-05-13 09:47:06,017 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task15_set_upload_rate4torrent (Total Steps: 2, Names: {1: '找到目标函数', 2: '设置种子上传速率成功'})
+2025-05-13 09:47:06,018 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 任务 task15_set_upload_rate4torrent 的指标注册完成，共 8 个指标。
+2025-05-13 09:47:06,018 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 正在重置任务 task15_set_upload_rate4torrent 的指标状态...
+2025-05-13 09:47:06,018 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 任务 task15_set_upload_rate4torrent 的 8 个指标已重置。
+2025-05-13 09:47:06,018 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 任务会话开始: task15_set_upload_rate4torrent
+2025-05-13 09:47:06,018 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 记录原始事件: task15_set_upload_rate4torrent - TASK_START - {'timestamp': 1747129626.0184188}
+2025-05-13 09:47:06,018 - qbittorrent_task15_set_upload_rate4torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747129626.0184188
+2025-05-13 09:47:06,018 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 连接到进程: 2476949
+2025-05-13 09:47:06,120 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 种子上传速率设置监控脚本已启动', 'timestamp': 1747129626120}
+2025-05-13 09:47:06,120 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 种子上传速率设置监控脚本已启动
+2025-05-13 09:47:06,121 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10BitTorrent11TorrentImpl14setUploadLimitEi', 'address': '0x56583518d266', 'message': '找到函数 _ZN10BitTorrent11TorrentImpl14setUploadLimitEi 的实际地址', 'timestamp': 1747129626120}
+2025-05-13 09:47:06,121 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - Handler: 找到函数地址: 0x56583518d266
+2025-05-13 09:47:06,121 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 09:47:06,121 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 记录原始事件: task15_set_upload_rate4torrent - KEY_STEP_COMPLETED - {'timestamp': 1747129626.1212473, 'step_index': 1}
+2025-05-13 09:47:06,121 - qbittorrent_task15_set_upload_rate4torrent_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-13 09:47:06,121 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待设置上传速率操作...', 'timestamp': 1747129626120}
+2025-05-13 09:47:06,121 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task15_set_upload_rate4torrent/hooker.js
+2025-05-13 09:47:06,121 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 评估器启动成功
+2025-05-13 09:47:24,979 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - Handler: 接收到脚本事件: set_upload_rate_called, Payload: {'event': 'set_upload_rate_called', 'message': '拦截到设置种子上传速率函数调用', 'name': 'Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB', 'upload_limit_before': 1025, 'new_upload_limit': 1024, 'timestamp': 1747129644946}
+2025-05-13 09:47:24,990 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - Handler: 拦截到设置上传速率函数调用，种子名称: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB, 当前上传限制: 1025, 新上传限制: 1024
+2025-05-13 09:47:25,026 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - Handler: 接收到脚本事件: set_upload_rate_success, Payload: {'event': 'set_upload_rate_success', 'message': '设置种子上传速率函数正确返回', 'name': 'Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB', 'upload_limit_after': 1024, 'new_limit_applied': True, 'timestamp': 1747129644947}
+2025-05-13 09:47:25,037 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - Handler: 种子: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB, 设置后的上传速率: 1024
+2025-05-13 09:47:25,047 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - Handler: 成功为种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 设置上传速率为 1024 KB/s
+2025-05-13 09:47:25,058 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-13 09:47:25,068 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 记录原始事件: task15_set_upload_rate4torrent - KEY_STEP_COMPLETED - {'timestamp': 1747129645.0579374, 'step_index': 2}
+2025-05-13 09:47:25,079 - qbittorrent_task15_set_upload_rate4torrent_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=2, Name='设置种子上传速率成功'
+2025-05-13 09:47:25,089 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - Handler reported success: 成功为种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 设置上传速率为 1024 KB/s
+2025-05-13 09:47:25,099 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 记录原始事件: task15_set_upload_rate4torrent - TASK_END - {'timestamp': 1747129645.0579374, 'status': 'success', 'reason': '成功为种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 设置上传速率为 1024 KB/s'}
+2025-05-13 09:47:25,110 - qbittorrent_task15_set_upload_rate4torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747129645.0579374
+2025-05-13 09:47:25,120 - qbittorrent_task15_set_upload_rate4torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: success, 原因: 成功为种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 设置上传速率为 1024 KB/s
+2025-05-13 09:47:25,130 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 触发回调: task_completed - 成功为种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 设置上传速率为 1024 KB/s
+2025-05-13 09:47:25,160 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 脚本卸载完成
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 开始为任务 task15_set_upload_rate4torrent 计算最终指标...
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 指标计算完成 (task15_set_upload_rate4torrent): total_duration_seconds = 19.04
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 指标计算完成 (task15_set_upload_rate4torrent): llm_call_count = 0
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 指标计算完成 (task15_set_upload_rate4torrent): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 指标计算完成 (task15_set_upload_rate4torrent): task_completion_status = {'status': 'success', 'reason': '成功为种子 Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB 设置上传速率为 1024 KB/s'}
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 指标计算完成 (task15_set_upload_rate4torrent): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 指标计算完成 (task15_set_upload_rate4torrent): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 指标计算完成 (task15_set_upload_rate4torrent): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - DEBUG - 指标计算完成 (task15_set_upload_rate4torrent): key_step_tracker = {'total_steps': 2, 'completed_steps_count': 2, 'highest_index_reached': 2, 'completion_rate_by_count': 1.0, 'completion_rate_by_progress': 1.0, 'final_step_reached': True, 'completed_indices_list': [1, 2], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747129626.1212473}, {'step_index': 2, 'step_name': '设置种子上传速率成功', 'timestamp': 1747129645.0579374}]}
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 任务 task15_set_upload_rate4torrent 的最终指标计算完成。
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 任务会话结束: task15_set_upload_rate4torrent. 总时长: 19.143 秒
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 任务 task15_set_upload_rate4torrent 结果已保存: logs/20250513_094703/result_task15_set_upload_rate4torrent_20250513_094725.json
+2025-05-13 09:47:25,161 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 评估结果已保存: logs/20250513_094703/result_task15_set_upload_rate4torrent_20250513_094725.json
+2025-05-13 09:47:26,163 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 任务 task15_set_upload_rate4torrent 结果已保存: logs/20250513_094703/result_task15_set_upload_rate4torrent_20250513_094726.json
+2025-05-13 09:47:26,163 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 评估结果已保存: logs/20250513_094703/result_task15_set_upload_rate4torrent_20250513_094726.json
+2025-05-13 09:47:26,163 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2476949)
+2025-05-13 09:47:26,163 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-13 09:47:27,329 - qbittorrent_task15_set_upload_rate4torrent_evaluator - INFO - 应用进程已自行关闭

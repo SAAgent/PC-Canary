@@ -1,0 +1,11 @@
+2025-05-13 09:32:58,283 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 加载任务指令: 请在qBittorrent中将种子Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB的保存路径修改为/home/agent/Downloads/Harry_Potter。
+2025-05-13 09:32:58,283 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_093258
+2025-05-13 09:32:58,284 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task14_change_torrent_path/hooker.js
+2025-05-13 09:32:58,285 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task14_change_torrent_path/handler.py.message_handler
+2025-05-13 09:32:58,285 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 评估器初始化完成: task14_change_torrent_path
+2025-05-13 09:32:58,285 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 09:32:58,285 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 用户数据成功恢复
+2025-05-13 09:32:58,285 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 09:32:58,286 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 应用启动成功，进程ID: 2473465
+2025-05-13 09:32:58,286 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 09:32:58,300 - qbittorrent_task14_change_torrent_path_evaluator - INFO - 启动前窗口行数: 350

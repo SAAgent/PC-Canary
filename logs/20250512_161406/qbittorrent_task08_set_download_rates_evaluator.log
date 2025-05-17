@@ -1,0 +1,69 @@
+2025-05-12 16:14:06,839 - qbittorrent_task08_set_download_rates_evaluator - INFO - 加载任务指令: 请在qBittorrent中，将全局下载速率设置为2048KB/s
+2025-05-12 16:14:06,839 - qbittorrent_task08_set_download_rates_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250512_161406
+2025-05-12 16:14:06,839 - qbittorrent_task08_set_download_rates_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task08_set_download_rates/hooker.js
+2025-05-12 16:14:06,841 - qbittorrent_task08_set_download_rates_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task08_set_download_rates/handler.py.message_handler
+2025-05-12 16:14:06,841 - qbittorrent_task08_set_download_rates_evaluator - INFO - 评估器初始化完成: task08_set_download_rates
+2025-05-12 16:14:06,841 - qbittorrent_task08_set_download_rates_evaluator - INFO - 注册了新的完成回调函数
+2025-05-12 16:14:06,841 - qbittorrent_task08_set_download_rates_evaluator - INFO - 用户数据成功恢复
+2025-05-12 16:14:06,841 - qbittorrent_task08_set_download_rates_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-12 16:14:06,842 - qbittorrent_task08_set_download_rates_evaluator - INFO - 应用启动成功，进程ID: 2337127
+2025-05-12 16:14:06,842 - qbittorrent_task08_set_download_rates_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-12 16:14:06,853 - qbittorrent_task08_set_download_rates_evaluator - INFO - 启动前窗口行数: 328
+2025-05-12 16:14:07,376 - qbittorrent_task08_set_download_rates_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-12 16:14:09,377 - qbittorrent_task08_set_download_rates_evaluator - INFO - 开始为任务 task08_set_download_rates 注册指标...
+2025-05-12 16:14:09,377 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task08_set_download_rates
+2025-05-12 16:14:09,377 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 注册标准指标: llm_call_count for task task08_set_download_rates
+2025-05-12 16:14:09,378 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task08_set_download_rates
+2025-05-12 16:14:09,378 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 注册标准指标: task_completion_status for task task08_set_download_rates
+2025-05-12 16:14:09,378 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task08_set_download_rates
+2025-05-12 16:14:09,378 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task08_set_download_rates
+2025-05-12 16:14:09,378 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 注册标准指标: error_summary for task task08_set_download_rates
+2025-05-12 16:14:09,378 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task08_set_download_rates (Total Steps: 3, Names: {1: '找到目标函数', 2: '拦截到设置下载速率的函数调用', 3: '成功设置下载速率'})
+2025-05-12 16:14:09,379 - qbittorrent_task08_set_download_rates_evaluator - INFO - 任务 task08_set_download_rates 的指标注册完成，共 8 个指标。
+2025-05-12 16:14:09,379 - qbittorrent_task08_set_download_rates_evaluator - INFO - 正在重置任务 task08_set_download_rates 的指标状态...
+2025-05-12 16:14:09,379 - qbittorrent_task08_set_download_rates_evaluator - INFO - 任务 task08_set_download_rates 的 8 个指标已重置。
+2025-05-12 16:14:09,379 - qbittorrent_task08_set_download_rates_evaluator - INFO - 任务会话开始: task08_set_download_rates
+2025-05-12 16:14:09,379 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 记录原始事件: task08_set_download_rates - TASK_START - {'timestamp': 1747066449.3793626}
+2025-05-12 16:14:09,379 - qbittorrent_task08_set_download_rates_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747066449.3793626
+2025-05-12 16:14:09,379 - qbittorrent_task08_set_download_rates_evaluator - INFO - 连接到进程: 2337127
+2025-05-12 16:14:09,480 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 设置下载速率监控脚本已启动', 'timestamp': 1747066449480}
+2025-05-12 16:14:09,480 - qbittorrent_task08_set_download_rates_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 设置下载速率监控脚本已启动
+2025-05-12 16:14:09,480 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10BitTorrent11SessionImpl27setGlobalDownloadSpeedLimitEi', 'address': '0x5c3e5f967930', 'message': '找到函数 _ZN10BitTorrent11SessionImpl27setGlobalDownloadSpeedLimitEi 的实际地址', 'timestamp': 1747066449480}
+2025-05-12 16:14:09,481 - qbittorrent_task08_set_download_rates_evaluator - INFO - Handler: 找到函数地址: 0x5c3e5f967930
+2025-05-12 16:14:09,481 - qbittorrent_task08_set_download_rates_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-12 16:14:09,481 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 记录原始事件: task08_set_download_rates - KEY_STEP_COMPLETED - {'timestamp': 1747066449.4810865, 'step_index': 1}
+2025-05-12 16:14:09,481 - qbittorrent_task08_set_download_rates_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-12 16:14:09,481 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待设置下载速率操作...', 'timestamp': 1747066449480}
+2025-05-12 16:14:09,481 - qbittorrent_task08_set_download_rates_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task08_set_download_rates/hooker.js
+2025-05-12 16:14:09,481 - qbittorrent_task08_set_download_rates_evaluator - INFO - 评估器启动成功
+2025-05-12 16:14:25,301 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - Handler: 接收到脚本事件: set_download_rates_called, Payload: {'event': 'set_download_rates_called', 'message': '拦截到设置下载速率的函数调用', 'requested_limit': 2097152, 'timestamp': 1747066465294}
+2025-05-12 16:14:25,307 - qbittorrent_task08_set_download_rates_evaluator - INFO - Handler: 拦截到设置下载速率的函数调用，请求值: 2097152 字节/秒
+2025-05-12 16:14:25,318 - qbittorrent_task08_set_download_rates_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-12 16:14:25,328 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 记录原始事件: task08_set_download_rates - KEY_STEP_COMPLETED - {'timestamp': 1747066465.317948, 'step_index': 2}
+2025-05-12 16:14:25,338 - qbittorrent_task08_set_download_rates_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=2, Name='拦截到设置下载速率的函数调用'
+2025-05-12 16:14:25,375 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - Handler: 接收到脚本事件: set_download_rates_result, Payload: {'event': 'set_download_rates_result', 'message': '成功设置下载速率', 'download_rates_value': 2048, 'timestamp': 1747066465295}
+2025-05-12 16:14:25,385 - qbittorrent_task08_set_download_rates_evaluator - INFO - Handler: 下载速率已设置为: 2048 字节/秒
+2025-05-12 16:14:25,396 - qbittorrent_task08_set_download_rates_evaluator - WARNING - Handler: 设置的下载速率 2.00 KB/s 与期望值 2048.00 KB/s 相差较大
+2025-05-12 16:14:25,406 - qbittorrent_task08_set_download_rates_evaluator - INFO - Handler reported key step completion: Index=3, Name from Handler='None'
+2025-05-12 16:14:25,416 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 记录原始事件: task08_set_download_rates - KEY_STEP_COMPLETED - {'timestamp': 1747066465.4065692, 'step_index': 3}
+2025-05-12 16:14:25,427 - qbittorrent_task08_set_download_rates_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=3, Name='成功设置下载速率'
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - INFO - 脚本卸载完成
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - INFO - 开始为任务 task08_set_download_rates 计算最终指标...
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator.TotalTimeMetric - WARNING - 无法计算总时长，开始: 1747066449.3793626, 结束: None
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 指标计算完成 (task08_set_download_rates): total_duration_seconds = None
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 指标计算完成 (task08_set_download_rates): llm_call_count = 0
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 指标计算完成 (task08_set_download_rates): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 指标计算完成 (task08_set_download_rates): task_completion_status = {'status': 'unknown', 'reason': ''}
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 指标计算完成 (task08_set_download_rates): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 指标计算完成 (task08_set_download_rates): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 指标计算完成 (task08_set_download_rates): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 指标计算完成 (task08_set_download_rates): key_step_tracker = {'total_steps': 3, 'completed_steps_count': 3, 'highest_index_reached': 3, 'completion_rate_by_count': 1.0, 'completion_rate_by_progress': 1.0, 'final_step_reached': True, 'completed_indices_list': [1, 2, 3], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747066449.4810865}, {'step_index': 2, 'step_name': '拦截到设置下载速率的函数调用', 'timestamp': 1747066465.317948}, {'step_index': 3, 'step_name': '成功设置下载速率', 'timestamp': 1747066465.4065692}]}
+2025-05-12 16:14:39,486 - qbittorrent_task08_set_download_rates_evaluator - INFO - 任务 task08_set_download_rates 的最终指标计算完成。
+2025-05-12 16:14:39,487 - qbittorrent_task08_set_download_rates_evaluator - INFO - 任务会话结束: task08_set_download_rates. 总时长: 30.108 秒
+2025-05-12 16:14:39,487 - qbittorrent_task08_set_download_rates_evaluator - WARNING - Evaluator stopped externally or timed out before handler completion
+2025-05-12 16:14:39,487 - qbittorrent_task08_set_download_rates_evaluator - DEBUG - 记录原始事件: task08_set_download_rates - TASK_END - {'status': 'stopped', 'reason': 'Evaluator stopped externally or timed out before handler completion', 'timestamp': 1747066479.4870799}
+2025-05-12 16:14:39,487 - qbittorrent_task08_set_download_rates_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747066479.4870799
+2025-05-12 16:14:39,487 - qbittorrent_task08_set_download_rates_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: stopped, 原因: Evaluator stopped externally or timed out before handler completion
+2025-05-12 16:14:39,487 - qbittorrent_task08_set_download_rates_evaluator - INFO - 任务 task08_set_download_rates 结果已保存: logs/20250512_161406/result_task08_set_download_rates_20250512_161439.json
+2025-05-12 16:14:39,487 - qbittorrent_task08_set_download_rates_evaluator - INFO - 评估结果已保存: logs/20250512_161406/result_task08_set_download_rates_20250512_161439.json
+2025-05-12 16:14:49,487 - qbittorrent_task08_set_download_rates_evaluator - WARNING - 评估器未运行

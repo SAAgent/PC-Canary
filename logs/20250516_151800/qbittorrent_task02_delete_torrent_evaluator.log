@@ -1,0 +1,73 @@
+2025-05-16 15:18:00,212 - qbittorrent_task02_delete_torrent_evaluator - INFO - 加载任务指令: 请在Qbittorrent中，将会话列表中的文件Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB删除取消下载，qbittorrent 的软件我已打开。在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23 host是10.161.28.28
+2025-05-16 15:18:00,213 - qbittorrent_task02_delete_torrent_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250516_151800
+2025-05-16 15:18:00,213 - qbittorrent_task02_delete_torrent_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task02_delete_torrent/hooker.js
+2025-05-16 15:18:00,230 - qbittorrent_task02_delete_torrent_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task02_delete_torrent/handler.py.message_handler
+2025-05-16 15:18:00,230 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估器初始化完成: task02_delete_torrent
+2025-05-16 15:18:00,230 - qbittorrent_task02_delete_torrent_evaluator - INFO - 注册了新的完成回调函数
+2025-05-16 15:18:00,230 - qbittorrent_task02_delete_torrent_evaluator - INFO - 用户数据成功恢复
+2025-05-16 15:18:00,230 - qbittorrent_task02_delete_torrent_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-16 15:18:00,232 - qbittorrent_task02_delete_torrent_evaluator - INFO - 应用启动成功，进程ID: 3094094
+2025-05-16 15:18:00,232 - qbittorrent_task02_delete_torrent_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-16 15:18:00,245 - qbittorrent_task02_delete_torrent_evaluator - INFO - 启动前窗口行数: 328
+2025-05-16 15:18:00,797 - qbittorrent_task02_delete_torrent_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-16 15:18:02,798 - qbittorrent_task02_delete_torrent_evaluator - INFO - 开始为任务 task02_delete_torrent 注册指标...
+2025-05-16 15:18:02,798 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task02_delete_torrent
+2025-05-16 15:18:02,798 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 注册标准指标: llm_call_count for task task02_delete_torrent
+2025-05-16 15:18:02,798 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task02_delete_torrent
+2025-05-16 15:18:02,799 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 注册标准指标: task_completion_status for task task02_delete_torrent
+2025-05-16 15:18:02,799 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task02_delete_torrent
+2025-05-16 15:18:02,799 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task02_delete_torrent
+2025-05-16 15:18:02,799 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 注册标准指标: error_summary for task task02_delete_torrent
+2025-05-16 15:18:02,799 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task02_delete_torrent (Total Steps: 2, Names: {1: '找到删除种子的函数', 2: '删除种子函数正确返回'})
+2025-05-16 15:18:02,799 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务 task02_delete_torrent 的指标注册完成，共 8 个指标。
+2025-05-16 15:18:02,799 - qbittorrent_task02_delete_torrent_evaluator - INFO - 正在重置任务 task02_delete_torrent 的指标状态...
+2025-05-16 15:18:02,800 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务 task02_delete_torrent 的 8 个指标已重置。
+2025-05-16 15:18:02,800 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务会话开始: task02_delete_torrent
+2025-05-16 15:18:02,800 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 记录原始事件: task02_delete_torrent - TASK_START - {'timestamp': 1747408682.8001416}
+2025-05-16 15:18:02,800 - qbittorrent_task02_delete_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747408682.8001416
+2025-05-16 15:18:02,800 - qbittorrent_task02_delete_torrent_evaluator - INFO - 连接到进程: 3094094
+2025-05-16 15:18:02,934 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 种子删除监控脚本已启动', 'timestamp': 1747408682933}
+2025-05-16 15:18:02,934 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 种子删除监控脚本已启动
+2025-05-16 15:18:02,934 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10BitTorrent11SessionImpl13removeTorrentERKNS_9TorrentIDENS_19TorrentRemoveOptionE', 'address': '0x5e122eae2062', 'message': '找到函数 _ZN10BitTorrent11SessionImpl13removeTorrentERKNS_9TorrentIDENS_19TorrentRemoveOptionE 的实际地址', 'timestamp': 1747408682933}
+2025-05-16 15:18:02,934 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler: 找到函数地址: 0x5e122eae2062
+2025-05-16 15:18:02,934 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-16 15:18:02,934 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 记录原始事件: task02_delete_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747408682.9348233, 'step_index': 1}
+2025-05-16 15:18:02,935 - qbittorrent_task02_delete_torrent_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到删除种子的函数'
+2025-05-16 15:18:02,935 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZNK10BitTorrent11TorrentImpl4nameEv', 'address': '0x5e122eb6e440', 'message': '找到函数 _ZNK10BitTorrent11TorrentImpl4nameEv 的实际地址', 'timestamp': 1747408682933}
+2025-05-16 15:18:02,935 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler: 找到函数地址: 0x5e122eb6e440
+2025-05-16 15:18:02,935 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-16 15:18:02,935 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 记录原始事件: task02_delete_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747408682.935275, 'step_index': 1}
+2025-05-16 15:18:02,935 - qbittorrent_task02_delete_torrent_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task02_delete_torrent/hooker.js
+2025-05-16 15:18:02,936 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估器启动成功
+2025-05-16 15:18:07,718 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: remove_torrent_called, Payload: {'event': 'remove_torrent_called', 'message': '拦截到删除种子函数调用', 'timestamp': 1747408687709}
+2025-05-16 15:18:07,730 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler: 拦截到删除种子函数调用
+2025-05-16 15:18:07,768 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: remove_torrent_result, Payload: {'event': 'remove_torrent_result', 'message': '成功删除种子文件', 'torrent_data': 'Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB', 'timestamp': 1747408687711}
+2025-05-16 15:18:07,768 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler: 收到已删除种子数据: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB
+2025-05-16 15:18:07,769 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler: 目标种子: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB已成功删除
+2025-05-16 15:18:07,769 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler reported key step completion: Index=2, Name from Handler='None'
+2025-05-16 15:18:07,775 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 记录原始事件: task02_delete_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747408687.769365, 'step_index': 2}
+2025-05-16 15:18:07,786 - qbittorrent_task02_delete_torrent_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=2, Name='删除种子函数正确返回'
+2025-05-16 15:18:07,792 - qbittorrent_task02_delete_torrent_evaluator - INFO - Handler reported success: 目标种子: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB已成功删除
+2025-05-16 15:18:07,797 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 记录原始事件: task02_delete_torrent - TASK_END - {'timestamp': 1747408687.769365, 'status': 'success', 'reason': '目标种子: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB已成功删除'}
+2025-05-16 15:18:07,808 - qbittorrent_task02_delete_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747408687.769365
+2025-05-16 15:18:07,809 - qbittorrent_task02_delete_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: success, 原因: 目标种子: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB已成功删除
+2025-05-16 15:18:07,815 - qbittorrent_task02_delete_torrent_evaluator - INFO - 触发回调: task_completed - 目标种子: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB已成功删除
+2025-05-16 15:18:08,108 - qbittorrent_task02_delete_torrent_evaluator - INFO - 脚本卸载完成
+2025-05-16 15:18:08,108 - qbittorrent_task02_delete_torrent_evaluator - INFO - 开始为任务 task02_delete_torrent 计算最终指标...
+2025-05-16 15:18:08,108 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 指标计算完成 (task02_delete_torrent): total_duration_seconds = 4.969
+2025-05-16 15:18:08,108 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 指标计算完成 (task02_delete_torrent): llm_call_count = 0
+2025-05-16 15:18:08,108 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 指标计算完成 (task02_delete_torrent): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-16 15:18:08,108 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 指标计算完成 (task02_delete_torrent): task_completion_status = {'status': 'success', 'reason': '目标种子: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB已成功删除'}
+2025-05-16 15:18:08,108 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 指标计算完成 (task02_delete_torrent): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-16 15:18:08,109 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 指标计算完成 (task02_delete_torrent): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-16 15:18:08,109 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 指标计算完成 (task02_delete_torrent): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-16 15:18:08,109 - qbittorrent_task02_delete_torrent_evaluator - DEBUG - 指标计算完成 (task02_delete_torrent): key_step_tracker = {'total_steps': 2, 'completed_steps_count': 2, 'highest_index_reached': 2, 'completion_rate_by_count': 1.0, 'completion_rate_by_progress': 1.0, 'final_step_reached': True, 'completed_indices_list': [1, 2], 'completion_timeline': [{'step_index': 1, 'step_name': '找到删除种子的函数', 'timestamp': 1747408682.9348233}, {'step_index': 2, 'step_name': '删除种子函数正确返回', 'timestamp': 1747408687.769365}]}
+2025-05-16 15:18:08,109 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务 task02_delete_torrent 的最终指标计算完成。
+2025-05-16 15:18:08,109 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务会话结束: task02_delete_torrent. 总时长: 5.309 秒
+2025-05-16 15:18:08,110 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务 task02_delete_torrent 结果已保存: logs/20250516_151800/result_task02_delete_torrent_20250516_151808.json
+2025-05-16 15:18:08,110 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估结果已保存: logs/20250516_151800/result_task02_delete_torrent_20250516_151808.json
+2025-05-16 15:18:09,112 - qbittorrent_task02_delete_torrent_evaluator - INFO - 任务 task02_delete_torrent 结果已保存: logs/20250516_151800/result_task02_delete_torrent_20250516_151809.json
+2025-05-16 15:18:09,112 - qbittorrent_task02_delete_torrent_evaluator - INFO - 评估结果已保存: logs/20250516_151800/result_task02_delete_torrent_20250516_151809.json
+2025-05-16 15:18:09,112 - qbittorrent_task02_delete_torrent_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 3094094)
+2025-05-16 15:18:09,112 - qbittorrent_task02_delete_torrent_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-16 15:18:09,227 - qbittorrent_task02_delete_torrent_evaluator - INFO - 应用进程已自行关闭

@@ -1,0 +1,369 @@
+2025-05-13 08:17:06,390 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 加载任务指令: 请在qBittorrent中，选择性下载种子Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB中的文件['2011_HARRY_POTTER_7_PART_2.iso']。
+2025-05-13 08:17:06,390 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_081706
+2025-05-13 08:17:06,391 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/hooker.js
+2025-05-13 08:17:06,392 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/handler.py.message_handler
+2025-05-13 08:17:06,393 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估器初始化完成: task12_download_seleted_torrent
+2025-05-13 08:17:06,393 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 08:17:06,393 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 用户数据成功恢复
+2025-05-13 08:17:06,393 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 08:17:06,394 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 应用启动成功，进程ID: 2447281
+2025-05-13 08:17:06,394 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 08:17:06,407 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 启动前窗口行数: 328
+2025-05-13 08:17:06,935 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-13 08:17:08,935 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 开始为任务 task12_download_seleted_torrent 注册指标...
+2025-05-13 08:17:08,936 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task12_download_seleted_torrent
+2025-05-13 08:17:08,936 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: llm_call_count for task task12_download_seleted_torrent
+2025-05-13 08:17:08,936 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task12_download_seleted_torrent
+2025-05-13 08:17:08,936 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: task_completion_status for task task12_download_seleted_torrent
+2025-05-13 08:17:08,936 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task12_download_seleted_torrent
+2025-05-13 08:17:08,937 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task12_download_seleted_torrent
+2025-05-13 08:17:08,937 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: error_summary for task task12_download_seleted_torrent
+2025-05-13 08:17:08,937 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task12_download_seleted_torrent (Total Steps: 3, Names: {1: '找到目标函数', 2: '检测到文件选择操作', 3: '文件开始下载'})
+2025-05-13 08:17:08,937 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 的指标注册完成，共 8 个指标。
+2025-05-13 08:17:08,937 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 正在重置任务 task12_download_seleted_torrent 的指标状态...
+2025-05-13 08:17:08,937 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 的 8 个指标已重置。
+2025-05-13 08:17:08,937 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务会话开始: task12_download_seleted_torrent
+2025-05-13 08:17:08,938 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_START - {'timestamp': 1747124228.93791}
+2025-05-13 08:17:08,938 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747124228.93791
+2025-05-13 08:17:08,938 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 连接到进程: 2447281
+2025-05-13 08:17:09,054 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 选择性下载监控脚本已启动', 'timestamp': 1747124229053}
+2025-05-13 08:17:09,054 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 选择性下载监控脚本已启动
+2025-05-13 08:17:09,054 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN19TorrentContentModel15setItemPriorityERK11QModelIndexN10BitTorrent16DownloadPriorityE', 'address': '0x60710c8f112e', 'message': '找到函数 _ZN19TorrentContentModel15setItemPriorityERK11QModelIndexN10BitTorrent16DownloadPriorityE 的实际地址', 'timestamp': 1747124229053}
+2025-05-13 08:17:09,054 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 找到函数地址: 0x60710c8f112e
+2025-05-13 08:17:09,054 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 08:17:09,054 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124229.0546296, 'step_index': 1}
+2025-05-13 08:17:09,054 - qbittorrent_task12_download_seleted_torrent_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-13 08:17:09,054 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN23TorrentContentModelFile11setPriorityEN10BitTorrent16DownloadPriorityEb', 'address': '0x60710c8fcb92', 'message': '找到函数 _ZN23TorrentContentModelFile11setPriorityEN10BitTorrent16DownloadPriorityEb 的实际地址', 'timestamp': 1747124229053}
+2025-05-13 08:17:09,055 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 找到函数地址: 0x60710c8fcb92
+2025-05-13 08:17:09,055 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 08:17:09,055 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124229.0550795, 'step_index': 1}
+2025-05-13 08:17:09,055 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN19AddNewTorrentDialog6acceptEv', 'address': '0x60710c770812', 'message': '找到函数 _ZN19AddNewTorrentDialog6acceptEv 的实际地址', 'timestamp': 1747124229053}
+2025-05-13 08:17:09,055 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 找到函数地址: 0x60710c770812
+2025-05-13 08:17:09,055 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 08:17:09,055 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747124229.0553632, 'step_index': 1}
+2025-05-13 08:17:09,055 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待选择文件操作...', 'timestamp': 1747124229053}
+2025-05-13 08:17:09,055 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/hooker.js
+2025-05-13 08:17:09,056 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估器启动成功
+2025-05-13 08:17:14,714 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234707}
+2025-05-13 08:17:14,714 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,714 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,714 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7147608, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,715 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,720 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7147608, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,730 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7147608
+2025-05-13 08:17:14,735 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,746 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,772 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,772 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,772 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7723746, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,772 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,772 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7723746, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,773 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7723746
+2025-05-13 08:17:14,773 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,773 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,773 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234707}
+2025-05-13 08:17:14,773 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,773 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,774 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7739263, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,774 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,774 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7739263, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,774 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7739263
+2025-05-13 08:17:14,774 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,774 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,775 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,775 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,775 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7751472, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,775 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,775 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7751472, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,775 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7751472
+2025-05-13 08:17:14,775 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,775 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,776 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234708}
+2025-05-13 08:17:14,776 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,776 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,776 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.776359, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,776 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,776 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.776359, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,776 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.776359
+2025-05-13 08:17:14,776 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,777 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,777 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,777 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,777 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7775266, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,777 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,777 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7775266, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,778 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7775266
+2025-05-13 08:17:14,778 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,778 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,778 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234708}
+2025-05-13 08:17:14,778 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,778 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,778 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.778715, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,778 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,779 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.778715, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,779 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.778715
+2025-05-13 08:17:14,779 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,779 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,779 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,779 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,780 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7798967, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,780 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,780 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7798967, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,780 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7798967
+2025-05-13 08:17:14,780 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,780 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,780 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234708}
+2025-05-13 08:17:14,781 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,781 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,781 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7810926, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,781 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,781 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7810926, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,781 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7810926
+2025-05-13 08:17:14,781 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,781 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,782 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,782 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,782 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7822149, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,782 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,782 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7822149, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,782 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7822149
+2025-05-13 08:17:14,782 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,783 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234709}
+2025-05-13 08:17:14,783 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,783 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,783 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7834015, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,783 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,783 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7834015, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,783 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7834015
+2025-05-13 08:17:14,783 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,784 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,784 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,784 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,784 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7845132, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,784 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,784 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7845132, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,785 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7845132
+2025-05-13 08:17:14,785 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,785 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,785 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234709}
+2025-05-13 08:17:14,785 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,785 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,785 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.785686, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,785 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,786 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.785686, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,786 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.785686
+2025-05-13 08:17:14,786 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,786 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,786 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,786 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,786 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7867885, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,787 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,787 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7867885, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,787 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7867885
+2025-05-13 08:17:14,787 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,787 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,787 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234710}
+2025-05-13 08:17:14,787 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,787 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,788 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.787917, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,788 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,788 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.787917, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,788 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.787917
+2025-05-13 08:17:14,788 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,788 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,788 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,789 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,789 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7890642, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,789 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,789 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7890642, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,789 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7890642
+2025-05-13 08:17:14,789 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,789 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,790 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234711}
+2025-05-13 08:17:14,790 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,790 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,790 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7902198, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,790 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,790 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7902198, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,790 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7902198
+2025-05-13 08:17:14,790 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,790 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,791 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,791 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,791 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.791295, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,791 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,791 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.791295, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,791 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.791295
+2025-05-13 08:17:14,791 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,792 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,792 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234712}
+2025-05-13 08:17:14,792 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,792 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,792 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7924368, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,792 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,792 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7924368, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,792 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7924368
+2025-05-13 08:17:14,793 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,793 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,793 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,793 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,793 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.793555, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,793 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,793 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.793555, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,794 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.793555
+2025-05-13 08:17:14,794 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,794 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,794 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234712}
+2025-05-13 08:17:14,794 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,794 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,794 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7947237, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,794 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,795 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7947237, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,795 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7947237
+2025-05-13 08:17:14,795 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,795 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,795 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,795 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,795 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7958095, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,796 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,796 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7958095, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,796 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7958095
+2025-05-13 08:17:14,796 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,796 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,796 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234713}
+2025-05-13 08:17:14,796 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,796 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,797 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7969413, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,797 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,797 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7969413, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,797 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7969413
+2025-05-13 08:17:14,797 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,797 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,797 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,798 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,798 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7980998, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,798 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,798 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7980998, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,798 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7980998
+2025-05-13 08:17:14,798 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,798 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,799 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234713}
+2025-05-13 08:17:14,799 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,799 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,799 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.7992597, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,799 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,799 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.7992597, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,799 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.7992597
+2025-05-13 08:17:14,799 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,799 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,800 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,800 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,800 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.800405, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,800 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,800 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.800405, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,800 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.800405
+2025-05-13 08:17:14,801 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,801 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,801 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234714}
+2025-05-13 08:17:14,801 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,801 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,801 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.8015447, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,801 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,801 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.8015447, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,802 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.8015447
+2025-05-13 08:17:14,802 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,802 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,802 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,802 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,802 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.8026364, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,802 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,803 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.8026364, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,803 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.8026364
+2025-05-13 08:17:14,803 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,803 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,803 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234714}
+2025-05-13 08:17:14,803 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,803 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,803 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.8037703, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,804 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,804 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.8037703, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,804 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.8037703
+2025-05-13 08:17:14,804 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,804 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,804 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,804 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,804 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.8048468, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,805 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,805 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.8048468, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,805 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.8048468
+2025-05-13 08:17:14,805 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,805 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,805 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined", 'timestamp': 1747124234715}
+2025-05-13 08:17:14,805 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (memory_read_error): 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,806 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,806 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.8059921, 'error': 'memory_read_error', 'message': "读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,806 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: memory_read_error
+2025-05-13 08:17:14,806 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.8059921, 'status': 'failure', 'reason': "memory_read_error: 读取内存错误: cannot read property 'add' of undefined"}
+2025-05-13 08:17:14,806 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.8059921
+2025-05-13 08:17:14,806 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,806 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - memory_read_error: 读取内存错误: cannot read property 'add' of undefined
+2025-05-13 08:17:14,807 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: missing argument
+Stack: Error: missing argument
+    at onLeave (/script1.js:224)
+2025-05-13 08:17:14,807 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: missing argument
+2025-05-13 08:17:14,807 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747124234.8071167, 'error': 'Frida Error', 'message': 'Error: missing argument', 'stack_trace': 'Error: missing argument\n    at onLeave (/script1.js:224)'}
+2025-05-13 08:17:14,807 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 08:17:14,807 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747124234.8071167, 'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,807 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747124234.8071167
+2025-05-13 08:17:14,807 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: missing argument
+2025-05-13 08:17:14,807 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: missing argument
+2025-05-13 08:17:14,813 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 脚本卸载完成
+2025-05-13 08:17:14,813 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 开始为任务 task12_download_seleted_torrent 计算最终指标...
+2025-05-13 08:17:14,813 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): total_duration_seconds = 5.869
+2025-05-13 08:17:14,813 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): llm_call_count = 0
+2025-05-13 08:17:14,813 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-13 08:17:14,813 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): task_completion_status = {'status': 'failure', 'reason': 'Frida Error: Error: missing argument'}
+2025-05-13 08:17:14,813 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-13 08:17:14,814 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-13 08:17:14,814 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): error_summary = {'total_error_count': 32, 'errors_by_source': {'Agent': {'count': 32, 'errors': [{'timestamp': 1747124234.7147608, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7723746, 'details': 'Frida Error'}, {'timestamp': 1747124234.7739263, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7751472, 'details': 'Frida Error'}, {'timestamp': 1747124234.776359, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7775266, 'details': 'Frida Error'}, {'timestamp': 1747124234.778715, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7798967, 'details': 'Frida Error'}, {'timestamp': 1747124234.7810926, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7822149, 'details': 'Frida Error'}, {'timestamp': 1747124234.7834015, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7845132, 'details': 'Frida Error'}, {'timestamp': 1747124234.785686, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7867885, 'details': 'Frida Error'}, {'timestamp': 1747124234.787917, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7890642, 'details': 'Frida Error'}, {'timestamp': 1747124234.7902198, 'details': 'memory_read_error'}, {'timestamp': 1747124234.791295, 'details': 'Frida Error'}, {'timestamp': 1747124234.7924368, 'details': 'memory_read_error'}, {'timestamp': 1747124234.793555, 'details': 'Frida Error'}, {'timestamp': 1747124234.7947237, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7958095, 'details': 'Frida Error'}, {'timestamp': 1747124234.7969413, 'details': 'memory_read_error'}, {'timestamp': 1747124234.7980998, 'details': 'Frida Error'}, {'timestamp': 1747124234.7992597, 'details': 'memory_read_error'}, {'timestamp': 1747124234.800405, 'details': 'Frida Error'}, {'timestamp': 1747124234.8015447, 'details': 'memory_read_error'}, {'timestamp': 1747124234.8026364, 'details': 'Frida Error'}, {'timestamp': 1747124234.8037703, 'details': 'memory_read_error'}, {'timestamp': 1747124234.8048468, 'details': 'Frida Error'}, {'timestamp': 1747124234.8059921, 'details': 'memory_read_error'}, {'timestamp': 1747124234.8071167, 'details': 'Frida Error'}]}}}
+2025-05-13 08:17:14,814 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): key_step_tracker = {'total_steps': 3, 'completed_steps_count': 1, 'highest_index_reached': 1, 'completion_rate_by_count': 0.33, 'completion_rate_by_progress': 0.33, 'final_step_reached': False, 'completed_indices_list': [1], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747124229.0546296}]}
+2025-05-13 08:17:14,814 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 的最终指标计算完成。
+2025-05-13 08:17:14,814 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务会话结束: task12_download_seleted_torrent. 总时长: 5.876 秒
+2025-05-13 08:17:14,815 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 结果已保存: logs/20250513_081706/result_task12_download_seleted_torrent_20250513_081714.json
+2025-05-13 08:17:14,815 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估结果已保存: logs/20250513_081706/result_task12_download_seleted_torrent_20250513_081714.json
+2025-05-13 08:17:15,817 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 结果已保存: logs/20250513_081706/result_task12_download_seleted_torrent_20250513_081715.json
+2025-05-13 08:17:15,817 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估结果已保存: logs/20250513_081706/result_task12_download_seleted_torrent_20250513_081715.json
+2025-05-13 08:17:15,817 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2447281)
+2025-05-13 08:17:15,817 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-13 08:17:15,931 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 应用进程已自行关闭

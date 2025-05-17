@@ -1,0 +1,68 @@
+{
+    "task_id": "19", 
+	"task_name": "setMaxActiveTorrents", 
+    "description": "在qBittorrent中设置最大活动种子数。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "max_active_downloads": 5,
+        "max_active_uploads": 5,
+        "max_active_torrents": 10
+    },
+
+    "instruction_template": "请在qBittorrent中，设置最大同时下载数为${max_active_downloads}，最大同时上传数为${max_active_uploads}，最大同时活动种子数为${max_active_torrents}，qbittorrent 的软件我已打开,在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23 host是10.161.28.28。", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180,
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+	"preconditions": {
+	  "qbittorrent_running": true
+	},
+	"success_conditions": [
+	  "set_max_active_torrents"
+	],
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到目标函数",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标函数"
+        },
+        "set_max_active_torrents": {
+            "description": "设置最大活动种子数成功",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "设置最大活动种子数成功"
+        },
+        "error": {
+            "description": "错误事件",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/workspace/PC-Canary/apps/qBittorrent/qbittorrent_mcp",
+                "run",
+                "qbittorrent.py"
+            ]
+        }
+    ]
+}

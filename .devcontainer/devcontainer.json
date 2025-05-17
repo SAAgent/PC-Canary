@@ -1,5 +1,6 @@
 {
     "name": "benchmark_env",
+    // "image": "agent-pc:v3",
     "build": {
         "dockerfile": "Dockerfile",
         "args": {

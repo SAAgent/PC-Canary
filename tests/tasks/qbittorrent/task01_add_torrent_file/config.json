@@ -1,0 +1,71 @@
+{
+    "task_id": "01", 
+	"task_name": "add_torrent_file", 
+    "description": "将指定种子文件添加到 qbittorrent 中。", 
+
+    "application_info": {
+        "name": "Qbittorrent Desktop", 
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": [] 
+    },
+
+    "task_parameters": {
+        "file_name": "Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB"
+    },
+
+    "instruction_template": "请在Qbittorrent中，将桌面的文件${file_name} 添加到qbittorrent下载列表下，qbittorrent 的软件我已打开。在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23 host是10.161.28.28", 
+
+    "evaluation_setup": {
+        "scripts": [
+		  { "role": "hook",    "path": "hooker.js" },
+		  { "role": "handler", "path": "handler.py" }
+		],
+        "timeout": 180 ,
+        "evaluate_on_completion": true
+    },
+    "total_key_steps": 2,
+	"preconditions": {
+	  "telegram_running": true,
+      "file_existence": true
+	},
+	"success_conditions": [
+	  "add_torrent_result"
+	],
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到了目标群组 (原始事件，触发检查)",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "找到目标群组"
+        },
+        "add_torrent_called":  {
+            "description": "钩子脚本初始化",
+            "is_key_step": false
+        },
+		"add_torrent_result": {
+            "description": "添加种子到会话函数正确返回",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "添加种子到会话函数正确返回"
+        },
+        "error":  {
+            "description": "错误事件",
+            "is_key_step": false
+        }  
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/workspace/PC-Canary/apps/qBittorrent/qbittorrent_mcp",
+                "run",
+                "qbittorrent.py"
+            ]
+        }
+    ]
+}

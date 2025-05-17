@@ -1,0 +1,80 @@
+2025-05-13 06:06:06,106 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 加载任务指令: 请在qBittorrent中，选择性下载种子Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB中的文件['2011_HARRY_POTTER_7_PART_2.iso']。
+2025-05-13 06:06:06,106 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250513_060606
+2025-05-13 06:06:06,106 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/hooker.js
+2025-05-13 06:06:06,107 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/handler.py.message_handler
+2025-05-13 06:06:06,107 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估器初始化完成: task12_download_seleted_torrent
+2025-05-13 06:06:06,107 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 注册了新的完成回调函数
+2025-05-13 06:06:06,107 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 用户数据成功恢复
+2025-05-13 06:06:06,107 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-13 06:06:06,108 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 应用启动成功，进程ID: 2431285
+2025-05-13 06:06:06,108 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-13 06:06:06,124 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 启动前窗口行数: 328
+2025-05-13 06:06:06,655 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-13 06:06:08,656 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 开始为任务 task12_download_seleted_torrent 注册指标...
+2025-05-13 06:06:08,656 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task12_download_seleted_torrent
+2025-05-13 06:06:08,656 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: llm_call_count for task task12_download_seleted_torrent
+2025-05-13 06:06:08,656 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task12_download_seleted_torrent
+2025-05-13 06:06:08,657 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: task_completion_status for task task12_download_seleted_torrent
+2025-05-13 06:06:08,657 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task12_download_seleted_torrent
+2025-05-13 06:06:08,657 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task12_download_seleted_torrent
+2025-05-13 06:06:08,657 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册标准指标: error_summary for task task12_download_seleted_torrent
+2025-05-13 06:06:08,657 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task12_download_seleted_torrent (Total Steps: 3, Names: {1: '找到目标函数', 2: '检测到文件选择操作', 3: '文件开始下载'})
+2025-05-13 06:06:08,657 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 的指标注册完成，共 8 个指标。
+2025-05-13 06:06:08,657 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 正在重置任务 task12_download_seleted_torrent 的指标状态...
+2025-05-13 06:06:08,658 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 的 8 个指标已重置。
+2025-05-13 06:06:08,658 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务会话开始: task12_download_seleted_torrent
+2025-05-13 06:06:08,658 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_START - {'timestamp': 1747116368.6582115}
+2025-05-13 06:06:08,658 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747116368.6582115
+2025-05-13 06:06:08,658 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 连接到进程: 2431285
+2025-05-13 06:06:08,776 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 选择性下载监控脚本已启动', 'timestamp': 1747116368775}
+2025-05-13 06:06:08,776 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 选择性下载监控脚本已启动
+2025-05-13 06:06:08,776 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN23TorrentContentModelFile11setPriorityEN10BitTorrent16DownloadPriorityEb', 'address': '0x559511e67b92', 'message': '找到函数 _ZN23TorrentContentModelFile11setPriorityEN10BitTorrent16DownloadPriorityEb 的实际地址', 'timestamp': 1747116368775}
+2025-05-13 06:06:08,776 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler: 找到函数地址: 0x559511e67b92
+2025-05-13 06:06:08,776 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - Handler reported key step completion: Index=1, Name from Handler='None'
+2025-05-13 06:06:08,776 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - KEY_STEP_COMPLETED - {'timestamp': 1747116368.7766392, 'step_index': 1}
+2025-05-13 06:06:08,776 - qbittorrent_task12_download_seleted_torrent_evaluator.KeyStepMetric - INFO - 关键步骤完成: Index=1, Name='找到目标函数'
+2025-05-13 06:06:08,776 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - Handler: 接收到脚本事件: error, Payload: {'event': 'error', 'error_type': 'function_not_found', 'message': '无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b', 'timestamp': 1747116368775}
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: 钩子脚本错误 (function_not_found): 无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: function_not_found: 无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747116368.7770934, 'error': 'function_not_found', 'message': '无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b'}
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: function_not_found
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747116368.7770934, 'status': 'failure', 'reason': 'function_not_found: 无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b'}
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747116368.7770934
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: function_not_found: 无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Evaluator, 详情: {'reason': 'function_not_found: 无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b'}
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - function_not_found: 无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler: Frida JS 错误: Error: expected a pointer
+Stack: Error: expected a pointer
+    at value (frida/runtime/core.js:419)
+    at initFileSelectionHook (/script1.js:152)
+    at initHook (/script1.js:162)
+    at <anonymous> (/script1.js:169)
+    at <eval> (/script1.js:170)
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator - ERROR - Handler reported error: Frida Error: Error: expected a pointer
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - AGENT_ERROR_OCCURRED - {'timestamp': 1747116368.7777913, 'error': 'Frida Error', 'message': 'Error: expected a pointer', 'stack_trace': 'Error: expected a pointer\n    at value (frida/runtime/core.js:419)\n    at initFileSelectionHook (/script1.js:152)\n    at initHook (/script1.js:162)\n    at <anonymous> (/script1.js:169)\n    at <eval> (/script1.js:170)'}
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator.ErrorCounterMetric - WARNING - 记录到错误 - 来源: Agent, 详情: Frida Error
+2025-05-13 06:06:08,777 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 记录原始事件: task12_download_seleted_torrent - TASK_END - {'timestamp': 1747116368.7777913, 'status': 'failure', 'reason': 'Frida Error: Error: expected a pointer'}
+2025-05-13 06:06:08,778 - qbittorrent_task12_download_seleted_torrent_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747116368.7777913
+2025-05-13 06:06:08,778 - qbittorrent_task12_download_seleted_torrent_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: failure, 原因: Frida Error: Error: expected a pointer
+2025-05-13 06:06:08,778 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 触发回调: task_error - Frida Error: Error: expected a pointer
+2025-05-13 06:06:08,778 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task12_download_seleted_torrent/hooker.js
+2025-05-13 06:06:08,778 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估器启动成功
+2025-05-13 06:06:08,782 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 脚本卸载完成
+2025-05-13 06:06:08,783 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 开始为任务 task12_download_seleted_torrent 计算最终指标...
+2025-05-13 06:06:08,783 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): total_duration_seconds = 0.12
+2025-05-13 06:06:08,783 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): llm_call_count = 0
+2025-05-13 06:06:08,783 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-13 06:06:08,783 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): task_completion_status = {'status': 'failure', 'reason': 'Frida Error: Error: expected a pointer'}
+2025-05-13 06:06:08,783 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-13 06:06:08,783 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-13 06:06:08,784 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): error_summary = {'total_error_count': 3, 'errors_by_source': {'Agent': {'count': 2, 'errors': [{'timestamp': 1747116368.7770934, 'details': 'function_not_found'}, {'timestamp': 1747116368.7777913, 'details': 'Frida Error'}]}, 'Evaluator': {'count': 1, 'errors': [{'timestamp': 1747116368.7770934, 'details': {'reason': 'function_not_found: 无法找到函数 _ZN10BitTorrent7TorrentC2ERNS_7SessionEPN6libtorrent12torrent_infoERK7QStringS8_b'}}]}}}
+2025-05-13 06:06:08,784 - qbittorrent_task12_download_seleted_torrent_evaluator - DEBUG - 指标计算完成 (task12_download_seleted_torrent): key_step_tracker = {'total_steps': 3, 'completed_steps_count': 1, 'highest_index_reached': 1, 'completion_rate_by_count': 0.33, 'completion_rate_by_progress': 0.33, 'final_step_reached': False, 'completed_indices_list': [1], 'completion_timeline': [{'step_index': 1, 'step_name': '找到目标函数', 'timestamp': 1747116368.7766392}]}
+2025-05-13 06:06:08,784 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 的最终指标计算完成。
+2025-05-13 06:06:08,784 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务会话结束: task12_download_seleted_torrent. 总时长: 0.126 秒
+2025-05-13 06:06:08,786 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 结果已保存: logs/20250513_060606/result_task12_download_seleted_torrent_20250513_060608.json
+2025-05-13 06:06:08,786 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估结果已保存: logs/20250513_060606/result_task12_download_seleted_torrent_20250513_060608.json
+2025-05-13 06:06:09,789 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 任务 task12_download_seleted_torrent 结果已保存: logs/20250513_060606/result_task12_download_seleted_torrent_20250513_060609.json
+2025-05-13 06:06:09,789 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 评估结果已保存: logs/20250513_060606/result_task12_download_seleted_torrent_20250513_060609.json
+2025-05-13 06:06:09,789 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2431285)
+2025-05-13 06:06:09,789 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-13 06:06:11,308 - qbittorrent_task12_download_seleted_torrent_evaluator - INFO - 应用进程已自行关闭

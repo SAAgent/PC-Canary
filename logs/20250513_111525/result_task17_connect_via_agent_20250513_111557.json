@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "session_start_iso": "2025-05-13T11:15:28+0000",
+    "session_start_unix": 1747134928.0472648,
+    "task_config_at_start": {
+      "task_id": "17",
+      "task_name": "connect_via_agent",
+      "description": "在qBittorrent中设置代理服务器连接。",
+      "application_info": {
+        "name": "Qbittorrent Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": []
+      },
+      "task_parameters": {
+        "proxy_type": "SOCKS5",
+        "proxy_host": "127.0.0.1",
+        "proxy_port": 1080
+      },
+      "instruction_template": "请在qBittorrent中，设置${proxy_type}代理服务器，地址为${proxy_host}，端口为${proxy_port}。",
+      "evaluation_setup": {
+        "scripts": [
+          {
+            "role": "hook",
+            "path": "hooker.js"
+          },
+          {
+            "role": "handler",
+            "path": "handler.py"
+          }
+        ],
+        "timeout": 180,
+        "evaluate_on_completion": true
+      },
+      "total_key_steps": 2,
+      "preconditions": {
+        "qbittorrent_running": true
+      },
+      "success_conditions": [
+        "agent_connect_result"
+      ],
+      "events": {
+        "script_initialized": {
+          "description": "钩子脚本初始化",
+          "is_key_step": false
+        },
+        "function_found": {
+          "description": "找到目标函数",
+          "is_key_step": true,
+          "key_step_index": 1,
+          "key_step_name": "找到目标函数"
+        },
+        "agent_connect_called": {
+          "description": "拦截到设置代理函数调用",
+          "is_key_step": false
+        },
+        "agent_connect_result": {
+          "description": "设置代理成功",
+          "is_key_step": true,
+          "key_step_index": 2,
+          "key_step_name": "设置代理成功"
+        },
+        "error": {
+          "description": "错误事件",
+          "is_key_step": false
+        }
+      }
+    },
+    "app_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+    "app_process_pid": 2485861,
+    "session_end_iso": "2025-05-13T11:15:57+0000",
+    "session_end_unix": 1747134957.5099387,
+    "session_duration_seconds": 29.463
+  },
+  "raw_events": [
+    {
+      "event_type": "TASK_START",
+      "timestamp": 1747134928.0472648
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747134928.151158,
+      "step_index": 1
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747134957.4038513,
+      "step_index": 2
+    },
+    {
+      "event_type": "TASK_END",
+      "timestamp": 1747134957.4038513,
+      "status": "success",
+      "reason": "成功设置SOCKS5代理服务器: 127.0.0.1:1080"
+    }
+  ],
+  "computed_metrics": {
+    "total_duration_seconds": 29.357,
+    "llm_call_count": 0,
+    "llm_token_usage": {
+      "total_prompt_tokens": 0,
+      "total_completion_tokens": 0,
+      "total_tokens": 0
+    },
+    "task_completion_status": {
+      "status": "success",
+      "reason": "成功设置SOCKS5代理服务器: 127.0.0.1:1080"
+    },
+    "agent_reported_completion": {
+      "completed": false,
+      "reasoning": null
+    },
+    "tool_usage_stats": {
+      "total_tool_calls": 0,
+      "tools": {}
+    },
+    "error_summary": {
+      "total_error_count": 0,
+      "errors_by_source": {}
+    },
+    "key_step_tracker": {
+      "total_steps": 2,
+      "completed_steps_count": 2,
+      "highest_index_reached": 2,
+      "completion_rate_by_count": 1.0,
+      "completion_rate_by_progress": 1.0,
+      "final_step_reached": true,
+      "completed_indices_list": [
+        1,
+        2
+      ],
+      "completion_timeline": [
+        {
+          "step_index": 1,
+          "step_name": "找到目标函数",
+          "timestamp": 1747134928.151158
+        },
+        {
+          "step_index": 2,
+          "step_name": "设置代理成功",
+          "timestamp": 1747134957.4038513
+        }
+      ]
+    }
+  }
+}

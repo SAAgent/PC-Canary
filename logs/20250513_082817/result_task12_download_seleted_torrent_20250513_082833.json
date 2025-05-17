@@ -1,0 +1,392 @@
+{
+  "metadata": {
+    "session_start_iso": "2025-05-13T08:28:20+0000",
+    "session_start_unix": 1747124900.5190005,
+    "task_config_at_start": {
+      "task_id": "12",
+      "task_name": "download_seleted_torrent",
+      "description": "在qBittorrent中选择性下载种子中的特定文件。",
+      "application_info": {
+        "name": "Qbittorrent Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": []
+      },
+      "task_parameters": {
+        "torrent_name": "Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB",
+        "file_names": [
+          "2001_HARRY_POTTER_AND_SORCERER_STON.iso",
+          "2002_HARRY_POTTER_COS.iso"
+        ]
+      },
+      "instruction_template": "请在qBittorrent中，选择性下载种子${torrent_name}中的文件${file_names}。",
+      "evaluation_setup": {
+        "scripts": [
+          {
+            "role": "hook",
+            "path": "hooker.js"
+          },
+          {
+            "role": "handler",
+            "path": "handler.py"
+          }
+        ],
+        "timeout": 180,
+        "evaluate_on_completion": true
+      },
+      "total_key_steps": 3,
+      "preconditions": {
+        "qbittorrent_running": true,
+        "has_torrents": true
+      },
+      "success_conditions": [
+        "file_download_started"
+      ],
+      "events": {
+        "script_initialized": {
+          "description": "钩子脚本初始化",
+          "is_key_step": false
+        },
+        "function_found": {
+          "description": "找到目标函数",
+          "is_key_step": true,
+          "key_step_index": 1,
+          "key_step_name": "找到目标函数"
+        },
+        "file_selection_detected": {
+          "description": "检测到文件选择操作",
+          "is_key_step": true,
+          "key_step_index": 2,
+          "key_step_name": "检测到文件选择操作"
+        },
+        "file_download_started": {
+          "description": "文件开始下载",
+          "is_key_step": true,
+          "key_step_index": 3,
+          "key_step_name": "文件开始下载"
+        },
+        "error": {
+          "description": "错误事件",
+          "is_key_step": false
+        }
+      }
+    },
+    "app_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+    "app_process_pid": 2452208,
+    "session_end_iso": "2025-05-13T08:28:33+0000",
+    "session_end_unix": 1747124913.5089846,
+    "session_duration_seconds": 12.99
+  },
+  "raw_events": [
+    {
+      "event_type": "TASK_START",
+      "timestamp": 1747124900.5190005
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124900.6387613,
+      "step_index": 1
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124900.6391897,
+      "step_index": 1
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124900.6394727,
+      "step_index": 1
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124909.5688057,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124909.5688057,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124909.657544,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124909.657544,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124909.7662358,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124909.7662358,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124909.8542497,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124909.8542497,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124909.9522579,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124909.9522579,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.0399811,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.0399811,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.1382039,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.1382039,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.2259011,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.2259011,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.3239882,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.3239882,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.4117527,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.4117527,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.5097282,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.5097282,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.5973108,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.5973108,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.695266,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.695266,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.7829003,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.7829003,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.880726,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.880726,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124910.968455,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124910.968455,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124911.0764964,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124911.0764964,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124911.1644344,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124911.1644344,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124911.5495503,
+      "step_index": 2
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124911.5495503,
+      "name": "file_selection_detected",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124911.6372516,
+      "step_index": 3
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124911.6372516,
+      "name": "file_selection_finished",
+      "payload": {}
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747124913.4144425,
+      "step_index": 3
+    },
+    {
+      "event_type": "TASK_END",
+      "timestamp": 1747124913.4144425,
+      "status": "success",
+      "reason": "成功开始下载文件: ['2001_HARRY_POTTER_AND_SORCERER_STON.iso', '2002_HARRY_POTTER_COS.iso']"
+    },
+    {
+      "event_type": "APP_SPECIFIC_EVENT",
+      "timestamp": 1747124913.4144425,
+      "name": "file_download_started",
+      "payload": {}
+    }
+  ],
+  "computed_metrics": {
+    "total_duration_seconds": 12.895,
+    "llm_call_count": 0,
+    "llm_token_usage": {
+      "total_prompt_tokens": 0,
+      "total_completion_tokens": 0,
+      "total_tokens": 0
+    },
+    "task_completion_status": {
+      "status": "success",
+      "reason": "成功开始下载文件: ['2001_HARRY_POTTER_AND_SORCERER_STON.iso', '2002_HARRY_POTTER_COS.iso']"
+    },
+    "agent_reported_completion": {
+      "completed": false,
+      "reasoning": null
+    },
+    "tool_usage_stats": {
+      "total_tool_calls": 0,
+      "tools": {}
+    },
+    "error_summary": {
+      "total_error_count": 0,
+      "errors_by_source": {}
+    },
+    "key_step_tracker": {
+      "total_steps": 3,
+      "completed_steps_count": 3,
+      "highest_index_reached": 3,
+      "completion_rate_by_count": 1.0,
+      "completion_rate_by_progress": 1.0,
+      "final_step_reached": true,
+      "completed_indices_list": [
+        1,
+        2,
+        3
+      ],
+      "completion_timeline": [
+        {
+          "step_index": 1,
+          "step_name": "找到目标函数",
+          "timestamp": 1747124900.6387613
+        },
+        {
+          "step_index": 2,
+          "step_name": "检测到文件选择操作",
+          "timestamp": 1747124909.5688057
+        },
+        {
+          "step_index": 3,
+          "step_name": "文件开始下载",
+          "timestamp": 1747124909.657544
+        }
+      ]
+    }
+  }
+}

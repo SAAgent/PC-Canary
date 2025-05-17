@@ -1,0 +1,51 @@
+2025-05-12 16:07:17,912 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 加载任务指令: 请在qBittorrent中，将全局上传速率设置为1024KB/s
+2025-05-12 16:07:17,912 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250512_160717
+2025-05-12 16:07:17,912 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task07_set_upload_rates/hooker.js
+2025-05-12 16:07:17,913 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task07_set_upload_rates/handler.py.message_handler
+2025-05-12 16:07:17,913 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 评估器初始化完成: task07_set_upload_rates
+2025-05-12 16:07:17,913 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 注册了新的完成回调函数
+2025-05-12 16:07:17,913 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 用户数据成功恢复
+2025-05-12 16:07:17,913 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-12 16:07:17,914 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 应用启动成功，进程ID: 2334424
+2025-05-12 16:07:17,914 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-12 16:07:17,927 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 启动前窗口行数: 333
+2025-05-12 16:07:18,452 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 检测到新窗口，当前窗口行数: 334
+2025-05-12 16:07:20,452 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 开始为任务 task07_set_upload_rates 注册指标...
+2025-05-12 16:07:20,453 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task07_set_upload_rates
+2025-05-12 16:07:20,453 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 注册标准指标: llm_call_count for task task07_set_upload_rates
+2025-05-12 16:07:20,453 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task07_set_upload_rates
+2025-05-12 16:07:20,453 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 注册标准指标: task_completion_status for task task07_set_upload_rates
+2025-05-12 16:07:20,453 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task07_set_upload_rates
+2025-05-12 16:07:20,454 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task07_set_upload_rates
+2025-05-12 16:07:20,454 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 注册标准指标: error_summary for task task07_set_upload_rates
+2025-05-12 16:07:20,454 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 任务 task07_set_upload_rates 配置中未找到有效的 total_key_steps > 0，跳过注册 KeyStepMetric。
+2025-05-12 16:07:20,454 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 任务 task07_set_upload_rates 的指标注册完成，共 7 个指标。
+2025-05-12 16:07:20,454 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 正在重置任务 task07_set_upload_rates 的指标状态...
+2025-05-12 16:07:20,454 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 任务 task07_set_upload_rates 的 7 个指标已重置。
+2025-05-12 16:07:20,454 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 任务会话开始: task07_set_upload_rates
+2025-05-12 16:07:20,454 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 记录原始事件: task07_set_upload_rates - TASK_START - {'timestamp': 1747066040.4547238}
+2025-05-12 16:07:20,455 - qbittorrent_task07_set_upload_rates_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747066040.4547238
+2025-05-12 16:07:20,455 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 连接到进程: 2334424
+2025-05-12 16:07:20,466 - qbittorrent_task07_set_upload_rates_evaluator - ERROR - 连接到进程失败: unable to access process with pid 2334424
+2025-05-12 16:07:20,466 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 评估器启动成功
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 脚本卸载完成
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 开始为任务 task07_set_upload_rates 计算最终指标...
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator.TotalTimeMetric - WARNING - 无法计算总时长，开始: 1747066040.4547238, 结束: None
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 指标计算完成 (task07_set_upload_rates): total_duration_seconds = None
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 指标计算完成 (task07_set_upload_rates): llm_call_count = 0
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 指标计算完成 (task07_set_upload_rates): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 指标计算完成 (task07_set_upload_rates): task_completion_status = {'status': 'unknown', 'reason': ''}
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 指标计算完成 (task07_set_upload_rates): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 指标计算完成 (task07_set_upload_rates): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-12 16:07:44,751 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 指标计算完成 (task07_set_upload_rates): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 任务 task07_set_upload_rates 的最终指标计算完成。
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 任务会话结束: task07_set_upload_rates. 总时长: 24.297 秒
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator - WARNING - Evaluator stopped externally or timed out before handler completion
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator - DEBUG - 记录原始事件: task07_set_upload_rates - TASK_END - {'status': 'stopped', 'reason': 'Evaluator stopped externally or timed out before handler completion', 'timestamp': 1747066064.7521105}
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747066064.7521105
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: stopped, 原因: Evaluator stopped externally or timed out before handler completion
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 任务 task07_set_upload_rates 结果已保存: logs/20250512_160717/result_task07_set_upload_rates_20250512_160744.json
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 评估结果已保存: logs/20250512_160717/result_task07_set_upload_rates_20250512_160744.json
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2334424)
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-12 16:07:44,752 - qbittorrent_task07_set_upload_rates_evaluator - INFO - 应用进程已自行关闭
