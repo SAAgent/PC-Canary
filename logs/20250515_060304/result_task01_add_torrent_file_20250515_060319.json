@@ -1,0 +1,144 @@
+{
+  "metadata": {
+    "session_start_iso": "2025-05-15T06:03:07+0000",
+    "session_start_unix": 1747288987.436117,
+    "task_config_at_start": {
+      "task_id": "01",
+      "task_name": "add_torrent_file",
+      "description": "将指定种子文件添加到 qbittorrent 中。",
+      "application_info": {
+        "name": "Qbittorrent Desktop",
+        "executable_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+        "args": []
+      },
+      "task_parameters": {
+        "file_name": "/home/agent/Desktop/[BYRBT].Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB.torrent"
+      },
+      "instruction_template": "请在Qbittorrent中，将桌面的文件${file_name} 添加到qbittorrent下载列表下，qbittorrent 的软件我已打开。在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23",
+      "evaluation_setup": {
+        "scripts": [
+          {
+            "role": "hook",
+            "path": "hooker.js"
+          },
+          {
+            "role": "handler",
+            "path": "handler.py"
+          }
+        ],
+        "timeout": 180,
+        "evaluate_on_completion": true
+      },
+      "total_key_steps": 2,
+      "preconditions": {
+        "telegram_running": true,
+        "file_existence": true
+      },
+      "success_conditions": [
+        "add_torrent_result"
+      ],
+      "events": {
+        "script_initialized": {
+          "description": "钩子脚本初始化",
+          "is_key_step": false
+        },
+        "function_found": {
+          "description": "找到了目标群组 (原始事件，触发检查)",
+          "is_key_step": true,
+          "key_step_index": 1,
+          "key_step_name": "找到目标群组"
+        },
+        "add_torrent_called": {
+          "description": "钩子脚本初始化",
+          "is_key_step": false
+        },
+        "add_torrent_result": {
+          "description": "添加种子到会话函数正确返回",
+          "is_key_step": true,
+          "key_step_index": 2,
+          "key_step_name": "添加种子到会话函数正确返回"
+        },
+        "error": {
+          "description": "错误事件",
+          "is_key_step": false
+        }
+      },
+      "mcp_servers": [
+        {
+          "command": "uv",
+          "args": [
+            "--directory",
+            "/workspace/PC-Canary/apps/qBittorrent/qBittorrent_mcp/qbittorrent",
+            "run",
+            "qbittorrent.py"
+          ]
+        }
+      ]
+    },
+    "app_path": "/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent",
+    "app_process_pid": 2858418,
+    "session_end_iso": "2025-05-15T06:03:18+0000",
+    "session_end_unix": 1747288998.0152354,
+    "session_duration_seconds": 10.579
+  },
+  "raw_events": [
+    {
+      "event_type": "TASK_START",
+      "timestamp": 1747288987.436117
+    },
+    {
+      "event_type": "KEY_STEP_COMPLETED",
+      "timestamp": 1747288997.9311256,
+      "step_index": 1
+    },
+    {
+      "event_type": "TASK_END",
+      "timestamp": 1747288997.9311256,
+      "status": "success",
+      "reason": "目标种子: /home/agent/Desktop/[BYRBT].Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB.torrent已添加成功"
+    }
+  ],
+  "computed_metrics": {
+    "total_duration_seconds": 10.495,
+    "llm_call_count": 0,
+    "llm_token_usage": {
+      "total_prompt_tokens": 0,
+      "total_completion_tokens": 0,
+      "total_tokens": 0
+    },
+    "task_completion_status": {
+      "status": "success",
+      "reason": "目标种子: /home/agent/Desktop/[BYRBT].Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB.torrent已添加成功"
+    },
+    "agent_reported_completion": {
+      "completed": false,
+      "reasoning": null
+    },
+    "tool_usage_stats": {
+      "total_tool_calls": 0,
+      "tools": {}
+    },
+    "error_summary": {
+      "total_error_count": 0,
+      "errors_by_source": {}
+    },
+    "key_step_tracker": {
+      "total_steps": 2,
+      "completed_steps_count": 1,
+      "highest_index_reached": 1,
+      "completion_rate_by_count": 0.5,
+      "completion_rate_by_progress": 0.5,
+      "final_step_reached": false,
+      "completed_indices_list": [
+        1
+      ],
+      "completion_timeline": [
+        {
+          "step_index": 1,
+          "step_name": "找到目标群组",
+          "timestamp": 1747288997.9311256
+        }
+      ]
+    }
+  }
+}

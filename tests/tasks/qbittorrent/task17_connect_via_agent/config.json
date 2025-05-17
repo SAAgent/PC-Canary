@@ -15,7 +15,7 @@
         "proxy_port": 1080
     },
 
-    "instruction_template": "请在qBittorrent中，设置${proxy_type}代理服务器，地址为${proxy_host}，端口为${proxy_port}。", 
+    "instruction_template": "请在qBittorrent中，设置${proxy_type}代理服务器，地址为${proxy_host}，端口为${proxy_port}，qbittorrent 的软件我已打开,在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23 host是10.161.28.28。", 
 
     "evaluation_setup": {
         "scripts": [
@@ -57,5 +57,16 @@
             "description": "错误事件",
             "is_key_step": false
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/workspace/PC-Canary/apps/qBittorrent/qbittorrent_mcp",
+                "run",
+                "qbittorrent.py"
+            ]
+        }
+    ]
 }

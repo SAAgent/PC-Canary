@@ -21,7 +21,7 @@
         "torrent_name": "2011_HARRY_POTTER_7_PART_2.iso"
     },
 
-    "instruction_template": "请在qBittorrent中，将种子${torrent_source}中的文件${torrent_name}的优先级设置为${target_priority}（高优先级）", 
+    "instruction_template": "请在qBittorrent中，将种子${torrent_source}中的文件${torrent_name}的优先级设置为${target_priority}（高优先级），qbittorrent 的软件我已打开,在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23 host是10.161.28.28。", 
 
     "evaluation_setup": {
         "scripts": [
@@ -66,6 +66,17 @@
             "description": "错误事件",
             "is_key_step": false
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/workspace/PC-Canary/apps/qBittorrent/qbittorrent_mcp",
+                "run",
+                "qbittorrent.py"
+            ]
+        }
+    ]
 }
 

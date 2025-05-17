@@ -2,96 +2,93 @@
 # -*- coding: utf-8 -*-
 
 """
-QBittorrent添加种子文件任务事件处理器
+QBittorrent删除种子文件任务事件处理器
 负责处理钩子脚本产生的事件并更新评估指标
 """
 
-import os
-import json
-import time
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
-# 全局评估器实例
-_EVALUATOR = None 
-_CONFIG = None
-_START_TIME = None
-
-def set_evaluator(evaluator):
-    """设置全局评估器实例"""
-    global _EVALUATOR, _CONFIG
-    _EVALUATOR = evaluator
-    
-    try:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        config_file = os.path.join(current_dir, "config.json")
-        
-        with open(config_file, 'r') as f:
-            _CONFIG = json.load(f)
-            print(f"加载配置文件: {config_file}")
-    except Exception as e:
-        if _EVALUATOR:
-            _EVALUATOR.logger.error(f"加载配置文件失败: {str(e)}")
-
-def message_handler(message: Dict[str, Any], data: Any) -> Optional[str]:
+def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     """
-    处理从钩子脚本接收的消息
-    
+    处理来自 Frida 的消息。
+    执行任务特定逻辑判断，并返回状态更新字典列表给 BaseEvaluator。
+
     Args:
-        message: Frida消息对象
-        data: 附加数据
-        
+        message: 消息对象
+        logger: 日志记录器
+        task_parameter: 任务参数
+
     Returns:
-        str: 如果任务成功完成返回"success"，否则返回None
+        一个包含状态更新字典的列表，或 None。
+        可能的字典状态 ('status'): 'success', 'error', 'key_step', 'app_event'
     """
-    global _EVALUATOR, _CONFIG, _START_TIME
-    
-    if _START_TIME is None:
-        _START_TIME = time.time()
-    
-    if _EVALUATOR is None:
-        print("警告: 评估器未设置，无法处理消息")
-        return None
+    msg_type = message.get('type')
+    payload = message.get('payload')
+    expected_torrent_data = task_parameter.get('file_name')
 
-    if message.get('type') == 'send' and 'payload' in message:
-        payload = message['payload']
-        
-        if 'event' in payload:
-            event_type = payload['event']
-            _EVALUATOR.logger.debug(f"接收到事件: {event_type}")
-            
-            _EVALUATOR.record_event(event_type, payload)
-            
-            if event_type == "script_initialized":
-                _EVALUATOR.logger.info(f"钩子脚本初始化: {payload.get('message', '')}")
-                
-            elif event_type == "function_found":
-                _EVALUATOR.logger.info(f"找到了目标函数 :{payload.get('address', '')}")
-                _EVALUATOR.update_metric("found_group", True)
-                
-            elif event_type == "add_torrent_called":
-                result = payload.get("torrent_data", "")
-                _EVALUATOR.logger.info(f"拦截到删除会话框种子函数调用: {result}")
-                
+    # 处理来自 Frida 脚本的 'send' 类型消息
+    if msg_type == 'send' and isinstance(payload, dict) and 'event' in payload:
+        script_event_name = payload['event']
+        logger.debug(f"Handler: 接收到脚本事件: {script_event_name}, Payload: {payload}")
 
-            elif event_type == "remove_torrent_result":
-                result = payload.get("result","")
-                if result:
-                    _EVALUATOR.update_metric("correct_file", True)
-                    _EVALUATOR.logger.info("添加的是目标文件!")
-                
-            elif event_type == "error":
-                error_type = payload.get("error_type", "unknown")
-                message = payload.get("message", "未知错误")
-                
-                _EVALUATOR.logger.error(f"钩子脚本错误 ({error_type}): {message}")
-                _EVALUATOR.update_metric("error", {"type": error_type, "message": message})
-                
-    elif message.get('type') == 'error':
-        _EVALUATOR.logger.error(f"钩子脚本错误: {message.get('stack', '')}")
-    
+        # --- 根据脚本事件类型执行特定逻辑 --- #
+        updates = [] # Initialize list for updates from this message
+
+        if script_event_name == "script_initialized":
+            logger.info(f"Handler: 钩子脚本初始化: {payload.get('message', '')}")
+            # No status update to return for this event
+
+        elif script_event_name == "function_found":
+            logger.info(f"Handler: 找到函数地址: {payload.get('address', '')}")
+            # 报告关键步骤 1 完成
+            updates.append({'status': 'key_step', 'index': 1})
+
+        elif script_event_name == "remove_torrent_called":
+            logger.info("Handler: 拦截到删除种子函数调用")
+            # No status update needed
+
+        elif script_event_name == "remove_torrent_result":
+            torrent_data = payload.get("torrent_data", "")
+            logger.info(f"Handler: 收到已删除种子数据: {torrent_data}")
+            if torrent_data.lower() == expected_torrent_data.lower():
+                success_message = f"目标种子: {torrent_data}已成功删除"
+                logger.info(f"Handler: {success_message}")
+                # 报告关键步骤 2 完成
+                updates.append({'status': 'key_step', 'index': 2})
+                updates.append({'status': 'success', 'reason': success_message})
+                # Name is optional here, BaseEvaluator can get default from config
+            else:
+                logger.debug(f"Handler: 删除的种子 '{torrent_data}' 不是目标种子。")
+                # 不是目标种子，此事件不代表任何状态更新
+
+        elif script_event_name == "error": # 来自应用的错误事件
+            error_type = payload.get("error_type", "script_error")
+            message_text = payload.get("message", "未知脚本错误")
+            error_reason = f"钩子脚本错误 ({error_type}): {message_text}"
+            logger.error(f"Handler: {error_reason}")
+            # 报告错误状态
+            updates.append({
+                'status': 'error',
+                'type': error_type,
+                'message': message_text
+            })
+
+        # Return the list of updates if any were added
+        return updates if updates else None
+
+    # 处理来自 Frida 的 'error' 类型消息
+    elif msg_type == 'error':
+        stack_trace = message.get('stack', '')
+        error_description = message.get('description', '未知 Frida 错误')
+        error_reason = f"Frida JS 错误: {error_description}"
+        logger.error(f"Handler: {error_reason}\nStack: {stack_trace}")
+        # 报告错误状态
+        return [{
+            'status': 'error',
+            'type': 'Frida Error',
+            'message': error_description,
+            'stack_trace': stack_trace
+        }]
+
+    # 如果消息类型不是 'send' 或 'error'，或者没有触发任何逻辑，则返回 None
     return None
-
-def register_handlers(evaluator):
-    """注册事件处理器"""
-    set_evaluator(evaluator)
-    return message_handler

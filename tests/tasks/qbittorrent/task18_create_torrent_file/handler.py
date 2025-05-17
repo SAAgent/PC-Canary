@@ -50,8 +50,8 @@ def message_handler(message: Dict[str, Any], logger: Any, task_parameter: Dict[s
             # No status update needed
 
         elif script_event_name == "create_torrent_file_result":
-            torrent_path = payload.get("torrent_path", "")
-            torrent_save_path = payload.get("torrent_save_path", "")
+            torrent_save_path = payload.get("torrent_path", "")
+            torrent_path = payload.get("torrent_save_path", "")
             
             logger.info(f"Handler: 创建种子文件，源路径: {torrent_path}, 保存路径: {torrent_save_path}")
             

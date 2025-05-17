@@ -1,0 +1,66 @@
+2025-05-16 03:28:55,311 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 加载任务指令: 请在Qbittorrent中，将桌面的文件/home/agent/Desktop/[BYRBT].Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB.torrent 添加到qbittorrent下载列表下，qbittorrent 的软件我已打开。在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23
+2025-05-16 03:28:55,311 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250516_032855
+2025-05-16 03:28:55,311 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task01_add_torrent_file/hooker.js
+2025-05-16 03:28:55,312 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task01_add_torrent_file/handler.py.message_handler
+2025-05-16 03:28:55,312 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器初始化完成: task01_add_torrent_file
+2025-05-16 03:28:55,312 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 注册了新的完成回调函数
+2025-05-16 03:28:55,312 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 用户数据成功恢复
+2025-05-16 03:28:55,312 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-16 03:28:55,314 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 应用启动成功，进程ID: 2978826
+2025-05-16 03:28:55,314 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-16 03:28:55,330 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 启动前窗口行数: 328
+2025-05-16 03:28:55,858 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 检测到新窗口，当前窗口行数: 350
+2025-05-16 03:28:57,858 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 开始为任务 task01_add_torrent_file 注册指标...
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 注册标准指标: total_duration_seconds for task task01_add_torrent_file
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 注册标准指标: llm_call_count for task task01_add_torrent_file
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 注册标准指标: llm_token_usage for task task01_add_torrent_file
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 注册标准指标: task_completion_status for task task01_add_torrent_file
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 注册标准指标: agent_reported_completion for task task01_add_torrent_file
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 注册标准指标: tool_usage_stats for task task01_add_torrent_file
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 注册标准指标: error_summary for task task01_add_torrent_file
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 注册任务特定指标: key_step_tracker for task task01_add_torrent_file (Total Steps: 2, Names: {1: '找到目标群组', 2: '添加种子到会话函数正确返回'})
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务 task01_add_torrent_file 的指标注册完成，共 8 个指标。
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 正在重置任务 task01_add_torrent_file 的指标状态...
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务 task01_add_torrent_file 的 8 个指标已重置。
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务会话开始: task01_add_torrent_file
+2025-05-16 03:28:57,859 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 记录原始事件: task01_add_torrent_file - TASK_START - {'timestamp': 1747366137.8599093}
+2025-05-16 03:28:57,860 - qbittorrent_task01_add_torrent_file_evaluator.TotalTimeMetric - DEBUG - 记录任务开始时间: 1747366137.8599093
+2025-05-16 03:28:57,860 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 连接到进程: 2978826
+2025-05-16 03:28:57,985 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: script_initialized, Payload: {'event': 'script_initialized', 'message': 'qBittorrent 添加种子文件监控脚本已启动', 'timestamp': 1747366137985}
+2025-05-16 03:28:57,986 - qbittorrent_task01_add_torrent_file_evaluator - INFO - Handler: 钩子脚本初始化: qBittorrent 添加种子文件监控脚本已启动
+2025-05-16 03:28:57,986 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10BitTorrent11SessionImpl15addTorrent_implERKNS_17TorrentDescriptorERKNS_16AddTorrentParamsE', 'address': '0x5eeb6a830e7c', 'message': '找到函数 _ZN10BitTorrent11SessionImpl15addTorrent_implERKNS_17TorrentDescriptorERKNS_16AddTorrentParamsE 的实际地址', 'timestamp': 1747366137985}
+2025-05-16 03:28:57,986 - qbittorrent_task01_add_torrent_file_evaluator - INFO - Handler: 找到函数地址: 0x5eeb6a830e7c
+2025-05-16 03:28:57,986 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZN10BitTorrent11SessionImpl21initLoadTorrentParamsERKNS_16AddTorrentParamsE', 'address': '0x5eeb6a83062a', 'message': '找到函数 _ZN10BitTorrent11SessionImpl21initLoadTorrentParamsERKNS_16AddTorrentParamsE 的实际地址', 'timestamp': 1747366137985}
+2025-05-16 03:28:57,986 - qbittorrent_task01_add_torrent_file_evaluator - INFO - Handler: 找到函数地址: 0x5eeb6a83062a
+2025-05-16 03:28:57,986 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: function_found, Payload: {'event': 'function_found', 'function_name': '_ZNK10BitTorrent11TorrentInfo4nameEv', 'address': '0x5eeb6a8fdf88', 'message': '找到函数 _ZNK10BitTorrent11TorrentInfo4nameEv 的实际地址', 'timestamp': 1747366137985}
+2025-05-16 03:28:57,986 - qbittorrent_task01_add_torrent_file_evaluator - INFO - Handler: 找到函数地址: 0x5eeb6a8fdf88
+2025-05-16 03:28:57,986 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: all_hooks_installed, Payload: {'event': 'all_hooks_installed', 'message': '所有监控钩子安装完成，等待添加种子文件操作...', 'timestamp': 1747366137985}
+2025-05-16 03:28:57,987 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 加载脚本成功: /workspace/PC-Canary/tests/tasks/qbittorrent/task01_add_torrent_file/hooker.js
+2025-05-16 03:28:57,987 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器启动成功
+2025-05-16 03:29:08,700 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: add_torrent_called, Payload: {'event': 'add_torrent_called', 'message': '拦截到添加种子文件的函数调用', 'timestamp': 1747366148680}
+2025-05-16 03:29:08,712 - qbittorrent_task01_add_torrent_file_evaluator - INFO - Handler: 钩子脚本初始化
+2025-05-16 03:29:08,770 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - Handler: 接收到脚本事件: add_torrent_result, Payload: {'event': 'add_torrent_result', 'message': '添加种子到会话函数正确返回', 'torrent_data': 'Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB', 'timestamp': 1747366148682}
+2025-05-16 03:29:08,781 - qbittorrent_task01_add_torrent_file_evaluator - INFO - Handler: 收到种子数据: Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB
+2025-05-16 03:29:08,787 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - Handler: 收到的种子 'Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB' 不是目标种子。
+2025-05-16 03:30:40,647 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 脚本卸载完成
+2025-05-16 03:30:40,647 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 开始为任务 task01_add_torrent_file 计算最终指标...
+2025-05-16 03:30:40,647 - qbittorrent_task01_add_torrent_file_evaluator.TotalTimeMetric - WARNING - 无法计算总时长，开始: 1747366137.8599093, 结束: None
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 指标计算完成 (task01_add_torrent_file): total_duration_seconds = None
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 指标计算完成 (task01_add_torrent_file): llm_call_count = 0
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 指标计算完成 (task01_add_torrent_file): llm_token_usage = {'total_prompt_tokens': 0, 'total_completion_tokens': 0, 'total_tokens': 0}
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 指标计算完成 (task01_add_torrent_file): task_completion_status = {'status': 'unknown', 'reason': ''}
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 指标计算完成 (task01_add_torrent_file): agent_reported_completion = {'completed': False, 'reasoning': None}
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 指标计算完成 (task01_add_torrent_file): tool_usage_stats = {'total_tool_calls': 0, 'tools': {}}
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 指标计算完成 (task01_add_torrent_file): error_summary = {'total_error_count': 0, 'errors_by_source': {}}
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 指标计算完成 (task01_add_torrent_file): key_step_tracker = {'total_steps': 2, 'completed_steps_count': 0, 'highest_index_reached': 0, 'completion_rate_by_count': 0.0, 'completion_rate_by_progress': 0.0, 'final_step_reached': False, 'completed_indices_list': [], 'completion_timeline': []}
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务 task01_add_torrent_file 的最终指标计算完成。
+2025-05-16 03:30:40,648 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务会话结束: task01_add_torrent_file. 总时长: 102.789 秒
+2025-05-16 03:30:40,649 - qbittorrent_task01_add_torrent_file_evaluator - WARNING - Evaluator stopped externally or timed out before handler completion
+2025-05-16 03:30:40,649 - qbittorrent_task01_add_torrent_file_evaluator - DEBUG - 记录原始事件: task01_add_torrent_file - TASK_END - {'status': 'stopped', 'reason': 'Evaluator stopped externally or timed out before handler completion', 'timestamp': 1747366240.6491566}
+2025-05-16 03:30:40,649 - qbittorrent_task01_add_torrent_file_evaluator.TotalTimeMetric - DEBUG - 记录任务结束时间: 1747366240.6491566
+2025-05-16 03:30:40,649 - qbittorrent_task01_add_torrent_file_evaluator.TaskCompletionStatusMetric - INFO - 记录任务最终状态: stopped, 原因: Evaluator stopped externally or timed out before handler completion
+2025-05-16 03:30:40,650 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 任务 task01_add_torrent_file 结果已保存: logs/20250516_032855/result_task01_add_torrent_file_20250516_033040.json
+2025-05-16 03:30:40,650 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估结果已保存: logs/20250516_032855/result_task01_add_torrent_file_20250516_033040.json
+2025-05-16 03:30:40,650 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 尝试优雅地终止应用进程 (PID: 2978826)
+2025-05-16 03:30:40,650 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 已发送SIGTERM信号，等待应用响应...
+2025-05-16 03:30:42,119 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 应用进程已自行关闭

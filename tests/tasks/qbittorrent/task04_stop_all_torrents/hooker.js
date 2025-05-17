@@ -102,9 +102,13 @@
             onLeave: function(retval) {
                 console.log("source:", this.source);
                 
-                sendEvent("stop_all_torrents", {
-                    message: "成功暂停所有种子文件"
-                });
+                // 检查是否所有种子都已成功停止
+                if (checkAllSuccess()) {
+                    sendEvent("stop_all_torrents_result", {
+                        message: "已成功暂停所有种子下载",
+                        success: 1
+                    });
+                }
                 isStopVisibleTorrentsCalled = false;
             }
         });
@@ -129,13 +133,7 @@
                     statusArray.push(stop_status);
                 }
                 
-                // 检查是否所有种子都已成功停止
-                if (checkAllSuccess()) {
-                    sendEvent("stop_all_torrents_result", {
-                        message: "已成功暂停所有种子下载",
-                        success: 1
-                    });
-                }
+                
             }
         });
     }

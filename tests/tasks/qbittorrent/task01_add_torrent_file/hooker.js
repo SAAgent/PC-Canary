@@ -1,6 +1,10 @@
 (function() {
     // 脚本设置 - 目标函数
-    const FUNCTION_NAME_ADD_TORRENT = "_ZN17AddTorrentManager19addTorrentToSessionERK7QStringRKN10BitTorrent17TorrentDescriptorERKNS3_16AddTorrentParamsE";
+    const FUNCTION_NAME_sessionimpl = "_ZN10BitTorrent11SessionImpl15addTorrent_implERKNS_17TorrentDescriptorERKNS_16AddTorrentParamsE";
+    const FUNCTION_NAME_initLoadTorrentParams = "_ZN10BitTorrent11SessionImpl21initLoadTorrentParamsERKNS_16AddTorrentParamsE";
+    const FUNCTION_TorrentInfo_name = "_ZNK10BitTorrent11TorrentInfo4nameEv"
+    const OFFSET_TO_LoadTorrentParams = 0x358;
+
 
     // 向评估系统发送事件
     function sendEvent(eventType, data = {}) {
@@ -71,56 +75,91 @@
             return null;
         }
     }
-    
-  
-    
 
-    // 初始化AddTorrentManager::addTorrentToSession监控钩子
+    // 初始化监控钩子函数
     function initAddTorrentHook() {
-        const funcAddr = getFunctionAddress(FUNCTION_NAME_ADD_TORRENT);
-     
-
+        const funcAddr = getFunctionAddress(FUNCTION_NAME_sessionimpl);
+        
+        const initLoadTorrentParamsAddr= getFunctionAddress(FUNCTION_NAME_initLoadTorrentParams);
+        const torrentInfoNameAddr= getFunctionAddress(FUNCTION_TorrentInfo_name);
+        let isAddTorrentCalled = false;
+        
+        // 监控添加种子文件的函数
         Interceptor.attach(funcAddr, {
             onEnter: function(args) {
-                this.source = args[1];
-         
+                this.source = args[0];
+                isAddTorrentCalled = true;
                 console.log("source:", this.source);
-                
-            
                 sendEvent("add_torrent_called", {
-                    message: "拦截到添加种子到会话函数调用",
-                   
+                    message: "拦截到添加种子文件的函数调用"
                 });
             },
 
             onLeave: function(retval) {
-                const success = retval.toInt32() !== 0;     
-                const sourcePath = readQString(this.source);
-               
-                sendEvent("add_torrent_result", {
-                    message: "添加种子到会话函数正确返回",
-                    torrent_data: sourcePath 
-                });
+                console.log("source:", this.source);
+                isAddTorrentCalled = false;
             }
         });
 
-    
+        // 监控种子加载参数的函数
+        Interceptor.attach(initLoadTorrentParamsAddr, {
+            onEnter: function(args) {
+                if (isAddTorrentCalled) {
+                    console.log("initLoadTorrentParams called from within addTorrent!");
+                } 
+            },
+            onLeave: function(retval) {
+                // 当种子加载参数函数完成时
+                if (isAddTorrentCalled) {
+                const torrentParamsName = retval.add(OFFSET_TO_LoadTorrentParams);
+                const torrentName = readQString(torrentParamsName);
+                   console.log("torrentName:", torrentName);
+                   if(torrentName){
+                    sendEvent("add_torrent_result", {
+                        message: "添加种子到会话函数正确返回",
+                        torrent_data: torrentName 
+                    });
+                   }
+                }
+                
+                
+            }
+        });
+        Interceptor.attach(torrentInfoNameAddr, {
+            onEnter: function(args) {
+                if (isAddTorrentCalled) {
+                    console.log("TorrentInfo name() called from within addTorrent!");
+                } 
+            },
+            onLeave: function(retval) {
+                // 当获取种子名称函数完成时
+                if (isAddTorrentCalled) {
+                const torrentParamsName = retval;
+                const torrentName = readQString(torrentParamsName);
+                   console.log("torrentName:", torrentName);
+                   if(torrentName){
+                    sendEvent("add_torrent_result", {
+                        message: "添加种子到会话函数正确返回",
+                        torrent_data: torrentName 
+                    });
+                   }
+                }
+                
+            }
+        });
     }
     
-
-
     // 启动脚本
     function initHook() {
         sendEvent("script_initialized", {
-            message: "qBittorrent 种子添加监控脚本已启动"
+            message: "qBittorrent 添加种子文件监控脚本已启动"
         });
         
-
         // 初始化钩子
         initAddTorrentHook();
         
         sendEvent("all_hooks_installed", {
-            message: "所有监控钩子安装完成，等待添加种子操作..."
+            message: "所有监控钩子安装完成，等待添加种子文件操作..."
         });
     }
 

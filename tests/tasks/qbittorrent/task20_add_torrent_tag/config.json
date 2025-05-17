@@ -14,7 +14,7 @@
         "tag_name": "Movies"
     },
 
-    "instruction_template": "请在qBittorrent中，为种子${torrent_name}添加标签${tag_name}。", 
+    "instruction_template": "请在qBittorrent中，为种子${torrent_name}添加标签${tag_name}。,在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23 host是10.161.28.28。", 
 
     "evaluation_setup": {
         "scripts": [
@@ -57,5 +57,16 @@
             "description": "错误事件",
             "is_key_step": false
         }
-    }
+    },
+    "mcp_servers": [
+        {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/workspace/PC-Canary/apps/qBittorrent/qbittorrent_mcp",
+                "run",
+                "qbittorrent.py"
+            ]
+        }
+    ]
 }

@@ -1,0 +1,11 @@
+2025-05-16 03:28:36,765 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 加载任务指令: 请在Qbittorrent中，将桌面的文件/home/agent/Desktop/[BYRBT].Harry.Potter.Collection.2001-2011.Bluray.1080p.VC-1.AVC.TrueHD.DTS-HD.MA5.1-NGB.torrent 添加到qbittorrent下载列表下，qbittorrent 的软件我已打开。在/workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent路径下执行，并且指定DISPLAY=:23
+2025-05-16 03:28:36,766 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 结果收集器初始化完成，结果将保存在: logs/20250516_032836
+2025-05-16 03:28:36,766 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 添加钩子脚本: /workspace/PC-Canary/tests/tasks/qbittorrent/task01_add_torrent_file/hooker.js
+2025-05-16 03:28:36,766 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 成功设置回调函数: /workspace/PC-Canary/tests/tasks/qbittorrent/task01_add_torrent_file/handler.py.message_handler
+2025-05-16 03:28:36,767 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 评估器初始化完成: task01_add_torrent_file
+2025-05-16 03:28:36,767 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 注册了新的完成回调函数
+2025-05-16 03:28:36,767 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 用户数据成功恢复
+2025-05-16 03:28:36,767 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 正在启动应用: /workspace/PC-Canary/apps/qBittorrent/build-debug/qbittorrent
+2025-05-16 03:28:36,768 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 应用启动成功，进程ID: 2978576
+2025-05-16 03:28:36,768 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 等待应用窗口加载完成...
+2025-05-16 03:28:36,788 - qbittorrent_task01_add_torrent_file_evaluator - INFO - 启动前窗口行数: 350

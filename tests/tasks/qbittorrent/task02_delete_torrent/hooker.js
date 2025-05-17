@@ -1,8 +1,9 @@
 (function() {
     // 脚本设置 - 目标函数
     const FUNCTION_NAME_REMOVE_TORRENT = "_ZN10BitTorrent11SessionImpl13removeTorrentERKNS_9TorrentIDENS_19TorrentRemoveOptionE";
-    const FUNCTION_NAME_GET_TORRENT_NAME="_ZNK10BitTorrent11TorrentImpl4nameEv"
-    const OFFSET_TO_TORRENT_NAME=0xa8
+    const FUNCTION_NAME_GET_TORRENT_NAME = "_ZNK10BitTorrent11TorrentImpl4nameEv";
+    const OFFSET_TO_TORRENT_NAME = 0xa8;
+
     // 向评估系统发送事件
     function sendEvent(eventType, data = {}) {
         const payload = {
@@ -31,6 +32,7 @@
         return funcAddr;
     }
 
+    // 读取QString字符串内容
     function readQString(queryPtr, offset = 8) {
         const MAX_CHARS = 1000; // 最大读取字符数
         try {
@@ -72,6 +74,7 @@
         }
     }
 
+    // 读取标准C++字符串内容
     function readStdString(stringPtr) {
         try {
             // 对于大多数std::string实现，内存布局如下：
@@ -102,88 +105,62 @@
         }
     }
 
-   // ... existing code ...
-
-
-    
-
-    // 初始化AddTorrentManager::addTorrentToSession监控钩子
+    // 初始化删除种子监控钩子
     function initRemoveTorrentHook() {
-
         // 获取函数地址
         const removeTorrentAddr = getFunctionAddress(FUNCTION_NAME_REMOVE_TORRENT);
-        const torrentImplConstructorAddr = getFunctionAddress(FUNCTION_NAME_GET_TORRENT_NAME);
+        const getTorrentNameAddr = getFunctionAddress(FUNCTION_NAME_GET_TORRENT_NAME);
         let isRemoveTorrentCalled = false;
 
+        // 监控删除种子函数
         Interceptor.attach(removeTorrentAddr, {
             onEnter: function(args) {
-                this.source = args[0];
+                this.torrentSource = args[0];
                 isRemoveTorrentCalled = true;
+                sendEvent("remove_torrent_called", {
+                    message: "拦截到删除种子函数调用"
+                });
             },
 
             onLeave: function(retval) {
-                console.log("source:", this.source);
-                
-                
-                
+                console.log("Torrent source:", this.torrentSource);
                 isRemoveTorrentCalled = false;
             }
         });
-        // Hook torrent->stop()
         
-        Interceptor.attach(torrentImplConstructorAddr, {
-           
-                onEnter: function(args) {
-                // Check if stopVisibleTorrents was called before this
+        // 监控获取种子名称函数
+        Interceptor.attach(getTorrentNameAddr, {
+            onEnter: function(args) {
                 if (isRemoveTorrentCalled) {
-                        this.torent= args[0]
-                        const torrent_name_addr=this.torent.add(OFFSET_TO_TORRENT_NAME)
-                        const torrent_name=readStdString(torrent_name_addr)
-                        console.log("torrent_name: ", torrent_name)
-                        // console.log("[+] torrent->name() called from within stopVisibleTorrents!");
-                        // // You can inspect arguments (like the 'this' pointer for the torrent object)
-                        // console.log("  Torrent Object:", this);
-                    // console.log("  Arguments:", args);
+                    console.log("getTorrentName called during removeTorrent");
                 }
             }, 
             
             onLeave: function(retval) {
-            // Optionally log when torrent->stop() finishes
                 if (isRemoveTorrentCalled) {
-                    // const torrent_name=this.torent.add(OFFSET_TO_TORRENT_NAME)
-                    const torrent_name= retval[1]
-
-                    const name = readQString(torrent_name)
-                    console.log("torrent name: ", name)
-                    const torrent_name_addr=this.torent.add(OFFSET_TO_TORRENT_NAME)
-                    const torrent_name1=readQString(torrent_name_addr)
-                    console.log("torrent_name: ", torrent_name1)
-                    // console.log("[+] torrent->name() finished.");
-                    // sendEvent("delete_torrent", {
-                    //     message: "成功删除种子文件",
-                    //     torrent_name: name
-                    // });
+                    const torrentNamePtr = retval;
+                    const torrentName = readQString(torrentNamePtr);
+                    console.log("删除的种子名称:", torrentName);
+                    
+                    if (torrentName) {
+                        sendEvent("remove_torrent_result", {
+                            message: "成功删除种子文件",
+                            torrent_data: torrentName
+                        });
+                    }
                 }
-            //   // console.log("  Return Value:", retval);
-            
-            },
-                
+            }
         });
     }
-    
-
 
     // 启动脚本
     function initHook() {
         sendEvent("script_initialized", {
-            message: "qBittorrent 种子添加监控脚本已启动"
+            message: "qBittorrent 种子删除监控脚本已启动"
         });
         
-
         // 初始化钩子
         initRemoveTorrentHook();
-        
-    
     }
 
     initHook();
