@@ -1,0 +1,67 @@
+{
+    "task_id": "01", 
+    "task_name": "open_file",
+    "description": "打开指定文件",
+
+    "application_info": {   
+        "name": "blender",   
+        "executable_path": "/home/agent/blender-git/build_linux_debug/bin/blender",
+        "args": []
+    },
+
+    "task_parameters": {   
+        "file_dir": "/home/agent/blender-git",
+        "file_name": "metaball_cube.blend"
+    },
+
+    "instruction_template": "在blender中打开指定文件${file_dir}/${file_name}.",
+
+    "evaluation_setup": {    
+        "scripts": [    
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,    
+        "evaluate_on_completion": false
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "blender_running": true
+    },
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化完成。",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到关键函数地址。",
+            "is_key_step": false
+        },
+        "hook_installed": {
+            "description": "所有监控钩子安装完成。",
+            "is_key_step": false
+        },
+        "open_file_detected": {
+            "description": "检测到正在打开文件",
+            "is_key_step": false 
+        },
+        "open_file_finished": {
+            "description": "检测到打开文件成功",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功打开指定文件"
+        },
+        "error": {
+            "description": "来自钩子脚本的错误事件。",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "uvx",
+            "args": [
+                "blender-mcp"
+            ]
+        }
+    ]
+}

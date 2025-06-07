@@ -1,0 +1,205 @@
+// Blender搜索监控钩子脚本
+// 用于监听Blender的搜索操作并检测特定查询
+// 获取函数地址
+
+(function() {
+    // 全局变量
+    const TARGET_DELETE = 1;
+    const TARGET_ADD = "Cylinder";
+    const TARGET_SCALE = [2,2,4];
+    let searchFuncFound = false;
+    let deleteElement = false;
+    let addElement = false;
+    
+    // 向评估系统发送事件
+    function sendEvent(eventType, data = {}) {
+        const payload = {
+            event: eventType,
+            ...data,
+            timestamp: new Date().getTime()
+        };
+        send(payload);
+    }
+    
+    // 查找Widget::search函数
+    function findSearchFunction() {
+        // 查找 BKE_id_multi_tagged_delete 函数在模块中的位置
+        let BKE_id_multi_tagged_delete = getFunctionAddress("_Z26BKE_id_multi_tagged_deleteP4Main");
+        // 查找 BKE_mesh_add 函数在模块中的位置
+        let BKE_mesh_add = getFunctionAddress("_Z12BKE_mesh_addP4MainPKc");
+        // 查找 size_to_mat3 函数在模块中的位置
+        let size_to_mat3 = getFunctionAddress("_Z12size_to_mat3PA3_fPKf");
+        
+
+        // 如果没找到
+        if (!BKE_id_multi_tagged_delete) {
+            sendEvent("error", {
+                error_type: "function_not_found",
+                message: "无法找到元素删除函数"
+            });
+            return null;
+        }
+        // 如果没找到
+        if (!BKE_mesh_add) {
+            sendEvent("error", {
+                error_type: "function_not_found",
+                message: "无法找到增加元素函数"
+            });
+            return null;
+        }
+        if (!size_to_mat3) {
+            sendEvent("error", {
+                error_type: "function_not_found",
+                message: "无法找到缩放元素函数"
+            });
+            return null;
+        }
+                
+        // 报告找到函数
+        searchFuncFound = true;
+        sendEvent("function_found", {
+            address: BKE_id_multi_tagged_delete.toString(),
+            message: "找到元素删除函数"
+        });
+        sendEvent("function_found", {
+            address: BKE_mesh_add.toString(),
+            message: "找到增加元素函数"
+        });
+        sendEvent("function_found", {
+            address: size_to_mat3.toString(),
+            message: "找到缩放元素函数"
+        });
+
+
+        
+        return [BKE_id_multi_tagged_delete, BKE_mesh_add, size_to_mat3];
+    }
+    
+    function getFunctionAddress(functionName) {
+        const funcAddr = DebugSymbol.getFunctionByName(functionName);
+        if (!funcAddr) {
+            console.error(`无法找到函数 ${functionName}`);
+            // 发送错误事件
+            return null;
+        }
+    
+        let address = funcAddr.toString();
+        console.log(`找到函数 ${functionName} 的实际地址: ${funcAddr}`);
+        // 发送成功事件
+        return funcAddr;
+    }
+    
+    // 初始化钩子
+    function initHook() {
+        sendEvent("script_initialized", {
+            message: "Blender搜索监控脚本已启动"
+        });
+        
+        // 查找搜索函数
+        const funcAddrs = findSearchFunction();
+        if (!searchFuncFound) {
+            return;
+        }
+        
+        
+        // 安装搜索函数钩子
+        Interceptor.attach(funcAddrs[0], {
+            onLeave: function(retval) {
+                try {
+                    var returnValue = retval.toInt32();
+                    if (returnValue == TARGET_DELETE) {
+                        // 发送查询检测事件
+                        deleteElement = true;
+                        sendEvent("delete_element_detected", {
+                            retval: returnValue,
+                            message: `检测到成功执行删除元素操作`
+                        });
+                    }                    
+                } catch (error) {
+                    sendEvent("error", {
+                        error_type: "general_error",
+                        message: `执行错误: ${error.message}`
+                    });
+                }
+            }
+        });
+
+        // 安装搜索函数钩子
+        Interceptor.attach(funcAddrs[1], {
+            onEnter: function(args) {
+                try {
+                    if(deleteElement) {
+                        var namePtr = args[1];
+                        var nameStr = Memory.readUtf8String(namePtr);
+                        
+                        if (nameStr.toLowerCase() == TARGET_ADD.toLowerCase()) {
+                            // 发送查询检测事件
+                            sendEvent("add_element_detected", {
+                                name: nameStr,
+                                message: `检测到新增元素: ${nameStr}`
+                            });
+                        }
+                    }
+                } catch (error) {
+                    sendEvent("error", {
+                        error_type: "general_error",
+                        message: `执行错误: ${error.message}`
+                    });
+                }
+            },
+            onLeave: function(retval) {
+                try {                 
+                    if(deleteElement) {
+                        if (!retval.isNull()) 
+                            addElement = true;
+    
+                        sendEvent("add_element_finished", {
+                            success: !retval.isNull(),
+                            message: `检测到新增元素结束`
+                        });
+                    }
+                    
+                } catch (error) {
+                    sendEvent("error", {
+                        error_type: "general_error",
+                        message: `执行错误: ${error.message}`
+                    });
+                }
+            }
+        });
+
+        // 安装搜索函数钩子
+        Interceptor.attach(funcAddrs[2], {
+            onEnter: function(args) {
+                try {
+                    if(addElement) {
+                        var sizePtr = args[1];
+                        var x = Memory.readFloat(sizePtr.add(0));
+                        var y = Memory.readFloat(sizePtr.add(4));
+                        var z = Memory.readFloat(sizePtr.add(8));
+                        
+                        if (x == TARGET_SCALE[0] && y == TARGET_SCALE[1] && z == TARGET_SCALE[2]) {
+                            // 发送查询检测事件
+                            sendEvent("scale_element_detected", {
+                                scale: [x, y, z],
+                                message: `检测到缩放元素: ${x} ${y} ${z}`
+                            });
+                        }
+                    }
+                } catch (error) {
+                    sendEvent("error", {
+                        error_type: "general_error",
+                        message: `执行错误: ${error.message}`
+                    });
+                }
+            }
+        });
+        
+        sendEvent("hook_installed", {
+            message: "钩子安装完成，等待操作..."
+        });
+    }
+    
+    // 启动脚本
+    initHook();
+})();

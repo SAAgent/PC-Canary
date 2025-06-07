@@ -1,0 +1,63 @@
+{
+    "task_id": "07", 
+    "task_name": "add_ball",  
+    "description": "增加一个Metaball类型的Ball", 
+
+    "application_info": {   
+        "name": "blender",   
+        "executable_path": "/home/agent/blender-git/build_linux_debug/bin/blender",
+        "args": ["/home/agent/blender-git/blank.blend"]
+    },
+
+    "task_parameters": {   
+        "type": "Metaball",
+        "ml_type": "Ball"
+    },
+
+    "instruction_template": "在blender中增加一个${type}类型的${ml_type}.",
+
+    "evaluation_setup": {    
+        "scripts": [    
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,    
+        "evaluate_on_completion": false
+    },
+    "total_key_steps": 1,
+    "preconditions": {
+        "blender_running": true
+    },
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化完成。",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到关键函数地址。",
+            "is_key_step": false
+        },
+        "hook_installed": {
+            "description": "所有监控钩子安装完成。",
+            "is_key_step": false
+        },
+        "add_element_detected": {
+            "description": "检测到增加元素",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功增加指定元素"
+        },
+        "error": {
+            "description": "来自钩子脚本的错误事件。",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "uvx",
+            "args": [
+                "blender-mcp"
+            ]
+        }
+    ]
+}

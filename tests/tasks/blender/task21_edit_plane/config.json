@@ -1,0 +1,98 @@
+{
+    "task_id": "21", 
+    "task_name": "edit_plane",
+    "description": "新增Mesh类型的Plane，并编辑点(1, 1, 0)为(2, 2, 0)，点(-1, -1, 0)为(-2, -2, 0)", 
+
+    "application_info": {   
+        "name": "blender",   
+        "executable_path": "/home/agent/blender-git/build_linux_debug/bin/blender",
+        "args": ["/home/agent/blender-git/blank.blend"]
+    },
+
+    "task_parameters": {   
+        "type": "Mesh",
+        "mesh_type": "Plane",
+        "object_mode": 1,
+        "orig_vertex1": [1, 1, 0],
+        "orig_vertex2": [-1, -1, 0],
+        "new_vertex1": [2, 2, 0],
+        "new_vertex2": [-2, -2, 0]
+    },
+
+    "instruction_template": "在blender中增加一个${type}类型的${mesh_type}，并编辑点(1, 1, 0)为(2, 2, 0)，点(-1, -1, 0)为(-2, -2, 0).",
+
+    "evaluation_setup": {    
+        "scripts": [    
+            { "role": "hook",    "path": "hooker.js" },
+            { "role": "handler", "path": "handler.py" }
+        ],
+        "timeout": 120,    
+        "evaluate_on_completion": false
+    },
+    "total_key_steps": 6,
+    "preconditions": {
+        "blender_running": true
+    },
+    "events": {
+        "script_initialized": {
+            "description": "钩子脚本初始化完成。",
+            "is_key_step": false
+        },
+        "function_found": {
+            "description": "找到关键函数地址。",
+            "is_key_step": false
+        },
+        "hook_installed": {
+            "description": "所有监控钩子安装完成。",
+            "is_key_step": false
+        },
+        "add_element_detected": {
+            "description": "检测到增加元素",
+            "is_key_step": true,
+            "key_step_index": 1,
+            "key_step_name": "成功增加指定元素"
+        },
+        "add_element_finished": {
+            "description": "检测到增加元素完成",
+            "is_key_step": true,
+            "key_step_index": 2,
+            "key_step_name": "成功增加指定元素"
+        },
+        "change_mode_detected": {
+            "description": "检测到切换到编辑模式",
+            "is_key_step": true,
+            "key_step_index": 3,
+            "key_step_name": "成功切换到编辑模式"
+        },
+        "change_mode_finished": {
+            "description": "检测到切换到编辑模式完成",
+            "is_key_step": true,
+            "key_step_index": 4,
+            "key_step_name": "成功切换到编辑模式"
+        },
+        "edit_vertex_detected": {
+            "description": "检测到编辑顶点",
+            "is_key_step": true,
+            "key_step_index": 5,
+            "key_step_name": "成功编辑顶点"
+        },
+        "edit_vertex_finished": {
+            "description": "检测到编辑顶点完成",
+            "is_key_step": true,
+            "key_step_index": 6,
+            "key_step_name": "成功编辑顶点"
+        },
+        "error": {
+            "description": "来自钩子脚本的错误事件。",
+            "is_key_step": false
+        }
+    },
+    "mcp_servers": [
+        {
+            "command": "uvx",
+            "args": [
+                "blender-mcp"
+            ]
+        }
+    ]
+}
